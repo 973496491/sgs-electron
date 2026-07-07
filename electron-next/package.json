@@ -1,0 +1,21 @@
+{
+  "name": "SGSOL",
+  "version": "1.1.5",
+  "private": true,
+  "?packageId": "1: 官方Win包 2: 官方Mac包 3:4399Win包 4：4399Mac包 5:快播win 6:快播mac 7:飞火win 8:飞火mac 9:百度win 10:百度mac",
+  "description": "sgs Electron application",
+  "main": "./src/main.js",
+  "author": "ll",
+  "license": "CC0-1.0",
+  "scripts": {
+    "start": "electron .",
+    "package": "npx @electron/packager ./ SGSOL --platform=win32 --out=./dist --electronVersion=39.2.7 --overwrite --icon=./icon.ico --ignore=.vscode"
+  },
+  "devDependencies": {
+    "@electron/packager": "^19.0.1",
+    "electron": "^39.2.7"
+  },
+  "dependencies": {
+    "electron-json-config": "^2.1.0"
+  }
+}

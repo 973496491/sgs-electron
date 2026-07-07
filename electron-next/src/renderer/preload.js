@@ -1,0 +1,179 @@
+function installLocalLoadBypass() {
+  const failPatterns = [/下载失败/, /更新失败/, /检查更新失败/, /加载失败/, /获取更新失败/, /重试/]
+  const localPatterns = [/本地加载/, /进入游戏/, /启动游戏/, /确定/]
+  const closePatterns = [/关闭/, /取消/, /知道了/, /确定/]
+
+  function matches(text, patterns) {
+    if (!text) return false
+    return patterns.some((pattern) => pattern.test(text))
+  }
+
+  function clickFirst(nodes, patterns) {
+    for (const node of nodes) {
+      const text = (node.innerText || node.textContent || '').trim()
+      if (!matches(text, patterns)) continue
+      node.click()
+      return true
+    }
+
+    return false
+  }
+
+  function handleDialogs(root = document) {
+    const candidates = Array.from(
+      root.querySelectorAll('div, section, article, dialog, .dialog, .modal, .popup, .layui-layer, .el-message-box')
+    )
+
+    for (const candidate of candidates) {
+      const text = (candidate.innerText || candidate.textContent || '').trim()
+      if (!matches(text, failPatterns)) continue
+
+      const actions = Array.from(candidate.querySelectorAll('button, a, span, div'))
+      if (clickFirst(actions, localPatterns)) return true
+      if (clickFirst(actions, closePatterns)) return true
+    }
+
+    return false
+  }
+
+  handleDialogs()
+
+  const observer = new MutationObserver(() => {
+    handleDialogs()
+  })
+
+  observer.observe(document.documentElement || document.body, {
+    childList: true,
+    subtree: true
+  })
+}
+
+window.addEventListener('load', () => {
+  window.WDVerSion = '1.0.0'
+  console.info('--wd-- ', window.location)
+  installLocalLoadBypass()
+
+  fetch('https://cas.dobest.cn/cas/logout?url=https%3A%2F%2Fweb.sanguosha.com%2Findex.html', {
+    referrer: 'https://web.sanguosha.com/',
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    body: null,
+    method: 'GET',
+    mode: 'no-cors',
+    credentials: 'include'
+  })
+    .then((response) => response.json())
+    .catch((err) => console.log('退出登录'))
+
+  if (window.location.pathname === '/login/air/client/h5/index') {
+    const userProto = document.querySelector('#SGS_userProto')
+    userProto.parentNode.classList.add('on')
+    userProto.checked = !0
+
+    const loginbtn = document.querySelector('#SGS_login-btn')
+    loginbtn.removeAttribute('disabled')
+    loginbtn.classList.remove('SGS_loginbtn-disable')
+
+    console.log('加载密码管理')
+
+    const login_form = document.querySelector('#SGS_login-form')
+    let style = document.createElement('style')
+    style.innerHTML =
+      'ul{padding:0;list-style:none;margin:0}a{text-decoration:none}a:active,a:hover{outline:0}.pass-root{position:relative;color:#000}.hidden{visibility:hidden;opacity:0;height:0}.pass-root .more{width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid #fff}#manager{position:absolute;left:-246px;top:20px;width:256px;padding-top:5px;box-sizing:border-box;background-color:#fff;border-radius:5px;max-height:300px;overflow:auto;transition:all 1s}#manager::-webkit-scrollbar{height:12px;width:16px;background:rgba(0,0,0,.06);z-index:12;overflow:visible}#manager::-webkit-scrollbar-thumb{width:10px;background-color:#434953;border-radius:10px;z-index:12;border:4px solid transparent;background-clip:padding-box;transition:background-color .32s ease-in-out;margin:4px;min-height:32px;min-width:32px}#manager::-webkit-scrollbar-thumb:hover{background-color:#4e5157}#manager::-webkit-scrollbar-corner{background:#202020}#manager_add{display:block;margin-top:5px;padding:6px;border-top:1px solid #bfcfe4}.manager_account{display:flex;flex-direction:column;align-items:stretch;justify-content:center}.manager_account li{padding:4px 10px}.manager_account li:hover .button--danger{display:inline-block}#manager_add:hover,.manager_account li:hover{background-color:#ddd;border-radius:4px}.button--danger{display:none;float:right;box-sizing:border-box;border-radius:4px;color:#fff;background-color:#f56c6c;border:1px solid #f56c6c;cursor:pointer}li span{cursor:pointer}'
+    document.getElementsByTagName('head')[0].appendChild(style)
+    let div = document.createElement('div')
+    div.innerHTML =
+      '<div class="pass-root"><div class="more"></div><div id="manager" class="hidden"><ul class="manager_account"></ul><a id="manager_add" href="javascript:;">添加当前账号</a></div></div>'
+    div.style.float = 'left'
+    div.style.position = 'absolute'
+    div.style.left = '432px'
+    div.style.top = '64px'
+    login_form.appendChild(div)
+
+    const account = document.querySelector('#SGS_login-account')
+    const password = document.querySelector('#SGS_login-password')
+    const manager = document.querySelector('#manager')
+    const ul = document.querySelector('.manager_account')
+    account.spellcheck = false
+
+    function getData() {
+      let data = window.localStorage.getItem('managerData')
+      if (data != null) {
+        return JSON.parse(data)
+      } else {
+        return []
+      }
+    }
+
+    function saveData(list) {
+      window.localStorage.setItem('managerData', JSON.stringify(list))
+    }
+
+    function load() {
+      ul.innerHTML = ''
+      if (userlist) {
+        userlist.forEach((item, index) => {
+          let li = document.createElement('li')
+          li.dataset.index = index
+          li.innerHTML =
+            '<span data-index="' + index + '">' + item.account + '</span><button class="button--danger" data-index="' + index + '">X</button>'
+          li.addEventListener('click', clickCb)
+          ul.appendChild(li)
+        })
+      }
+    }
+
+    function remove(index) {
+      userlist.splice(index, 1)
+      saveData(userlist)
+      load()
+    }
+
+    function clickCb(e) {
+      const target = e.target
+      switch (target.nodeName) {
+        case 'LI':
+        case 'SPAN':
+          auto(target)
+          break
+        case 'BUTTON':
+          remove(target.dataset.index)
+          break
+        default:
+          break
+      }
+
+      function auto(target) {
+        account.value = userlist[target.dataset.index].account
+        password.value = userlist[target.dataset.index].password
+        manager.classList.toggle('hidden')
+        userProto.checked = !0
+        userProto.parentNode.classList.add('on')
+        loginbtn.removeAttribute('disabled')
+        loginbtn.classList.remove('SGS_loginbtn-disable')
+      }
+    }
+
+    document.querySelector('#manager_add').addEventListener('click', () => {
+      let account = document.querySelector('#SGS_login-account').value
+      let password = document.querySelector('#SGS_login-password').value
+      if (!account) return
+      userlist.push({ account, password })
+      saveData(userlist)
+      load()
+      setTimeout(() => {
+        manager.classList.toggle('hidden')
+      }, 1000)
+    })
+
+    document.querySelector('.more').addEventListener('click', () => {
+      manager.classList.toggle('hidden')
+    })
+
+    let userlist = getData()
+    load()
+  }
+
+  const script = document.createElement('script')
+  script.src = 'atom://base.js'
+  document.body.appendChild(script)
+})
