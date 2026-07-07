@@ -41,7 +41,137 @@
   var LOCAL_SKIN_SWITCH_ID = 'localSkinThemeSwitch'
   var LOCAL_SKIN_TEXT = '本地皮肤'
   var LOCAL_SKIN_LABEL_ID = 'localSkinThemeLabel'
-  var LOCAL_SKIN_COLUMN_STEP = 90
+  var LOCAL_SKIN_COLUMN_STEP = 72
+  var DEBUG_SWITCH_ID = 'localSkinDebugSwitch'
+  var DEBUG_TEXT = '打开调试'
+  var DEBUG_LABEL_ID = 'localSkinDebugLabel'
+  var DEBUG_BUTTON_X_OFFSET = 72
+
+  function getLocalSkinDebugState() {
+    var state = (window.__localSkinDebug = window.__localSkinDebug || {})
+    if (!state.hookedMethods) state.hookedMethods = new WeakSet()
+    if (!state.timers) state.timers = []
+    if (typeof state.showHooked === 'undefined') state.showHooked = false
+    if (typeof state.bootstrapTimer === 'undefined') state.bootstrapTimer = null
+    if (typeof state.pendingSkin === 'undefined') state.pendingSkin = null
+    if (typeof state.printResp === 'undefined') state.printResp = true
+    return state
+  }
+
+  function ensureLocalSkinDebugPanel() {
+    var state = getLocalSkinDebugState()
+    if (state.panelEl) {
+      state.panelEl.style.display = 'flex'
+      return state.panelEl
+    }
+
+    var panel = document.createElement('div')
+    panel.id = 'xcDebugPanel'
+    panel.style.cssText =
+      'position:fixed;left:12px;top:80px;width:440px;max-height:60vh;z-index:2147483647;background:#1f1f2e;color:#eee;font-family:Consolas,monospace;font-size:12px;border:1px solid #4a4a6a;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;resize:both'
+    var header = document.createElement('div')
+    header.style.cssText =
+      'padding:6px 10px;background:#2a2a40;cursor:move;user-select:none;font-weight:bold;display:flex;justify-content:space-between;align-items:center'
+    var title = document.createElement('span')
+    title.textContent = '\u76ae\u80a4\u8c03\u8bd5\u65e5\u5fd7'
+    var btns = document.createElement('span')
+    var apiWrap = document.createElement('label')
+    apiWrap.style.cssText = 'margin-left:8px;cursor:pointer;color:#f2de9c;font-weight:400'
+    var apiSwitch = document.createElement('input')
+    apiSwitch.type = 'checkbox'
+    apiSwitch.checked = state.printResp !== false
+    apiSwitch.style.cssText = 'vertical-align:middle;margin:0 3px 0 0'
+    apiWrap.appendChild(apiSwitch)
+    apiWrap.appendChild(document.createTextNode('\u63a5\u53e3\u6253\u5370'))
+    var copyBtn = document.createElement('span')
+    copyBtn.textContent = '\u590d\u5236'
+    copyBtn.style.cssText = 'margin-left:8px;cursor:pointer;color:#8ab4f8'
+    var clearBtn = document.createElement('span')
+    clearBtn.textContent = '\u6e05\u7a7a'
+    clearBtn.style.cssText = 'margin-left:8px;cursor:pointer;color:#f88'
+    var minBtn = document.createElement('span')
+    minBtn.textContent = '\u2014'
+    minBtn.style.cssText = 'margin-left:8px;cursor:pointer;color:#ccc'
+    btns.appendChild(apiWrap); btns.appendChild(copyBtn); btns.appendChild(clearBtn); btns.appendChild(minBtn)
+    header.appendChild(title); header.appendChild(btns)
+    var body = document.createElement('div')
+    body.style.cssText =
+      'padding:8px 10px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;flex:1;max-height:50vh;min-height:60px'
+    panel.appendChild(header); panel.appendChild(body)
+    document.body.appendChild(panel)
+    state.panelEl = panel; state.panelBody = body; state.panelMinimized = false
+
+    var dragging = false, sx = 0, sy = 0, ox = 0, oy = 0
+    header.addEventListener('mousedown', function (e) {
+      if (apiWrap.contains(e.target) || e.target === copyBtn || e.target === clearBtn || e.target === minBtn) return
+      dragging = true; sx = e.clientX; sy = e.clientY
+      var rect = panel.getBoundingClientRect(); ox = rect.left; oy = rect.top
+      panel.style.right = 'auto'; panel.style.bottom = 'auto'
+      e.preventDefault()
+    })
+    document.addEventListener('mousemove', function (e) {
+      if (!dragging) return
+      panel.style.left = (ox + e.clientX - sx) + 'px'
+      panel.style.top = (oy + e.clientY - sy) + 'px'
+    })
+    document.addEventListener('mouseup', function () { dragging = false })
+
+    apiSwitch.addEventListener('change', function () {
+      state.printResp = apiSwitch.checked
+      appendLocalSkinDebugLine('\u63a5\u53e3\u6253\u5370\uff1a' + (state.printResp ? '\u5f00\u542f' : '\u5173\u95ed'), true)
+    })
+    copyBtn.addEventListener('click', function () {
+      var txt = body.textContent || ''
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt)
+        } else {
+          var ta = document.createElement('textarea'); ta.value = txt
+          ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0'
+          document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
+        }
+      } catch (e) {}
+      copyBtn.textContent = '\u5df2\u590d\u5236'
+      setTimeout(function () { copyBtn.textContent = '\u590d\u5236' }, 800)
+    })
+    clearBtn.addEventListener('click', function () { body.textContent = '' })
+    minBtn.addEventListener('click', function () {
+      state.panelMinimized = !state.panelMinimized
+      body.style.display = state.panelMinimized ? 'none' : ''
+      minBtn.textContent = state.panelMinimized ? '+' : '\u2014'
+    })
+    return panel
+  }
+
+  function appendLocalSkinDebugLine(text, force) {
+    try {
+      if (!force && !(window.XC && window.XC.isDebug)) return
+      ensureLocalSkinDebugPanel()
+      var state = getLocalSkinDebugState()
+      var body = state.panelBody
+      if (!body) return
+      var d = new Date()
+      var pad = function (n) { return (n < 10 ? '0' : '') + n }
+      var stamp = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds())
+      var line = document.createElement('div')
+      line.textContent = '[' + stamp + '] ' + String(text)
+      line.style.cssText = 'border-bottom:1px solid #2a2a40;padding:3px 0'
+      body.appendChild(line)
+      body.scrollTop = body.scrollHeight
+    } catch (e) {}
+  }
+
+  function closeLocalSkinDebugPanel() {
+    try {
+      var state = getLocalSkinDebugState()
+      if (state.panelEl && state.panelEl.parentNode) {
+        state.panelEl.parentNode.removeChild(state.panelEl)
+      }
+      state.panelEl = null
+      state.panelBody = null
+      state.panelMinimized = false
+    } catch (e) {}
+  }
 
   function notifyLocalSkinError(error) {
     try {
@@ -49,7 +179,7 @@
       if (window.XC && typeof window.XC.addTooltip === 'function') {
         window.XC.addTooltip(text, 'acTooltip', 3000)
       } else {
-        ;(console._log || console.log).call(console, text)
+        appendLocalSkinDebugLine(text, true)
       }
     } catch (notifyError) {
     }
@@ -60,7 +190,7 @@
       if (window.XC && typeof window.XC.addTooltip === 'function') {
         window.XC.addTooltip(text, 'acTooltip', 2000, cls || 'green')
       } else {
-        ;(console._log || console.log).call(console, text)
+        appendLocalSkinDebugLine(text, true)
       }
     } catch (error) {
     }
@@ -105,19 +235,27 @@
     }
   }
 
-  function ensureLocalSkinLabel(row) {
-    var label = document.getElementById(LOCAL_SKIN_LABEL_ID)
+  function ensureFloatingLabel(row, labelId, text) {
+    var label = document.getElementById(labelId)
     if (!label) {
       label = document.createElement('span')
-      label.id = LOCAL_SKIN_LABEL_ID
+      label.id = labelId
       row.parentNode.insertBefore(label, row.nextSibling)
     }
 
-    label.textContent = LOCAL_SKIN_TEXT
+    label.textContent = text
     label.style.cssText =
       'position:absolute;display:block;text-align:center;white-space:nowrap;line-height:16px;pointer-events:none;color:#f2de9c;font-size:14px;font-weight:400;visibility:visible;opacity:1;z-index:2147483647'
 
     return label
+  }
+
+  function ensureLocalSkinLabel(row) {
+    return ensureFloatingLabel(row, LOCAL_SKIN_LABEL_ID, LOCAL_SKIN_TEXT)
+  }
+
+  function ensureDebugButtonLabel(row) {
+    return ensureFloatingLabel(row, DEBUG_LABEL_ID, DEBUG_TEXT)
   }
 
   function setLocalSkinSwitchState(switchEl, locked) {
@@ -159,15 +297,16 @@
     }, 0)
   }
 
-  function findLocalSkinLayoutParent(source) {
+  function findLocalSkinLayoutParent(source, column) {
     var sourceRect = source.getBoundingClientRect()
+    column = column || 1
     var node = source.parentNode
     var best = node
 
     for (var i = 0; i < 8 && node && node !== document.body; i++) {
       if (node.getBoundingClientRect) {
         var rect = node.getBoundingClientRect()
-        if (rect.width >= sourceRect.width + LOCAL_SKIN_COLUMN_STEP + 20) {
+        if (rect.width >= sourceRect.width + LOCAL_SKIN_COLUMN_STEP * column + 20) {
           return node
         }
         best = node
@@ -178,10 +317,12 @@
     return best
   }
 
-  function layoutLocalSkinButton(row, source) {
+  function layoutClonedSwitchButton(row, source, column, ensureLabel, xOffset) {
     if (!row || !source || !source.parentNode) return
+    column = column || 1
+    xOffset = typeof xOffset === 'number' ? xOffset : LOCAL_SKIN_COLUMN_STEP * column
 
-    var parent = findLocalSkinLayoutParent(source)
+    var parent = findLocalSkinLayoutParent(source, column)
     var parentStyle = window.getComputedStyle ? window.getComputedStyle(parent) : null
     if (parentStyle && parentStyle.position === 'static') parent.style.position = 'relative'
 
@@ -189,10 +330,13 @@
     var sourceRect = source.getBoundingClientRect()
     if (!parentRect.width || !sourceRect.width || !sourceRect.height) return
 
-    var left = sourceRect.left - parentRect.left + LOCAL_SKIN_COLUMN_STEP
+    var baseLeft = sourceRect.left - parentRect.left
+    var left = baseLeft + xOffset
     var top = sourceRect.top - parentRect.top
     var maxLeft = parentRect.width - sourceRect.width
-    if (maxLeft > 0 && left > maxLeft) left = maxLeft
+    if (maxLeft > 0 && left > maxLeft) {
+      left = maxLeft
+    }
 
     row.style.position = 'absolute'
     row.style.display = 'flex'
@@ -210,10 +354,18 @@
     row.style.top = Math.round(top) + 'px'
     row.style.width = Math.ceil(sourceRect.width) + 'px'
 
-    var label = ensureLocalSkinLabel(row)
+    var label = ensureLabel(row)
     label.style.left = Math.round(left) + 'px'
     label.style.top = Math.round(top - 18) + 'px'
     label.style.width = Math.ceil(sourceRect.width) + 'px'
+  }
+
+  function layoutLocalSkinButton(row, source) {
+    layoutClonedSwitchButton(row, source, 1, ensureLocalSkinLabel)
+  }
+
+  function layoutDebugButton(row, source) {
+    layoutClonedSwitchButton(row, source, 1, ensureDebugButtonLabel, DEBUG_BUTTON_X_OFFSET)
   }
 
   function insertLocalSkinButton(cardBackSwitch) {
@@ -273,10 +425,74 @@
     }, 500)
   }
 
+  function setDebugSwitchState(switchEl) {
+    if (!switchEl) return
+    switchEl.checked = !!(window.XC && window.XC.isDebug)
+    switchEl.title = switchEl.checked
+      ? '\u70b9\u51fb\u5173\u95ed\u8c03\u8bd5\u65e5\u5fd7\u8f93\u51fa'
+      : '\u70b9\u51fb\u6253\u5f00\u8c03\u8bd5\u7a97\u53e3'
+  }
+
+  function openDebugFromButton(switchEl) {
+    window.XC = window.XC || {}
+    window.XC.isDebug = !!switchEl.checked
+    if (window.XC.isDebug) {
+      ensureLocalSkinDebugPanel()
+      appendLocalSkinDebugLine('\u8c03\u8bd5\u7a97\u53e3\u5df2\u6253\u5f00', true)
+    } else {
+      closeLocalSkinDebugPanel()
+    }
+    setDebugSwitchState(switchEl)
+  }
+
+  function insertDebugButton(cardBackSwitch) {
+    if (document.getElementById(DEBUG_SWITCH_ID)) return
+
+    var localSkinSwitch = document.getElementById(LOCAL_SKIN_SWITCH_ID)
+    var source = localSkinSwitch ? findSwitchContainer(localSkinSwitch) : findSwitchContainer(cardBackSwitch)
+    var row = source.cloneNode(true)
+    clearDuplicateIds(row)
+
+    var switchEl = row.querySelector('input[type="checkbox"],input[type="radio"],input')
+    if (!switchEl) {
+      switchEl = cardBackSwitch.cloneNode(false)
+      row.insertBefore(switchEl, row.firstChild)
+    }
+
+    switchEl.id = DEBUG_SWITCH_ID
+    switchEl.name = ''
+    switchEl.disabled = false
+    switchEl.removeAttribute('checked')
+
+    var forNodes = row.querySelectorAll('[for]')
+    for (var i = 0; i < forNodes.length; i++) {
+      forNodes[i].setAttribute('for', DEBUG_SWITCH_ID)
+    }
+
+    setLocalSkinLabel(row)
+    setDebugSwitchState(switchEl)
+    switchEl.addEventListener('change', function () {
+      openDebugFromButton(switchEl)
+    })
+
+    if (source.parentNode) {
+      source.parentNode.insertBefore(row, source.nextSibling)
+    }
+
+    layoutDebugButton(row, source)
+    setTimeout(function () {
+      layoutDebugButton(row, source)
+    }, 100)
+    setTimeout(function () {
+      layoutDebugButton(row, source)
+    }, 500)
+  }
+
   function waitForCardBackSwitch(attempt) {
     var cardBackSwitch = document.getElementById('cardBackThemeSwitch')
     if (cardBackSwitch && document.body) {
       insertLocalSkinButton(cardBackSwitch)
+      insertDebugButton(cardBackSwitch)
       return
     }
 
@@ -308,9 +524,9 @@
 
       function log() {
         try {
-          var args = ['[local-skin-debug]']
-          for (var i = 0; i < arguments.length; i++) args.push(arguments[i])
-          ;(console._log || console.log).apply(console, args)
+          var parts = []
+          for (var i = 0; i < arguments.length; i++) parts.push(String(arguments[i]))
+          appendDebugLine(parts.join(' '))
         } catch (error) {
         }
       }
@@ -346,9 +562,10 @@
       notifyLoaded()
 
       window.XC = window.XC || {}
-      if (typeof window.XC.isOpenCopy === 'undefined') window.XC.isOpenCopy = false
+      if (typeof window.XC.isDebug === 'undefined') window.XC.isDebug = false
 
       function ensureDebugPanel() {
+        return ensureLocalSkinDebugPanel()
         if (state.panelEl) return state.panelEl
         var panel = document.createElement('div')
         panel.id = 'xcDebugPanel'
@@ -417,23 +634,10 @@
       }
 
       function appendDebugLine(text) {
-        try {
-          if (!(window.XC && window.XC.isOpenCopy)) return
-          ensureDebugPanel()
-          var body = state.panelBody
-          if (!body) return
-          var d = new Date()
-          var pad = function (n) { return (n < 10 ? '0' : '') + n }
-          var stamp = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds())
-          var line = document.createElement('div')
-          line.textContent = '[' + stamp + '] ' + String(text)
-          line.style.cssText = 'border-bottom:1px solid #2a2a40;padding:3px 0'
-          body.appendChild(line)
-          body.scrollTop = body.scrollHeight
-        } catch (e) {}
+        appendLocalSkinDebugLine(text)
       }
 
-      if (window.XC && window.XC.isOpenCopy) ensureDebugPanel()
+      if (window.XC && window.XC.isDebug) ensureDebugPanel()
 
       function toast(text, id, duration, cls) {
         try {
@@ -456,7 +660,7 @@
             }, dur)
           }
 
-          if (window.XC && window.XC.isOpenCopy) {
+          if (window.XC && window.XC.isDebug) {
             try {
               appendDebugLine(String(text))
             } catch (e) {}
@@ -900,8 +1104,7 @@
                 appendDebugLine('respHook: 响应无GeneralSkinList, first keys=[' + Object.keys(first).slice(0, 15).join(',') + ']')
               }
             }
-            if (window.XC && window.XC.debugSkinResp) debugger
-            appendDebugLine('服务端响应 ' + cn + ' ' + deepDump(first))
+            if (state.printResp !== false) appendDebugLine('服务端响应 ' + cn + ' ' + deepDump(first))
           }
           window.SGSMODULE.push(state.respHook)
         }
@@ -915,10 +1118,7 @@
           showHooked: state.showHooked,
           pendingSkin: state.pendingSkin
         }
-        console.log('[local-skin-debug] diag:', info)
-        if (window.XC && window.XC.isOpenCopy) {
-          appendDebugLine('diag: ' + JSON.stringify(info, null, 2))
-        }
+        appendDebugLine('diag: ' + JSON.stringify(info, null, 2))
         return info
       }
       state.stop = function () {
