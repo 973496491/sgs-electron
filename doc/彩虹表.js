@@ -32721,6 +32721,142 @@ function daxiaochaoRainbowLookup(decoder, index) {
   return table && table.all ? table.all[String(index)] : undefined
 }
 
+// Manual lookup notes. Keep these small and searchable; the generated table above
+// remains the source of truth for decoder/index mappings.
+DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  autoShouQiKa: {
+    title: "自动手气卡 / 自动刷牌链路",
+    verifiedAt: "2026-07-15",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: [
+      "自动手气",
+      "自动刷牌",
+      "autoSQKSwitch",
+      "默认关闭",
+      "自动刷卡默认关闭",
+      "autoSQKSwitch default false",
+      "openAutoShouQiConfig",
+      "triggerAutoShouQiConfigWindow",
+      "CARD_CONFIG_VIP",
+      "CardConfigWindow",
+      "ShowWindow",
+      "configHandCards",
+      "configHandCardsMode",
+      "configHandCardsRejected",
+      "checkHandCards",
+      "ShouQiKaAskWindow",
+      "useBtn",
+      "__xcAutoSQKDebugLog",
+      "config:switch-change",
+      "config:init-toggle",
+      "config:toggle-action",
+      "config:window-show",
+      "config:save",
+      "config:close",
+      "config:post-check",
+      "config:click-useBtn",
+      "config:missing-useBtn",
+      "openConfig:start",
+      "openConfig:window-probe",
+      "openConfig:fallback-show",
+      "deal:start",
+      "deal:event",
+      "deal:window-probe",
+      "deal:fallback-show",
+      "deal:auto-config-disabled",
+      "deal:skip-auto-config",
+      "deal:timer-fired",
+      "deal:wait-config",
+      "deal:check",
+      "deal:click-useBtn",
+      "deal:missing-useBtn",
+      "check:no-target",
+      "check:hit-any",
+      "check:miss-all",
+      "check:done",
+      "target:[]",
+      "空目标",
+      "handCardIDs",
+      "全部出现",
+      "任一出现",
+      "场景白名单",
+      "回归",
+      "回退"
+    ],
+    decodedIndexes: {
+      "_0x3812": {
+        "336": "configHandCards",
+        "370": "小抄将自动使用手气卡直到获得目标手牌<br>",
+        "386": "autoR",
+        "396": "autoSQKSwitch",
+        "803": "ShouQiKaAskWindow",
+        "1026": "configHandCardsRejected",
+        "1032": "handCardIDs",
+        "1034": "手气卡",
+        "1065": "useBtn",
+        "1094": "任一出现",
+        "1137": "configHandCardsMode",
+        "1209": "不选择直接确定或者关闭窗口则不会使用手气卡<br>",
+        "1243": "onMouse",
+        "1501": "全部出现"
+      },
+      "_0x3911": {
+        "185": "AUTO_SQK_SWITCH",
+        "270": "autoSQKSwitch",
+        "271": "configHandCardsMode",
+        "576": "configHandCardsRejected",
+        "606": "configHandCards"
+      },
+      "_0x497b": {
+        "431": "useBtn",
+        "531": "CARD_CONFIG_VIP",
+        "560": "isDouDiZhu",
+        "584": "isShanHeTu",
+        "689": "autoSQKSwitch",
+        "698": "CloseWindow",
+        "728": "CardConfigWindow",
+        "752": "isRoguelike1v1",
+        "781": "configHandCardsRejected",
+        "789": "autoBotSwitch",
+        "811": "onMouse",
+        "821": "ShouQiKaAskWindow",
+        "874": "configHandCards"
+      },
+      "_0x871b": {
+        "153": "ged",
+        "163": "autoSQKSwitch",
+        "501": "ShowWindow"
+      }
+    },
+    chain: [
+      "设置面板 autoSQKSwitch 存储 AUTO_SQK_SWITCH，Id_Key_Value 默认值为关闭(!1/false)；用户手动切到开启时由设置面板通用保存链路写入 globalConfig.autoSQKSwitch，并调用 openAutoShouQiConfig 用当前手牌触发 CARD_CONFIG_VIP 配置窗口。",
+      "openAutoShouQiConfig 不再强制 globalConfig.autoSQKSwitch = true；打开配置窗口不等于自动启用刷牌。已有本地存储仍尊重用户保存过的开关值。",
+      "CardConfigWindow.btnOkHandler 保存 this.handCardIDs 到 globalState.configHandCards，并保存 sqkHandCardMode 到 configHandCardsMode。",
+      "CardConfigWindow 增加两个确认模式：全部出现(all) 和 任一出现(any)。",
+      "发牌事件 logic 中检测自己初始手牌后调用 checkHandCards(dn)。未命中时延迟点击 ShouQiKaAskWindow.useBtn.onMouse({ type: Laya.Event.CLICK })；当前实现对 ShouQiKaAskWindow/useBtn 做空值保护。",
+      "2026-07-15 已移除自动弹出 CARD_CONFIG_VIP 配置窗口的场景白名单。历史白名单是 room.isShanHeTu || room.isDouDiZhu || room.isRoguelike1v1。",
+      "自动弹配置窗口仍需要 globalConfig.autoSQKSwitch 开启、configHandCards 为空、configHandCardsRejected 为假、autoBotSwitch != 11，并且依赖发牌事件形态。",
+      "已有 configHandCards 时，后续自动点击手气卡主要受 checkHandCards、autoBotSwitch != 11 和发牌事件形态限制；target:[] / 空目标会先记录 deal:wait-config 并等待配置，不再把 checkHandCards 的空目标 true 当作刷牌成功。",
+      "triggerAutoShouQiConfigWindow 统一触发 CARD_CONFIG_VIP，并在 200ms 后用 laya.win('CardConfigWindow') 探测窗口；若未出现且 laya.ged.ShowWindow 存在，会尝试 ShowWindow('CardConfigWindow', payload) 作为备用路径。",
+      "2026-07-15 调试窗口打开时通过 window.__xcAutoSQKDebugLog 记录 openConfig:start/openConfig:zoneCards/openConfig:uiCards/openConfig:event/openConfig:window-probe/openConfig:fallback-show、deal:start/deal:auto-config/deal:event/deal:window-probe/deal:fallback-show、deal:wait-config、deal:check/deal:click-useBtn/deal:missing-useBtn/deal:skip-autoBotSwitch-11。",
+      "2026-07-15 已补全自动刷卡关键节点日志：config:switch-change/config:init-toggle/config:toggle-action、config:window-show/config:save/config:close/config:post-check/config:click-useBtn/config:missing-useBtn、deal:auto-config-disabled/deal:skip-auto-config/deal:timer-fired，以及 check:no-target/check:hit-any/check:miss-all/check:done。",
+      "gamebarAutoUI 的对局内自动确定按钮会跳过包含 手气卡 / 更换手牌 / 替换现有的手牌 的询问，避免误点；它不是自动手气主入口。",
+      "autoR 是自动进房/人机/托管相关逻辑，不是自动手气卡配置或刷牌主链路。"
+    ],
+    regressionNotes: [
+      "恢复旧场景限制：在 logic(...) 自动弹 CARD_CONFIG_VIP 的条件里重新加入 &&(room[J(584)]||room[J(560)]||room[J(752)])，对应 isShanHeTu || isDouDiZhu || isRoguelike1v1。",
+      "关闭点击面板开关主动弹配置：把 autoSQKSwitch 的动作从 openAutoShouQiConfig 改回 dummy。",
+      "恢复旧默认开启：把 Id_Key_Value 中的 [_0x4efae6(270),_0x4efae6(185),!1] 改回 !0；如还要恢复打开配置即开启，再在 openAutoShouQiConfig 起始处写回 globalConfig.autoSQKSwitch = true。",
+      "恢复设置面板初始化时自动执行开关动作：在 _0x13a41d 初始化逻辑中移除 i!==_0x41a3d0(163)，_0x871b[163] 对应 autoSQKSwitch。",
+      "ShouQiKaAskWindow/useBtn 空值保护建议保留，除非专门回放旧行为；它只避免无窗口场景报错。",
+      "回退配置窗口备用路径：检索 triggerAutoShouQiConfigWindow，恢复成直接 laya.ged.event('CARD_CONFIG_VIP', payload)；旧行为在事件监听失效或窗口未注册时可能只打 openConfig:event 但不显示 CardConfigWindow。",
+      "回退空目标等待配置：删除发牌分支里的 deal:wait-config 早退逻辑；旧行为会让 target:[] 经 checkHandCards 返回 true，可能再次吞掉自动手气点击。",
+      "回退本轮调试日志：检索 __xcAutoSQKDebugLog、config:switch-change、config:save、check:、openConfig:start、deal:start、deal:check、deal:click-useBtn，删除日志调用和外层日志格式化函数；日志只在 window.XC.isDebug 开启时写调试窗口。",
+      "回归校验：node --check electron-next/resources/daxiaochao.user.js；node --check doc/彩虹表.js；rg 检索 openAutoShouQiConfig、autoSQKSwitch、CARD_CONFIG_VIP、场景白名单、回退。"
+    ]
+  }
+}
+
 if (typeof module !== 'undefined' && module.exports) module.exports = DAXIAOCHAO_RAINBOW_TABLE
 if (typeof window !== 'undefined') {
   window.DAXIAOCHAO_RAINBOW_TABLE = DAXIAOCHAO_RAINBOW_TABLE
