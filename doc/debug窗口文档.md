@@ -82,3 +82,78 @@
 - 已新增 `DEBUG_BUTTON_X_OFFSET = 75`。
 - 已让 `layoutClonedSwitchButton()` 支持可选 `xOffset` 参数。
 - `layoutDebugButton()` 现在使用 `DEBUG_BUTTON_X_OFFSET`；本地皮肤按钮仍使用 `LOCAL_SKIN_COLUMN_STEP`。
+
+## 2026-07-15 第 12 段：接口打印失效修复
+
+- 用户反馈调试窗口“接口打印”看不到数据。
+- 原因：旧实现只在 `runLocalSkinEnableInline()` 里的 `installSgsModuleHook()` 安装 `state.respHook`；单独点击“打开调试”只打开 `#xcDebugPanel`，不会安装 `window.SGSMODULE` 响应监听。
+- 已新增外层 `installLocalSkinDebugResponseHook()`，复用 `window.__localSkinDebug` 状态，负责安装/重挂 `state.respHook`。
+- `openDebugFromButton()` 打开调试窗口时会主动调用 `installLocalSkinDebugResponseHook()`；如果 `window.SGSMODULE` 还没初始化，会最多重试约 20 秒，并在调试窗口输出 `接口监听：等待 SGSMODULE 初始化` / `接口监听：已安装`。
+- `runLocalSkinEnableInline()` 内的 `installSgsModuleHook()` 不再内联创建另一份响应 hook，改为复用外层 `installLocalSkinDebugResponseHook()`，避免本地皮肤和调试窗口路径行为不一致。
+- “服务端响应 ...”不再强制要求 `className` 包含 `skin`，只要响应对象有 `className` / `WindowName` / `Protocol.className` / `Protocol.ProtoObj.className` 即可打印；`ChangeSkinWindow` 仍跳过，避免窗口启动事件污染接口日志。
+- 本地皮肤替换相关的 `pendingSkin` 修改逻辑仍只在皮肤相关响应或实际含 `GeneralSkinList` 时执行，避免开着接口打印时被无关事件刷屏。
+- 当 `pendingSkin` 等待替换时，`state.respHook` 只记录皮肤候选响应（名称包含 `skin`、`GsCUpdateRoleDataExNtf` / `GsCUpdateRoleDataNtf`，或带 `GeneralSkinList`）；`MsgActionStateNtf` 等普通通知不再打印，避免刷屏。
+- 关键检索词：`installLocalSkinDebugResponseHook`、`openDebugFromButton`、`state.respHook`、`state.printResp`、`服务端响应`、`接口监听`、`SGSMODULE`。
+
+## 2026-07-15 第 13 段：接口打印子线程与分片输出
+
+- 用户反馈调试窗口打印完接口数据后直接卡死，并明确要求不要限制输出长度，允许不实时打印。
+- 原因：旧链路在 `state.respHook` 内同步执行 `deepDumpLocalSkinDebug(first)`，再用 `appendLocalSkinDebugLine()` 一次性写入完整文本；大响应会同时卡住 JSON 序列化和 DOM 插入。
+- 已新增 `queueLocalSkinDebugResponseDump()`：`state.respHook` 现在只把 `服务端响应 ...` 入队，不再在接口回调里同步 dump。
+- 已新增 `createLocalSkinDebugDumpWorker()`：优先用 Web Worker 在子线程完整 `JSON.stringify` 响应对象，保留循环引用、函数、BigInt、Map、Set、TypedArray 的可读兜底输出，不做长度截断。
+- 已新增 `beginLocalSkinDebugBlock()` / `queueLocalSkinDebugBlockChunk()` / `flushLocalSkinDebugChunks()`：Worker 返回的数据按 64KB 左右分片进入主线程，主线程每帧只追加有限字符，最终输出完整数据。
+- Worker 不可用、创建失败或 `postMessage` 无法克隆响应对象时，会显示 `fallback` 标记并改用主线程兜底打印；第 14 段已把这个兜底改成分时遍历和分片输出，不再同步 `deepDumpLocalSkinDebug()`。
+- “清空”调试窗口会终止当前 Worker、清空待写分片；关闭调试窗口也会终止后台 dump 队列，避免关闭后继续占用 CPU。
+- 关键检索词：`queueLocalSkinDebugResponseDump`、`createLocalSkinDebugDumpWorker`、`beginLocalSkinDebugBlock`、`queueLocalSkinDebugBlockChunk`、`flushLocalSkinDebugChunks`、`stopLocalSkinDebugDumpWorker`、`子线程`、`分片输出`、`fallback:postMessage-failed`。
+
+## 2026-07-15 第 14 段：不可克隆响应的 fallback 卡死修复
+
+- 用户反馈出现 `响应对象无法发送到子线程，改用延迟主线程打印` 后仍然卡死。
+- 原因：`postMessage` 失败说明响应对象里有函数、DOM、Window、Proxy 等不可结构化克隆的内容；旧 `queueLocalSkinDebugFallbackDump()` 用 `setTimeout` 延迟后仍调用同步 `deepDumpLocalSkinDebug(job.payload)`，只是晚一点卡住主线程。
+- 已将兜底改为 `fallback-incremental`：`queueLocalSkinDebugFallbackDump()` 只入队，`runLocalSkinDebugFallbackDumpStep()` 每次最多处理一小段对象遍历，再通过 `queueLocalSkinDebugBlockChunk()` 分片写 DOM。
+- 兜底遍历完整保留普通对象、数组、Map、Set、TypedArray 的内容；循环引用输出 `[Circular]`，函数 / BigInt / undefined / Symbol 输出可读占位，属性 getter 抛错时输出 `[Thrown: ...]`。
+- DOM、`window`、`document` 不能也不应该展开成完整对象树，兜底会输出 `[DOM ...]` / `[Window]` / `[Document]`，避免把页面运行环境整棵对象树打印进日志。
+- 用户看到的文案已改为 `改用分片主线程打印`；这条路径不追求实时，但不会再同步全量 stringify。
+- 关键检索词：`fallback-incremental`、`runLocalSkinDebugFallbackDumpStep`、`processLocalSkinDebugFallbackFrame`、`pushLocalSkinDebugFallbackValue`、`quoteLocalSkinDebugString`、`响应对象无法发送到子线程`、`分片主线程打印`。
+
+## 2026-07-15 第 15 段：聊天通知接口过滤
+
+- 用户反馈接口打印里出现大量 `服务端响应 decodeSSCChatmsgNtf ...` 聊天通知数据。
+- 已新增 `isLocalSkinDebugResponsePrintIgnored()`；它只过滤 `queueLocalSkinDebugResponseDump()`，不能阻断 `pendingSkin` 的本地皮肤替换；第 16 段已将规则来源改为可配置列表。
+- 默认过滤规则包含 `decodeSSCChatmsgNtf`，响应名以前缀命中时跳过 Worker、fallback 和 DOM dump，但仍允许本地皮肤替换链路处理响应。
+- 日志收敛：`state.pendingSkin` 成功替换后立即清空；接口 dump 只在 pending 期间且响应被判定为皮肤候选时入队，避免普通接口和后续重复响应刷屏。
+- 关键检索词：`decodeSSCChatmsgNtf`、`isLocalSkinDebugResponsePrintIgnored`、`接口打印过滤`、`聊天通知接口过滤`。
+
+## 2026-07-15 第 16 段：接口拦截配置窗口
+
+- 用户要求调试窗口新增“配置”按钮，打开后可以维护数量不固定的接口打印拦截规则，并本地保存，避免每次新增过滤都改代码。
+- 已在调试窗口头部新增 `配置` 按钮，点击后在日志区域上方展开 `接口拦截配置` 面板。
+- 拦截规则是响应名前缀列表：每一行一个前缀，`isLocalSkinDebugResponsePrintIgnored(name)` 用 `text.indexOf(rule) === 0` 判断是否跳过。
+- 规则保存在 `localStorage["xcLocalSkinDebugIgnoreRules"]`，默认值是 `["decodeSSCChatmsgNtf"]`；用户保存过后尊重本地配置。
+- 配置窗口支持“添加 / 删除 / 保存 / 关闭”。编辑和删除只改当前面板，只有点击“保存”才写入本地存储。
+- 关键检索词：`DEBUG_IGNORE_RULES_STORAGE_KEY`、`xcLocalSkinDebugIgnoreRules`、`DEFAULT_DEBUG_IGNORE_RULES`、`openLocalSkinDebugConfigPanel`、`toggleLocalSkinDebugConfigPanel`、`saveLocalSkinDebugIgnoreRules`、`接口拦截配置`。
+
+## 2026-07-26 第 17 段：打开配置文件按钮
+
+- 用户要求在调试窗口 `配置` 展开后的三个按钮旁新增 `打开配置文件` 按钮。
+- 已在 `接口拦截配置` 面板操作区加入 `打开配置文件`，位置在 `保存` 和 `关闭` 之间。
+- 点击链路优先走 `openLocalSkinDebugConfigFile()` -> `window.daxiaochaoElectron.openConfigFile()` -> IPC `open-config-file` -> Electron `shell.openPath(userData/config.json)`。
+- 主进程会在 `config.json` 不存在时先创建 `{}`，打开失败时调用 `shell.showItemInFolder()` 并把错误回传到调试窗口日志。
+- 注意：接口拦截规则仍保存在页面 `localStorage["xcLocalSkinDebugIgnoreRules"]`；本按钮打开的是 Electron 外壳配置文件 `app.getPath("userData")/config.json`。
+- 关键检索词：`打开配置文件`、`openLocalSkinDebugConfigFile`、`daxiaochaoElectron.openConfigFile`、`open-config-file`、`configFilePath`、`userData/config.json`。
+
+## 2026-07-26 第 18 段：配置文件接口不可见修复
+
+- 用户反馈点击 `打开配置文件` 后日志显示 `当前环境没有 Electron 配置文件接口`。
+- 原因：小抄脚本运行在 webview 页面主世界，`window.daxiaochaoElectron` 可能因为 webview preload 未注入、context bridge 不可见、或客户端未重启而拿不到。
+- 已新增共享主进程实现 `electron-next/src/electron/configFile.js`，`open-config-file` IPC、`atom://open-config-file` 协议、`window.open("atom://open-config-file")` 拦截都复用同一个 `openConfigFile()`。
+- `openLocalSkinDebugConfigFile()` 现在优先调用 `window.daxiaochaoElectron.openConfigFile()`；如果接口不存在，则改用 `fetch("atom://open-config-file")`，再兜底 `window.open("atom://open-config-file")`。
+- 这类主进程 / 协议处理改动需要重启 Electron 客户端后生效；只重新加载小抄脚本不会刷新主进程代码。
+- 关键检索词：`配置文件接口不可见`、`openLocalSkinDebugConfigFileByAtom`、`atom://open-config-file`、`configFile.js`、`openConfigFile`、`window.open("atom://open-config-file")`。
+
+## 2026-07-26 第 19 段：接口拦截新增行置顶
+
+- 用户反馈接口拦截规则很多时，点击 `添加` 后新行出现在底部，来回滚动耗时。
+- 已将配置面板内 `addRow(value)` 扩展为 `addRow(value, prepend)`；已有规则渲染仍按保存顺序追加，只有点击 `添加` 时调用 `addRow("", true)`。
+- 新增空行现在插入到列表顶部，并立即设置 `panel.scrollTop = 0` 后聚焦输入框，便于连续录入新规则。
+- 关键检索词：`新增行置顶`、`addRow("", true)`、`list.insertBefore`、`panel.scrollTop = 0`、`接口拦截配置`。

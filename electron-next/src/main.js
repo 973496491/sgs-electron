@@ -3,6 +3,7 @@ const { app, shell, BrowserWindow, protocol } = require('electron')
 const ipcEvent = require('./electron/ipcEvent')
 const createWindow = require('./electron/window')
 const interceptor = require('./electron/interceptor')
+const { openConfigFile } = require('./electron/configFile')
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -52,6 +53,11 @@ app.on('activate', function () {
 
 app.on('web-contents-created', (e, webContents) => {
   webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('atom://open-config-file')) {
+      openConfigFile().catch((error) => console.log('open config file failed:', error))
+      return { action: 'deny' }
+    }
+
     if (url.startsWith('http')) {
       shell.openExternal(url)
     }

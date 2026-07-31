@@ -1,3 +1,15 @@
+const { contextBridge, ipcRenderer } = require('electron')
+
+const daxiaochaoElectronApi = {
+  openConfigFile: () => ipcRenderer.invoke('open-config-file')
+}
+
+try {
+  contextBridge.exposeInMainWorld('daxiaochaoElectron', daxiaochaoElectronApi)
+} catch (error) {
+  window.daxiaochaoElectron = daxiaochaoElectronApi
+}
+
 function installLocalLoadBypass() {
   const failPatterns = [/下载失败/, /更新失败/, /检查更新失败/, /加载失败/, /获取更新失败/, /重试/]
   const localPatterns = [/本地加载/, /进入游戏/, /启动游戏/, /确定/]

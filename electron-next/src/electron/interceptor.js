@@ -2,6 +2,7 @@ const { app, session, net } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const { pathToFileURL } = require('url')
+const { openConfigFile } = require('./configFile')
 
 const programDir = app.isPackaged ? path.dirname(app.getPath('exe')) : app.getAppPath()
 const packagedResourceDir = path.join(programDir, 'resources')
@@ -41,6 +42,25 @@ function resolveAtomResource(requestUrl) {
   }
 }
 
+function isOpenConfigFileRequest(requestUrl) {
+  try {
+    const url = new URL(requestUrl)
+    return url.protocol === 'atom:' && url.hostname === 'open-config-file'
+  } catch (error) {
+    return false
+  }
+}
+
+function jsonResponse(data, status) {
+  return new Response(JSON.stringify(data), {
+    status: status || 200,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'access-control-allow-origin': '*'
+    }
+  })
+}
+
 function isInside(candidate, root) {
   const relativePath = path.relative(root, candidate)
   return relativePath && !relativePath.startsWith('..') && !path.isAbsolute(relativePath)
@@ -57,7 +77,12 @@ module.exports = function () {
   for (let i = 1; i <= maxSgsPartitions; i++) {
     const ses = session.fromPartition(`persist:sgs${i}`)
 
-    ses.protocol.handle('atom', (request) => {
+    ses.protocol.handle('atom', async (request) => {
+      if (isOpenConfigFileRequest(request.url)) {
+        const result = await openConfigFile()
+        return jsonResponse(result, result.ok ? 200 : 500)
+      }
+
       const relativePath = resolveAtomResource(request.url)
       const safePath = resolveResourcePath(relativePath)
       if (!safePath) {

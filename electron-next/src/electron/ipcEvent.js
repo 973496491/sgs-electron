@@ -3,6 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const createWindow = require('./window')
 const config = require('./config')
+const { openConfigFile } = require('./configFile')
 // 程序目录
 const programDir = path.dirname(app.getPath('exe'))
 // 插件配置文件
@@ -80,6 +81,8 @@ module.exports = {
         packageId: PackageId
       }
     })
+
+    ipcMain.handle('open-config-file', openConfigFile)
   },
   menuEventInit() {
     ipcMain.on('menu', function (e) {

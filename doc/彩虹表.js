@@ -32777,6 +32777,18 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "target:[]",
       "空目标",
       "handCardIDs",
+      "SendClientChr1v1CardReq",
+      "pushHandCardUis",
+      "sqkHandCardMode",
+      "sqkAllOkBtn",
+      "sqkAnyOkBtn",
+      "XC.sqk",
+      "XC.sqkName",
+      "任意杀",
+      "桃/酒",
+      "拆/顺",
+      "兵/乐",
+      "伤害锦囊",
       "全部出现",
       "任一出现",
       "场景白名单",
@@ -32785,25 +32797,41 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     ],
     decodedIndexes: {
       "_0x3812": {
+        "224": "CardConfigWindow",
         "336": "configHandCards",
         "370": "小抄将自动使用手气卡直到获得目标手牌<br>",
         "386": "autoR",
         "396": "autoSQKSwitch",
+        "496": "sqkHandCardMode",
+        "566": "SendClientChr1v1CardReq",
         "803": "ShouQiKaAskWindow",
+        "907": "btnOkHandler",
         "1026": "configHandCardsRejected",
         "1032": "handCardIDs",
         "1034": "手气卡",
         "1065": "useBtn",
         "1094": "任一出现",
         "1137": "configHandCardsMode",
+        "1190": "__pushHandCardUis",
         "1209": "不选择直接确定或者关闭窗口则不会使用手气卡<br>",
+        "1219": "sqkAllOkBtn",
         "1243": "onMouse",
-        "1501": "全部出现"
+        "1456": "pushHandCardUis",
+        "1501": "全部出现",
+        "1589": "sqkAnyOkBtn",
+        "1650": "sqk",
+        "1653": "sqkName"
       },
       "_0x3911": {
         "185": "AUTO_SQK_SWITCH",
         "270": "autoSQKSwitch",
         "271": "configHandCardsMode",
+        "276": "桃/酒",
+        "402": "拆/顺",
+        "432": "sqk",
+        "465": "CardConfigWindow",
+        "480": "任意杀",
+        "565": "sqkName",
         "576": "configHandCardsRejected",
         "606": "configHandCards"
       },
@@ -32833,6 +32861,9 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "openAutoShouQiConfig 不再强制 globalConfig.autoSQKSwitch = true；打开配置窗口不等于自动启用刷牌。已有本地存储仍尊重用户保存过的开关值。",
       "CardConfigWindow.btnOkHandler 保存 this.handCardIDs 到 globalState.configHandCards，并保存 sqkHandCardMode 到 configHandCardsMode。",
       "CardConfigWindow 增加两个确认模式：全部出现(all) 和 任一出现(any)。",
+      "CardConfigWindow.SendClientChr1v1CardReq 当前窗口牌表：equip [14连弩,135古锭刀,103丈八矛]；trick [64无懈,6005拆/顺,144兵,32乐,4300兵/乐,6004锦囊,12053伤害锦囊]；basic [327桃/酒,25桃,130酒,2闪,6任意杀,7杀,138属性杀,112火杀]。",
+      "XC.sqkName 是窗口标签，XC.sqk 是命中展开；重点分组包括 任意杀=杀/火杀/雷杀/冰杀，桃/酒=桃/酒，拆/顺=顺手/过拆，兵/乐=兵/乐，另有 锦囊、伤害锦囊、武器、防具、装备。",
+      "pushHandCardUis 和 ShowWindow(CardConfigWindow) 分支会隐藏花色点数，并给命中 XC.sqkName 的项目 AddCardTag；调整窗口显示牌按钮优先检索 SendClientChr1v1CardReq，调整命中范围优先检索 XC.sqk。",
       "发牌事件 logic 中检测自己初始手牌后调用 checkHandCards(dn)。未命中时延迟点击 ShouQiKaAskWindow.useBtn.onMouse({ type: Laya.Event.CLICK })；当前实现对 ShouQiKaAskWindow/useBtn 做空值保护。",
       "2026-07-15 已移除自动弹出 CARD_CONFIG_VIP 配置窗口的场景白名单。历史白名单是 room.isShanHeTu || room.isDouDiZhu || room.isRoguelike1v1。",
       "自动弹配置窗口仍需要 globalConfig.autoSQKSwitch 开启、configHandCards 为空、configHandCardsRejected 为假、autoBotSwitch != 11，并且依赖发牌事件形态。",
@@ -32853,6 +32884,122 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "回退空目标等待配置：删除发牌分支里的 deal:wait-config 早退逻辑；旧行为会让 target:[] 经 checkHandCards 返回 true，可能再次吞掉自动手气点击。",
       "回退本轮调试日志：检索 __xcAutoSQKDebugLog、config:switch-change、config:save、check:、openConfig:start、deal:start、deal:check、deal:click-useBtn，删除日志调用和外层日志格式化函数；日志只在 window.XC.isDebug 开启时写调试窗口。",
       "回归校验：node --check electron-next/resources/daxiaochao.user.js；node --check doc/彩虹表.js；rg 检索 openAutoShouQiConfig、autoSQKSwitch、CARD_CONFIG_VIP、场景白名单、回退。"
+    ]
+  },
+  eightPlayerIdentityRecord: {
+    title: "八人身份场战绩标记链路",
+    verifiedAt: "2026-07-31",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: [
+      "八人身份",
+      "ClientGameRecordInfoRep",
+      "recGameRecord",
+      "figure",
+      "shenfen",
+      "game_result",
+      "used_general",
+      "message:game-record",
+      "record:item",
+      "record:accepted",
+      "room-context",
+      "room-ready",
+      "game-record",
+      "xcEightIdentityTrace",
+      "game-result-255",
+      "used-general-empty",
+      "duplicate-time"
+    ],
+    chain: [
+      "ClientGameRecordInfoRep 分支先校验响应用户 ID，再限制模式 ID 为 [26,35,44,5,7]；八人标准为 modeId=5。",
+      "recGameRecord 将 figure 写入 shenfen；game_result=255 或 used_general 为空时跳过，时间键重复时也不会写入。",
+      "room-context 在 room.ready 与 ClientGameRecordInfoRep 节点记录候选 roomId/tableId/modeId/seatId/userId 和少量字段名，不打印完整接口响应，用于在接口拦截开启时定位当前房间与模式。",
+      "调试日志用于定位入口过滤、记录字段结构变化、无效结果和重复时间键；日志落盘到 localStorage[\"xcEightIdentityTrace\"]，最多保留 200 条。"
+    ]
+  },
+  localSkinRoleDataResponse: {
+    title: "本地皮肤角色数据通知响应链路",
+    verifiedAt: "2026-07-31",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: [
+      "本地皮肤",
+      "pendingSkin",
+      "GsCUpdateRoleDataExNtf",
+      "GsCUpdateRoleDataNtf",
+      "GeneralSkinList",
+      "protoObj",
+      "protoObj.GeneralSkinList",
+      "响应名为空，无法判断皮肤响应",
+      "getLocalSkinDebugResponseName",
+      "first.name",
+      "GeneralSkinList优先",
+      "接口打印过滤不阻断本地替换"
+    ],
+    decodedIndexes: {
+      "_0x497b": {
+        "424": "GsCUpdateRoleDataExNtf",
+        "524": "protoObj",
+        "530": "GeneralSkinList",
+        "819": "GsCUpdateRoleDataNtf"
+      }
+    },
+    chain: [
+      "ChangeSkinWindow.closeSelectSure 记录 pendingSkin(generalID, skinID)。",
+      "SGSMODULE 响应可能以 GsCUpdateRoleDataExNtf / GsCUpdateRoleDataNtf 通知到达，名称不含 skin，不能只按响应名筛选。",
+      "响应对象优先查找顶层、Protocol、protoObj、Data/data 下的 GeneralSkinList；匹配 GeneralID 且 SkinID=0 时改写 SkinID 和 state。",
+      "回归修复：respHook 先获取 GeneralSkinList；当列表存在但响应对象没有顶层 className 时，不再因响应名为空提前 return。",
+      "回归修复：移除 getLocalSkinDebugResponseName 对 first.name 的优先读取，避免泛化 name 遮蔽 Protocol.className / Protocol.ProtoObj.className。",
+      "回归修复：isLocalSkinDebugResponsePrintIgnored 只跳过接口 dump，不得在 pendingSkin 替换前直接 return。",
+      "日志收敛：SkinID 修改成功后清空 pendingSkin；接口 dump 只保留 pendingSkin 期间的皮肤响应。"
+    ]
+  },
+  ddzCardTracker: {
+    title: "斗地主记牌器 CardId -> 牌名关联",
+    verifiedAt: "2026-07-26",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/斗地主记牌器卡牌配置.md",
+    searchKeywords: [
+      "斗地主记牌器",
+      "data_cards",
+      "cardId",
+      "CardId",
+      "card_id",
+      "CardNumber",
+      "cardNumber",
+      "CardName",
+      "seenIds",
+      "DDZ_CARD_CONFIG",
+      "DDZ_NAMED_CARD_CONFIG",
+      "allCard",
+      "w[525]",
+      "Qcard.add",
+      "杀",
+      "连弩",
+      "藤甲",
+      "_0x53632c",
+      "_0x372eff",
+      "_0x26c5ba",
+      "_0x3a39e2"
+    ],
+    decodedIndexes: {
+      "_0x138e": {
+        "118": "cards",
+        "120": "cardId",
+        "127": "data_cards",
+        "158": "cardNumber",
+        "165": "Name",
+        "166": "name",
+        "177": "card_id",
+        "227": "CardNumber",
+        "269": "cardName",
+        "285": "CardId",
+        "292": "CardName"
+      }
+    },
+    chain: [
+      "_0x12d436 优先从名称/资源名识别大小王或从 CardNumber 等字段识别牌点；_0x53632c 在字段缺失时按 CardId 拆出 CardNumber=floor(id/100)%100、Color=floor(id/10000)。",
+      "花色编码 1=♠、2=♥、3=♣、4=♦；点数编码 3..10、11=J、12=Q、13=K、14=A、15=2、16=SJ、17=BJ；1600=小王、1700=大王。",
+      "_0x372eff 生成 index/cardId/color/rank/suit/text；_0x26c5ba 读取 data_cards 按 areaId 分区；_0x3a39e2 使用 seenIds 统计基础 54 张牌的剩余数量。"
+      ,"allCard/_0x5984e1 从运行时 w[525] 读取 name/type/color/number/subType；已确认 7->杀、14->连弩，藤甲属于同一运行时配置关系，不能用基础 54 张牌公式反推 ID。"
     ]
   }
 }
