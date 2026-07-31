@@ -157,3 +157,16 @@
 - 已将配置面板内 `addRow(value)` 扩展为 `addRow(value, prepend)`；已有规则渲染仍按保存顺序追加，只有点击 `添加` 时调用 `addRow("", true)`。
 - 新增空行现在插入到列表顶部，并立即设置 `panel.scrollTop = 0` 后聚焦输入框，便于连续录入新规则。
 - 关键检索词：`新增行置顶`、`addRow("", true)`、`list.insertBefore`、`panel.scrollTop = 0`、`接口拦截配置`。
+
+## 2026-08-01 第 20 段：打开调试时补跑八人 PVE 身份探测
+
+- 实测只有 `调试窗口已打开` 和自动手气配置日志时，说明身份显示的 `room.ready/game.start/deal:start` 入口可能发生在调试开启之前；旧 `openDebugFromButton()` 只打开面板和接口监听，不会补跑身份显示。
+- 实测 v4 显示 `schedulerReady=true/localExecutorReady=false`：原因是核心和调试窗口分属两个 IIFE，按钮作用域里的页面全局 `laya` 不是核心闭包内的 `laya`，因此看不到其 `figureOut`。
+- 核心 IIFE 现在导出 `window.__xcRunEightPveFigureOut(source,attempt)`，调试 IIFE 导出 `window.__xcAppendLocalSkinDebugLine`；身份执行和日志均通过显式作用域桥连接。
+- `openDebugFromButton()` 的 v5 分支固定输出 `debug-open:v5-dispatch`，通过执行桥调用真实 `figureOut` 并输出 `v5-direct-result/v5-direct-error`；最后调用 scheduler 并输出含 `retry/reason/message` 的 `v5-scheduler-result`。
+- v5 实测进一步定位到 `figureManager.Figure` 为 getter-only，旧直接赋值抛 `Cannot set property Figure ... which has only a getter`。执行器现使用 setter/backing key/`seat.figure`/实例自有属性的兼容写入链，`figure-out:result` 会打印实际 `writeModes` 和 descriptor 摘要。
+- 后续实测 `applied=7/writeFailed=0` 但图标仍不可见，说明只改 `figureValue` 没有触发原生 UI 刷新。执行器现同步 `seat.figure`，调用 `rightView.UpdateFigureList/__UpdateFigureList` 并对身份管理器和座位 UI 执行 `repaint()`；结果日志新增 `modelSynced/modelSyncFailed/repainted/refreshFailed/rightViewRefresh/refreshErrors`，便于区分状态写入与显示刷新。
+- userscript 初始化后另有 `script.bootstrap` 延迟入口，覆盖脚本中途加载、已经错过进房和开局通知的场景。
+- 实测出现 `debug-open:dispatch {"schedulerReady":true}` 后仍完全无身份日志，定位为旧 scheduler 在 `eightPveFigureRetryTimer` 为真时直接返回；timer 若已被场景生命周期清理，本地句柄不会自动归零，会永久吞掉所有新入口。
+- scheduler 现在每次新触发都先清理并替换旧 timer，并输出 `scheduler:start/invoke/result`；因此 `debug-open:dispatch` 后至少能看到执行器存在性和明确返回原因。
+- 关键检索词：`openDebugFromButton`、`debug-open:v5-dispatch`、`v5-direct-result`、`v5-direct-error`、`v5-scheduler-result`、`__xcRunEightPveFigureOut`、`__xcAppendLocalSkinDebugLine`、`debug.open.v5`、`script.bootstrap`、`scheduleEightPveFigureOut`、`八人PVE身份`、`figureValue`、`seat.figure`、`UpdateFigureList`、`__UpdateFigureList`、`rightViewRefresh`、`IIFE`、`作用域桥`。

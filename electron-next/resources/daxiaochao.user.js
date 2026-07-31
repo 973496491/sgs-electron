@@ -4517,7 +4517,15 @@
           n,
           JSON[A(498)](Boolean(null == e ? void 0 : e.v)),
           r,
-        ),
+        )
+          .replace(
+            /const recordModes = \[[^\]]+\]\.filter\(mode => mode in data\);/,
+            "const recordModes = [26,35,44,5,7,1].filter(mode => mode in data);",
+          )
+          .replace(
+            /const sfName = \{5:/,
+            "const sfName = {1:{0:'综合',1:'主公',2:'忠臣',3:'反贼',4:'内奸'},5:",
+          ),
       goodsReportHTML: (n, t) =>
         String[U(166)](
           e ||
@@ -5352,6 +5360,9 @@
       var e, a;
       const r = _0x1d78;
       if (!(t = String(t || "")[r(187)](/\D/g, ""))) return !1;
+      window.__xcLightRoomLastRequestedId = t;
+      appendLocalSkinDebugLine("[房间上下文] request-enter " + JSON.stringify({ roomId: t }), true);
+      if (window.XC && window.XC.isDebug) logEightIdentity("room-enter-request", { roomId: t });
       if (
         ((i = t),
         console[r(241)](
@@ -8242,8 +8253,8 @@
   function _0x19414b(...n) {
     return String[_0x1ca036(342)](...n);
   }
-  function logEightIdentity(label, data) {
-    if (!(window.XC && window.XC.isDebug)) return;
+  function logEightIdentity(label, data, force) {
+    if (!force && !(window.XC && window.XC.isDebug)) return;
     try {
       const entry = { time: Date.now(), label, data: data || {} };
       appendLocalSkinDebugLine('[八人身份] ' + label + ' ' + JSON.stringify(data || {}), true);
@@ -8269,7 +8280,6 @@
     return result;
   }
   function logLightRoomContext(label, proto) {
-    if (!(window.XC && window.XC.isDebug)) return;
     try {
       const protoKeys = proto && typeof proto === "object"
         ? Object.keys(proto).filter((key) => /room|table|mode|seat|user|id/i.test(key)).slice(0, 24)
@@ -8277,13 +8287,113 @@
       const roomKeys = room && typeof room === "object"
         ? Object.keys(room).filter((key) => /room|table|mode|seat|user|id/i.test(key)).slice(0, 24)
         : [];
-      logEightIdentity("room-context", {
+      const data = {
         source: label,
         proto: getLightRoomFields(proto),
         room: getLightRoomFields(room),
         protoKeys,
         roomKeys,
-      });
+      };
+      appendLocalSkinDebugLine("[房间上下文] room-context " + JSON.stringify(data), true);
+      if (window.XC && window.XC.isDebug) logEightIdentity("room-context", data);
+    } catch (e) {}
+  }
+  function logLightRoomDispatch(envelope, proto, className) {
+    try {
+      const envelopeFields = getLightRoomFields(envelope);
+      const protoFields = getLightRoomFields(proto);
+      const classText = String(className || "");
+      const likelyRoomMessage = /room|table|enter|join/i.test(classText) ||
+        Object.keys(envelopeFields).some((key) => /room|table|mode|seat/i.test(key)) ||
+        Object.keys(protoFields).some((key) => /room|table|mode|seat/i.test(key));
+      if (!likelyRoomMessage) return;
+      const data = {
+        source: "dispatch",
+        className: classText,
+        envelope: envelopeFields,
+        proto: protoFields,
+        room: getLightRoomFields(room),
+      };
+      appendLocalSkinDebugLine("[房间上下文] dispatch " + JSON.stringify(data), true);
+      if (window.XC && window.XC.isDebug) logEightIdentity("room-context", data);
+    } catch (e) {}
+  }
+  const lightRoomDispatchProbeSeen = new Set();
+  function logLightRoomDispatchProbe(envelope, proto, className) {
+    try {
+      const name = String(className || "");
+      if (!name || lightRoomDispatchProbeSeen.has(name) || lightRoomDispatchProbeSeen.size >= 40) return;
+      lightRoomDispatchProbeSeen.add(name);
+      const envelopeKeys = envelope && typeof envelope === "object" ? Object.keys(envelope).slice(0, 32) : [];
+      const protoKeys = proto && typeof proto === "object" ? Object.keys(proto).slice(0, 32) : [];
+      const data = { source: "dispatch-probe", className: name, envelopeKeys, protoKeys };
+      appendLocalSkinDebugLine("[房间上下文] dispatch-probe " + JSON.stringify(data), true);
+      if (window.XC && window.XC.isDebug) logEightIdentity("room-context-probe", data);
+    } catch (e) {}
+  }
+  function logEightIdentityMessageProbe(proto, className) {
+    try {
+      if (String(className || "").toLowerCase() !== "clientgamerecordinforep") return;
+      const records = proto && proto[_0x1ca036(427)];
+      const scalarFields = {};
+      const arrayFields = {};
+      if (proto && typeof proto === "object") {
+        Object.keys(proto).slice(0, 80).forEach((key) => {
+          const value = proto[key];
+          if (Array.isArray(value)) arrayFields[key] = value.length;
+          else if (value === null || ["string", "number", "boolean"].includes(typeof value)) scalarFields[key] = value;
+        });
+      }
+      appendLocalSkinDebugLine(
+        "[八人身份] message:game-record " + JSON.stringify({
+          className,
+          query_uid: proto && proto[_0x1ca036(573)],
+          modeId: proto && proto.id,
+          recordCount: Array.isArray(records) ? records.length : -1,
+          protoKeys: proto && typeof proto === "object" ? Object.keys(proto).slice(0, 24) : [],
+          scalarFields,
+          arrayFields,
+        }),
+        true,
+      );
+    } catch (e) {}
+  }
+  function logLightDealStart(cards) {
+    const base = {
+      requestedRoomId: window.__xcLightRoomLastRequestedId || null,
+      cards: Array.isArray(cards) ? cards.slice(0, 8) : [],
+    };
+    try {
+      appendLocalSkinDebugLine("[房间上下文] deal-start " + JSON.stringify(base), true);
+    } catch (e) {}
+    try {
+      let roomData = {};
+      try {
+        roomData = {
+          size: room.size,
+          activeSeatCount: room.size,
+          firstID: room.firstID,
+          myID: room.myID,
+          seatIDs: Array.isArray(room.seatIDs) ? room.seatIDs.slice(0, 8) : [],
+          mySeats: Array.isArray(room.mySeats) ? room.mySeats.slice(0, 8) : [],
+          modeFlags: {
+            isShanHeTu: !!room.isShanHeTu,
+            isGuoZhan: !!room.isGuoZhan,
+            isDouDiZhu: !!room.isDouDiZhu,
+            isRoguelike1v1: !!room.isRoguelike1v1,
+          },
+        };
+      } catch (e) {
+        roomData = { roomReadError: e && e.message ? e.message : String(e) };
+      }
+      const data = {
+        ...base,
+        ...roomData,
+      };
+      try {
+        appendLocalSkinDebugLine("[房间上下文] deal-start " + JSON.stringify(data), true);
+      } catch (e) {}
+      if (window.XC && window.XC.isDebug) logEightIdentity("deal-start", data);
     } catch (e) {}
   }
   async function recGameRecord(n, t) {
@@ -12514,6 +12624,104 @@
   function clearSWJGSeatOrder() {
     _0x393867[_0x47c207(457)]();
   }
+  let eightPveFigureRetryTimer = null;
+  let eightPveFigureRetryAttempt = 0;
+  let eightPveFigureRetrySource = "";
+  let eightPveFigureLastTrace = "";
+  function logEightPveFigure(label, data) {
+    if (!(window.XC && window.XC.isDebug)) return;
+    try {
+      const detail = data || {};
+      const signature = label + "|" + JSON.stringify(detail);
+      if (signature === eightPveFigureLastTrace) return;
+      eightPveFigureLastTrace = signature;
+      const line = "[八人PVE身份] " + label + " " + JSON.stringify(detail),
+        appendDebugLine = window.__xcAppendLocalSkinDebugLine;
+      if (typeof appendDebugLine === "function") appendDebugLine(line, true);
+      else {
+        window.__xcEightPvePendingDebugLines =
+          window.__xcEightPvePendingDebugLines || [];
+        window.__xcEightPvePendingDebugLines.push(line);
+        if (window.__xcEightPvePendingDebugLines.length > 50)
+          window.__xcEightPvePendingDebugLines.shift();
+      }
+    } catch (e) {}
+  }
+  function scheduleEightPveFigureOut(source) {
+    eightPveFigureRetrySource = String(source || "unknown");
+    const replacedPendingTimer = !!eightPveFigureRetryTimer;
+    if (eightPveFigureRetryTimer) {
+      clearTimeout(eightPveFigureRetryTimer);
+      eightPveFigureRetryTimer = null;
+    }
+    eightPveFigureRetryAttempt = 0;
+    logEightPveFigure("scheduler:start", {
+      source: eightPveFigureRetrySource,
+      replacedPendingTimer,
+    });
+    const run = () => {
+      eightPveFigureRetryTimer = null;
+      let result;
+      if (0 === eightPveFigureRetryAttempt || eightPveFigureRetryAttempt % 10 === 0)
+        logEightPveFigure("scheduler:invoke", {
+          source: eightPveFigureRetrySource,
+          attempt: eightPveFigureRetryAttempt,
+          hasLaya: typeof laya !== "undefined" && !!laya,
+          hasFigureOut:
+            typeof laya !== "undefined" &&
+            !!laya &&
+            typeof laya.figureOut === "function",
+        });
+      try {
+        result =
+          laya && typeof laya.figureOut === "function"
+            ? laya.figureOut(eightPveFigureRetrySource, eightPveFigureRetryAttempt)
+            : { retry: true, reason: "figureOut-missing" };
+      } catch (e) {
+        result = {
+          retry: true,
+          reason: "figureOut-error",
+          message: String((e && e.message) || e),
+        };
+      }
+      if (!result || typeof result !== "object")
+        result = {
+          retry: false,
+          reason: "figureOut-return-empty",
+          resultType: typeof result,
+        };
+      if (
+        0 === eightPveFigureRetryAttempt ||
+        eightPveFigureRetryAttempt % 10 === 0 ||
+        !result.retry
+      )
+        logEightPveFigure("scheduler:result", {
+          source: eightPveFigureRetrySource,
+          attempt: eightPveFigureRetryAttempt,
+          retry: !!result.retry,
+          reason: result.reason || "unknown",
+          message: result.message || "",
+        });
+      if (result && result.retry && eightPveFigureRetryAttempt < 30) {
+        eightPveFigureRetryAttempt++;
+        eightPveFigureRetryTimer = setTimeout(run, 300);
+        return result;
+      }
+      if (result && result.retry)
+        logEightPveFigure("figure-out:timeout", {
+          source: eightPveFigureRetrySource,
+          attempt: eightPveFigureRetryAttempt,
+          reason: result.reason || "not-ready",
+        });
+      eightPveFigureRetryAttempt = 0;
+      return result;
+    };
+    return run();
+  }
+  window.__xcScheduleEightPveFigureOut = scheduleEightPveFigureOut;
+  setTimeout(function () {
+    scheduleEightPveFigureOut("script.bootstrap");
+  }, 1000);
   const laya = {
     instance: {},
     _gamescene: null,
@@ -13833,12 +14041,12 @@
         this[r(648)](globalState[r(901)] || !1),
         f[r(447)].on(r(1170), this, this[r(1091)]),
         this[r(1091)](),
-        this[r(1220)]();
+        scheduleEightPveFigureOut("seatUIs");
     },
     skills() {
       var n, t, e, i, a, r, l, o, c;
       const u = _0x47c207;
-      this[u(1220)]();
+      scheduleEightPveFigureOut("skills");
       let f =
         null == (t = null == (n = this[u(1322)]) ? void 0 : n[u(359)])
           ? void 0
@@ -14205,7 +14413,7 @@
               }));
           });
     },
-    figureOut() {
+    figureOut(source = "direct", attempt = 0) {
       var n, t, e, i, a, r, l;
       const o = _0x47c207;
       let c = laya[o(671)](o(679));
@@ -14213,61 +14421,13 @@
           (null == c ? void 0 : c[o(212)]) || (null == c ? void 0 : c[o(470)]),
         f =
           (null == c ? void 0 : c[o(786)]) || (null == c ? void 0 : c[o(1686)]);
-      if ((null == u ? void 0 : u[o(887)]) && !room[o(535)]) {
-        let a =
-          null == (n = null == f ? void 0 : f[o(418)])
-            ? void 0
-            : n[o(884)]((n) => {
-                var t, e, i;
-                return (
-                  (null == (t = null == n ? void 0 : n[o(926)])
-                    ? void 0
-                    : t[o(910)]) ||
-                  (null == (e = null == n ? void 0 : n[o(1708)])
-                    ? void 0
-                    : e[o(910)]) ||
-                  (null == (i = null == n ? void 0 : n[o(1708)])
-                    ? void 0
-                    : i[o(1629)])
-                );
-              });
-        8 == (null == a ? void 0 : a[o(1199)]) &&
-          (null ==
-            (i =
-              null == (e = null == (t = this[o(1322)]) ? void 0 : t[o(1021)])
-                ? void 0
-                : e[o(801)]) ||
-            i[o(1167)]((n) => {
-              var t, e, i, r;
-              const l = o;
-              n[l(1002)][l(980)] ||
-                (n[l(1002)][l(980)] =
-                  [0, 1, 2, 2, 4, 3, 3, 3, 3][
-                    a[l(1291)](
-                      (null ==
-                      (e =
-                        null == (t = null == n ? void 0 : n[l(447)])
-                          ? void 0
-                          : t[l(1708)])
-                        ? void 0
-                        : e[l(910)]) ||
-                        (null ==
-                        (r =
-                          null == (i = null == n ? void 0 : n[l(447)])
-                            ? void 0
-                            : i[l(1708)])
-                          ? void 0
-                          : r[l(1629)]),
-                    ) + 1
-                  ] || 0);
-            }));
-      }
-      null ==
-        (l =
-          null == (r = null == (a = this[o(1322)]) ? void 0 : a[o(1021)])
-            ? void 0
-            : r[o(801)]) ||
-        l[o(1167)](({ seat: n, otherTopManager: t }) => {
+      const existingSeatUIs =
+        null ==
+        (e = null == (t = this[o(1322)]) ? void 0 : t[o(1021)])
+          ? void 0
+          : e[o(801)];
+      null == existingSeatUIs ||
+        existingSeatUIs[o(1167)](({ seat: n, otherTopManager: t }) => {
           var e, i;
           const a = o;
           null == (i = null == t ? void 0 : t[a(474)]) ||
@@ -14278,6 +14438,303 @@
                 : e[a(910)]) < 4e9,
             );
         });
+      const traceBase = { source: String(source || "direct"), attempt: Number(attempt) || 0 };
+      if (!c)
+        return (
+          (0 === attempt || attempt % 10 === 0) &&
+            logEightPveFigure("figure-out:wait", { ...traceBase, reason: "room-controller-missing" }),
+          { retry: true, reason: "room-controller-missing" }
+        );
+      if (!u)
+        return (
+          (0 === attempt || attempt % 10 === 0) &&
+            logEightPveFigure("figure-out:wait", { ...traceBase, reason: "table-setting-missing" }),
+          { retry: true, reason: "table-setting-missing" }
+        );
+      const chooseFigure = null == u ? void 0 : u[o(887)];
+      if (!chooseFigure) {
+        if (void 0 === chooseFigure || null === chooseFigure) {
+          if (0 === attempt || attempt % 10 === 0)
+            logEightPveFigure("figure-out:wait", {
+              ...traceBase,
+              reason: "choose-figure-pending",
+            });
+          return { retry: true, reason: "choose-figure-pending" };
+        }
+        logEightPveFigure("figure-out:skip", {
+          ...traceBase,
+          reason: "choose-figure-off",
+          chooseFigure,
+        });
+        return { retry: false, reason: "choose-figure-off" };
+      }
+      if (room[o(535)]) {
+        logEightPveFigure("figure-out:skip", {
+          ...traceBase,
+          reason: "reconnect-game",
+        });
+        return { retry: false, reason: "reconnect-game" };
+      }
+      const datum = null == f ? void 0 : f[o(418)];
+      if (!datum || typeof datum.map !== "function" || datum.length !== 8) {
+        if (0 === attempt || attempt % 10 === 0)
+          logEightPveFigure("figure-out:wait", {
+            ...traceBase,
+            reason: "seat-info-not-ready",
+            datumType: Array.isArray(datum) ? "array" : typeof datum,
+            datumLength: null == datum ? -1 : Number(datum.length) || 0,
+          });
+        return {
+          retry: true,
+          reason: "seat-info-not-ready",
+        };
+      }
+      const clientIds = datum.map((seatInfo) => {
+        var t, e, i;
+        return (
+          (null == (t = null == seatInfo ? void 0 : seatInfo[o(926)])
+            ? void 0
+            : t[o(910)]) ??
+          (null == (e = null == seatInfo ? void 0 : seatInfo[o(1708)])
+            ? void 0
+            : e[o(910)]) ??
+          (null == (i = null == seatInfo ? void 0 : seatInfo[o(1708)])
+            ? void 0
+            : i[o(1629)])
+        );
+      });
+      const seatUIs = existingSeatUIs;
+      if (!seatUIs || typeof seatUIs[o(1167)] !== "function" || !seatUIs.length) {
+        if (0 === attempt || attempt % 10 === 0)
+          logEightPveFigure("figure-out:wait", {
+            ...traceBase,
+            reason: "seat-ui-not-ready",
+            seatUiLength: null == seatUIs ? -1 : Number(seatUIs.length) || 0,
+          });
+        return { retry: true, reason: "seat-ui-not-ready" };
+      }
+      const figureMap = [0, 1, 2, 2, 4, 3, 3, 3, 3];
+      let applied = 0,
+        alreadyShown = 0,
+        unresolved = 0,
+        writeFailed = 0,
+        modelSynced = 0,
+        modelSyncFailed = 0,
+        repainted = 0,
+        refreshFailed = 0,
+        figureDescriptorSummary = null;
+      const writeModes = {},
+        writeErrors = [],
+        refreshErrors = [];
+      function findFigureDescriptor(target, key) {
+        let owner = target,
+          depth = 0;
+        while (owner && depth < 8) {
+          const descriptor = Object.getOwnPropertyDescriptor(owner, key);
+          if (descriptor) return { descriptor, depth };
+          owner = Object.getPrototypeOf(owner);
+          depth++;
+        }
+        return null;
+      }
+      function syncSeatFigure(seat, figure, clientId, key) {
+        if (!seat || Number(seat[key]) === Number(figure)) return;
+        try {
+          seat[key] = figure;
+          if (Number(seat[key]) === Number(figure)) modelSynced++;
+          else throw new Error("seat-figure-write-not-reflected");
+        } catch (figureModelError) {
+          modelSyncFailed++;
+          if (refreshErrors.length < 4)
+            refreshErrors.push({
+              stage: "seat.figure",
+              clientId: null == clientId ? null : String(clientId),
+              figure,
+              message: String(
+                (figureModelError && figureModelError.message) || figureModelError,
+              ),
+            });
+        }
+      }
+      seatUIs[o(1167)]((seatUI) => {
+        var t;
+        const l = o,
+          seat = null == seatUI ? void 0 : seatUI[l(447)],
+          playerInfo = null == (t = seat) ? void 0 : t[l(1708)],
+          clientId =
+            (null == playerInfo ? void 0 : playerInfo[l(910)]) ??
+            (null == playerInfo ? void 0 : playerInfo[l(1629)]),
+          clientIndex = clientIds.findIndex(
+            (value) => value != null && clientId != null && String(value) === String(clientId),
+          ),
+          figure = figureMap[clientIndex + 1] || 0,
+          figureManager = null == seatUI ? void 0 : seatUI[l(1002)];
+        if (!figureManager || !figure) {
+          unresolved++;
+          return;
+        }
+        const currentFigure = Number(figureManager[l(980)]) || 0;
+        if (currentFigure) {
+          if (currentFigure === Number(figure))
+            syncSeatFigure(seat, figure, clientId, l(1087));
+          alreadyShown++;
+          return;
+        }
+        syncSeatFigure(seat, figure, clientId, l(1087));
+        try {
+          const descriptorInfo = findFigureDescriptor(figureManager, l(980)),
+            descriptor = null == descriptorInfo ? void 0 : descriptorInfo.descriptor,
+            getterText =
+              descriptor && typeof descriptor.get === "function"
+                ? Function.prototype.toString.call(descriptor.get)
+                : "";
+          if (!figureDescriptorSummary)
+            figureDescriptorSummary = {
+              depth: null == descriptorInfo ? -1 : descriptorInfo.depth,
+              hasGetter: !!(descriptor && descriptor.get),
+              hasSetter: !!(descriptor && descriptor.set),
+              writable: !!(descriptor && descriptor.writable),
+              configurable: !!(descriptor && descriptor.configurable),
+              getterText: getterText.slice(0, 180),
+            };
+          let writeMode = "";
+          if (descriptor && typeof descriptor.set === "function") {
+            descriptor.set.call(figureManager, figure);
+            writeMode = "descriptor-setter";
+          }
+          if (!writeMode && getterText) {
+            const backingMatch = getterText.match(
+                /return\s+this(?:\.([A-Za-z_$][\w$]*)|\[\s*["']([^"']+)["']\s*\])/,
+              ),
+              backingKey = backingMatch && (backingMatch[1] || backingMatch[2]);
+            if (backingKey && backingKey !== l(980)) {
+              figureManager[backingKey] = figure;
+              if (Number(figureManager[l(980)]) === Number(figure))
+                writeMode = "getter-backing:" + backingKey;
+            }
+          }
+          if (!writeMode && seat) {
+            seat[l(1087)] = figure;
+            if (Number(figureManager[l(980)]) === Number(figure))
+              writeMode = "seat.figure";
+          }
+          if (!writeMode) {
+            Object.defineProperty(figureManager, l(980), {
+              value: figure,
+              writable: true,
+              configurable: true,
+              enumerable: true,
+            });
+            writeMode = "figureManager-own-data";
+          }
+          if (Number(figureManager[l(980)]) !== Number(figure))
+            throw new Error("figure-write-not-reflected");
+          writeModes[writeMode] = (writeModes[writeMode] || 0) + 1;
+          applied++;
+          [figureManager, seatUI].forEach((target) => {
+            if (!target || typeof target.repaint !== "function") return;
+            try {
+              target.repaint();
+              repainted++;
+            } catch (repaintError) {
+              refreshFailed++;
+              if (refreshErrors.length < 4)
+                refreshErrors.push({
+                  stage: "repaint",
+                  clientId: null == clientId ? null : String(clientId),
+                  figure,
+                  message: String((repaintError && repaintError.message) || repaintError),
+                });
+            }
+          });
+        } catch (figureWriteError) {
+          writeFailed++;
+          if (writeErrors.length < 4)
+            writeErrors.push({
+              clientId: null == clientId ? null : String(clientId),
+              figure,
+              message: String(
+                (figureWriteError && figureWriteError.message) || figureWriteError,
+              ),
+            });
+        }
+      });
+      let rightViewRefresh = "unavailable";
+      try {
+        const rightView =
+            null == this[o(1322)] ? void 0 : this[o(1322)][o(1498)],
+          updateFigureList =
+            null == rightView
+              ? null
+              : typeof rightView[o(930)] === "function"
+                ? rightView[o(930)]
+                : typeof rightView[o(246)] === "function"
+                  ? rightView[o(246)]
+                  : null;
+        if (updateFigureList) {
+          updateFigureList.call(rightView);
+          rightViewRefresh =
+            updateFigureList === rightView[o(930)]
+              ? "UpdateFigureList"
+              : "__UpdateFigureList";
+        }
+      } catch (rightViewRefreshError) {
+        rightViewRefresh = "error";
+        refreshFailed++;
+        if (refreshErrors.length < 4)
+          refreshErrors.push({
+            stage: "rightView.UpdateFigureList",
+            message: String(
+              (rightViewRefreshError && rightViewRefreshError.message) ||
+                rightViewRefreshError,
+            ),
+          });
+      }
+      logEightPveFigure("figure-out:result", {
+        ...traceBase,
+        chooseFigure: !!chooseFigure,
+        datumLength: datum.length,
+        seatUiLength: seatUIs.length,
+        applied,
+        alreadyShown,
+        unresolved,
+        writeFailed,
+        modelSynced,
+        modelSyncFailed,
+        repainted,
+        refreshFailed,
+        rightViewRefresh,
+        writeModes,
+        figureDescriptor: figureDescriptorSummary,
+        writeErrors,
+        refreshErrors,
+      });
+      const shouldRetry =
+        unresolved > 0 ||
+        seatUIs.length < 8 ||
+        rightViewRefresh === "unavailable" ||
+        rightViewRefresh === "error";
+      return {
+        retry: shouldRetry,
+        reason: writeFailed
+          ? "figure-write-failed"
+          : modelSyncFailed
+            ? "figure-model-sync-failed"
+            : rightViewRefresh === "unavailable"
+              ? "figure-list-refresh-unavailable"
+              : rightViewRefresh === "error" || refreshFailed
+                ? "figure-ui-refresh-failed"
+                : shouldRetry
+                  ? "seat-client-id-unresolved"
+                  : "complete",
+        message:
+          writeFailed || modelSyncFailed || refreshFailed
+            ? writeErrors
+                .concat(refreshErrors)
+                .map((item) => item.message)
+                .join(";")
+            : "",
+      };
     },
     yanJiao(n, t = 1) {
       var e;
@@ -14760,6 +15217,12 @@
             w[o(1714)](n);
           });
     },
+  };
+  window.__xcRunEightPveFigureOut = function (source, attempt) {
+    return laya.figureOut(
+      String(source || "window.bridge"),
+      Number(attempt) || 0,
+    );
   };
   function syncShadowBlacklistNative() {
     return (
@@ -18349,16 +18812,45 @@
       console[t(345)](e);
     }
   }
-  async function getseven(n, t = [26, 35, 44, 5, 7]) {
+  async function getseven(n, t = [26, 35, 44, 5, 7, 1]) {
+    try {
+      window.__xcEightIdentityUid = n;
+    } catch (e) {}
     const e = _0x47c207,
       i = laya[e(868)](e(1634));
+    logEightIdentity(
+      "request:prepare",
+      {
+        uid: n,
+        modes: t,
+        windowFound: !!i,
+        sendReqType: i && typeof i[e(158)],
+      },
+      true,
+    );
+    if (!i || typeof i[e(158)] !== "function") {
+      logEightIdentity(
+        "request:blocked",
+        {
+          reason: !i ? "SevenDayResultWindow-missing" : "sendReq-missing",
+          uid: n,
+          modes: t,
+        },
+        true,
+      );
+      return false;
+    }
     (i[e(1626)] = n),
       (gameRecord[e(530)] = new Set(t)),
       setTimeout(() => {
         const n = e;
-        Array[n(1643)](gameRecord[n(530)], (t) => i[n(158)](t)),
+        Array[n(1643)](gameRecord[n(530)], (t) => {
+          logEightIdentity("request:send", { uid: i[n(1626)], modeId: t }, true);
+          i[n(158)](t);
+        }),
           laya[n(743)](n(1634), 1e3);
       }, 0);
+    return true;
   }
   async function kanshu() {
     var n;
@@ -19507,6 +19999,7 @@
     var n, t, e, i;
     const a = _0x4efae6;
     if (!_0x3cdad4[a(455)]) return;
+    window.__xcEightIdentityUid = _0x3cdad4[a(455)];
     getseven(_0x3cdad4[a(455)]);
     const r =
       _0x3cdad4[a(457)] ||
@@ -19570,6 +20063,9 @@
           const i = _0x4efae6;
           this[i(458)](!0), resetAdvancedFeatureTrial(), (room[i(259)] = n);
           logLightRoomContext("room-ready", n);
+          window.__xcLogEightIdentityRoleProbe &&
+            window.__xcLogEightIdentityRoleProbe(n);
+          scheduleEightPveFigureOut("room.ready");
           let a = _0x20d6a4[i(471)][i(478)]((t) => n[i(550)](t)),
             r = a[i(227)](n[i(478)]((n) => !a[i(550)](n)))[i(478)](Boolean);
           Qcard[i(329)](r),
@@ -19598,6 +20094,24 @@
         },
         start() {
           const n = _0x4efae6;
+          const roomStartData = {
+            requestedRoomId: window.__xcLightRoomLastRequestedId || null,
+            size: room.size,
+            activeSeatCount: room.size,
+            firstID: room.firstID,
+            myID: room.myID,
+            seatIDs: Array.isArray(room.seatIDs) ? room.seatIDs.slice(0, 8) : [],
+            mySeats: Array.isArray(room.mySeats) ? room.mySeats.slice(0, 8) : [],
+            modeFlags: {
+              isShanHeTu: !!room.isShanHeTu,
+              isGuoZhan: !!room.isGuoZhan,
+              isDouDiZhu: !!room.isDouDiZhu,
+              isRoguelike1v1: !!room.isRoguelike1v1,
+            },
+          };
+          appendLocalSkinDebugLine("[房间上下文] game-start " + JSON.stringify(roomStartData), true);
+          if (window.XC && window.XC.isDebug) logEightIdentity("game-start", roomStartData);
+          scheduleEightPveFigureOut("game.start");
           !this[n(370)] &&
             room[n(339)] &&
             ((this[n(370)] = !0),
@@ -29346,6 +29860,8 @@
       } = n;
       if (
         (rn || (rn = n[J(583)] || n[J(417)]()),
+        logLightRoomDispatchProbe(n, an, rn),
+        logLightRoomDispatch(n, an, rn),
         n[J(633)] &&
           n[J(633)] != _0x58eae0[J(633)] &&
           [J(829), J(443), J(734), J(667)][J(591)](rn) &&
@@ -29468,10 +29984,8 @@
           (n[J(775)] >= 0 && (n[J(775)] = 4),
           an[J(864)] >= 0 && (an[J(864)] = 4));
       else if (rn == J(730))
-        logLightRoomContext("game-record", an),
-        logEightIdentity('message:game-record', { className: rn, recordUser: null == an ? void 0 : an[J(573)], currentUser: _0x58eae0[J(633)], userMatch: (null == an ? void 0 : an[J(573)]) == _0x58eae0[J(633)], modeId: null == an ? void 0 : an.id, modeAllowed: [26, 35, 44, 5, 7][J(591)](null == an ? void 0 : an.id), recordCount: Array.isArray(null == an ? void 0 : an[J(427)]) ? an[J(427)][J(544)] : -1 }),
         (null == an ? void 0 : an[J(573)]) == _0x58eae0[J(633)] &&
-          [26, 35, 44, 5, 7][J(591)](null == an ? void 0 : an.id) &&
+          [26, 35, 44, 5, 7, 1][J(591)](null == an ? void 0 : an.id) &&
           (null == (a = null == gameRecord ? void 0 : gameRecord[J(474)]) ||
             a[J(637)](an.id),
           0 == (null == (r = gameRecord[J(474)]) ? void 0 : r[J(744)]) &&
@@ -30180,6 +30694,33 @@
                       autoBotSwitch: globalState[J(789)],
                     });
                 else {
+                  try {
+                    window.__xcLightRoomState = {
+                      size: room.size,
+                      activeSeatCount: room.size,
+                      firstID: room.firstID,
+                      myID: room.myID,
+                      seatIDs: Array.isArray(room.seatIDs) ? room.seatIDs.slice(0, 8) : [],
+                      mySeats: Array.isArray(room.mySeats) ? room.mySeats.slice(0, 8) : [],
+                      modeFlags: {
+                        isShanHeTu: !!room.isShanHeTu,
+                        isGuoZhan: !!room.isGuoZhan,
+                        isDouDiZhu: !!room.isDouDiZhu,
+                        isRoguelike1v1: !!room.isRoguelike1v1,
+                      },
+                    };
+                  } catch (roomStateError) {
+                    window.__xcLightRoomState = {
+                      roomReadError: String((roomStateError && roomStateError.message) || roomStateError),
+                    };
+                  }
+                  appendLocalSkinDebugLine("[八人身份] deal-entry-marker", true);
+                  scheduleEightPveFigureOut("deal:start");
+                  window.__xcEightIdentityDealRoom = room;
+                  window.__xcEightIdentityDealCards = dn;
+                  window.__xcEightIdentityDealSummary = window.__xcCaptureEightIdentityDealEntry
+                    ? window.__xcCaptureEightIdentityDealEntry(room, dn, false)
+                    : { helperMissing: true };
                   window.__xcAutoSQKDebugLog &&
                     window.__xcAutoSQKDebugLog("deal:start", {
                       cards: dn,
@@ -30187,6 +30728,7 @@
                       configLen: globalState[J(874)][J(544)],
                       rejected: !!globalState[J(781)],
                       autoBotSwitch: globalState[J(789)],
+                      identityProbe: window.__xcEightIdentityDealSummary || { unavailable: true },
                     });
                   if (!globalState[J(874)][J(544)] && !globalState[J(781)]) {
                     let n = { generalId: 634, handCardIDs: dn };
@@ -31178,7 +31720,22 @@
 
   function ensureLocalSkinDebugPanel() {
     var state = getLocalSkinDebugState();
-    if (state.panelEl) {
+    var panelAttached = false;
+    try {
+      panelAttached =
+        !!state.panelEl &&
+        !!state.panelBody &&
+        !!state.panelEl.parentNode &&
+        !!document.documentElement &&
+        document.documentElement.contains(state.panelEl);
+    } catch (e) {}
+    if (state.panelEl && !panelAttached) {
+      state.panelEl = null;
+      state.panelBody = null;
+      state.configPanelEl = null;
+      state.panelMinimized = false;
+    }
+    if (state.panelEl && panelAttached) {
       state.panelEl.style.display = "flex";
       return state.panelEl;
     }
@@ -31333,6 +31890,12 @@
       body.scrollTop = body.scrollHeight;
     } catch (e) {}
   }
+  window.__xcAppendLocalSkinDebugLine = appendLocalSkinDebugLine;
+  if (Array.isArray(window.__xcEightPvePendingDebugLines)) {
+    window.__xcEightPvePendingDebugLines.splice(0).forEach(function (line) {
+      appendLocalSkinDebugLine(line, false);
+    });
+  }
 
   function formatAutoShouQiDebugValue(value) {
     try {
@@ -31352,12 +31915,49 @@
 
   window.__xcAutoSQKDebugLog = function (label, data) {
     try {
-      if (!(window.XC && window.XC.isDebug)) return;
+      var debugEnabled = !!(window.XC && window.XC.isDebug);
+      var isDealStart = String(label) === "deal:start";
+      if (!debugEnabled && !isDealStart) return;
       var detail = formatAutoShouQiDebugValue(data);
       appendLocalSkinDebugLine(
         "[自动手气] " + label + (detail ? " " + detail : ""),
         true,
       );
+      if (String(label) === "deal:start") {
+        appendLocalSkinDebugLine("[自动手气] deal-start-probe", true);
+        try {
+          var identityDealRoom = window.__xcEightIdentityDealRoom;
+          var identityDealCards = window.__xcEightIdentityDealCards;
+          var identityProbe = window.__xcCaptureEightIdentityDealEntry
+            ? window.__xcCaptureEightIdentityDealEntry(identityDealRoom, identityDealCards, false)
+            : { helperMissing: true };
+          appendLocalSkinDebugLine(
+            "[八人身份] deal-hook-reached " +
+              JSON.stringify({ roomAvailable: !!identityDealRoom, cardCount: Array.isArray(identityDealCards) ? identityDealCards.length : 0 }),
+            true,
+          );
+          window.__xcEightIdentityDealSummary = identityProbe;
+        } catch (identityDealError) {
+          appendLocalSkinDebugLine(
+            "[八人身份] deal-hook-error " +
+              JSON.stringify({ message: String((identityDealError && identityDealError.message) || identityDealError) }),
+            true,
+          );
+        }
+        const dealStartBase = {
+          requestedRoomId: window.__xcLightRoomLastRequestedId || null,
+          cards: Array.isArray(data && data.cards) ? data.cards.slice(0, 8) : [],
+        };
+        appendLocalSkinDebugLine(
+          "[房间上下文] deal-start-v2 " + JSON.stringify(dealStartBase),
+          true,
+        );
+        var dealRoomData = window.__xcLightRoomState || { roomStateMissing: true };
+        appendLocalSkinDebugLine(
+          "[房间上下文] deal-start " + JSON.stringify({ ...dealStartBase, ...dealRoomData }),
+          true,
+        );
+      }
     } catch (e) {}
   };
 
@@ -32178,17 +32778,229 @@
   function getLocalSkinDebugResponseName(first) {
     if (!first || typeof first !== "object") return "";
     return (
+      first.ClassName ||
       first.className ||
       first.WindowName ||
       (first.Protocol &&
-        (first.Protocol.className || first.Protocol.WindowName)) ||
+        (first.Protocol.ClassName ||
+          first.Protocol.className ||
+          first.Protocol.WindowName)) ||
       (first.Protocol &&
         first.Protocol.ProtoObj &&
-        (first.Protocol.ProtoObj.className ||
+        (first.Protocol.ProtoObj.ClassName ||
+          first.Protocol.ProtoObj.className ||
           first.Protocol.ProtoObj.WindowName)) ||
       ""
     );
   }
+
+  function logEightIdentityInterfaceProbe(first, className) {
+    try {
+      var proto =
+        first.ProtoObj ||
+        first.protoObj ||
+          (first.Protocol &&
+            (first.Protocol.ProtoObj || first.Protocol.protoObj)) ||
+          first;
+      var records = proto && (proto.all_record || proto.record);
+      var lowerClassName = String(className || "").toLowerCase();
+      var recordShape =
+        lowerClassName.indexOf("clientgamerecordinforep") >= 0 ||
+        !!(proto && (proto.query_uid !== undefined || proto.all_record !== undefined || proto.used_general !== undefined || proto.game_result !== undefined || proto.figure !== undefined));
+      if (!recordShape) return;
+      logEightIdentity(
+        "interface-probe",
+        {
+          className: className,
+          query_uid: proto && proto.query_uid,
+          modeId: proto && proto.id,
+          recordCount: Array.isArray(records) ? records.length : -1,
+          envelopeKeys: Object.keys(first).slice(0, 24),
+          protoKeys:
+            proto && typeof proto === "object"
+              ? Object.keys(proto).slice(0, 24)
+              : [],
+        },
+        true,
+      );
+    } catch (e) {}
+  }
+
+  const eightIdentitySettlementProbeSeen = new Set();
+  function logEightIdentitySettlementProbe(first, className) {
+    try {
+      var proto =
+        first.ProtoObj ||
+        first.protoObj ||
+        (first.Protocol && (first.Protocol.ProtoObj || first.Protocol.protoObj)) ||
+        first;
+      if (!proto || typeof proto !== "object") return;
+      var keys = Object.keys(proto);
+      var classText = String(className || "");
+      var lowerKeys = keys.map(function (key) { return String(key).toLowerCase(); });
+      var identityKeys = lowerKeys.filter(function (key) {
+        return /figure|shenfen|identity|used[_-]?general|game[_-]?result|winner|result/.test(key);
+      });
+      var finishClass = /settle|result|gameover|game[_-]?over|finish|end|battle/i.test(classText);
+      if (!finishClass && identityKeys.length < 2) return;
+      var signature = classText + "|" + keys.slice().sort().join(",");
+      if (eightIdentitySettlementProbeSeen.has(signature)) return;
+      if (eightIdentitySettlementProbeSeen.size >= 80) eightIdentitySettlementProbeSeen.clear();
+      eightIdentitySettlementProbeSeen.add(signature);
+      var scalarFields = {};
+      var arrayFields = {};
+      keys.slice(0, 32).forEach(function (key) {
+        var value = proto[key];
+        if (Array.isArray(value)) arrayFields[key] = value.length;
+        else if (value === null || ["string", "number", "boolean"].indexOf(typeof value) >= 0)
+          scalarFields[key] = value;
+      });
+      logEightIdentity(
+        "settlement-probe",
+        {
+          className: classText,
+          identityKeys: identityKeys.slice(0, 16),
+          protoKeys: keys.slice(0, 32),
+          scalarFields: scalarFields,
+          arrayFields: arrayFields,
+        },
+        true,
+      );
+    } catch (e) {}
+  }
+  window.__xcLogEightIdentitySettlementProbe = logEightIdentitySettlementProbe;
+  const eightIdentityRoleProbeSeen = new Set();
+  function logEightIdentityRoleProbe(roomObject) {
+    try {
+      if (!roomObject || typeof roomObject !== "object") return;
+      var myID =
+        roomObject.myID ??
+        roomObject.myId ??
+        (window.__xcLightRoomState && window.__xcLightRoomState.myID);
+      var candidates = [];
+      function visit(value, path, depth) {
+        if (!value || typeof value !== "object" || depth > 2 || candidates.length >= 16) return;
+        var keys = Object.keys(value);
+        var roleKeys = keys.filter(function (key) {
+          return /shenfen|identity|role|camp|faction|figure|general/i.test(key);
+        });
+        var idValue = value.seatID ?? value.seatId ?? value.playerID ?? value.playerId ?? value.id ?? value.ID;
+        var ownSeat = myID !== undefined && String(idValue) === String(myID);
+        if (roleKeys.length && (ownSeat || path === "room" || myID === undefined)) {
+          var fields = {};
+          roleKeys.slice(0, 12).forEach(function (key) {
+            var fieldValue = value[key];
+            if (fieldValue === null || ["string", "number", "boolean"].indexOf(typeof fieldValue) >= 0)
+              fields[key] = fieldValue;
+            else if (Array.isArray(fieldValue)) fields[key] = { length: fieldValue.length };
+          });
+          candidates.push({ path: path, id: idValue, fields: fields });
+        }
+        if (depth === 2) return;
+        keys.slice(0, 32).forEach(function (key) {
+          var child = value[key];
+          if (Array.isArray(child)) child.slice(0, 16).forEach(function (item, index) { visit(item, path + "." + key + "[" + index + "]", depth + 1); });
+          else if (child && typeof child === "object") visit(child, path + "." + key, depth + 1);
+        });
+      }
+      visit(roomObject, "room", 0);
+      if (!candidates.length) {
+        var shape = {
+          roomKeys: Object.keys(roomObject).slice(0, 48),
+          nested: [],
+        };
+        Object.keys(roomObject).slice(0, 48).forEach(function (key) {
+          var child = roomObject[key];
+          if (Array.isArray(child)) {
+            shape.nested.push({
+              key: key,
+              type: "array",
+              length: child.length,
+              itemKeys: child[0] && typeof child[0] === "object" ? Object.keys(child[0]).slice(0, 32) : [],
+            });
+          } else if (child && typeof child === "object") {
+            shape.nested.push({ key: key, type: "object", keys: Object.keys(child).slice(0, 32) });
+          }
+        });
+        var shapeSignature = JSON.stringify(shape);
+        if (!eightIdentityRoleProbeSeen.has(shapeSignature)) {
+          if (eightIdentityRoleProbeSeen.size >= 40) eightIdentityRoleProbeSeen.clear();
+          eightIdentityRoleProbeSeen.add(shapeSignature);
+          logEightIdentity("role-shape", { myID: myID, shape: shape }, true);
+        }
+        return;
+      }
+      var signature = JSON.stringify(candidates);
+      if (eightIdentityRoleProbeSeen.has(signature)) return;
+      if (eightIdentityRoleProbeSeen.size >= 40) eightIdentityRoleProbeSeen.clear();
+      eightIdentityRoleProbeSeen.add(signature);
+      logEightIdentity("role-probe", { myID: myID, candidates: candidates }, true);
+    } catch (e) {}
+  }
+  window.__xcLogEightIdentityRoleProbe = logEightIdentityRoleProbe;
+
+  function captureEightIdentityDealEntry(roomObject, cards, emitLog) {
+    try {
+      if (!roomObject || typeof roomObject !== "object") {
+        var missingSummary = { roomMissing: true };
+        if (emitLog !== false) logEightIdentity("deal-entry-v3", missingSummary, true);
+        return missingSummary;
+      }
+      var myID = roomObject.myID;
+      var roomKeys = Object.keys(roomObject).slice(0, 64);
+      var nested = [];
+      var candidates = [];
+      function addCandidate(path, value) {
+        if (!value || typeof value !== "object" || candidates.length >= 12) return;
+        var keys = Object.keys(value);
+        var roleKeys = keys.filter(function (key) {
+          return /shenfen|identity|role|camp|faction|figure|general/i.test(String(key));
+        });
+        if (!roleKeys.length) return;
+        var id = value.seatID ?? value.seatId ?? value.playerID ?? value.playerId ?? value.id ?? value.ID;
+        if (myID !== undefined && id !== undefined && String(id) !== String(myID)) return;
+        var fields = {};
+        roleKeys.slice(0, 12).forEach(function (key) {
+          var field = value[key];
+          if (field === null || ["string", "number", "boolean"].indexOf(typeof field) >= 0)
+            fields[key] = field;
+          else if (Array.isArray(field)) fields[key] = { length: field.length };
+        });
+        candidates.push({ path: path, id: id, fields: fields });
+      }
+      roomKeys.forEach(function (key) {
+        var child = roomObject[key];
+        if (Array.isArray(child)) {
+          nested.push({
+            key: key,
+            type: "array",
+            length: child.length,
+            itemKeys: child[0] && typeof child[0] === "object" ? Object.keys(child[0]).slice(0, 32) : [],
+          });
+          child.slice(0, 16).forEach(function (item, index) {
+            addCandidate(key + "[" + index + "]", item);
+          });
+        } else if (child && typeof child === "object") {
+          nested.push({ key: key, type: "object", keys: Object.keys(child).slice(0, 32) });
+          addCandidate(key, child);
+        }
+      });
+      var summary = {
+        myID: myID,
+        cards: Array.isArray(cards) ? cards.slice(0, 8) : [],
+        roomKeys: roomKeys,
+        nested: nested,
+        candidates: candidates,
+      };
+      if (emitLog !== false) logEightIdentity("deal-entry-v3", summary, true);
+      return summary;
+    } catch (e) {
+      var errorSummary = { error: String((e && e.message) || e) };
+      if (emitLog !== false) logEightIdentity("deal-entry-v3-error", errorSummary, true);
+      return errorSummary;
+    }
+  }
+  window.__xcCaptureEightIdentityDealEntry = captureEightIdentityDealEntry;
 
   function isLocalSkinDebugResponsePrintIgnored(name) {
     var text = String(name || "");
@@ -32249,6 +33061,7 @@
 
       var skinList = getLocalSkinDebugSkinList(first);
       var cn = getLocalSkinDebugResponseName(first);
+      logEightIdentityInterfaceProbe(first, cn);
       if (!cn && !skinList) return;
       if (cn === "ChangeSkinWindow") return;
       var ignoredForPrint = isLocalSkinDebugResponsePrintIgnored(cn);
@@ -32609,6 +33422,90 @@
         "\u8c03\u8bd5\u7a97\u53e3\u5df2\u6253\u5f00",
         true,
       );
+      var hasEightPveFigureScheduler =
+          typeof window.__xcScheduleEightPveFigureOut === "function",
+        hasLocalEightPveFigureExecutor =
+          typeof window.__xcRunEightPveFigureOut === "function";
+      appendLocalSkinDebugLine(
+        "[八人PVE身份] debug-open:v5-dispatch " +
+          JSON.stringify({
+            schedulerReady: hasEightPveFigureScheduler,
+            localExecutorReady: hasLocalEightPveFigureExecutor,
+          }),
+        true,
+      );
+      if (hasLocalEightPveFigureExecutor) {
+        try {
+          var directFigureResult = window.__xcRunEightPveFigureOut(
+            "debug.open.v5.direct",
+            0,
+          );
+          appendLocalSkinDebugLine(
+            "[八人PVE身份] debug-open:v5-direct-result " +
+              JSON.stringify(
+                directFigureResult && typeof directFigureResult === "object"
+                  ? {
+                      retry: !!directFigureResult.retry,
+                      reason: directFigureResult.reason || "unknown",
+                      message: directFigureResult.message || "",
+                    }
+                  : {
+                      resultType: typeof directFigureResult,
+                      reason: "figureOut-return-empty",
+                    },
+              ),
+            true,
+          );
+        } catch (directFigureError) {
+          appendLocalSkinDebugLine(
+            "[八人PVE身份] debug-open:v5-direct-error " +
+              JSON.stringify({
+                message: String(
+                  (directFigureError && directFigureError.message) || directFigureError,
+                ),
+              }),
+            true,
+          );
+        }
+      } else
+        appendLocalSkinDebugLine(
+          "[八人PVE身份] debug-open:v5-missing-executor-bridge",
+          true,
+        );
+      if (hasEightPveFigureScheduler) {
+        try {
+          var schedulerCallResult =
+            window.__xcScheduleEightPveFigureOut("debug.open.v5");
+          appendLocalSkinDebugLine(
+            "[八人PVE身份] debug-open:v5-scheduler-result " +
+              JSON.stringify(
+                schedulerCallResult && typeof schedulerCallResult === "object"
+                  ? {
+                      retry: !!schedulerCallResult.retry,
+                      reason: schedulerCallResult.reason || "unknown",
+                      message: schedulerCallResult.message || "",
+                    }
+                  : { resultType: typeof schedulerCallResult },
+              ),
+            true,
+          );
+        } catch (schedulerCallError) {
+          appendLocalSkinDebugLine(
+            "[八人PVE身份] debug-open:v5-scheduler-error " +
+              JSON.stringify({
+                message: String(
+                  (schedulerCallError && schedulerCallError.message) ||
+                    schedulerCallError,
+                ),
+              }),
+            true,
+          );
+        }
+      } else
+        appendLocalSkinDebugLine(
+          "[八人PVE身份] debug-open:v5-missing-scheduler",
+          true,
+        );
     } else {
       closeLocalSkinDebugPanel();
     }
@@ -33362,5 +34259,211 @@
     })();
   }
 
+  function requestEightIdentityRecordProbe(source, attempt) {
+    try {
+      attempt = Number(attempt) || 0;
+      var probeLabel = "request:" + String(source || "unknown");
+      var uid =
+        window.__xcEightIdentityUid ||
+        window.userID ||
+        (window.XC && window.XC.userID) ||
+        null;
+      var marker = String(uid || "");
+      if (!marker) {
+        appendLocalSkinDebugLine(
+          "[八人身份] " + probeLabel + "-blocked " +
+            JSON.stringify({ source: source || "unknown", reason: "uid-missing" }),
+          true,
+        );
+        return false;
+      }
+      var layaApi = window.laya;
+      var recordWindow =
+        layaApi &&
+        typeof layaApi.get === "function"
+          ? layaApi.get("SevenDayResultWindow")
+          : null;
+      var sendReady =
+        !!recordWindow &&
+        typeof recordWindow.sendReq === "function";
+      if (!sendReady) {
+        var recordWindowKeys = recordWindow && typeof recordWindow === "object"
+          ? Object.keys(recordWindow)
+              .filter(function (key) { return /req|record|uuid|send|query/i.test(key); })
+              .slice(0, 16)
+          : [];
+        var recordWindowClass = recordWindow && recordWindow.constructor
+          ? String(recordWindow.constructor.name || "")
+          : "";
+        var blockedInfo = {
+          source: source || "unknown",
+          uid: marker,
+          reason: "sendReq-not-ready",
+          windowFound: !!recordWindow,
+          windowClass: recordWindowClass,
+          windowKeys: recordWindowKeys,
+        };
+        if (
+          attempt === 0 &&
+          window.__xcEightIdentityRecordProbeBlockedUid !== marker
+        ) {
+          window.__xcEightIdentityRecordProbeBlockedUid = marker;
+          appendLocalSkinDebugLine(
+            "[八人身份] " + probeLabel + "-blocked " +
+              JSON.stringify({ ...blockedInfo, retry: true }),
+            true,
+          );
+        }
+        if (attempt < 30 && !window.__xcEightIdentityRecordProbePending) {
+          window.__xcEightIdentityRecordProbePending = true;
+          setTimeout(function () {
+            window.__xcEightIdentityRecordProbePending = false;
+            requestEightIdentityRecordProbe(source, attempt + 1);
+          }, 500);
+        } else if (
+          attempt >= 30 &&
+          window.__xcEightIdentityRecordProbeTimeoutUid !== marker
+        ) {
+          window.__xcEightIdentityRecordProbeTimeoutUid = marker;
+          appendLocalSkinDebugLine(
+            "[八人身份] " + probeLabel + "-timeout " +
+              JSON.stringify({ ...blockedInfo, attempts: attempt }),
+            true,
+          );
+        }
+        return false;
+      }
+      if (window.__xcEightIdentityRecordProbeUid === marker) {
+        appendLocalSkinDebugLine(
+          "[八人身份] " + probeLabel + "-skip " +
+            JSON.stringify({ source: source || "unknown", uid: marker, reason: "uid-already-probed" }),
+          true,
+        );
+        return false;
+      }
+      window.__xcEightIdentityRecordProbeUid = marker;
+      window.__xcEightIdentityRecordProbePending = false;
+      window.__xcEightIdentityRecordProbeBlockedUid = null;
+      window.__xcEightIdentityRecordProbeTimeoutUid = null;
+      appendLocalSkinDebugLine(
+        "[八人身份] " + probeLabel + " " +
+          JSON.stringify({ source: source || "unknown", uid: marker, modes: [26, 35, 44, 5, 7, 1] }),
+        true,
+      );
+      recordWindow.uuid = uid;
+      [26, 35, 44, 5, 7, 1].forEach(function (modeId) {
+        try {
+          appendLocalSkinDebugLine(
+            "[八人身份] request:send " +
+              JSON.stringify({ uid: uid, modeId: modeId, source: source || "unknown" }),
+            true,
+          );
+          recordWindow.sendReq(modeId);
+        } catch (e) {
+          appendLocalSkinDebugLine(
+            "[八人身份] request:send-error " +
+              JSON.stringify({ uid: uid, modeId: modeId, message: String((e && e.message) || e) }),
+            true,
+          );
+        }
+      });
+      return true;
+    } catch (e) {
+      appendLocalSkinDebugLine(
+        "[八人身份] " + probeLabel + "-error " +
+          JSON.stringify({ source: source || "unknown", message: String((e && e.message) || e) }),
+        true,
+      );
+      return false;
+    }
+  }
+
+  function watchEightIdentityRecordWindow(attempt) {
+    try {
+      attempt = Number(attempt) || 0;
+      var layaApi = window.laya;
+      var recordWindow =
+        layaApi && typeof layaApi.get === "function"
+          ? layaApi.get("SevenDayResultWindow")
+          : null;
+      if (recordWindow && typeof recordWindow.sendReq === "function") {
+        appendLocalSkinDebugLine(
+          "[八人身份] record-window-ready " +
+            JSON.stringify({ attempt: attempt, windowFound: true }),
+          true,
+        );
+        requestEightIdentityRecordProbe("record-window-ready");
+        return;
+      }
+      if (attempt < 120) {
+        setTimeout(function () {
+          watchEightIdentityRecordWindow(attempt + 1);
+        }, 500);
+      }
+    } catch (e) {
+      if (attempt < 120) {
+        setTimeout(function () {
+          watchEightIdentityRecordWindow(attempt + 1);
+        }, 500);
+      }
+    }
+  }
+
+  function bootstrapEightIdentityRecordRequest(attempt) {
+    attempt = attempt || 0;
+    try {
+      var uid = _0x3cdad4 && _0x3cdad4[_0x4efae6(455)];
+      var recordWindow = laya && laya[_0x47c207(868)](_0x47c207(1634));
+      var sendReady =
+        !!recordWindow &&
+        typeof recordWindow[_0x47c207(158)] === "function";
+
+      if (attempt === 0) {
+        logEightIdentity(
+          "bootstrap:wait",
+          { uidReady: !!uid, windowReady: !!recordWindow, sendReady: sendReady },
+          true,
+        );
+      }
+
+      if (uid && sendReady) {
+        logEightIdentity(
+          "bootstrap:request",
+          { uid: uid, modes: [26, 35, 44, 5, 7, 1] },
+          true,
+        );
+        getseven(uid);
+        return;
+      }
+
+      if (attempt < 60) {
+        setTimeout(function () {
+          bootstrapEightIdentityRecordRequest(attempt + 1);
+        }, 500);
+        return;
+      }
+
+      logEightIdentity(
+        "bootstrap:timeout",
+        { uidReady: !!uid, windowReady: !!recordWindow, sendReady: sendReady },
+        true,
+      );
+    } catch (e) {
+      if (attempt < 60) {
+        setTimeout(function () {
+          bootstrapEightIdentityRecordRequest(attempt + 1);
+        }, 500);
+      } else {
+        logEightIdentity(
+          "bootstrap:error",
+          { message: String((e && e.message) || e) },
+          true,
+        );
+      }
+    }
+  }
+
+  setTimeout(function () {
+  }, 0);
   waitForCardBackSwitch(0);
 })();
