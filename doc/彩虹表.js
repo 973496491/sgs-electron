@@ -32724,9 +32724,59 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  handSortFloatingPanel: {
+    title: "整理手牌 / 独立浮动面板链路",
+    verifiedAt: "2026-09-13",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: [
+      "整理手牌", "独立浮动面板", "reorderFlower", "reorderNumber",
+      "reorderCard", "getHandSortContainer", "getHandSortAvailability",
+      "ensureHandSortFloatingPanel", "xcHandSortPanel", "移除标题栏",
+      "两个排序按钮和手牌数量", "兑换码同一行", "打开调试同一列",
+      "CDKNotificationSwitch", "localSkinDebugSwitch", "handSortPanelSwitch",
+      "handSortPanelLabel", "layoutHandSortPanelButton", "insertHandSortPanelButton",
+      "__xcSetHandSortPanelVisible", "__xcIsHandSortPanelVisible",
+      "__xcInstallHandSortPanelButton", "xc-hand-sort-panel-visibility",
+      "xcHandSortFloatingPanel", "handSortPanelState", "onmousedown",
+      "CardFlower", "CardNumber", "FlowerOnSeat", "SelfSeatUi", "cardUis",
+      "invalidateLayoutHandCard", "gameScene", "gamescene",
+      "__xcAppendLocalSkinDebugLine", "sort:done", "回归", "回滚"
+    ],
+    decodedIndexes: {
+      _0x3911: { 344: "CDK_NOTIFICATION_SWITCH", 558: "CDKNotificationSwitch" },
+      _0x871b: {
+        148: "vip", 236: "onmousedown", 259: "getElementById",
+        291: "CardNumber", 467: "button", 483: "reorderFlower",
+        499: "disabled", 582: "CardFlower", 622: "reorderNumber"
+      },
+      _0x3812: {
+        281: "cardUis", 343: "CardNumber", 359: "SelfSeatUi",
+        457: "clear", 552: "find", 585: "Draw", 661: "cardContainer",
+        682: "Card", 798: "SceneLayer", 806: "gameScene",
+        934: "FlowerOnSeat", 974: "sort", 1167: "forEach",
+        1533: "invalidateLayoutHandCard"
+      }
+    },
+    chain: [
+      "原面板 #reorderFlower/#reorderNumber -> _0x408e48.vip -> initAllButtons() -> _0x13a41d()，按 !!_0x46e1d4.v 控制 disabled，并把 onmousedown 绑定为 reorderCard(CardFlower/CardNumber)。不是自动手气或 Zone.orderIDs/getOrder 牌堆顺序链。",
+      "2026-09-13 精简改造：移除浮窗标题栏、收起/关闭按钮和 xcHandSortLauncher，仅保留两个排序按钮与手牌数量；xcHandSortPanel 仍直接挂 document.body，首次默认隐藏。主面板新增 handSortPanelSwitch 控制浮窗，原两枚排序按钮保持绑定。",
+      "waitForCardBackSwitch -> insertHandSortPanelButton 克隆调试按钮的 switch/slider/status 样式；layoutHandSortPanelButton 取兑换码 CDKNotificationSwitch 的 Y、打开调试 localSkinDebugSwitch 的 X，即兑换码同一行、调试同一列。使用可见 slider 矩形及共同祖先缩放/边框/滚动坐标，不测隐藏 input、不用固定列宽。ResizeObserver/过滤自身的 MutationObserver/resize/scroll 经 rAF 重排，支持折叠恢复和节点重建。",
+      "核心和按钮在两个 IIFE，通过 __xcSetHandSortPanelVisible/__xcIsHandSortPanelVisible 以及 xc-hand-sort-panel-visibility 事件同步开关；addFrame 尾部通过 __xcInstallHandSortPanelButton 在界面重建后补装入口。",
+      "getHandSortContainer 从 laya.gamescene.SelfSeatUi.cardContainer 取本人手牌，缺失时只在当前 gamescene 内 find。旧 laya.find(SceneLayer,laya.gameScene,SelfSeatUi,cardContainer) 使用了大小写不同的 gameScene；本地 laya 只有 gamescene getter，未定义路径会变成无名称筛选。",
+      "reorderCard 按 Card.CardNumber 或 Card.FlowerOnSeat 升序稳定排序 cardUis；先校验数据/接口，再逐张 clear(false)、Draw(container)，最后 invalidateLayoutHandCard。保留清除选牌和重绘语义，不发送网络请求。",
+      "getHandSortAvailability 返回 ready/count/message，保留 _0x46e1d4.v 门槛并要求当前本人手牌；不可用时置灰，数量一直显示手牌 N 张，原因放 title。点击前重新校验，每 800ms 只刷新状态、不自动排序。",
+      "handSortPanelState 管理 panel/body/buttons/status、left/top/hidden、timer/cleanup；handSortSwitchLayout 管理原面板开关/锚点/观察器。xcHandSortFloatingPanel 保存 left/top/visible，旧 minimized 废弃、无 visible 默认关闭；空白或数量区域可拖动，排序按钮不拖动。关闭停止轮询，Exit 清理浮窗 interval/resize/DOM，主面板收起不隐藏已开启浮窗。",
+      "logHandSortPanel 经 window.__xcAppendLocalSkinDebugLine -> appendLocalSkinDebugLine 写调试窗口，受 XC.isDebug 控制；事件为 panel:ready/toggle、sort:done/skip/error、position:save-error。"
+    ],
+    regressionNotes: [
+      "回归：新开关与兑换码同一行、调试同一列，缩放和折叠后对齐；原控件不修改；只有两个排序按钮和数量；主面板收起不影响浮窗；排序后选牌清除；切场只操作新本人手牌；关闭停止轮询；位置/显示状态恢复、存储损坏及节点重建可用。",
+      "回滚精简改造：恢复旧 header/minimized/launcher，移除 handSortPanelSwitch 相关布局/观察器与作用域桥。回滚整个浮窗：删除 handSortPanelState 至 DOM 就绪调度、第二个 IIFE 的 HAND_SORT_* / handSortSwitchLayout 及入口函数/桥，并移除 waitForCardBackSwitch/addFrame/Exit 挂点；可保留共用排序器。",
+      "验证：node --check electron-next/resources/daxiaochao.user.js；node --check doc/彩虹表.js；node electron-next/tests/hand-sort-panel.cjs（37 项）。模拟 Laya/设置区及合成指针事件，未代替实际游戏实测；不生成 asar。"
+    ]
+  },
   autoShouQiKa: {
     title: "自动手气卡 / 自动刷牌链路",
-    verifiedAt: "2026-07-15",
+    verifiedAt: "2026-08-17",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
     searchKeywords: [
       "自动手气",
@@ -32770,6 +32820,12 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "deal:check",
       "deal:click-useBtn",
       "deal:missing-useBtn",
+      "fallback:probe",
+      "fallback:check",
+      "fallback:click-useBtn",
+      "fallback:wait-card-change",
+      "fallback:cancel",
+      "fallback:timeout",
       "check:no-target",
       "check:hit-any",
       "check:miss-all",
@@ -32871,6 +32927,9 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "triggerAutoShouQiConfigWindow 统一触发 CARD_CONFIG_VIP，并在 200ms 后用 laya.win('CardConfigWindow') 探测窗口；若未出现且 laya.ged.ShowWindow 存在，会尝试 ShowWindow('CardConfigWindow', payload) 作为备用路径。",
       "2026-07-15 调试窗口打开时通过 window.__xcAutoSQKDebugLog 记录 openConfig:start/openConfig:zoneCards/openConfig:uiCards/openConfig:event/openConfig:window-probe/openConfig:fallback-show、deal:start/deal:auto-config/deal:event/deal:window-probe/deal:fallback-show、deal:wait-config、deal:check/deal:click-useBtn/deal:missing-useBtn/deal:skip-autoBotSwitch-11。",
       "2026-07-15 已补全自动刷卡关键节点日志：config:switch-change/config:init-toggle/config:toggle-action、config:window-show/config:save/config:close/config:post-check/config:click-useBtn/config:missing-useBtn、deal:auto-config-disabled/deal:skip-auto-config/deal:timer-fired，以及 check:no-target/check:hit-any/check:miss-all/check:done。",
+      "2026-08-17 实测发现 config:toggle-action 会先调用 openAutoShouQiConfig，初始牌尚未出现时只输出 openConfig:noCards，随后才写入 config:switch-change=true；同时部分模式没有命中 PubGsCMoveCard -> logic(deal:start) 的固定事件形态。",
+      "新增 scheduleAutoShouQiFallback：从 switch-change/room.ready/game.start/config:save/openConfig:noCards 触发，优先读取 Zone.shoupai(room.myID)，没有牌时回退 SelfSeatUi.cardContainer.cardUis；目标为空触发 CARD_CONFIG_VIP，目标已保存时只在 ShouQiKaAskWindow.useBtn 存在且 checkHandCards 未命中时点击。",
+      "兜底日志为 fallback:probe/fallback:check/fallback:click-useBtn/fallback:wait-card-change/fallback:cancel/fallback:timeout；相同手牌签名不会重复点击，最多重试 30 次，并保留 autoSQKSwitch、configHandCardsRejected、autoBotSwitch !== 11 限制。",
       "gamebarAutoUI 的对局内自动确定按钮会跳过包含 手气卡 / 更换手牌 / 替换现有的手牌 的询问，避免误点；它不是自动手气主入口。",
       "autoR 是自动进房/人机/托管相关逻辑，不是自动手气卡配置或刷牌主链路。"
     ],
@@ -32882,6 +32941,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "ShouQiKaAskWindow/useBtn 空值保护建议保留，除非专门回放旧行为；它只避免无窗口场景报错。",
       "回退配置窗口备用路径：检索 triggerAutoShouQiConfigWindow，恢复成直接 laya.ged.event('CARD_CONFIG_VIP', payload)；旧行为在事件监听失效或窗口未注册时可能只打 openConfig:event 但不显示 CardConfigWindow。",
       "回退空目标等待配置：删除发牌分支里的 deal:wait-config 早退逻辑；旧行为会让 target:[] 经 checkHandCards 返回 true，可能再次吞掉自动手气点击。",
+      "回退当前手牌兜底：移除 autoShouQiFallbackTimer、scheduleAutoShouQiFallback、runAutoShouQiFallback，以及开关 setter、room.ready、game.start、config:save、openConfig:noCards 上的兜底调用；保留原 PubGsCMoveCard / deal:start 链即可回到仅依赖发牌事件的行为。",
       "回退本轮调试日志：检索 __xcAutoSQKDebugLog、config:switch-change、config:save、check:、openConfig:start、deal:start、deal:check、deal:click-useBtn，删除日志调用和外层日志格式化函数；日志只在 window.XC.isDebug 开启时写调试窗口。",
       "回归校验：node --check electron-next/resources/daxiaochao.user.js；node --check doc/彩虹表.js；rg 检索 openAutoShouQiConfig、autoSQKSwitch、CARD_CONFIG_VIP、场景白名单、回退。"
     ]

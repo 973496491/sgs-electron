@@ -18100,6 +18100,11 @@
                     hasWindow: !!r,
                     hasUseBtn: !!l,
                   }));
+            scheduleAutoShouQiFallback(
+              "config:save",
+              600,
+              !a && l ? i.join(",") : "",
+            );
           },
         }),
           redefine(i, e(1706), {
@@ -19256,26 +19261,208 @@
             c.call(o, f),
           t && _0x4de983(u(1236)));
   }
-  function reorderCard(n = _0x47c207(343)) {
-    const t = _0x47c207,
-      e = {
-        CardNumber: (n, e) => n[t(682)][t(343)] - e[t(682)][t(343)],
-        CardFlower: (n, e) => {
-          var i;
-          return (
-            n[t(682)][t(934)] - (null == (i = e[t(682)]) ? void 0 : i[t(934)])
-          );
-        },
-      }[n],
-      i = laya[t(552)](t(798), laya[t(806)], t(359), t(661));
+  // 整理手牌：与旧面板共用排序器，浮窗直接挂在 document.body。
+  function getHandSortContainer() {
+    const scene = laya.gamescene;
+    if (!scene) return null;
     return (
-      !(!(null == i ? void 0 : i[t(281)]) || !e) &&
-      (i[t(281)][t(974)](e),
-      i[t(281)][t(1167)]((n) => (n[t(457)](!1), n[t(585)](i))),
-      i[t(1533)](),
-      !0)
+      scene.SelfSeatUi?.cardContainer ||
+      laya.find(scene, "SelfSeatUi", "cardContainer")
     );
   }
+  function reorderCard(mode = "CardNumber") {
+    const key = { CardNumber: "CardNumber", CardFlower: "FlowerOnSeat" }[mode];
+    const container = getHandSortContainer();
+    const cards = container?.cardUis;
+    if (
+      !key || !Array.isArray(cards) || !cards.length ||
+      typeof container.invalidateLayoutHandCard !== "function" ||
+      cards.some((card) =>
+        !card?.Card || card.Card[key] == null || !Number.isFinite(Number(card.Card[key])) ||
+        typeof card.clear !== "function" || typeof card.Draw !== "function",
+      )
+    ) return false;
+    cards.sort((a, b) => a.Card[key] - b.Card[key]);
+    cards.forEach((card) => { card.clear(false); card.Draw(container); });
+    container.invalidateLayoutHandCard();
+    return true;
+  }
+
+  var handSortPanelState = null;
+  function logHandSortPanel(event, data) {
+    if (typeof window.__xcAppendLocalSkinDebugLine === "function")
+      window.__xcAppendLocalSkinDebugLine(
+        "[整理手牌] " + event + " " + JSON.stringify(data || {}), false,
+      );
+  }
+  function getHandSortAvailability() {
+    try {
+      const container = getHandSortContainer();
+      const count = Array.isArray(container?.cardUis) ? container.cardUis.length : 0;
+      // 与 initAllButtons 的 vip 分组使用同一可用条件。
+      if (!_0x46e1d4.v)
+        return { ready: false, count, message: "整理手牌功能尚未启用" };
+      return { ready: count > 0, count, message: count ? "" : "等待自己的手牌" };
+    } catch (error) {
+      return { ready: false, count: 0, message: "等待游戏初始化" };
+    }
+  }
+  function saveHandSortPanelPosition() {
+    const state = handSortPanelState;
+    try {
+      localStorage.setItem("xcHandSortFloatingPanel", JSON.stringify({
+        left: state.left, top: state.top, visible: !state.hidden,
+      }));
+    } catch (error) {
+      logHandSortPanel("position:save-error", { message: String(error.message || error) });
+    }
+  }
+  function positionHandSortPanel() {
+    const state = handSortPanelState;
+    if (!state?.panel?.isConnected) return;
+    if (state.hidden) return;
+    state.left = Math.max(0, Math.min(state.left, window.innerWidth - state.panel.offsetWidth - 8));
+    state.top = Math.max(0, Math.min(state.top, window.innerHeight - state.panel.offsetHeight - 8));
+    state.panel.style.left = state.left + "px";
+    state.panel.style.top = state.top + "px";
+  }
+  function refreshHandSortPanel() {
+    const state = handSortPanelState;
+    if (!state?.panel?.isConnected) return ensureHandSortFloatingPanel();
+    const availability = getHandSortAvailability();
+    state.buttons.forEach((button) => {
+      button.disabled = !availability.ready;
+      button.title = availability.message;
+      button.style.opacity = availability.ready ? "1" : "0.45";
+      button.style.cursor = availability.ready ? "pointer" : "not-allowed";
+    });
+    state.status.textContent = "手牌 " + availability.count + " 张";
+    state.status.title = availability.message;
+  }
+  function updateHandSortPanelVisibility() {
+    const state = handSortPanelState;
+    state.panel.style.display = state.hidden ? "none" : "block";
+    if (state.timer !== null) clearInterval(state.timer);
+    state.timer = null;
+    if (!state.hidden) {
+      refreshHandSortPanel();
+      state.timer = setInterval(refreshHandSortPanel, 800);
+    }
+    positionHandSortPanel();
+  }
+  function ensureHandSortFloatingPanel() {
+    if (!document.body) return;
+    if (handSortPanelState?.panel?.isConnected) return handSortPanelState.panel;
+    if (!handSortPanelState) {
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem("xcHandSortFloatingPanel")) || {}; } catch {}
+      handSortPanelState = {
+        left: Number.isFinite(saved.left) ? saved.left : window.innerWidth - 250,
+        top: Number.isFinite(saved.top) ? saved.top : 80,
+        hidden: saved.visible !== true,
+        timer: null, cleanup: null,
+      };
+    }
+    const state = handSortPanelState;
+    if (state.cleanup) state.cleanup();
+    const panel = document.createElement("section");
+    panel.id = "xcHandSortPanel";
+    panel.setAttribute("aria-label", "整理手牌");
+    panel.style.cssText = "position:fixed;width:224px;max-width:calc(100vw - 16px);box-sizing:border-box;z-index:2147483647;background:#1f1f2e;color:#eee;font:13px/1.5 Arial,sans-serif;border:1px solid #4a4a6a;border-radius:6px;box-shadow:0 6px 24px #0006;user-select:none;pointer-events:auto";
+    panel.style.cursor = "move";
+    panel.style.touchAction = "none";
+    function makeButton(text, parent) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = text;
+      button.style.cssText = "cursor:pointer;background:#3a3a4f;color:#eee;border:1px solid #666;border-radius:4px;padding:3px 8px;font:inherit;line-height:1.5";
+      parent.appendChild(button);
+      return button;
+    }
+    const body = document.createElement("div");
+    body.style.padding = "10px";
+    const actions = document.createElement("div");
+    actions.style.cssText = "display:flex;gap:8px";
+    body.appendChild(actions);
+    const status = document.createElement("div");
+    status.style.cssText = "margin-top:8px;color:#b8b8cc;font-size:12px";
+    status.setAttribute("role", "status");
+    body.appendChild(status);
+    const buttons = [["按花色", "CardFlower"], ["按点数", "CardNumber"]].map(([text, mode]) => {
+      const button = makeButton(text, actions);
+      button.dataset.handSortMode = mode;
+      button.style.flex = "1";
+      button.addEventListener("click", () => {
+        const available = getHandSortAvailability();
+        if (!available.ready) return refreshHandSortPanel();
+        try {
+          const ok = reorderCard(mode);
+          refreshHandSortPanel();
+          if (!ok) button.title = "手牌数据尚未就绪，请稍后重试";
+          logHandSortPanel(ok ? "sort:done" : "sort:skip", { mode });
+        } catch (error) {
+          button.title = "整理失败，请查看调试面板";
+          logHandSortPanel("sort:error", { mode, message: String(error.message || error) });
+        }
+      });
+      return button;
+    });
+    panel.appendChild(body);
+    document.body.appendChild(panel);
+    Object.assign(state, { panel, body, buttons, status });
+    refreshHandSortPanel();
+    // 拖动空白或手牌数量即可移动；排序按钮不启动拖拽。
+    let drag = null;
+    panel.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0 || event.target.closest("button")) return;
+      drag = { id: event.pointerId, x: event.clientX - state.left, y: event.clientY - state.top };
+      panel.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+    panel.addEventListener("pointermove", (event) => {
+      if (!drag || event.pointerId !== drag.id) return;
+      state.left = event.clientX - drag.x;
+      state.top = event.clientY - drag.y;
+      positionHandSortPanel();
+    });
+    function finishDrag() {
+      if (!drag) return;
+      drag = null;
+      saveHandSortPanelPosition();
+    }
+    panel.addEventListener("pointerup", finishDrag);
+    panel.addEventListener("pointercancel", finishDrag);
+    panel.addEventListener("lostpointercapture", finishDrag);
+    for (const name of ["pointerdown", "mousedown", "click", "dblclick", "keydown", "keyup"])
+      panel.addEventListener(name, (event) => event.stopPropagation());
+    window.addEventListener("resize", positionHandSortPanel);
+    state.cleanup = () => {
+      if (state.timer !== null) clearInterval(state.timer);
+      state.timer = null;
+      window.removeEventListener("resize", positionHandSortPanel);
+      panel.remove();
+    };
+    updateHandSortPanelVisibility();
+    logHandSortPanel("panel:ready");
+    return panel;
+  }
+  window.__xcSetHandSortPanelVisible = function (visible) {
+    if (!ensureHandSortFloatingPanel()) return false;
+    handSortPanelState.hidden = !visible;
+    updateHandSortPanelVisibility();
+    saveHandSortPanelPosition();
+    window.dispatchEvent(new CustomEvent("xc-hand-sort-panel-visibility"));
+    logHandSortPanel("panel:toggle", { visible: !handSortPanelState.hidden });
+    return !handSortPanelState.hidden;
+  };
+  window.__xcIsHandSortPanelVisible = function () {
+    ensureHandSortFloatingPanel();
+    return !!handSortPanelState && !handSortPanelState.hidden;
+  };
+  if (document.readyState === "loading")
+    document.addEventListener("DOMContentLoaded", ensureHandSortFloatingPanel, { once: true });
+  else setTimeout(ensureHandSortFloatingPanel, 0);
+
   function _0x14cdaf(n) {
     const t = _0x47c207;
     return n[Math[t(1651)](Math[t(788)]() * n[t(1199)])];
@@ -19852,6 +20039,10 @@
           )
             return (
               (n[t] = e),
+              t === a(270) &&
+                (e
+                  ? scheduleAutoShouQiFallback("switch-change", 200)
+                  : cancelAutoShouQiFallback("switch-off")),
               window[a(470)](
                 new CustomEvent(a(527), {
                   detail: { property: t, value: e, oldValue: l },
@@ -19863,6 +20054,10 @@
           return (
             _0x3cdad4.v && (t === a(261) ? recSetting(c) : _0x2dd085(c)),
             (n[t] = e),
+            t === a(270) &&
+              (e
+                ? scheduleAutoShouQiFallback("switch-change", 200)
+                : cancelAutoShouQiFallback("switch-off")),
             t == a(332) && (window[a(332)] = e),
             window[a(470)](
               new CustomEvent(a(527), {
@@ -20090,7 +20285,8 @@
             (globalState[i(606)] = []),
             (globalState[i(271)] = i(242)),
             (globalState[i(576)] = !1),
-            recGameRecord(1, []);
+            recGameRecord(1, []),
+            scheduleAutoShouQiFallback("room.ready", 300);
         },
         start() {
           const n = _0x4efae6;
@@ -20112,6 +20308,7 @@
           appendLocalSkinDebugLine("[房间上下文] game-start " + JSON.stringify(roomStartData), true);
           if (window.XC && window.XC.isDebug) logEightIdentity("game-start", roomStartData);
           scheduleEightPveFigureOut("game.start");
+          scheduleAutoShouQiFallback("game.start", 300);
           !this[n(370)] &&
             room[n(339)] &&
             ((this[n(370)] = !0),
@@ -25755,6 +25952,7 @@
   function Exit() {
     var n, t, e, i;
     const a = _0x41a3d0;
+    if (handSortPanelState?.cleanup) handSortPanelState.cleanup();
     return (
       window[a(439)](a(657), _0x3e479a),
       window[a(439)](a(657), _0x5e4f94),
@@ -26933,6 +27131,9 @@
         _0x47344d();
     }
     _0x2a327f(), _0x4484c9(), _0x1b8c7a(), drawChatFace();
+    ensureHandSortFloatingPanel();
+    if (typeof window.__xcInstallHandSortPanelButton === "function")
+      window.__xcInstallHandSortPanelButton();
   }
   function _0x4484c9() {
     const n = _0x41a3d0;
@@ -27500,6 +27701,157 @@
         u();
     }
   }
+  var autoShouQiFallbackTimer = null,
+    autoShouQiFallbackAttempt = 0,
+    autoShouQiFallbackSource = "",
+    autoShouQiFallbackLastClickCards = "";
+  function cancelAutoShouQiFallback(n) {
+    autoShouQiFallbackTimer &&
+      (clearTimeout(autoShouQiFallbackTimer),
+      (autoShouQiFallbackTimer = null));
+    (autoShouQiFallbackAttempt = 0),
+      (autoShouQiFallbackLastClickCards = ""),
+      n &&
+        window.__xcAutoSQKDebugLog &&
+        window.__xcAutoSQKDebugLog("fallback:cancel", { reason: n });
+  }
+  function retryAutoShouQiFallback(n) {
+    if (autoShouQiFallbackAttempt >= 30)
+      return (
+        window.__xcAutoSQKDebugLog &&
+          window.__xcAutoSQKDebugLog("fallback:timeout", {
+            source: autoShouQiFallbackSource,
+            attempts: autoShouQiFallbackAttempt,
+          }),
+        void 0
+      );
+    autoShouQiFallbackAttempt++,
+      (autoShouQiFallbackTimer = setTimeout(
+        runAutoShouQiFallback,
+        Math.max(200, n || 350),
+      ));
+  }
+  function scheduleAutoShouQiFallback(n, t = 350, e = "") {
+    if (!globalConfig.autoSQKSwitch) return;
+    if (globalState.configHandCardsRejected)
+      return void cancelAutoShouQiFallback("rejected");
+    if (11 === globalState.autoBotSwitch)
+      return void cancelAutoShouQiFallback("autoBotSwitch-11");
+    autoShouQiFallbackTimer &&
+      (clearTimeout(autoShouQiFallbackTimer),
+      (autoShouQiFallbackTimer = null));
+    (autoShouQiFallbackSource = String(n || "unknown")),
+      (autoShouQiFallbackAttempt = 0),
+      (autoShouQiFallbackLastClickCards = String(e || "")),
+      (autoShouQiFallbackTimer = setTimeout(
+        runAutoShouQiFallback,
+        Math.max(0, t),
+      ));
+  }
+  function runAutoShouQiFallback() {
+    var n, t, e, i, a, r;
+    autoShouQiFallbackTimer = null;
+    if (!globalConfig.autoSQKSwitch)
+      return void cancelAutoShouQiFallback("switch-off");
+    if (globalState.configHandCardsRejected)
+      return void cancelAutoShouQiFallback("rejected");
+    if (11 === globalState.autoBotSwitch)
+      return void cancelAutoShouQiFallback("autoBotSwitch-11");
+    let l = [];
+    try {
+      l = Array.from(Zone.shoupai(room.myID) || []).filter((n) => n > 0);
+    } catch (o) {}
+    let o = 0;
+    if (!l.length)
+      try {
+        const n = null == (t = laya.gamescene) ? void 0 : t.SelfSeatUi,
+          e = null == n ? void 0 : n.cardContainer,
+          i = (null == e ? void 0 : e.cardUis) || [];
+        (o = i.length),
+          (l = Array.from(i)
+            .map((n) => {
+              var t, e;
+              return (
+                (null == (e = null == (t = n.Card) ? void 0 : t.cardId)
+                  ? void 0
+                  : e) ||
+                n.cardId ||
+                n.id ||
+                0
+              );
+            })
+            .filter((n) => n > 0));
+      } catch (s) {}
+    try {
+      n = laya.win("CardConfigWindow");
+    } catch (u) {
+      n = null;
+    }
+    try {
+      t = laya.win("ShouQiKaAskWindow");
+    } catch (f) {
+      t = null;
+    }
+    e = null == t ? void 0 : t.useBtn;
+    window.__xcAutoSQKDebugLog &&
+      window.__xcAutoSQKDebugLog("fallback:probe", {
+        source: autoShouQiFallbackSource,
+        attempt: autoShouQiFallbackAttempt,
+        cards: l,
+        cardUiCount: o,
+        configLen: (globalState.configHandCards || []).length,
+        hasConfigWindow: !!n,
+        hasAskWindow: !!t,
+        hasUseBtn: !!e,
+      });
+    if (n) return void cancelAutoShouQiFallback("config-window-present");
+    const c = globalState.configHandCards || [];
+    if (!c.length) {
+      if (
+        l.length &&
+        triggerAutoShouQiConfigWindow(l, "fallback")
+      )
+        return void retryAutoShouQiFallback(600);
+      return void retryAutoShouQiFallback(350);
+    }
+    if (!l.length || !e) return void retryAutoShouQiFallback(350);
+    const d = checkHandCards(l, c);
+    if (
+      (window.__xcAutoSQKDebugLog &&
+        window.__xcAutoSQKDebugLog("fallback:check", {
+          result: d,
+          cards: l,
+          target: c,
+          mode: globalState.configHandCardsMode,
+          hasAskWindow: !!t,
+          hasUseBtn: !!e,
+        }),
+      d)
+    )
+      return (
+        (autoShouQiFallbackAttempt = 0),
+        (autoShouQiFallbackLastClickCards = ""),
+        void 0
+      );
+    const h = l.join(",");
+    if (h === autoShouQiFallbackLastClickCards)
+      return (
+        window.__xcAutoSQKDebugLog &&
+          window.__xcAutoSQKDebugLog("fallback:wait-card-change", {
+            cards: l,
+          }),
+        void retryAutoShouQiFallback(500)
+      );
+    return (
+      (autoShouQiFallbackLastClickCards = h),
+      window.__xcAutoSQKDebugLog &&
+        window.__xcAutoSQKDebugLog("fallback:click-useBtn", {
+          eventType: Laya.Event.CLICK,
+        }),
+      e.onMouse({ type: Laya.Event.CLICK }),
+      void retryAutoShouQiFallback(700)
+    );
+  }
   function triggerAutoShouQiConfigWindow(n, t = "deal") {
     const e = { generalId: 634, handCardIDs: n };
     try {
@@ -27634,6 +27986,7 @@
             window.__xcAutoSQKDebugLog("openConfig:noCards", {
               reason: "发完初始牌后再配置自动手气",
             }),
+          scheduleAutoShouQiFallback("openConfig:noCards", 350),
           null == (e = null == (t = window.XC) ? void 0 : t.addTooltip)
             ? void 0
             : e.call(
@@ -31444,6 +31797,9 @@
   var DEBUG_TEXT = "打开调试";
   var DEBUG_LABEL_ID = "localSkinDebugLabel";
   var DEBUG_BUTTON_X_OFFSET = 72;
+  var HAND_SORT_SWITCH_ID = "handSortPanelSwitch";
+  var HAND_SORT_LABEL_ID = "handSortPanelLabel";
+  var handSortSwitchLayout = null;
   var DEBUG_IGNORE_RULES_STORAGE_KEY = "xcLocalSkinDebugIgnoreRules";
   var DEFAULT_DEBUG_IGNORE_RULES = ["decodeSSCChatmsgNtf"];
 
@@ -33559,12 +33915,162 @@
     }, 500);
   }
 
+  function getHandSortSwitchAnchor(switchEl) {
+    if (!switchEl) return null;
+    var row = findSwitchContainer(switchEl);
+    var candidates = [row.querySelector(".slider"), row, switchEl];
+    return candidates.find(function (node) {
+      if (!node) return false;
+      var rect = node.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    }) || null;
+  }
+
+  function syncHandSortPanelSwitch() {
+    var input = document.getElementById(HAND_SORT_SWITCH_ID);
+    if (!input) return;
+    input.disabled = typeof window.__xcSetHandSortPanelVisible !== "function";
+    input.checked = !!(
+      typeof window.__xcIsHandSortPanelVisible === "function" &&
+      window.__xcIsHandSortPanelVisible()
+    );
+    input.title = input.disabled ? "等待整理手牌初始化" :
+      input.checked ? "关闭整理手牌浮窗" : "打开整理手牌浮窗";
+  }
+
+  function layoutHandSortPanelButton() {
+    var state = handSortSwitchLayout;
+    if (!state?.row.isConnected) return;
+    // 兑换码同一行（Y），打开调试同一列（X）；不用隐藏 input 的零尺寸坐标。
+    var exchange = getHandSortSwitchAnchor(state.exchange);
+    var debug = getHandSortSwitchAnchor(state.debug);
+    if (!exchange || !debug) return;
+    var parentRect = state.parent.getBoundingClientRect();
+    if (!parentRect.width) return;
+    var source = findSwitchContainer(state.debug);
+    var row = state.row;
+    row.style.width = source.offsetWidth + "px";
+    row.style.height = source.offsetHeight + "px";
+    var own = getHandSortSwitchAnchor(state.input);
+    if (!own) return;
+    var scaleX = parentRect.width / state.parent.offsetWidth || 1;
+    var scaleY = state.parent.offsetHeight ? parentRect.height / state.parent.offsetHeight : scaleX;
+    var x = debug.getBoundingClientRect();
+    var y = exchange.getBoundingClientRect();
+    var ownRect = own.getBoundingClientRect();
+    var rowRect = row.getBoundingClientRect();
+    var left = (x.left + x.width / 2 - parentRect.left -
+      (ownRect.left + ownRect.width / 2 - rowRect.left)) / scaleX +
+      state.parent.scrollLeft - state.parent.clientLeft;
+    var top = (y.top + y.height / 2 - parentRect.top -
+      (ownRect.top + ownRect.height / 2 - rowRect.top)) / scaleY +
+      state.parent.scrollTop - state.parent.clientTop;
+    row.style.left = left + "px";
+    row.style.top = top + "px";
+    row.style.visibility = "visible";
+    var label = ensureFloatingLabel(row, HAND_SORT_LABEL_ID, "整理手牌");
+    label.style.left = left + "px";
+    label.style.top = top - 18 + "px";
+    label.style.width = row.style.width;
+    state.label = label;
+  }
+
+  function insertHandSortPanelButton() {
+    var exchange = document.getElementById("CDKNotificationSwitch") ||
+      document.getElementById("CDK_NOTIFICATION_SWITCH");
+    var debug = document.getElementById(DEBUG_SWITCH_ID);
+    if (!exchange || !debug) return false;
+    if (handSortSwitchLayout?.row.isConnected &&
+        handSortSwitchLayout.exchange === exchange && handSortSwitchLayout.debug === debug) {
+      syncHandSortPanelSwitch();
+      layoutHandSortPanelButton();
+      return true;
+    }
+    if (handSortSwitchLayout) handSortSwitchLayout.cleanup();
+    var source = findSwitchContainer(debug);
+    var parent = source.parentElement;
+    while (parent && !parent.contains(exchange)) parent = parent.parentElement;
+    if (!parent || parent === document.body) return false;
+    if (getComputedStyle(parent).position === "static") parent.style.position = "relative";
+    var row = source.cloneNode(true);
+    clearDuplicateIds(row);
+    setLocalSkinLabel(row);
+    row.id = "xcHandSortSwitchRow";
+    row.style.position = "absolute";
+    row.style.margin = "0";
+    row.style.left = "0";
+    row.style.top = "0";
+    row.style.visibility = "hidden";
+    row.style.overflow = "visible";
+    var input = row.querySelector("input");
+    if (!input) return false;
+    // 保留该区域的 switch/slider/status 样式，移除克隆来的行为和配置标记。
+    for (var node of [row].concat(Array.from(row.querySelectorAll("*")))) {
+      for (var attribute of Array.from(node.attributes))
+        if (/^on/i.test(attribute.name) || /^data-/.test(attribute.name))
+          node.removeAttribute(attribute.name);
+    }
+    input.id = HAND_SORT_SWITCH_ID;
+    input.type = "checkbox";
+    input.name = "";
+    input.removeAttribute("checked");
+    input.setAttribute("aria-label", "整理手牌");
+    for (var label of row.querySelectorAll("[for]")) label.htmlFor = HAND_SORT_SWITCH_ID;
+    parent.appendChild(row);
+    var frame = null;
+    function scheduleLayout() {
+      if (frame !== null) return;
+      frame = requestAnimationFrame(function () {
+        frame = null;
+        layoutHandSortPanelButton();
+      });
+    }
+    input.addEventListener("change", function (event) {
+      event.stopPropagation();
+      if (typeof window.__xcSetHandSortPanelVisible === "function")
+        window.__xcSetHandSortPanelVisible(input.checked);
+      syncHandSortPanelSwitch();
+    });
+    var resize = new ResizeObserver(scheduleLayout);
+    resize.observe(parent);
+    resize.observe(findSwitchContainer(exchange));
+    resize.observe(source);
+    var observer = new MutationObserver(function (records) {
+      if (records.some(function (record) {
+        return !row.contains(record.target) && record.target.id !== HAND_SORT_LABEL_ID &&
+          (record.type !== "childList" || Array.from(record.addedNodes).concat(Array.from(record.removedNodes))
+            .some(function (node) { return node.id !== HAND_SORT_LABEL_ID; }));
+      })) scheduleLayout();
+    });
+    observer.observe(parent, { childList: true, subtree: true, attributes: true, attributeFilter: ["style", "class", "hidden"] });
+    window.addEventListener("resize", scheduleLayout);
+    parent.addEventListener("scroll", scheduleLayout, true);
+    window.addEventListener("xc-hand-sort-panel-visibility", syncHandSortPanelSwitch);
+    handSortSwitchLayout = {
+      row, input, parent, exchange, debug, label: null,
+      cleanup: function () {
+        resize.disconnect();
+        observer.disconnect();
+        if (frame !== null) cancelAnimationFrame(frame);
+        window.removeEventListener("resize", scheduleLayout);
+        parent.removeEventListener("scroll", scheduleLayout, true);
+        window.removeEventListener("xc-hand-sort-panel-visibility", syncHandSortPanelSwitch);
+        document.getElementById(HAND_SORT_LABEL_ID)?.remove();
+        row.remove();
+      },
+    };
+    syncHandSortPanelSwitch();
+    layoutHandSortPanelButton();
+    return true;
+  }
+
+  window.__xcInstallHandSortPanelButton = function () { waitForCardBackSwitch(0); };
   function waitForCardBackSwitch(attempt) {
     var cardBackSwitch = document.getElementById("cardBackThemeSwitch");
     if (cardBackSwitch && document.body) {
       insertLocalSkinButton(cardBackSwitch);
       insertDebugButton(cardBackSwitch);
-      return;
+      if (insertHandSortPanelButton()) return;
     }
 
     if (attempt < 240) {
