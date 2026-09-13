@@ -32724,6 +32724,87 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  visibleCardChain: {
+    title: "获取可见牌 / 已知牌追踪与界面牌对象采集",
+    verifiedAt: "2026-09-13",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: [
+      "获取可见牌", "已知牌", "未知牌", "候选分组", "SGSMODULE",
+      "PubGsCMoveCard", "MsgGamePlayCardNtf", "ClientHappyGetFriendHandcardRep",
+      "CardIDs", "Zone.shoupai", "Zone.obj", "Zone.unknown", "Zone.paidui",
+      "Card.identify", "Card.pack", "Card.findKZ", "knownCards",
+      "SelfSeatUi", "cardUis", "cardUiRegistry", "seedRegistry", "showCardUIs",
+      "syncZoneMirrors", "明暗牌混合", "使用后可见牌残留", "调试面板",
+      "logVisibleCardTrace", "setVisibleCardResult", "flushRender", "event:error",
+      "render:error", "render:after", "missing-result", "visible-card-chain.cjs",
+      "谋诸葛亮", "知天", "ABCD", "牌顶未消耗", "旧牌顶写回", "deckBefore",
+      "GsCRoleOptTargetNtf", "CGsRoleSpellOptRep", "decodeGameDealPileTopCardList", "spellName",
+      "seq678", "红桃9", "deal-entry-marker", "appendLocalSkinDebugLine is not defined",
+      "跨IIFE日志桥", "game.start", "isGameStart", "武靖", "鹰视",
+      "seq806", "seq820", "实际运行入口", "read-local-script", "dom-ready",
+      "AppData\\Roaming\\SGSOL", "三国杀打小抄.js", "--source"
+    ],
+    verifiedRuntimeSkills: {
+      source: "用户 log.txt 2026-09-13 20:14:35 event:in.spellName",
+      "3744": "知天", "3745": "武靖", "7009": "鹰视"
+    },
+    decodedIndexes: {
+      "_0x123e": { "470": "INIT", "500": "SGSMODULE" },
+      "_0x3911": {
+        "188": "remove", "191": "start", "200": "isRenderScheduled", "240": "cards", "273": "nodes", "275": "identify", "291": "key",
+        "370": "isGameStart", "624": "isPassed",
+        "316": "flushRender", "486": "zoneID", "492": "renderQueue", "594": "pos", "222": "count",
+        "311": "pack", "326": "show", "340": "qipai", "361": "draw",
+        "387": "get", "409": "findIDs", "415": "unknown", "437": "paidui",
+        "441": "_renderZone", "511": "findKZ", "517": "shoupai",
+        "599": "obj", "608": "knownCards"
+      },
+      "_0x497b": {
+        "430": "key", "441": "shoupai", "490": "paidui", "605": "isSend",
+        "807": "result", "814": "innerHTML", "631": "CGsRoleSpellOptRep", "636": "isGameStart",
+        "686": "GsCRoleOptTargetNtf", "839": "decodeGameDealPileTopCardList",
+        "639": "ClientHappyGetFriendHandcardRep", "651": "cards",
+        "652": "PubGsCMoveCard", "692": "CardList", "751": "show",
+        "827": "pack", "877": "MsgGamePlayCardNtf"
+      },
+      "_0x3812": {
+        "281": "cardUis", "313": "visible", "436": "getCardUiBy",
+        "604": "cardId", "661": "cardContainer", "682": "Card",
+        "948": "showCardUIs", "1116": "CardId", "1278": "HandCards"
+      },
+      "_0x262d": {
+        "187": "register", "243": "cardUis", "292": "cardContainer",
+        "296": "Card", "387": "seedRegistry", "460": "unregister",
+        "501": "cardUiRegistry", "518": "destroyed", "520": "theCard",
+        "523": "showCardUIs"
+      }
+    },
+    chain: [
+      "现有 console.log getter -> _0x4f530b -> SGSMODULE -> main(最后一个参数) -> logic；main(INIT) 成功后注册。logic 要求 ClassName/className，不能假定任意 ProtoObj 被自动展开。",
+      "MsgGamePlayCardNtf.CardList -> game.ready -> room.cardList/Qcard.init/Zone.init -> Card.init(key=0)；这是本局牌集初始化，不是对手明牌列表。",
+      "PubGsCMoveCard -> 源/目标 Zone -> 普通移动 $.add(F.remove(CardIDs,SpellID))，同区展示通常 F.show(CardIDs)；Zone.remove/show 通过 Card.identify/pack 等维护未知与候选关系，add 经 Card.move 更新区域。",
+      "Zone.shoupai(seatID) 只取 Zone.obj[5-seatID] 中 key>0 的 id；原始 Zone.cards 可以含 key=0 未知节点或 key<0 候选组，不能直接把 id 当确定牌。",
+      "Zone.unknown 是 Card.get(0) 的 id；Zone.paidui 合并该集合与 1-255，不能当真实牌堆顺序；Zone.obj.unknown 是另一个候选渲染 Set，映射 DOM knownCards。",
+      "Zone.draw -> rAF/flushRender/_renderZone -> Card.plot/allCard/getCardFaceHtml -> syncZoneMirrors；allCard 提供名称/花色/点数/类型，不提供持有者。",
+      "本人当前 UI：laya.gamescene.SelfSeatUi.cardContainer.cardUis -> Card；自动手气先 Zone.shoupai(room.myID)，空时才按 Card.cardId/ui.cardId/ui.id 回退。laya.card() 会执行选牌，不能作为只读 getter。",
+      "卡牌美化 seedRegistry 从 scene/WindowLayer/PromptLayer 遍历 _children/childs/Childs/textureContainer，注册具有 RefreshCardFace 和 Card/theCard 的节点；Draw 注册、clear/destroy 注销，refresh 清理 destroyed。没有 visible/祖先可见/舞台挂载统一过滤，cardUiRegistry 不是严格屏幕可见牌。",
+      "Card.key=NaN 时未初始化；移动消息 CardCount=0/MoveType=0/ToZone=11/isSend 早退，明暗牌混合时清空 CardIDs。ClientHappyGetFriendHandcardRep 仅在该座位 HasSkill(769) 时 show(Cards)，其他技能展示分支有独立条件。",
+      "2026-09-13 追加修复使用后可见牌残留的两处已复现路径：flushRender 清空整队列后某一区域抛错会丢掉后续手牌刷新，改为逐区 catch 继续；PubGsCMoveCard 中 result 统计 DOM 缺失会在真正移牌之前中断，权道/吉占/和衷三处改用 setVisibleCardResult，缺失时跳过 UI 写入。",
+      "beginVisibleCardTrace -> logic -> stepVisibleCardTrace -> finally finishVisibleCardTrace：event:in/done/error 关联 seq，汇总 move:skip/mixed/source/target、remove/add/show 前后 known/unknown/groups。Zone.draw 记录 cause，flushRender 后 render:after 对比模型/主面板/座位副本 keys，区域异常写 render:error。",
+      "所有新增日志经 logVisibleCardTrace -> window.__xcAppendLocalSkinDebugLine -> appendLocalSkinDebugLine(text,false) 写现有调试面板，前缀 [可见牌]，受 XC.isDebug 控制；不使用控制台、不新增轮询，桥失败不阻断移牌。Zone.init 清空 cause，消息 finally 恢复诊断上下文。",
+      "visible-card-chain.cjs 现抽取真实 game.start/Card/Zone/logic/副本函数，模拟 DOM/游戏服务，20 项通过；本次跨作用域修复前两项新回归分别复现开局 ReferenceError、本人摸牌未进入手牌，修复后通过。另覆盖桥未安装/抛错/调试关闭；原先两项刷新/统计缺陷在修改前HEAD也复现失败。",
+      "用户确认谋诸葛亮知天 ABCD->自己拿AB->下家应摸CD的场景。实测 seq50 的空 CardIDs 让模型按旧牌顶取出22/131，移除/加入/主副面板同步均完成；错误在该次暗摸前已存在。正常ABC D顺序回放可正确消耗AB，不能直接宣称通用remove有错或知天已修复，需前一段自己取AB的消息确认漏移除还是旧展示写回。",
+      "新增 RoleOptTarget/RoleSpellOpt/DealPileTop 日志匹配，修补原先漏记 GsCRoleOptTargetNtf/CGsRoleSpellOptRep 的缺口；记录Params/Datas等技能数据、运行时spellName、myID/game状态。牌堆快照新增head前8槽/tail后4槽，步骤记录实际pos/count，相关消息早退也保留deckBefore/after；所有增量仍只进调试面板，不更改技能业务分支。",
+      "协议FromPosition=65280经Zone构造变为pos=0；取牌splice(pos,count)。known只过滤正key，不能当连续顶牌，head的未知key=0亦不可当明牌。此前测试72/52为模拟CD牌号，未认定为用户实测红闪；后来用户log.txt补齐自己摸牌阶段。",
+      "log.txt seq678：本人myID=0收到CardIDs:[48]，在deal-entry-marker直接调用跨IIFE不可见的appendLocalSkinDebugLine时报ReferenceError；缺少remove:before，牌堆count仍131、本人手牌仍0。seq679/680知天3744 Type30收到新Datas，但show返回全null、旧顶未更新；seq690下家从旧顶取走123/29。",
+      "game.start同样在设置isGameStart=true前调用缺失日志函数，解释到turn20仍false、正常摸牌误入初始发牌分支。核心现增加同名安全代理appendLocalSkinDebugLine -> window.__xcAppendLocalSkinDebugLine(text,false)，第二IIFE保留真实面板函数；开启调试才写，桥缺失/自引用/异常安全返回，不改变业务条件。",
+      "回滚节点诊断应保留核心安全日志代理，否则会重现真实报错；旧局缺失历史不可凭空恢复，需从新一局Card/Zone.init验证。日志运行时确认3744知天、3745武靖、7009鹰视，记录在verifiedRuntimeSkills，不混入生成解码表。",
+      "20:27再次实测seq806摸[30,17]仍报缺失日志函数，seq807/808知天给出[55,4,9,152,51,140,46]却未更新旧顶，seq820下家取到旧110/133。已查运行进程renderer --app-path指向F:/Game/SGSOL/resources/app，实际main.js read-local-script读取userData/三国杀打小抄.js，由electron_frame.js在webview dom-ready注入，不读取当前工程或项目asar。",
+      "真实路径C:/Users/97349/AppData/Roaming/SGSOL/三国杀打小抄.js统一换行后恰好等于工程删去安全代理的内容。2026-09-13已备份到同目录.before-visible-card-bridge-2026-09-13T12-34-27-068Z.bak并只补代理，保留CRLF；修后统一换行与工程一致。--source对真实文件回归由15通过/5失败变为20通过。",
+      "生效需页面dom-ready重载或退出重开客户端，再从新局初始化；同一页面只换局不会重读脚本。旧客户端checkAndUpdateScript已关闭自动下载，本次不改配置/加载器/asar。后续授权修复应沿已知实际入口同步源码，不能只修改工程后宣称运行页面已修复。"
+    ]
+  },
   handSortFloatingPanel: {
     title: "整理手牌 / 独立浮动面板链路",
     verifiedAt: "2026-09-13",

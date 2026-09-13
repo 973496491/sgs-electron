@@ -21387,6 +21387,136 @@
       return n;
     })();
   }
+  // 可见牌诊断：核心 IIFE 通过桥接写入现有调试面板，不调用控制台。
+  function appendLocalSkinDebugLine(text) {
+    // 真正的面板函数在第二个 IIFE；开局/发牌等旧调用需要本作用域的安全入口。
+    // 仅开启调试时写入，桥尚未安装或面板重建异常均不得打断业务状态更新。
+    try {
+      if (!(window.XC && window.XC.isDebug)) return;
+      const append = window.__xcAppendLocalSkinDebugLine;
+      if (typeof append === "function" && append !== appendLocalSkinDebugLine)
+        append(text, false);
+    } catch (error) {}
+  }
+  let visibleCardTraceSequence = 0;
+  let visibleCardActiveTrace = null;
+  const visibleCardRenderCauses = new Map();
+  function isVisibleCardTraceEnabled() {
+    return !!(window.XC && window.XC.isDebug &&
+      typeof window.__xcAppendLocalSkinDebugLine === "function");
+  }
+  function logVisibleCardTrace(stage, data) {
+    if (!isVisibleCardTraceEnabled()) return;
+    try {
+      const text = JSON.stringify(data, (key, value) =>
+        Array.isArray(value) && value.length > 24
+          ? value.slice(0, 24).concat("…共 " + value.length + " 项")
+          : value);
+      window.__xcAppendLocalSkinDebugLine("[可见牌] " + stage + " " + text, false);
+    } catch (error) {}
+  }
+  function snapshotVisibleCardZone(zoneID) {
+    try {
+      const cards = Array.from(Zone.obj[zoneID] || []);
+      return {
+        zone: zoneID, count: cards.length,
+        known: cards.filter(card => card.key > 0).map(card => card.id),
+        unknown: cards.filter(card => card.key === 0).length,
+        groups: [...new Set(cards.filter(card => card.key < 0).map(card => card.key))],
+        // known 会跳过未知槽位；牌顶排查必须保留实际位置和 key。
+        head: zoneID === "1-255" ? cards.slice(0, 8).map(card => ({ id: card.id, key: card.key })) : undefined,
+        tail: zoneID === "1-255" ? cards.slice(-4).map(card => ({ id: card.id, key: card.key })) : undefined,
+      };
+    } catch (error) {
+      return { zone: zoneID, error: String(error) };
+    }
+  }
+  function beginVisibleCardTrace(message) {
+    if (!isVisibleCardTraceEnabled() || !message || typeof message !== "object") return null;
+    try {
+      const className = String(message.ClassName || message.className || "");
+      if (!/MoveCard|UseCard|UseSpell|FriendHandcard|GamePlayCard|Spell.*Ntf|RoleOptTarget|RoleSpellOpt|DealPileTop/i.test(className)) return null;
+      const fields = ["CardIDs", "CardID", "CardId", "cardId", "Cards", "CardCount",
+        "SeatID", "seatId", "castSeatId", "FromID", "FromZone", "FromPosition",
+        "FromZoneParam", "ToID", "ToZone", "ToPosition", "ToZoneParam", "MoveType",
+        "SpellID", "spellID", "spellId", "Type", "useType", "fromZone", "isSend",
+        "SrcSeatID", "targetSeatID", "Param", "Params", "Datas", "DataCount", "EffectIndex", "isResume"];
+      const data = {};
+      for (const key of fields) if (message[key] !== undefined) data[key] = message[key];
+      const spellID = message.SpellID ?? message.spellID ?? message.spellId;
+      // 技能名称由当前运行时配置解析，避免凭数值猜测知天的技能号。
+      let spellName;
+      try { spellName = _0x47b943.spellDict[spellID]?.name; } catch (error) {}
+      const trace = { seq: ++visibleCardTraceSequence, className, steps: [], zones: new Set() };
+      const deckRelated = Number(message.FromZone) === 1 || Number(message.ToZone) === 1 ||
+        /RoleOptTarget|RoleSpellOpt|DealPileTop/i.test(className);
+      if (deckRelated) trace.zones.add("1-255");
+      logVisibleCardTrace("event:in", {
+        seq: trace.seq, className, initialized: !isNaN(Card.key), data, spellName,
+        keys: Object.keys(message), protoKeys: message.ProtoObj && Object.keys(message.ProtoObj),
+        context: { myID: room.myID, turn: game.turn, round: game.round, phase: game.phase,
+          isGameStart: game.isGameStart, isPassed: game.isPassed },
+        deckBefore: deckRelated ? snapshotVisibleCardZone("1-255") : undefined,
+      });
+      return trace;
+    } catch (error) { return null; }
+  }
+  function stepVisibleCardTrace(stage, zone, cards, reason) {
+    const trace = visibleCardActiveTrace;
+    if (!trace || !isVisibleCardTraceEnabled()) return;
+    try {
+      const zoneID = zone && zone.zoneID;
+      trace.stage = stage;
+      if (zoneID) trace.zones.add(zoneID);
+      if (trace.steps.length < 24) trace.steps.push({
+        stage, reason, state: zoneID ? snapshotVisibleCardZone(zoneID) : undefined,
+        pos: zoneID ? zone.pos : undefined, count: zoneID ? zone.count : undefined,
+        cards: Array.isArray(cards)
+          ? cards.map(card => card && typeof card === "object" ? { id: card.id, key: card.key } : card)
+          : cards,
+      });
+    } catch (error) {}
+  }
+  function finishVisibleCardTrace(trace) {
+    if (!trace || !isVisibleCardTraceEnabled()) return;
+    logVisibleCardTrace(trace.error ? "event:error" : "event:done", {
+      seq: trace.seq, className: trace.className, stage: trace.stage,
+      error: trace.error, steps: trace.steps, after: [...trace.zones].map(snapshotVisibleCardZone),
+    });
+  }
+  function traceVisibleCardRender(zoneID, cause, error) {
+    if (!isVisibleCardTraceEnabled()) return;
+    try {
+      const [area, seat] = zoneID.split("-").map(Number);
+      const seatDiv = area === 4 || area === 5 ? String(room.getOrder(seat) + 1) : null;
+      const primaryID = zoneID === "unknown" ? "knownCards" : area === 1 ? "paiduiCards"
+        : area === 2 ? "qipaiCards" : area === 5 ? seatDiv : area === 4 ? "mark" + zoneID : null;
+      if (!primaryID && !error) return;
+      const read = id => {
+        const element = id && document.getElementById(id);
+        return { id, present: !!element,
+          keys: element ? Array.from(element.querySelectorAll(":scope>.shoupai"), node => node.dataset.key) : [] };
+      };
+      logVisibleCardTrace(error ? "render:error" : "render:after", {
+        seq: cause, model: snapshotVisibleCardZone(zoneID), main: read(primaryID),
+        mirror: read(area === 5 ? "s" + seatDiv : area === 4 ? "smark" + zoneID : area === 1 ? "deckBottomEdge" : null),
+        error: error ? String(error.stack || error).slice(0, 1200) : undefined,
+      });
+    } catch (snapshotError) {
+      logVisibleCardTrace("render:error", { seq: cause, zone: zoneID, error: String(error || snapshotError) });
+    }
+  }
+  function setVisibleCardResult(html) {
+    // 辅助统计控件缺失或正在重建，不应阻断后面的真正移牌。
+    try {
+      const element = document.getElementById("result");
+      if (element) { element.innerHTML = html; return true; }
+      stepVisibleCardTrace("ui:skip", null, null, "missing-result");
+    } catch (error) {
+      stepVisibleCardTrace("ui:skip", null, null, String(error));
+    }
+    return false;
+  }
   const _Card = class n {
     static [((_c = _0x4efae6(291)),
     (_d = _0x4efae6(273)),
@@ -21829,6 +21959,7 @@
     }
     [_0x4efae6(326)](t = []) {
       const e = _0x4efae6;
+      stepVisibleCardTrace("show:before", this, t);
       if (isNaN(Card[e(291)])) return [];
       if ((Array[e(235)](t) || (t = [t]), 0 == t[e(478)]((n) => n > 0)[e(428)]))
         return [];
@@ -21891,10 +22022,12 @@
             }
           });
       }
+      stepVisibleCardTrace("show:after", this, i);
       return n[e(361)](this[e(486)]), i;
     }
     [_0x4efae6(188)](t = [], e, i) {
       const a = _0x4efae6;
+      stepVisibleCardTrace("remove:before", this, t);
       if (isNaN(Card[a(291)])) return [];
       Array[a(235)](t) || (t = [t]), i && (this[a(222)] = i);
       let r = [],
@@ -22029,18 +22162,21 @@
             r[a(302)](({ id: n }, e) => {
               t[e] = n;
             }),
+        stepVisibleCardTrace("remove:after", this, r),
         n[a(361)](this[a(486)]),
         r
       );
     }
     [_0x4efae6(467)](t) {
       const e = _0x4efae6;
+      stepVisibleCardTrace("add:before", this, t);
       if (isNaN(Card[e(291)])) return;
       let i = Card[e(407)](t, this[e(486)])[e(488)]();
       return (
         this[e(594)] == RAND || this[e(594)] == DING
           ? this[e(240)][e(255)](this[e(240)][e(428)], 0, ...i)
           : this[e(240)][e(255)](this[e(594)], 0, ...i[e(389)]()),
+        stepVisibleCardTrace("add:after", this, t),
         n[e(361)](this[e(486)]),
         t
       );
@@ -22070,10 +22206,13 @@
     }
     static [_0x4efae6(329)](t, e) {
       const i = _0x4efae6;
+      visibleCardRenderCauses.clear();
       (n[i(599)] = { unknown: new Set() }), (n[i(599)][e] = Card[i(329)](t, e));
     }
     static [((_h = _0x4efae6(492)), (_i = _0x4efae6(200)), _0x4efae6(361))](t) {
       const e = _0x4efae6;
+      if (t !== undefined && visibleCardActiveTrace && isVisibleCardTraceEnabled())
+        visibleCardRenderCauses.set(t, visibleCardActiveTrace.seq);
       isNaN(Card[e(291)]) ||
         (void 0 !== t
           ? (n[e(492)][e(467)](t),
@@ -22088,7 +22227,15 @@
       const e = new Set(n[t(492)]);
       n[t(492)][t(404)](),
         e[t(302)]((e) => {
-          n[t(441)](e);
+          const cause = visibleCardRenderCauses.get(e);
+          visibleCardRenderCauses.delete(e);
+          try {
+            n[t(441)](e);
+            traceVisibleCardRender(e, cause);
+          } catch (error) {
+            // 一个区域异常不能丢掉已经出队的其他手牌区域。
+            traceVisibleCardRender(e, cause, error);
+          }
         });
     }
     static [_0x4efae6(441)](t) {
@@ -30182,6 +30329,9 @@
       Z,
       T;
     const J = _0x576026;
+    const previousVisibleCardTrace = visibleCardActiveTrace;
+    const visibleCardTrace = beginVisibleCardTrace(n);
+    visibleCardActiveTrace = visibleCardTrace;
     try {
       if (!n) return;
       if (null == (t = n[J(711)]) ? void 0 : t.call(n, J(891)))
@@ -30914,17 +31064,19 @@
                   10 == bn &&
                   recLe(1 == _0x50e4e7[vn[0]][J(425)]);
       else if (rn == J(652)) {
+        stepVisibleCardTrace("move:received", null, dn);
         if (
           ((dn = dn[J(687)]()), 0 === zn || 0 === Mn || 11 === Cn || n[J(605)])
         )
-          return;
+          return void stepVisibleCardTrace("move:skip", null, dn,
+            0 === zn ? "zero-count" : 0 === Mn ? "zero-move-type" : 11 === Cn ? "temporary-discard-zone" : "isSend");
         if (713 == un && 21 == Mn && zn == dn[J(544)] - 2) {
           let n = dn[J(660)](0, 1)[0];
           dn[J(660)](n, 1);
         }
         dn[J(504)]((n) => n > 0)[J(544)] != zn &&
           0 != dn[J(504)]((n) => n > 0)[J(544)] &&
-          (console[J(882)](J(851) + dn + "]"), console[J(882)](n), (dn = [])),
+          (stepVisibleCardTrace("move:mixed", null, dn, "clear-ids-count=" + zn), (dn = [])),
           1 == Ln &&
             yn == RAND &&
             [3208, 7011, 987, 988, 3903][J(591)](un) &&
@@ -30972,6 +31124,8 @@
             (dn = dn[J(504)]((n) => 4400 != n && 4401 != n));
         var F = new Zone(wn, Ln, yn, zn, un, gn),
           $ = new Zone(Bn, Cn, _n, zn, un, Dn);
+        stepVisibleCardTrace("move:source", F, dn);
+        stepVisibleCardTrace("move:target", $, dn);
         if (12 == Cn || 12 == Ln)
           12 != Cn
             ? $[J(554)](
@@ -31205,8 +31359,7 @@
               },
               { countType2: 0, countSha: 0 },
             );
-            document[J(596)](J(807))[J(814)] =
-              J(508) + J(738) + e + "：" + t + J(625);
+            setVisibleCardResult(J(508) + J(738) + e + "：" + t + J(625));
           }
           if (
             ([441, 3492][J(591)](un) &&
@@ -31230,7 +31383,7 @@
               let l = _0x50e4e7[a][r(509)];
               l === n ? i++ : l > n ? t++ : e++;
             }),
-              (document[J(596)](J(807))[J(814)] =
+              setVisibleCardResult(
                 J(480) +
                 (t > e ? "大" : "小") +
                 J(625) +
@@ -31297,7 +31450,7 @@
                   },
                   { g: 0, l: 0, e: 0 },
                 );
-            document[J(596)](J(807))[J(814)] =
+            setVisibleCardResult(
               J(815) +
               (e.g > e.l
                 ? "大"
@@ -31317,7 +31470,7 @@
               e.l +
               "." +
               i.l +
-              J(436);
+              J(436));
           } else
             3659 == un &&
               21 == Mn &&
@@ -31479,7 +31632,13 @@
         }
       }
     } catch (an) {
-      console[J(882)](an);
+      if (visibleCardTrace) visibleCardTrace.error = String(an && (an.stack || an)).slice(0, 1600);
+      else logVisibleCardTrace("logic:error", {
+        className: n && (n.ClassName || n.className), error: String(an && (an.stack || an)).slice(0, 1600),
+      });
+    } finally {
+      try { finishVisibleCardTrace(visibleCardTrace); }
+      finally { visibleCardActiveTrace = previousVisibleCardTrace; }
     }
     var nn, tn, en;
   }
