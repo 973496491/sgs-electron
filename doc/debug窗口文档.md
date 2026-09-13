@@ -1,5 +1,14 @@
 # debug 窗口文档
 
+## 2026-09-13：关闭调试后禁止日志唤起窗口
+
+- 用户反馈关闭“打开调试”后仍被自动拉起。已复现：`__xcAutoSQKDebugLog("deal:start")` 在关闭状态仍执行探针，调用 `appendLocalSkinDebugLine(...,true)`；真实面板函数允许 `force` 绕过 `XC.isDebug`，再调用无开关检查的 `ensureLocalSkinDebugPanel()` 创建/显示窗口。其他强制错误日志和异步 block 也存在同一路径。
+- 现统一在 `appendLocalSkinDebugLine`、`beginLocalSkinDebugBlock` 和 `ensureLocalSkinDebugPanel` 检查 `window.XC.isDebug`。`force` 只保留参数兼容，**不得绕过用户关闭的调试开关**；此规则取代下文历史记录中的“强制写调试窗口”行为。关闭时丢弃日志，不缓存到下一次打开。
+- 开关设置、关闭时移除面板/清理 Worker/分片任务、再次手动打开、开启状态下场景重建面板仍按原链路工作。保留核心安全日志桥和业务/身份探针执行，避免日志关闭影响移牌状态。
+- `node electron-next/tests/debug-panel-visibility.cjs` 使用实际函数和模拟 DOM，10 项通过；同一检查修复前 8 项失败，明确复现关闭状态下的强制唤起。对实际客户端脚本 `--source C:\Users\97349\AppData\Roaming\SGSOL\三国杀打小抄.js` 验证通过，另外 20 项可见牌回归也通过。
+- 已备份并同步客户端真实读取的用户脚本，保持 CRLF；备份位置、实际加载链和回滚说明见 `doc/代码架构表.md` 的“调试窗口关闭后被强制唤起”。需页面重载或退出重开客户端后生效，未编译 asar。
+- 关键词：`关闭后强制拉起`、`force=true`、`debugPanelVisibility`、`ensureLocalSkinDebugPanel`、`appendLocalSkinDebugLine`、`beginLocalSkinDebugBlock`、`XC.isDebug`、`deal:start`、`debug-panel-visibility.cjs`。
+
 ## 2026-07-08 第 1 段：读取任务记录
 
 - 已读取 `doc/本地皮肤按钮改造任务记录.md`。

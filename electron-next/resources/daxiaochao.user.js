@@ -32234,6 +32234,7 @@
   }
 
   function ensureLocalSkinDebugPanel() {
+    if (!(window.XC && window.XC.isDebug)) return null;
     var state = getLocalSkinDebugState();
     var panelAttached = false;
     try {
@@ -32393,7 +32394,8 @@
 
   function appendLocalSkinDebugLine(text, force) {
     try {
-      if (!force && !(window.XC && window.XC.isDebug)) return;
+      // force 仅保留调用兼容，日志不得越过用户关闭的调试开关。
+      if (!(window.XC && window.XC.isDebug)) return;
       ensureLocalSkinDebugPanel();
       var state = getLocalSkinDebugState();
       var body = state.panelBody;
@@ -32555,7 +32557,7 @@
 
   function beginLocalSkinDebugBlock(title, force) {
     try {
-      if (!force && !(window.XC && window.XC.isDebug)) return null;
+      if (!(window.XC && window.XC.isDebug)) return null;
       ensureLocalSkinDebugPanel();
       var state = getLocalSkinDebugState();
       var body = state.panelBody;

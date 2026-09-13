@@ -32724,6 +32724,26 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  debugPanelVisibility: {
+    title: "调试窗口关闭后被强制唤起 / 显示开关统一约束",
+    verifiedAt: "2026-09-13",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/debug窗口文档.md",
+    searchKeywords: [
+      "调试窗口自动弹出", "关闭后强制拉起", "XC.isDebug", "force=true",
+      "ensureLocalSkinDebugPanel", "appendLocalSkinDebugLine", "beginLocalSkinDebugBlock",
+      "openDebugFromButton", "closeLocalSkinDebugPanel", "__xcAutoSQKDebugLog",
+      "deal:start", "debug-panel-visibility.cjs", "调试面板", "回归", "回滚"
+    ],
+    decodedIndexes: {},
+    chain: [
+      "本链位于非混淆的第二IIFE，没有新增解码索引。原appendLocalSkinDebugLine/beginLocalSkinDebugBlock允许force=true绕过关闭开关，ensureLocalSkinDebugPanel无条件创建或display:flex，初始deal:start强制日志会拉起窗口。",
+      "三个入口现均要求XC.isDebug为真，force保留形参但不能绕过；关闭时不创建/显示/写入面板，也不补写关闭期间日志。核心IIFE安全日志代理及__xcAppendLocalSkinDebugLine桥保留。",
+      "localSkinDebugSwitch -> openDebugFromButton先写XC.isDebug，再创建或closeLocalSkinDebugPanel移除DOM、终止Worker和清空分片。开启后可正常写入/重建，关闭后的迟到强制消息不能重新打开；业务和身份探针不受此UI约束影响。",
+      "debug-panel-visibility.cjs抽取真实函数模拟DOM：修复前2通过8失败，修后10通过；实际用户脚本的10项调试窗口及20项可见牌检查都通过。修复已备份并同步AppData/Roaming/SGSOL/三国杀打小抄.js，需要dom-ready重新注入。",
+      "回滚三个最终开关检查会恢复强制拉起风险；回归检查关闭无面板、开启能输出、再开无旧日志、异步消息和场景重建不越过开关。不要回滚此前核心日志安全代理。"
+    ]
+  },
   visibleCardChain: {
     title: "获取可见牌 / 已知牌追踪与界面牌对象采集",
     verifiedAt: "2026-09-13",
