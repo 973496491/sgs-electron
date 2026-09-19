@@ -68,7 +68,7 @@
     header.style.cssText =
       'padding:6px 10px;background:#2a2a40;cursor:move;user-select:none;font-weight:bold;display:flex;justify-content:space-between;align-items:center'
     var title = document.createElement('span')
-    title.textContent = '\u76ae\u80a4\u8c03\u8bd5\u65e5\u5fd7'
+    title.textContent = '调试日志'
     var btns = document.createElement('span')
     var copyBtn = document.createElement('span')
     copyBtn.textContent = '\u590d\u5236'

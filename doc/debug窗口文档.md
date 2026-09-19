@@ -1,5 +1,16 @@
 # debug 窗口文档
 
+## 2026-09-19 第 21 段：标题改名 + 接口拦截配置单行化
+
+- 用户要求：调试面板标题由 `皮肤调试日志` 改为 `调试日志`；`配置` 展开的 `接口拦截配置` 由“每条规则一行”改为一行、字段用逗号分割，方便一次性取出全部拦截配置；点击 `添加` 仍与现在一致（展开一个新的空行）；点击 `保存` 后把新增行追加到配置行末尾。本轮只改 `C:\Users\97349\Downloads\electron` 项目文件，不动用户目录 `C:\Users\97349\AppData\Roaming\SGSOL\三国杀打小抄.js`，也不编译 asar。
+- 标题：`ensureLocalSkinDebugPanel()` 里 `title.textContent` 由 `\u76ae\u80a4\u8c03\u8bd5\u65e5\u5fd7`（皮肤调试日志）改为 `调试日志`；`runLocalSkinEnableInline()` 内 `ensureDebugPanel()` 的不可达副本（`return ensureLocalSkinDebugPanel();` 之后的旧代码）和 `electron-next/resources/local-skin-enable.js` 的旧面板副本同步改名，避免旧入口弹出仍是旧标题。
+- 配置行：`renderLocalSkinDebugConfigPanel()` 现在先渲染唯一的配置行 `input[data-xc-debug-ignore-rule-line="1"]`，值为 `getLocalSkinDebugIgnoreRules().join(",")`，即全量拦截前缀；下方是 `addedList` 容器和一行灰色提示。配置行可直接复制整串配置，不必逐行抄。
+- 分隔符：新增 `splitLocalSkinDebugIgnoreRuleText(text)`，用 `/[,，、;；\s]+/` 拆分，英文逗号、中文逗号、顿号、分号、空白都算分隔符；空片段丢弃。配置行和新增行都支持逗号分割，新增行里也能一次粘贴多条。
+- 新增/保存：点击 `添加` 仍调用 `addRow("", true)`，把空行插入 `addedList` 顶部并 `panel.scrollTop = 0` + 聚焦，行为与第 19 段的“新增行置顶”一致；点击 `保存` 时 `collectLocalSkinDebugConfigRules(root)` 先取配置行，再按 DOM 从上到下取 `input[data-xc-debug-ignore-rule="1"]` 新增行，等价于“新增行追加到配置行最后”，随后重绘回单行，新增行消失。
+- 去重与存储：结果仍走 `normalizeLocalSkinDebugIgnoreRules()` 去重（保留首次出现顺序）并写入 `localStorage["xcLocalSkinDebugIgnoreRules"]`；`isLocalSkinDebugResponsePrintIgnored()` 的前缀匹配逻辑未变，保存前后过滤行为一致。新增行上的 `删除` 按钮只删当前面板里的临时行，不影响已保存配置。
+- 验证：`node --check electron-next/resources/daxiaochao.user.js`、`node --check electron-next/resources/local-skin-enable.js`、`node electron-next/tests/debug-config-panel.cjs`（新增，7 项：单行渲染、添加行、保存追加到末尾、多行逗号分割按视觉顺序、编辑配置行覆盖、重复去重、标题为 `调试日志`）、`node electron-next/tests/debug-panel-visibility.cjs`（10 项）、`node electron-next/tests/hand-sort-panel.cjs`（37 项）全部通过。未编译 asar，实际客户端需重新加载脚本后生效。
+- 关键检索词：`调试日志`、`皮肤调试日志`、`配置行单行`、`配置行逗号分割`、`data-xc-debug-ignore-rule-line`、`splitLocalSkinDebugIgnoreRuleText`、`collectLocalSkinDebugConfigRules`、`新增行并入配置行末尾`、`addedList`、`addRow("", true)`、`debug-config-panel.cjs`、`接口拦截配置`。
+
 ## 2026-09-13：关闭调试后禁止日志唤起窗口
 
 - 用户反馈关闭“打开调试”后仍被自动拉起。已复现：`__xcAutoSQKDebugLog("deal:start")` 在关闭状态仍执行探针，调用 `appendLocalSkinDebugLine(...,true)`；真实面板函数允许 `force` 绕过 `XC.isDebug`，再调用无开关检查的 `ensureLocalSkinDebugPanel()` 创建/显示窗口。其他强制错误日志和异步 block 也存在同一路径。

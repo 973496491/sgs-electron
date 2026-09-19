@@ -33327,6 +33327,38 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "_0x372eff 生成 index/cardId/color/rank/suit/text；_0x26c5ba 读取 data_cards 按 areaId 分区；_0x3a39e2 使用 seenIds 统计基础 54 张牌的剩余数量。"
       ,"allCard/_0x5984e1 从运行时 w[525] 读取 name/type/color/number/subType；已确认 7->杀、14->连弩，藤甲属于同一运行时配置关系，不能用基础 54 张牌公式反推 ID。"
     ]
+  },
+  debugPanelIgnoreRulesLine: {
+    title: "调试窗口标题与接口拦截配置单行链路",
+    verifiedAt: "2026-09-19",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/debug窗口文档.md",
+    searchKeywords: [
+      "调试日志",
+      "皮肤调试日志",
+      "配置行单行",
+      "配置行逗号分割",
+      "data-xc-debug-ignore-rule-line",
+      "data-xc-debug-ignore-rule",
+      "splitLocalSkinDebugIgnoreRuleText",
+      "collectLocalSkinDebugConfigRules",
+      "新增行并入配置行末尾",
+      "addedList",
+      "addRow",
+      "ensureLocalSkinDebugPanel",
+      "renderLocalSkinDebugConfigPanel",
+      "接口拦截配置",
+      "xcLocalSkinDebugIgnoreRules",
+      "debug-config-panel.cjs",
+      "local-skin-enable.js"
+    ],
+    chain: [
+      "调试面板标题在 ensureLocalSkinDebugPanel() 内：title.textContent 旧值 \"\\u76ae\\u80a4\\u8c03\\u8bd5\\u65e5\\u5fd7\"（皮肤调试日志）已改为 \"调试日志\"；runLocalSkinEnableInline() 的 ensureDebugPanel() 副本和 resources/local-skin-enable.js 的旧面板副本同步改名。",
+      "接口拦截配置面板由 renderLocalSkinDebugConfigPanel() 渲染：input[data-xc-debug-ignore-rule-line=\"1\"] 是唯一配置行，值等于 getLocalSkinDebugIgnoreRules().join(\",\")，用于一次性复制全部拦截前缀。",
+      "collectLocalSkinDebugConfigRules(root) 先取配置行、再按 DOM 从上到下取 input[data-xc-debug-ignore-rule=\"1\"] 新增行，经 splitLocalSkinDebugIgnoreRuleText() 的 /[,，、;；\\s]+/ 拆分和 normalizeLocalSkinDebugIgnoreRules() 去重后写入 localStorage[\"xcLocalSkinDebugIgnoreRules\"]，即新增行追加到配置行最后。",
+      "点击 添加 仍是 addRow(\"\", true)：新空行插入 addedList 顶部并 panel.scrollTop = 0 + focus，与第 19 段新增行置顶一致；保存后重绘回单行，临时行消失。",
+      "回归：node --check electron-next/resources/daxiaochao.user.js；node --check electron-next/resources/local-skin-enable.js；node electron-next/tests/debug-config-panel.cjs（7 项）；node electron-next/tests/debug-panel-visibility.cjs（10 项）；node electron-next/tests/hand-sort-panel.cjs（37 项）。未编译 asar。"
+    ]
   }
 }
 

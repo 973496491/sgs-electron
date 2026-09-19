@@ -32100,9 +32100,23 @@
 
   function collectLocalSkinDebugConfigRules(root) {
     var rules = [];
+    var line = root.querySelector('input[data-xc-debug-ignore-rule-line="1"]');
+    if (line) rules = rules.concat(splitLocalSkinDebugIgnoreRuleText(line.value));
     var inputs = root.querySelectorAll('input[data-xc-debug-ignore-rule="1"]');
-    for (var i = 0; i < inputs.length; i++) rules.push(inputs[i].value);
+    for (var i = 0; i < inputs.length; i++)
+      rules = rules.concat(splitLocalSkinDebugIgnoreRuleText(inputs[i].value));
     return normalizeLocalSkinDebugIgnoreRules(rules);
+  }
+
+  // 配置行使用逗号分割多条拦截前缀；中文逗号/顿号/分号/空白同样当作分隔符。
+  function splitLocalSkinDebugIgnoreRuleText(text) {
+    var parts = String(text == null ? "" : text).split(/[,，、;；\s]+/);
+    var out = [];
+    for (var i = 0; i < parts.length; i++) {
+      var part = String(parts[i]).replace(/^\s+|\s+$/g, "");
+      if (part) out.push(part);
+    }
+    return out;
   }
 
   function renderLocalSkinDebugConfigPanel() {
@@ -32150,6 +32164,26 @@
     list.style.cssText = "display:flex;flex-direction:column;gap:5px";
     panel.appendChild(list);
 
+    // 配置行：全部拦截前缀合并成一行、逗号分割，方便一次性复制取出。
+    var lineInput = document.createElement("input");
+    lineInput.setAttribute("data-xc-debug-ignore-rule-line", "1");
+    lineInput.value = getLocalSkinDebugIgnoreRules().join(",");
+    lineInput.placeholder = "响应名前缀，多个用逗号分割";
+    lineInput.style.cssText =
+      "flex:1;min-width:0;background:#111827;color:#eee;border:1px solid #4a4a6a;border-radius:4px;padding:4px 6px;font-family:Consolas,monospace;font-size:12px";
+    list.appendChild(lineInput);
+
+    var hint = document.createElement("div");
+    hint.textContent =
+      "配置行逗号分割；点击“添加”展开新行，保存后并入配置行末尾。";
+    hint.style.cssText = "color:#8f9bb3;font-size:11px";
+    list.appendChild(hint);
+
+    // 新增行容器：点击“添加”在这里展开新行，保存时并入上面的配置行末尾。
+    var addedList = document.createElement("div");
+    addedList.style.cssText = "display:flex;flex-direction:column;gap:5px";
+    list.appendChild(addedList);
+
     function saveFromPanel(showLog) {
       var saved = saveLocalSkinDebugIgnoreRules(
         collectLocalSkinDebugConfigRules(panel),
@@ -32168,7 +32202,7 @@
       var input = document.createElement("input");
       input.setAttribute("data-xc-debug-ignore-rule", "1");
       input.value = value || "";
-      input.placeholder = "响应名前缀";
+      input.placeholder = "新增拦截前缀，多个用逗号分割";
       input.style.cssText =
         "flex:1;min-width:0;background:#111827;color:#eee;border:1px solid #4a4a6a;border-radius:4px;padding:4px 6px;font-family:Consolas,monospace;font-size:12px";
       var delBtn = document.createElement("button");
@@ -32181,14 +32215,11 @@
       });
       row.appendChild(input);
       row.appendChild(delBtn);
-      if (prepend && list.firstChild) list.insertBefore(row, list.firstChild);
-      else list.appendChild(row);
+      if (prepend && addedList.firstChild)
+        addedList.insertBefore(row, addedList.firstChild);
+      else addedList.appendChild(row);
       return input;
     }
-
-    var rules = getLocalSkinDebugIgnoreRules();
-    for (var i = 0; i < rules.length; i++) addRow(rules[i]);
-    if (!rules.length) addRow("");
 
     addBtn.addEventListener("click", function () {
       var input = addRow("", true);
@@ -32264,7 +32295,7 @@
     header.style.cssText =
       "padding:6px 10px;background:#2a2a40;cursor:move;user-select:none;font-weight:bold;display:flex;justify-content:space-between;align-items:center";
     var title = document.createElement("span");
-    title.textContent = "\u76ae\u80a4\u8c03\u8bd5\u65e5\u5fd7";
+    title.textContent = "调试日志";
     var btns = document.createElement("span");
     var apiWrap = document.createElement("label");
     apiWrap.style.cssText =
@@ -34312,7 +34343,7 @@
         header.style.cssText =
           "padding:6px 10px;background:#2a2a40;cursor:move;user-select:none;font-weight:bold;display:flex;justify-content:space-between;align-items:center";
         var title = document.createElement("span");
-        title.textContent = "\u76ae\u80a4\u8c03\u8bd5\u65e5\u5fd7";
+        title.textContent = "调试日志";
         var btns = document.createElement("span");
         var copyBtn = document.createElement("span");
         copyBtn.textContent = "\u590d\u5236";
