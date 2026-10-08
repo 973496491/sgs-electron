@@ -32724,6 +32724,40 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  topMarqueeBlock: {
+    title: "屏蔽弹幕 / 顶部右至左跑马灯开关",
+    verifiedAt: "2026-10-08",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: [
+      "屏蔽弹幕", "顶部广播", "跑马灯", "全屏弹幕", "设置", "壁纸设置", "明牌框框",
+      "wallpaperContainer", "skinPaperSwitch", "文字上方", "explanation", "switch-container",
+      "seatUISwitch", "xcTopMarqueeToggle", "xcTopMarqueeSwitchRow", "xcTopMarqueeBlocked",
+      "setTopMarqueeBlocked", "installTopMarqueeBlocker", "installTopMarqueeButton",
+      "layoutTopMarqueeButton", "ShowMarquee", "ShowOldMarquee", "ShowNewMarquee",
+      "ChatSysNewsManager", "__AddNotice", "OnNoticPlayEnd", "BannerSystemNoticeList",
+      "marqueeUIList", "marqueeUIActList", "TYPE_TOP", "回退", "回归", "dom-ready",
+    ],
+    decodedIndexes: {
+      _0x3812: {
+        166: "FcmTipWindow", 578: "PromptLayer", 671: "class", 760: "ServerProxy",
+        811: "ParentLayerInstance", 880: "timeOutNoticeId", 996: "ChatSysNewsManager",
+        1111: "ClearData", 1128: "AddNotice", 1420: "decodeSSCChatmsgNtf",
+      },
+      _0x871b: { 134: 'input[id$="Switch"]', 288: "iframe-source", 305: "seatUISwitch", 344: "wallpaperContainer", 472: "iframe", 498: "skinPaperSwitch", 564: "createIframe" },
+    },
+    chain: [
+      "原始固定屏蔽为 login -> setProto -> redefine(ChatSysNewsManager.AddNotice,空函数) + ClearData；现已移除。新旧顶部广播分别经 ShowNewMarquee/ShowOldMarquee 汇合到 ShowMarquee，位置为 TYPE_TOP=0，startMove 从 gameWidth 移向 -totalWidth；活动附加行走另外的创建入口。",
+      "setProto/addFrame -> installTopMarqueeBlocker，laya.class(PromptLayer,true) 取 FcmTipWindow.ParentLayerInstance，找到 ShowMarquee 所在原型后只安装一次；实例更新仍走原型挂钩。管理器通过 ServerProxy._events.decodeSSCChatmsgNtf 的 caller + timeOutNoticeId 定位，每次处理强制重新解析，避免换场使用旧缓存。",
+      "开关 xcTopMarqueeToggle -> __xcSetTopMarqueeBlocked -> setTopMarqueeBlocked，localStorage.xcTopMarqueeBlocked 持久化，首次默认 false。关闭时原方法原参数/this/返回值透传；开启时不创建顶部 UI，新广播仅对 nowPlayeNoticeId===message.ID 清 OnTimeOut 并调用 OnNoticPlayEnd 推进队列，旧广播仅清 BannerSystemNoticeList。",
+      "开启会定向清理 marqueeUIList 的顶部项与其 Laya 计时器，以及旧 marqueeUI；销毁前保存 isNew，按 ID 收尾，避免重叠旧 UI 结束新消息。保留 marqueeUIActList、普通聊天和 ShowTextPrompt；不调用 HideAllMarquee/ClearData，不吞聊天协议。旧 __AddNotice 仅在当前方法确为空函数时恢复。",
+      "installTopMarqueeButton 克隆 seatUISwitch 的原生 switch/slider/status；Y 对齐 wallpaperContainer 内 skinPaperSwitch 的可见 slider（壁纸设置同一行），X 保持明牌框框 slider 列不变。按最新要求文字在开关上方，采用 switch-container + explanation + switch 纵向结构，继承原生字体和间距，容器宽度跟随明牌框框；布局仍以 slider 作锚点，文字上移不改变开关坐标。追加在 .setting.panel-content 内，随分区一起折叠，保留 header.nextElementSibling 链。id 不使用 Switch 后缀，避免通用配置绑定接管；文字点击及 xc-top-marquee-change 同步保留。",
+      "ResizeObserver/有限节点 MutationObserver/resize/scroll 经 rAF 重排，坐标考虑缩放、边框与滚动；addFrame 重建后补装，幂等安装、解绑旧观察器。核心未就绪每 500ms 重试最多 60 次，登录/重建/点击可再次触发；Exit 恢复原方法、取消重试并清理按钮。日志统一 appendLocalSkinDebugLine，前缀 [屏蔽弹幕]。",
+    ],
+    regressionNotes: [
+      "top-marquee-block.cjs：真实嵌入面板 DOM + 抽取控制器，在 headless Chromium 验证 34 项，并验证 3 种持久化值的新上下文读取；游戏服务模拟，尚非游戏内实测。覆盖新旧队列、重复切换、原方法恢复、旧挂钩迁移、换实例、晚初始化、活动/聊天隔离、缩放/折叠/重建和文字点击。",
+      "回退：删除控制器、按钮和 setProto/addFrame/Exit 挂点；如需恢复改造前行为再恢复固定 AddNotice 空函数。仅关闭按钮即恢复未来顶部广播，不需要恢复旧固定屏蔽；已清理的旧广播不补放。未生成 asar，实际脚本须在 dom-ready 重载。",
+    ],
+  },
   xieLingYuDrawTags: {
     title: "谢灵毓心幽 / 元嫡摸牌来源标签",
     verifiedAt: "2026-10-08",

@@ -16542,6 +16542,144 @@
       configurable: !0,
     });
   }
+  // 顶部跑马灯：仅控制 ShowMarquee，保留聊天消息与活动附加行。
+  const TOP_MARQUEE_STORAGE_KEY = "xcTopMarqueeBlocked";
+  const topMarqueeState = {
+    enabled: false,
+    layer: null,
+    hooks: [],
+    retryTimer: null,
+  };
+  try {
+    topMarqueeState.enabled = localStorage.getItem(TOP_MARQUEE_STORAGE_KEY) === "true";
+  } catch (_) {}
+
+  function logTopMarqueeBlock(event, error) {
+    appendLocalSkinDebugLine("[屏蔽弹幕] " + event +
+      (error ? " " + (error.message || error) : ""), false);
+  }
+
+  function getTopMarqueeManager() {
+    return laya.class("ChatSysNewsManager", true);
+  }
+
+  function finishBlockedTopMarquee(message) {
+    const manager = getTopMarqueeManager();
+    // 重叠显示的上一条不能结束已经开始的下一条。
+    if (!manager || !message || manager.nowPlayeNoticeId !== message.ID) return;
+    if (typeof manager.OnTimeOut === "function")
+      Laya.timer.clear(manager, manager.OnTimeOut);
+    if (typeof manager.OnNoticPlayEnd === "function") manager.OnNoticPlayEnd();
+  }
+
+  function clearOldTopMarqueeQueue() {
+    const chat = laya.class("ChatManager", true);
+    const queue = chat && chat.BannerSystemNoticeList;
+    if (Array.isArray(queue)) queue.length = 0;
+  }
+
+  function clearVisibleTopMarquees(layer) {
+    if (!layer) return;
+    const entries = [];
+    if (layer.marqueeUIList && typeof layer.marqueeUIList.forEach === "function")
+      layer.marqueeUIList.forEach((id, ui) => { if (ui) entries.push([id, ui]); });
+    for (const [id, ui] of entries) {
+      if (ui.posId != null && ui.posId !== 0) continue;
+      const isNew = ui.isNew;
+      Laya.timer.clearAll(ui);
+      if (typeof layer.HideMarquee === "function") layer.HideMarquee(id);
+      else {
+        if (typeof ui.destroy === "function" && !ui.destroyed) ui.destroy();
+        layer.marqueeUIList.del(id);
+      }
+      if (isNew) finishBlockedTopMarquee({ ID: id });
+    }
+    if (layer.marqueeUI && typeof layer.RemoveMarquee === "function") {
+      Laya.timer.clearAll(layer.marqueeUI);
+      layer.RemoveMarquee();
+    }
+    clearOldTopMarqueeQueue();
+  }
+
+  function installTopMarqueeBlocker(attempt = 0) {
+    try {
+      const layer = laya.class("PromptLayer", true);
+      const manager = getTopMarqueeManager();
+      // 兼容当前页面曾安装的旧空函数；只恢复已知空实现，不覆盖其它挂钩。
+      if (manager && typeof manager.__AddNotice === "function" &&
+          typeof manager.AddNotice === "function" &&
+          /^function\s*\([^)]*\)\s*\{\s*\}$/.test(Function.prototype.toString.call(manager.AddNotice))) {
+        Object.defineProperty(manager, "AddNotice", {
+          value: manager.__AddNotice, writable: true, configurable: true,
+        });
+        delete manager.__AddNotice;
+      }
+      if (layer && !layer.destroyed && typeof layer.ShowMarquee === "function" &&
+          manager && typeof manager.OnNoticPlayEnd === "function") {
+        if (topMarqueeState.retryTimer !== null) clearTimeout(topMarqueeState.retryTimer);
+        topMarqueeState.retryTimer = null;
+        topMarqueeState.layer = layer;
+        // 原生事件可能保存旧入口引用，挂共同的动态调用方法；原型挂钩覆盖新实例。
+        let target = layer;
+        while (!Object.prototype.hasOwnProperty.call(target, "ShowMarquee"))
+          target = Object.getPrototypeOf(target);
+        if (!topMarqueeState.hooks.some((hook) => hook.target === target)) {
+          const descriptor = Object.getOwnPropertyDescriptor(target, "ShowMarquee");
+          const original = target.ShowMarquee;
+          const wrapper = function (message, isNew = false) {
+            topMarqueeState.layer = this;
+            if (!topMarqueeState.enabled) return original.apply(this, arguments);
+            if (isNew) finishBlockedTopMarquee(message);
+            else clearOldTopMarqueeQueue();
+          };
+          Object.defineProperty(target, "ShowMarquee", { ...descriptor, value: wrapper });
+          topMarqueeState.hooks.push({ target, descriptor, wrapper });
+          logTopMarqueeBlock("install");
+        }
+        if (topMarqueeState.enabled) clearVisibleTopMarquees(layer);
+        return true;
+      }
+    } catch (error) {
+      if (attempt === 0) logTopMarqueeBlock("install:error", error);
+    }
+    if (attempt < 60 && topMarqueeState.retryTimer === null)
+      topMarqueeState.retryTimer = setTimeout(() => {
+        topMarqueeState.retryTimer = null;
+        installTopMarqueeBlocker(attempt + 1);
+      }, 500);
+    return false;
+  }
+
+  function setTopMarqueeBlocked(enabled) {
+    topMarqueeState.enabled = !!enabled;
+    try {
+      localStorage.setItem(TOP_MARQUEE_STORAGE_KEY, String(topMarqueeState.enabled));
+    } catch (error) { logTopMarqueeBlock("save:error", error); }
+    if (installTopMarqueeBlocker()) {
+      const manager = getTopMarqueeManager();
+      if (typeof manager.playNotice === "function") {
+        Laya.timer.clear(manager, manager.playNotice);
+        manager.playNotice();
+      }
+    }
+    window.dispatchEvent(new CustomEvent("xc-top-marquee-change"));
+    logTopMarqueeBlock(topMarqueeState.enabled ? "toggle:on" : "toggle:off");
+    return topMarqueeState.enabled;
+  }
+
+  function cleanupTopMarqueeBlocker() {
+    if (topMarqueeState.retryTimer !== null) clearTimeout(topMarqueeState.retryTimer);
+    topMarqueeState.retryTimer = null;
+    for (const hook of topMarqueeState.hooks)
+      if (hook.target.ShowMarquee === hook.wrapper)
+        Object.defineProperty(hook.target, "ShowMarquee", hook.descriptor);
+    topMarqueeState.hooks.length = 0;
+    topMarqueeState.layer = null;
+  }
+
+  window.__xcSetTopMarqueeBlocked = setTopMarqueeBlocked;
+  window.__xcIsTopMarqueeBlocked = () => topMarqueeState.enabled;
+
   async function setProto() {
     const n = _0x47c207;
     function t() {
@@ -17173,14 +17311,7 @@
         globalConfig[e(1407)] &&
           (null == (t = laya[e(552)](e(798), e(721))) || t[e(572)]());
     })(),
-      (async function () {
-        var t, e;
-        const i = n;
-        redefine(laya[i(671)](i(996)), i(1128), { value: function () {} }),
-          null ==
-            (e = null == (t = laya[i(671)](i(996))) ? void 0 : t[i(1111)]) ||
-            e.call(t);
-      })(),
+      installTopMarqueeBlocker(),
       (async function () {
         var t, e;
         const i = n;
@@ -26198,6 +26329,9 @@
     var n, t, e, i;
     const a = _0x41a3d0;
     if (handSortPanelState?.cleanup) handSortPanelState.cleanup();
+    cleanupTopMarqueeBlocker();
+    if (typeof window.__xcCleanupTopMarqueeButton === "function")
+      window.__xcCleanupTopMarqueeButton();
     return (
       window[a(439)](a(657), _0x3e479a),
       window[a(439)](a(657), _0x5e4f94),
@@ -27379,6 +27513,9 @@
     ensureHandSortFloatingPanel();
     if (typeof window.__xcInstallHandSortPanelButton === "function")
       window.__xcInstallHandSortPanelButton();
+    installTopMarqueeBlocker();
+    if (typeof window.__xcInstallTopMarqueeButton === "function")
+      window.__xcInstallTopMarqueeButton();
   }
   function _0x4484c9() {
     const n = _0x41a3d0;
@@ -34396,6 +34533,152 @@
   }
 
   window.__xcInstallHandSortPanelButton = function () { waitForCardBackSwitch(0); };
+
+  // 顶部广播按钮：壁纸设置开关同一行，明牌框框开关同一列。
+  var topMarqueeSwitchLayout = null;
+  var topMarqueeButtonTimer = null;
+
+  function syncTopMarqueeButton() {
+    var input = document.getElementById("xcTopMarqueeToggle");
+    if (!input) return;
+    input.disabled = typeof window.__xcSetTopMarqueeBlocked !== "function";
+    input.checked = !!(window.__xcIsTopMarqueeBlocked && window.__xcIsTopMarqueeBlocked());
+    input.title = input.checked ? "关闭后恢复顶部滚动广播" : "开启后屏蔽顶部滚动广播";
+  }
+
+  function layoutTopMarqueeButton() {
+    var state = topMarqueeSwitchLayout;
+    if (!state || !state.row.isConnected) return;
+    var anchor = getHandSortSwitchAnchor(state.seat);
+    var wallpaper = getHandSortSwitchAnchor(state.wallpaper);
+    var own = state.row.querySelector(".slider");
+    if (!anchor || !wallpaper || !own) return;
+    var nativeContainer = state.seat.closest(".switch-container");
+    if (nativeContainer) {
+      var width = nativeContainer.offsetWidth + "px";
+      if (state.row.style.width !== width) state.row.style.width = width;
+    }
+    var parent = state.parent;
+    var parentRect = parent.getBoundingClientRect();
+    var wallpaperRect = wallpaper.getBoundingClientRect();
+    if (!parentRect.width || !wallpaperRect.height) return;
+    var x = anchor.getBoundingClientRect();
+    var ownRect = own.getBoundingClientRect();
+    var rowRect = state.row.getBoundingClientRect();
+    var scaleX = parentRect.width / parent.offsetWidth || 1;
+    var scaleY = parentRect.height / parent.offsetHeight || scaleX;
+    var left = (x.left + x.width / 2 - parentRect.left -
+      (ownRect.left + ownRect.width / 2 - rowRect.left)) / scaleX +
+      parent.scrollLeft - parent.clientLeft;
+    var top = (wallpaperRect.top + wallpaperRect.height / 2 - parentRect.top -
+      (ownRect.top + ownRect.height / 2 - rowRect.top)) / scaleY +
+      parent.scrollTop - parent.clientTop;
+    var styles = { left: left + "px", top: top + "px", visibility: "visible" };
+    for (var key in styles)
+      if (state.row.style[key] !== styles[key]) state.row.style[key] = styles[key];
+  }
+
+  function cleanupTopMarqueeButton() {
+    if (topMarqueeButtonTimer !== null) clearTimeout(topMarqueeButtonTimer);
+    topMarqueeButtonTimer = null;
+    if (topMarqueeSwitchLayout) topMarqueeSwitchLayout.cleanup();
+    topMarqueeSwitchLayout = null;
+  }
+
+  function installTopMarqueeButton(attempt) {
+    attempt = attempt || 0;
+    var seat = document.getElementById("seatUISwitch");
+    var panel = seat && seat.closest(".setting.panel-content");
+    var header = panel && panel.previousElementSibling;
+    var wallpaper = panel && panel.querySelector("#skinPaperSwitch");
+    if (!header || !header.matches("button.panel-header") || !wallpaper) {
+      if (attempt < 240 && topMarqueeButtonTimer === null)
+        topMarqueeButtonTimer = setTimeout(function () {
+          topMarqueeButtonTimer = null;
+          installTopMarqueeButton(attempt + 1);
+        }, 250);
+      return false;
+    }
+    if (topMarqueeSwitchLayout && topMarqueeSwitchLayout.row.isConnected &&
+        topMarqueeSwitchLayout.seat === seat && topMarqueeSwitchLayout.header === header &&
+        topMarqueeSwitchLayout.wallpaper === wallpaper) {
+      syncTopMarqueeButton();
+      layoutTopMarqueeButton();
+      return true;
+    }
+    cleanupTopMarqueeButton();
+    var parent = panel;
+    if (getComputedStyle(parent).position === "static") parent.style.position = "relative";
+    var toggle = findSwitchContainer(seat).cloneNode(true);
+    clearDuplicateIds(toggle);
+    for (var node of [toggle].concat(Array.from(toggle.querySelectorAll("*"))))
+      for (var attribute of Array.from(node.attributes))
+        if (/^on/i.test(attribute.name) || /^data-/.test(attribute.name))
+          node.removeAttribute(attribute.name);
+    var input = toggle.querySelector("input");
+    if (!input) return false;
+    // 避开旧的 input[id$="Switch"] 配置绑定，状态由独立本地开关维护。
+    input.id = "xcTopMarqueeToggle";
+    input.name = "";
+    input.type = "checkbox";
+    input.removeAttribute("checked");
+    input.setAttribute("aria-label", "屏蔽弹幕");
+    toggle.style.cssText = "position:relative;display:block;width:56px;height:26px;margin:0 0 0 10px";
+    var caption = document.createElement("label");
+    caption.htmlFor = input.id;
+    caption.className = "explanation";
+    caption.textContent = "屏蔽弹幕";
+    caption.style.cssText = "white-space:nowrap;cursor:pointer";
+    var row = document.createElement("div");
+    row.id = "xcTopMarqueeSwitchRow";
+    row.className = "switch-container";
+    row.style.cssText = "position:absolute;display:block;left:0;top:0;margin:0;height:auto;z-index:2;visibility:hidden";
+    row.appendChild(caption);
+    row.appendChild(toggle);
+    // 放在设置内容内，随该分区一起折叠，保留标题 nextElementSibling 折叠链。
+    parent.appendChild(row);
+    input.addEventListener("change", function (event) {
+      event.stopPropagation();
+      if (window.__xcSetTopMarqueeBlocked) window.__xcSetTopMarqueeBlocked(input.checked);
+      syncTopMarqueeButton();
+    });
+    row.addEventListener("click", function (event) { event.stopPropagation(); });
+    var frame = null;
+    function scheduleLayout() {
+      if (frame !== null) return;
+      frame = requestAnimationFrame(function () { frame = null; layoutTopMarqueeButton(); });
+    }
+    var resize = new ResizeObserver(scheduleLayout);
+    [parent, header, findSwitchContainer(seat), findSwitchContainer(wallpaper)]
+      .forEach(function (node) { resize.observe(node); });
+    var observer = new MutationObserver(scheduleLayout);
+    [parent, header, document.getElementById("wallpaperContainer")].filter(Boolean).forEach(function (node) {
+      observer.observe(node, { attributes: true, attributeFilter: ["style", "class", "hidden"] });
+    });
+    window.addEventListener("resize", scheduleLayout);
+    parent.addEventListener("scroll", scheduleLayout, true);
+    window.addEventListener("xc-top-marquee-change", syncTopMarqueeButton);
+    topMarqueeSwitchLayout = {
+      row: row, parent: parent, seat: seat, header: header, wallpaper: wallpaper,
+      cleanup: function () {
+        resize.disconnect();
+        observer.disconnect();
+        if (frame !== null) cancelAnimationFrame(frame);
+        window.removeEventListener("resize", scheduleLayout);
+        parent.removeEventListener("scroll", scheduleLayout, true);
+        window.removeEventListener("xc-top-marquee-change", syncTopMarqueeButton);
+        row.remove();
+      },
+    };
+    syncTopMarqueeButton();
+    layoutTopMarqueeButton();
+    return true;
+  }
+
+  window.__xcInstallTopMarqueeButton = installTopMarqueeButton;
+  window.__xcCleanupTopMarqueeButton = cleanupTopMarqueeButton;
+  installTopMarqueeButton();
+
   function waitForCardBackSwitch(attempt) {
     var cardBackSwitch = document.getElementById("cardBackThemeSwitch");
     if (cardBackSwitch && document.body) {
