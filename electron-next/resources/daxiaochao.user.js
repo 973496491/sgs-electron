@@ -12625,8 +12625,9 @@
     _0x393867[_0x47c207(457)]();
   }
   let eightPveFigureRetryTimer = null;
-  let eightPveFigureRetryAttempt = 0;
-  let eightPveFigureRetrySource = "";
+  let eightPveFigureRetryTask = null;
+  const EIGHT_PVE_FIGURE_RETRY_INTERVAL = 1000;
+  const EIGHT_PVE_FIGURE_MAX_RETRIES = 10;
   let eightPveFigureLastTrace = "";
   function logEightPveFigure(label, data) {
     if (!(window.XC && window.XC.isDebug)) return;
@@ -12647,35 +12648,72 @@
       }
     } catch (e) {}
   }
-  function scheduleEightPveFigureOut(source) {
-    eightPveFigureRetrySource = String(source || "unknown");
-    const replacedPendingTimer = !!eightPveFigureRetryTimer;
-    if (eightPveFigureRetryTimer) {
+  function cancelEightPveFigureOut(source) {
+    if (eightPveFigureRetryTimer !== null) {
       clearTimeout(eightPveFigureRetryTimer);
       eightPveFigureRetryTimer = null;
     }
-    eightPveFigureRetryAttempt = 0;
+    if (eightPveFigureRetryTask)
+      logEightPveFigure("scheduler:cancel", {
+        source: String(source || "unknown"),
+        attempt: eightPveFigureRetryTask.attempt,
+      });
+    eightPveFigureRetryTask = null;
+  }
+  function getEightPveFigureScene() {
+    try { return laya.gamescene || null; } catch (error) { return null; }
+  }
+  function armEightPveFigureRetry(task) {
+    if (task !== eightPveFigureRetryTask || task.finished || task.nextAt === null) return;
+    // 保留原到期时间：重复入口不延长等待，也能恢复被外部清掉的 timer。
+    if (eightPveFigureRetryTimer !== null) clearTimeout(eightPveFigureRetryTimer);
+    eightPveFigureRetryTimer = setTimeout(task.run, Math.max(0, task.nextAt - Date.now()));
+  }
+  function scheduleEightPveFigureOut(source) {
+    const scene = getEightPveFigureScene();
+    if (eightPveFigureRetryTask && eightPveFigureRetryTask.scene &&
+        eightPveFigureRetryTask.scene !== scene)
+      cancelEightPveFigureOut("scene-changed");
+    if (eightPveFigureRetryTask) {
+      armEightPveFigureRetry(eightPveFigureRetryTask);
+      return eightPveFigureRetryTask.result || { retry: true, reason: "figure-out-pending" };
+    }
+    const task = {
+      source: String(source || "unknown"), attempt: 0, scene,
+      finished: false, nextAt: null, result: null, run: null,
+    };
+    eightPveFigureRetryTask = task;
     logEightPveFigure("scheduler:start", {
-      source: eightPveFigureRetrySource,
-      replacedPendingTimer,
+      source: task.source,
+      intervalMs: EIGHT_PVE_FIGURE_RETRY_INTERVAL,
+      maxRetries: EIGHT_PVE_FIGURE_MAX_RETRIES,
     });
-    const run = () => {
+    task.run = () => {
+      // 旧场景已排队的回调不得清掉新一轮 timer 或重新启动任务。
+      if (task !== eightPveFigureRetryTask || task.finished) return task.result;
       eightPveFigureRetryTimer = null;
+      task.nextAt = null;
+      const currentScene = getEightPveFigureScene();
+      if (task.scene && task.scene !== currentScene) {
+        task.result = { retry: false, reason: "scene-changed" };
+        cancelEightPveFigureOut("scene-changed");
+        return task.result;
+      }
+      if (!task.scene && currentScene) task.scene = currentScene;
       let result;
-      if (0 === eightPveFigureRetryAttempt || eightPveFigureRetryAttempt % 10 === 0)
-        logEightPveFigure("scheduler:invoke", {
-          source: eightPveFigureRetrySource,
-          attempt: eightPveFigureRetryAttempt,
-          hasLaya: typeof laya !== "undefined" && !!laya,
-          hasFigureOut:
-            typeof laya !== "undefined" &&
-            !!laya &&
-            typeof laya.figureOut === "function",
-        });
+      logEightPveFigure("scheduler:invoke", {
+        source: task.source,
+        attempt: task.attempt,
+        hasLaya: typeof laya !== "undefined" && !!laya,
+        hasFigureOut:
+          typeof laya !== "undefined" &&
+          !!laya &&
+          typeof laya.figureOut === "function",
+      });
       try {
         result =
           laya && typeof laya.figureOut === "function"
-            ? laya.figureOut(eightPveFigureRetrySource, eightPveFigureRetryAttempt)
+            ? laya.figureOut(task.source, task.attempt)
             : { retry: true, reason: "figureOut-missing" };
       } catch (e) {
         result = {
@@ -12690,33 +12728,32 @@
           reason: "figureOut-return-empty",
           resultType: typeof result,
         };
-      if (
-        0 === eightPveFigureRetryAttempt ||
-        eightPveFigureRetryAttempt % 10 === 0 ||
-        !result.retry
-      )
-        logEightPveFigure("scheduler:result", {
-          source: eightPveFigureRetrySource,
-          attempt: eightPveFigureRetryAttempt,
-          retry: !!result.retry,
-          reason: result.reason || "unknown",
-          message: result.message || "",
-        });
-      if (result && result.retry && eightPveFigureRetryAttempt < 30) {
-        eightPveFigureRetryAttempt++;
-        eightPveFigureRetryTimer = setTimeout(run, 300);
+      if (task !== eightPveFigureRetryTask) return result;
+      task.result = result;
+      logEightPveFigure("scheduler:result", {
+        source: task.source,
+        attempt: task.attempt,
+        retry: !!result.retry,
+        reason: result.reason || "unknown",
+        message: result.message || "",
+      });
+      if (result.retry && task.attempt < EIGHT_PVE_FIGURE_MAX_RETRIES) {
+        task.attempt++;
+        task.nextAt = Date.now() + EIGHT_PVE_FIGURE_RETRY_INTERVAL;
+        armEightPveFigureRetry(task);
         return result;
       }
       if (result && result.retry)
         logEightPveFigure("figure-out:timeout", {
-          source: eightPveFigureRetrySource,
-          attempt: eightPveFigureRetryAttempt,
+          source: task.source,
+          attempt: task.attempt,
           reason: result.reason || "not-ready",
         });
-      eightPveFigureRetryAttempt = 0;
+      // 保留终止结果，后续 skills/seatUIs 等入口不重新获得十次预算。
+      task.finished = true;
       return result;
     };
-    return run();
+    return task.run();
   }
   window.__xcScheduleEightPveFigureOut = scheduleEightPveFigureOut;
   setTimeout(function () {
@@ -13399,6 +13436,7 @@
     },
     reset() {
       const n = _0x47c207;
+      cancelEightPveFigureOut("laya.reset");
       _0x16b1bc[n(457)](),
         this[n(648)](null),
         timer[n(457)](
@@ -20256,6 +20294,7 @@
         ready(n) {
           var t, e;
           const i = _0x4efae6;
+          cancelEightPveFigureOut("room.ready");
           this[i(458)](!0), resetAdvancedFeatureTrial(), (room[i(259)] = n);
           logLightRoomContext("room-ready", n);
           window.__xcLogEightIdentityRoleProbe &&
