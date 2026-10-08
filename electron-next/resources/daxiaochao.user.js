@@ -30933,7 +30933,27 @@
                     !n[J(888)][J(544)] &&
                     (game[un] = dn);
       } else if (rn == J(686))
-        if (945 == un && 0 == fn && (null == xn ? void 0 : xn[J(544)]) > 0)
+        if (4025 == un) {
+          // OL 谋周瑜·醉锋：Type=28 的 Params 经 NQt 直接传入选牌窗，内容为目标手牌 ID。
+          // 不读取角色状态 Datas（其中是花色位掩码），也不提前消费后续展示/用酒的移牌通知。
+          const zuiFengSkip = n[J(605)] ? "isSend"
+            : bn !== 28 ? "not-card-selection"
+            : !Number.isInteger(cn) || cn < 0 || cn >= 255 ? "invalid-target"
+            : !Array.isArray(xn) ? "invalid-params"
+            : isNaN(Card.key) ? "not-initialized" : null;
+          if (zuiFengSkip) {
+            stepVisibleCardTrace("zuifeng:skip", null, null, zuiFengSkip);
+          } else {
+            const cards = [...new Set(xn.filter(id => Number.isInteger(id) && id > 0))];
+            if (cards.length) {
+              const targetHand = new Zone(cn);
+              stepVisibleCardTrace("zuifeng:reveal", targetHand, cards);
+              targetHand.show(cards);
+            } else {
+              stepVisibleCardTrace("zuifeng:skip", null, null, "no-visible-cards");
+            }
+          }
+        } else if (945 == un && 0 == fn && (null == xn ? void 0 : xn[J(544)]) > 0)
           drawYanJiao(
             xn[J(602)]((n) => _0x50e4e7[n][J(509)]),
             ln == room[J(541)],

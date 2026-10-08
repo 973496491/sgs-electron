@@ -32724,6 +32724,65 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  cardFaceMarks: {
+    title: "牌面标记 / 族荀攸百出与小抄已有标签挂钩",
+    verifiedAt: "2026-10-08",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/牌面标记链路.md",
+    searchKeywords: [
+      "牌上标记", "牌面标记", "卡牌标记", "族荀攸", "百出", "新组合", "573", "3338", "385",
+      "BaiChu", "markSkills", "GsCUpdateRoleDataExNtf", "RetainRoleDataExLastParams",
+      "SkillCardRemark", "SetCardUIRemark", "__SetCardUIRemark", "TagArr1", "UpdateTag",
+      "AddCardTag", "DelCardTag", "tempCardTag", "cardTagBtn3", "SEAT_CARD_ADD_TAG",
+      "AddShunJiCardTags", "cardLabelSwitch", "PrivateUpdateCardUis", "skillOrStateDataChange",
+      "顺机", "弹雀", "炁", "DuoQi", "刷新后补回", "对象复用"
+    ],
+    decodedIndexes: {
+      _0x3812: {
+        "281": "cardUis", "359": "SelfSeatUi", "371": "SkillCardRemark",
+        "661": "cardContainer", "682": "Card", "796": "TagArr1", "817": "SetCardUIRemark",
+        "847": "DuoQi", "1029": "skillOrStateDataChange", "1116": "CardId",
+        "1146": "cardLabelSwitch", "1237": "__SetCardUIRemark", "1268": "PrivateUpdateCardUis",
+        "1322": "gamescene", "1424": "UpdateTag", "1523": "AddCardTag"
+      }
+    },
+    chain: [
+      "官方配置确认族荀攸573、百出3338/BaiChu。GsCUpdateRoleDataExNtf用IsSpell/DataID/SeatID/Datas分发；百出RetainRoleDataExLastParams=false，分发器先pop末尾项，再回调。技能从下标1按三元记录[牌名技能ID,原始类型,花色]更新markSkills，不是实体牌号。",
+      "牌面刷新PrivateUpdateCardUis或skillOrStateDataChange -> skillCardLabelChange -> seat.SetCardUIRemark -> BaiChu.SkillCardRemark -> Card.AddCardTag/TagArr1 -> IsSkillChangeStatus/UpdateTag。百出逐组先查FirstSkillId、再查CardOriginTypeWithAvatar与FlowerOnSeat，首次命中break，返回百出/空/新组合。",
+      "SetCardUIRemark先清空TagArr1再收集座位状态、主副将技能文字；Card.AddCardTag去重并中文排序，UpdateTag只显示前两项。ui.AddCardTag/DelCardTag操作独立tempCardTag，只首项画cardTagBtn3；ui.Clear清空临时标记。不可把模型与UI的同名API混用。",
+      "AddShunJiCardTags读取当前本人cardUis，清理自己[顺机]前缀，按cardLabelSwitch、HasSkill(3821)、game.spellSpace[3821].used添加并UpdateTag；_0x1a2190在原skillOrStateDataChange/PrivateUpdateCardUis后timer.delay补回，避免被原生重算清空。",
+      "既有SetCardUIRemark包装器通过__SetCardUIRemark调用原方法，本人GetStateValue(3433)>0时_0x3e5da0添加[弹雀]差值；setProto已有DuoQi.SkillCardRemark按game[3731].flat与cardLabelSwitch返回炁。新增功能应保留这些包装器。",
+      "此次仅静态调查和Node VM抽取方法断言，未改userscript或运行客户端。详细来源哈希、字符偏移、场景条件及回归边界见专项文档；持续标记需在原生刷新/对象重建后恢复，只清理本功能标签。"
+    ]
+  },
+  mouZhouYuZuiFeng: {
+    title: "OL 谋周瑜醉锋接入可见手牌",
+    verifiedAt: "2026-10-08",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/谋周瑜醉锋可见牌.md",
+    searchKeywords: [
+      "谋周瑜", "醉锋", "顾曲", "770", "4025", "4024", "MouZhouYu", "ZuiFeng", "GuQv",
+      "GsCRoleOptTargetNtf", "OPT_SKILL_FLAG1", "SelectCardWindowServer", "NQt",
+      "targetSeatID", "Params", "Zone.show", "Zone.shoupai", "可见牌", "可见手牌",
+      "zuifeng:reveal", "zuifeng:skip", "usedSuitMask", "lockedSuitMask",
+      "visible-card-chain.cjs", "回退", "dom-ready"
+    ],
+    decodedIndexes: {
+      _0x497b: { "433": "ClassName", "583": "className", "605": "isSend", "686": "GsCRoleOptTargetNtf", "751": "show" },
+      _0x3911: { "291": "key", "326": "show", "517": "shoupai", "599": "obj" }
+    },
+    verifiedConfig: { generalID: 770, spellID: 4025, spellName: "醉锋", otherSpellID: 4024, otherSpellName: "顾曲" },
+    chain: [
+      "官方 Config.sgs 的 character/cha_spell 确认 770=MouZhouYu、4025=ZuiFeng、4024=GuQv；来源时间和 SHA-256 保存在专项文档。本次按官方源静态核验，不将模拟消息当成实战日志。",
+      "sgsGame_a 快照 this.r(ZuiFeng,kei)；kei.GetResponser 仅对 IWi.OPT_SKILL_FLAG1=28 返回 NQt，且 SelectCardWindowServer=true；NQt 将 TargetSeatID/Params 传到 SelectCardWindow(als)，后者逐项 L$t.GetInstance(Params[i]) 创建牌 UI。",
+      "协议 TargetSeatID getter 返回 targetSeatID；Params 直接是目标手牌 ID 列表。SeatID 是操作座位，SrcSeatID 是技能来源，不能据此决定牌持有者。醉锋状态 Datas[0/1] 是 usedSuitMask/lockedSuitMask，不是牌号。",
+      "核心 logic 的 GsCRoleOptTargetNtf 分支新增 4025：非 isSend、Type=28、整数目标 0..254、Params 为数组、Card.key 已初始化；取 Params 的正整数并去重，不改原消息，经 new Zone(targetSeatID).show(cards) 进入现有模型与主/副面板。",
+      "没有新增配置开关/会员或模式白名单/技能缓存；同区公开展示及后续用酒、弃置仍走 PubGsCMoveCard，不在 PubGsCUseCard 通知时提前扣牌，不把私下看过的牌全部标记成顾曲的阙。",
+      "zuifeng:reveal/zuifeng:skip 经 stepVisibleCardTrace 与既有日志桥写 appendLocalSkinDebugLine；关闭调试不影响记录。占位与畸形输入忽略，未知槽位保留，座位 0 有效。",
+      "visible-card-chain.cjs 新增 5 项醉锋回归，修前 4 项失败，修后 27 项全过；覆盖模型/主副面板、重复展示、使用移动与弃置、占位过滤、不改原消息、错误类型/座位/状态数据、关闭调试和小写 className。尚待游戏内醉锋验证。",
+      "仅同步新增分支到 AppData/Roaming/SGSOL/三国杀打小抄.js，保留 CRLF，并保存 before-zuifeng-2026-10-08T13-37-15-767Z.bak；生效需 dom-ready 重新注入。回退只移除此 4025 分支及 5 项测试，保留通用移牌、刷新隔离与核心日志桥。"
+    ]
+  },
   debugPanelVisibility: {
     title: "调试窗口关闭后被强制唤起 / 显示开关统一约束",
     verifiedAt: "2026-09-13",

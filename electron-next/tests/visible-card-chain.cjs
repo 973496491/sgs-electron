@@ -131,6 +131,17 @@ function harness() {
       FromID: 1, FromZone: 5, FromPosition: RAND, ToID: 255,
       ToZone: 3, ToPosition: RAND, MoveType: 1, SpellID: 0, isSend: false,
     }, changes));
+    globalThis.setHiddenHand = (seat, ids) => {
+      Zone.init(ids.concat([91,92]), "1-255");
+      move({FromID:255,FromZone:1,FromPosition:DING,ToID:seat,ToZone:5,
+        CardIDs:[],CardCount:ids.length});
+      flush();
+      logs.length = 0;
+    };
+    globalThis.revealZuiFeng = changes => logic(Object.assign({
+      ClassName:"GsCRoleOptTargetNtf", SpellID:4025, Type:28,
+      SeatID:1, SrcSeatID:1, targetSeatID:2, Param:0, Params:[7,14,22],
+    }, changes));
     globalThis.readKeys = id => document.getElementById(id).querySelectorAll(":scope>.shoupai").map(node => Number(node.dataset.key));
   `, context);
   return {
@@ -237,6 +248,77 @@ if (!baseline) {
     assert.deepEqual(h.value('Zone.obj["1-255"].slice(0,4).map(card=>card.key)'), [22,131,72,52]);
     assert(h.context.logs.some(line => line.includes("event:in") && line.includes("GsCRoleOptTargetNtf") &&
       line.includes('"Params":[4,0,22,131,72,52]') && line.includes('"SrcSeatID":1')));
+  });
+  test("ZuiFeng reveals server-provided target hand in the model and both panels", h => {
+    h.run(`
+      _0x47b943.spellDict[4025] = { name: "醉锋" };
+      setHiddenHand(2,[7,14,22]);
+    `);
+    assert.deepEqual(h.value("Zone.shoupai(2)"), [], "a hidden hand starts with no known card IDs");
+    h.run('revealZuiFeng(); flush();');
+    assert.deepEqual(h.value("Zone.shoupai(2)"), [7,14,22]);
+    assert.deepEqual(h.value('readKeys("3")'), [7,14,22]);
+    assert.deepEqual(h.value('readKeys("s3")'), [7,14,22]);
+    assert.deepEqual(h.value("Zone.shoupai(1)"), [], "the cards belong to the target, not the caster");
+    assert.equal(h.run('Zone.obj["5-2"].length'), 3, "revealing must not add hand slots");
+    assert(h.context.logs.some(line => line.includes('"stage":"zuifeng:reveal"') && line.includes('"spellName":"醉锋"')));
+    assert.deepEqual(h.value("oldErrors"), []);
+    assert.deepEqual(h.value("frameErrors"), []);
+  });
+  test("ZuiFeng repeated disclosure and subsequent card movement do not leave duplicates", h => {
+    h.run(`
+      setHiddenHand(2,[7,14,22]); revealZuiFeng(); revealZuiFeng();
+      move({FromID:2,ToID:2,ToZone:5,CardIDs:[14],SpellID:4025});
+      logic({ClassName:"PubGsCUseCard",SeatID:2,CardID:14,useType:1,isSend:false});
+      flush();
+    `);
+    assert.deepEqual(h.value("Zone.shoupai(2)"), [7,14,22], "use notification must wait for actual movement");
+    assert.equal(h.run('Zone.obj["5-2"].length'), 3);
+    h.run('move({FromID:2,CardIDs:[14],SpellID:4025}); move({FromID:2,CardIDs:[7],SpellID:0}); flush();');
+    assert.deepEqual(h.value("Zone.shoupai(2)"), [22]);
+    assert.deepEqual(h.value('readKeys("3")'), [22]);
+    assert.deepEqual(h.value('readKeys("s3")'), [22]);
+    assert.deepEqual(h.value('Zone.obj["3-255"].map(card=>card.id)'), [14,7]);
+  });
+  test("ZuiFeng ignores hidden placeholders and deduplicates IDs without changing Params", h => {
+    h.run(`
+      setHiddenHand(2,[7,14,22]);
+      globalThis.params=[0,7,7,-1,"14",null,1.5,22];
+      revealZuiFeng({Params:params}); flush();
+    `);
+    assert.deepEqual(h.value("Zone.shoupai(2)"), [7,22]);
+    assert.equal(h.run('Zone.obj["5-2"].length'), 3);
+    assert.deepEqual(h.value("params"), [0,7,7,-1,"14",null,1.5,22]);
+    assert.deepEqual(h.value('readKeys("s3").filter(key=>key>0)'), [7,22]);
+    assert.equal(h.run('Zone.obj["5-2"].filter(card=>card.key===0).length'), 1,
+      "the unrevealed hand slot must stay unknown");
+  });
+  test("ZuiFeng ignores other options, sent messages, invalid targets and suit-state data", h => {
+    h.run(`
+      setHiddenHand(2,[7,14,22]);
+      for (const changes of [{Type:29},{Type:undefined},{isSend:true},{Params:null},
+        {Params:"7,14"},{Params:[]},{Params:[0,-1]},{targetSeatID:255},
+        {targetSeatID:-1},{targetSeatID:undefined},{targetSeatID:2.5}]) revealZuiFeng(changes);
+      logic({ClassName:"GsCUpdateRoleDataExNtf",SpellID:4025,IsSpell:true,SeatID:2,Datas:[7,14]});
+      flush();
+    `);
+    assert.deepEqual(h.value("Zone.shoupai(2)"), []);
+    assert.deepEqual(h.value('readKeys("s3")'), []);
+    assert.equal(h.run('"5-255" in Zone.obj'), false);
+    assert(!h.context.logs.some(line => line.includes("event:error")));
+  });
+  test("ZuiFeng works with debug off, lowercase className and target seat zero", h => {
+    h.run(`
+      XC.isDebug=false;
+      elements.set("1",document.createElement("div"));
+      elements.set("s1",document.createElement("div"));
+      setHiddenHand(0,[7,14,22]);
+      revealZuiFeng({ClassName:undefined,className:"GsCRoleOptTargetNtf",targetSeatID:0});
+      flush();
+    `);
+    assert.deepEqual(h.value("Zone.shoupai(0)"), [7,14,22]);
+    assert.deepEqual(h.value('readKeys("s1")'), [7,14,22]);
+    assert.deepEqual(h.value("logs"), []);
   });
   test("skill option payloads print in full and stay searchable by spell name", h => {
     h.run(`

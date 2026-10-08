@@ -12,7 +12,8 @@ This workspace contains a patched Electron wrapper and the `daxiaochao.user.js` 
   - any task-specific notes under `doc/*.md`
 - For obfuscated or minified `electron-next/resources/daxiaochao.user.js` work, use `doc/彩虹表.js` before guessing string meanings.
 - Check `DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes` for hand-verified workflows, then fall back to `tables[decoder].all` and `tables[decoder].used`.
-- When the task involves 小抄, 彩虹表, 自动手气, 自动刷牌, 本地皮肤, 卡背, debug panel behavior, or OL client unpacking/protocol/config investigation, use the `daxiaochao-doc-rainbow` skill if it is available.
+- When the task involves 小抄, 彩虹表, 自动手气, 自动刷牌, 本地皮肤, 卡背, 牌上标记/牌面标记/卡牌标记（如族荀攸百出）, debug panel behavior, or OL client unpacking/protocol/config investigation, use the `daxiaochao-doc-rainbow` skill if it is available.
+- 牌面标记任务先读 [doc/牌面标记链路.md](doc/牌面标记链路.md)、架构表同名章节和 `manualLookupNotes.cardFaceMarks`。已核实百出 `3338/BaiChu` 的 `SkillCardRemark -> Card.TagArr1 -> UpdateTag` 链；区别牌模型 `Card.AddCardTag` 与 UI 临时标签 `ui.AddCardTag/DelCardTag`。原生重算会清空 `TagArr1`，持续标记参考 `AddShunJiCardTags` 刷新后补回，保留现有顺机/弹雀/炁挂钩；槽位容量、协议解析和对象复用限制以专项文档为准。
 - 日志输出规则：不要使用 `console.log`、`debug` 或其他仅输出到开发者控制台的调试输出；userscript 调试日志统一通过 `appendLocalSkinDebugLine()` 写入调试窗口。只有用户明确要求开发者控制台日志时才允许例外。
 - 打包规则：不要编译或重新生成 `asar` 文件；只修改源码和必要文档，除非用户明确要求编译 `asar`。
 - 排查规则：不要默认怀疑代码新旧或要求用户反复确认文件版本；应优先检查并修复实际运行链路、调用条件和日志出口。

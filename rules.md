@@ -7,6 +7,7 @@
 | 当前任务 | 资料入口与处理方式 |
 |---|---|
 | 已有小抄功能、混淆代码 | 先检索 [代码架构表](doc/代码架构表.md) 和 [彩虹表](doc/彩虹表.js) 的 `manualLookupNotes`，再查具体 decoder 的 `all/used` 和源码。 |
+| 牌上标记、牌面标记、卡牌标记、族荀攸百出 | 先读 [牌面标记链路](doc/牌面标记链路.md) 和 `manualLookupNotes.cardFaceMarks`。区别 `Card.TagArr1` 技能标签与 `ui.tempCardTag` 临时标签，沿已有 `AddShunJiCardTags` 核对刷新后补回，保留原生及小抄已有挂钩。 |
 | 官方客户端解包或资料完整性 | 先读 [OL 解包指南](doc/sanguosha.md) 的核验记录和缺项清单，再检查本地实际有哪些原包、明文、工具和索引。 |
 | 协议与消息字段 | 有 `protocol_map.tsv` 时先查映射，再到同一快照主程序核对注册、字段读写与 `Deal*` 处理；最后对照小抄 `SGSMODULE -> main -> logic` 和调试窗口中的实际消息。 |
 | 窗口、类与挂钩方法 | 有 `window_class_registry.tsv` 时先定位注册，再核对类实现、实例获取和生命周期；本仓库类解析为 `laya.class`，指南示例 `QI.class/handleRuntimeEvent` 不能直接当作现有入口。 |

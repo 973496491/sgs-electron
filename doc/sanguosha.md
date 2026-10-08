@@ -50,6 +50,14 @@
 
 核验入口：[官方加载器](https://web.sanguosha.com/220/h5_2/libs/after.js)、[资源分组清单](https://web.sanguosha.com/220/h5_2/res/default.res.json)、[资源版本清单](https://web.sanguosha.com/220/h5_2/version.json)。这些地址会更新，以上数量仅代表本次核验结果。
 
+### 已落地的专项查询：牌面标记 / 族荀攸百出
+
+2026-10-08 复用已保存的普通配置与 ES6 主程序快照，确认族荀攸 `573`、百出 `3338/BaiChu`，核对 `GsCUpdateRoleDataExNtf -> markSkills` 数据入口及 `SetCardUIRemark -> SkillCardRemark -> Card.TagArr1 -> UpdateTag` 牌面重算链，同时定位 UI 临时标签 `AddCardTag/DelCardTag` 和小抄已有顺机/弹雀/炁挂钩。详见 [牌面标记链路](牌面标记链路.md)，彩虹表入口 `manualLookupNotes.cardFaceMarks`。已做源码与抽取方法验证，尚未游戏内实测；后续直接按该文档检索，不必为同一问题重新做全客户端解包。
+
+### 已落地的专项查询：谋周瑜醉锋
+
+2026-10-08 按本文方法，定向解密 `character.sgs/cha_spell.sgs/cha_spellextend.sgs/sys_h5_text.sgs` 并检索 `sgsGame_a.sgs`，确认武将 `770`、醉锋 `4025`、顾曲 `4024`。官方 `GsCRoleOptTargetNtf(Type=28).Params -> SelectCardWindow` 链已核实，并据此接入小抄可见手牌。证据、源码入口、测试与来源哈希见 [谋周瑜醉锋可见牌](谋周瑜醉锋可见牌.md)。原包和解出资料保存在该记录列出的临时目录，仓库保存查询结论；这不改变全量资料与 WASM 分支尚未完成的状态。
+
 ---
 
 ## 二、解包数据是什么
