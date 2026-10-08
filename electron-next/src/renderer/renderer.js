@@ -12,6 +12,7 @@ const urlList = [
 ]
 
 const webview = document.getElementById('wb')
+let currentPackageId = null
 
 const msgList = {
   changeSize() {
@@ -29,7 +30,11 @@ const msgList = {
   },
   channel(pid) {
     if (!webview) return
+    currentPackageId = pid
     webview.loadURL(urlList[pid - 1])
+  },
+  switchAccount() {
+    switchAccount()
   },
   executeJS(str) {
     if (!webview) return
@@ -193,6 +198,12 @@ if (close) {
 
 const menutTemplate = [
   {
+    text: '切换账号（OL）',
+    events: {
+      click: () => switchAccount()
+    }
+  },
+  {
     text: '新建窗口',
     sub: Array.from({ length: 8 }, (_, i) => ({
       text: String(i + 1),
@@ -295,6 +306,36 @@ function channel(packageId) {
   })
 }
 
+function switchAccount() {
+  if (!webview || (currentPackageId !== 1 && currentPackageId !== 2)) {
+    cxDialog({ title: '提示', info: '账号切换目前仅支持 OL 登录页', maskClose: true })
+    return
+  }
+
+  cxDialog({
+    title: '切换账号',
+    info: '当前窗口将退出登录并返回账号选择页。确定继续？',
+    maskClose: true,
+    ok: async () => {
+      try {
+        await webview.executeJavaScript(
+          "localStorage.removeItem('SGS_LASTLOGIN_ACCOUNT'); localStorage.removeItem('SGS_LASTLOGIN_ACCOUNT1')"
+        )
+      } catch (error) {
+        // 登录状态仍由下面的会话 Cookie 清理决定。
+      }
+
+      try {
+        await window.electronAPI.clearCurrentAccountSession()
+        await webview.loadURL(urlList[0])
+      } catch (error) {
+        cxDialog({ title: '切换账号失败', info: String(error && error.message ? error.message : error), maskClose: true })
+      }
+    },
+    no: () => {}
+  })
+}
+
 function clearCache(data) {
   const size = (data / 1024 / 1024).toFixed(2)
   cxDialog({
@@ -318,6 +359,7 @@ window.electronAPI.loadElectronFrame().then((data) => {
   console.log('初始化')
 
   const { partition, packageId } = data
+  currentPackageId = packageId
   const WDVerTxt = document.getElementById('WDVerSion')
   WDVerTxt.innerHTML = document.title = '三国杀' + partition
 

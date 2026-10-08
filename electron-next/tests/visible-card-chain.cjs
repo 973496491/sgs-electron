@@ -238,6 +238,34 @@ if (!baseline) {
     assert(h.context.logs.some(line => line.includes("event:in") && line.includes("GsCRoleOptTargetNtf") &&
       line.includes('"Params":[4,0,22,131,72,52]') && line.includes('"SrcSeatID":1')));
   });
+  test("skill option payloads print in full and stay searchable by spell name", h => {
+    h.run(`
+      _0x47b943.spellDict[3911] = { name: "世论" };
+      Zone.init([22,131,72,52,88], "1-255");
+      globalThis.params = Array.from({length: 54}, (value, index) => index + 1);
+      logic({ClassName:"GsCRoleOptTargetNtf",SpellID:3911,Param:163,
+        SrcSeatID:1,targetSeatID:255,Params:params});
+      flush();
+    `);
+    const incoming = JSON.parse(h.context.logs.find(line => line.startsWith("[可见牌] event:in ")).split("event:in ")[1]);
+    assert.equal(incoming.spellName, "世论");
+    assert.equal(incoming.data.Params.length, 54, "54-item skill payload must not be truncated");
+    assert.equal(incoming.data.Params[53], 54);
+    assert(!h.context.logs.some(line => line.includes("…共 ")), "no truncation marker may remain");
+    const done = JSON.parse(h.context.logs.find(line => line.startsWith("[可见牌] event:done ")).split("event:done ")[1]);
+    assert.equal(done.spellName, "世论");
+    assert.equal(h.run("buildVisibleCardTraceValue(Array.from({length:40},(value,index)=>index), [], 0).length"), 40);
+    assert.equal(h.run('JSON.stringify(buildVisibleCardTraceValue((()=>{const node={};node.self=node;return node;})(), [], 0))'), '{"self":"[循环引用]"}');
+    assert.equal(h.run("window.__xcVisibleCardTraceBuild"), "2026-09-19-full-print-v1");
+  });
+  test("spell data messages outside the old first option match are still traced", h => {
+    h.run(`
+      _0x47b943.spellDict[3911] = { name: "世论" };
+      logic({ClassName:"GsCRoleOptRep",SpellID:3911,Type:28,SeatID:1,Datas:[4,6,30]});
+    `);
+    assert(h.context.logs.some(line => line.includes("event:in") && line.includes("GsCRoleOptRep") &&
+      line.includes('"Datas":[4,6,30]') && line.includes('"spellName":"世论"')));
+  });
   test("deck snapshots retain unknown slots and skipped draws retain the before/after evidence", h => {
     h.run(`
       Zone.init([22,131,72,52,88], "1-255");

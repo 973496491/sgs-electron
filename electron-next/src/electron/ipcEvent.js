@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Menu, webContents } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, Menu, webContents, session } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const createWindow = require('./window')
@@ -82,6 +82,15 @@ module.exports = {
       }
     })
 
+    ipcMain.handle('clear-current-account-session', async (e) => {
+      const window = BrowserWindow.fromWebContents(e.sender)
+      const partition = window && window.webContents._partition
+      if (!Number.isInteger(partition) || partition < 1 || partition > 10) {
+        throw new Error('Invalid account session partition')
+      }
+      await session.fromPartition(`persist:sgs${partition}`).clearStorageData({ storages: ['cookies'] })
+    })
+
     ipcMain.handle('open-config-file', openConfigFile)
   },
   menuEventInit() {
@@ -94,6 +103,12 @@ module.exports = {
       if (contents._partition <= 2) pluginInit()
 
       const menuContextTemplate = [
+        {
+          label: '切换账号（OL）',
+          click: () => {
+            contents.send('rendererMsg', 'switchAccount')
+          }
+        },
         {
           label: '多开',
           submenu: Array.from({ length: 6 }, (_, i) => ({

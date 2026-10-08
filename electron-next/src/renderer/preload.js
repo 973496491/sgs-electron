@@ -165,17 +165,28 @@ window.addEventListener('load', () => {
       }
     }
 
-    document.querySelector('#manager_add').addEventListener('click', () => {
-      let account = document.querySelector('#SGS_login-account').value
-      let password = document.querySelector('#SGS_login-password').value
-      if (!account) return
-      userlist.push({ account, password })
+    function rememberCurrentAccount() {
+      const currentAccount = account.value.trim()
+      const currentPassword = password.value
+      if (!currentAccount || !currentPassword) return
+      const userIndex = userlist.findIndex((user) => user.account === currentAccount)
+      if (userIndex !== -1) {
+        userlist[userIndex].password = currentPassword
+      } else {
+        userlist.push({ account: currentAccount, password: currentPassword })
+      }
       saveData(userlist)
       load()
+    }
+
+    document.querySelector('#manager_add').addEventListener('click', () => {
+      rememberCurrentAccount()
       setTimeout(() => {
         manager.classList.toggle('hidden')
       }, 1000)
     })
+    loginbtn.addEventListener('click', rememberCurrentAccount, true)
+    login_form.addEventListener('submit', rememberCurrentAccount, true)
 
     document.querySelector('.more').addEventListener('click', () => {
       manager.classList.toggle('hidden')

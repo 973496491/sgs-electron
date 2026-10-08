@@ -32763,7 +32763,12 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "seq678", "红桃9", "deal-entry-marker", "appendLocalSkinDebugLine is not defined",
       "跨IIFE日志桥", "game.start", "isGameStart", "武靖", "鹰视",
       "seq806", "seq820", "实际运行入口", "read-local-script", "dom-ready",
-      "AppData\\Roaming\\SGSOL", "三国杀打小抄.js", "--source"
+      "AppData\\Roaming\\SGSOL", "三国杀打小抄.js", "--source",
+      "世论", "全量打印", "不截断", "buildVisibleCardTraceValue",
+      "visibleCardTraceSpellNames", "visibleCardTraceMaxItems", "RoleOpt",
+      "GsCRoleOptRep", "…共", "循环引用", "深度截断",
+      "trace:build", "__xcVisibleCardTraceBuild", "2026-09-19-full-print-v1",
+      "openDebugFromButton", "dom-ready重新注入"
     ],
     verifiedRuntimeSkills: {
       source: "用户 log.txt 2026-09-13 20:14:35 event:in.spellName",
@@ -32822,7 +32827,12 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "回滚节点诊断应保留核心安全日志代理，否则会重现真实报错；旧局缺失历史不可凭空恢复，需从新一局Card/Zone.init验证。日志运行时确认3744知天、3745武靖、7009鹰视，记录在verifiedRuntimeSkills，不混入生成解码表。",
       "20:27再次实测seq806摸[30,17]仍报缺失日志函数，seq807/808知天给出[55,4,9,152,51,140,46]却未更新旧顶，seq820下家取到旧110/133。已查运行进程renderer --app-path指向F:/Game/SGSOL/resources/app，实际main.js read-local-script读取userData/三国杀打小抄.js，由electron_frame.js在webview dom-ready注入，不读取当前工程或项目asar。",
       "真实路径C:/Users/97349/AppData/Roaming/SGSOL/三国杀打小抄.js统一换行后恰好等于工程删去安全代理的内容。2026-09-13已备份到同目录.before-visible-card-bridge-2026-09-13T12-34-27-068Z.bak并只补代理，保留CRLF；修后统一换行与工程一致。--source对真实文件回归由15通过/5失败变为20通过。",
-      "生效需页面dom-ready重载或退出重开客户端，再从新局初始化；同一页面只换局不会重读脚本。旧客户端checkAndUpdateScript已关闭自动下载，本次不改配置/加载器/asar。后续授权修复应沿已知实际入口同步源码，不能只修改工程后宣称运行页面已修复。"
+      "生效需页面dom-ready重载或退出重开客户端，再从新局初始化；同一页面只换局不会重读脚本。旧客户端checkAndUpdateScript已关闭自动下载，本次不改配置/加载器/asar。后续授权修复应沿已知实际入口同步源码，不能只修改工程后宣称运行页面已修复。",
+      "2026-09-19 世论排查：用户看到GsCRoleOptTargetNtf的Params只到24项并带‘…共 54 项’，怀疑没打印。根因是logVisibleCardTrace的JSON replacer把长度>24的数组替换成占位符，不是缺日志也不是接口拦截。现改用buildVisibleCardTraceValue递归全量序列化Params/Datas/keys/protoKeys，循环引用->[循环引用]，深度>12->[深度截断]，取值异常->[取值失败]，序列化失败改记‘序列化失败：’不丢整条；需要限长时设window.XC.visibleCardTraceMaxItems（默认0=不限）。",
+      "同一改动把诊断正则RoleOptTarget放宽为RoleOpt，纳入GsCRoleOptRep一类技能选项通知/应答；spellName经visibleCardTraceSpellNames按seq记忆（上限200）传入event:done/render:after，可用‘世论’直接检索整条链路。只改调试面板日志，不动技能/移牌/网络协议。",
+      "回归：visible-card-chain.cjs新增‘skill option payloads print in full and stay searchable by spell name’与‘spell data messages outside the old first option match are still traced’两项，22项全通过；回滚即恢复原24项截断replacer与RoleOptTarget正则，不会影响移牌与刷新隔离。",
+      "2026-09-19 用户反馈同步后仍是‘…共 58 项’：核对AppData/Roaming/SGSOL/三国杀打小抄.js内容与工程源码一致（CRLF差异）且app-log显示16:12:59重启过，说明磁盘文件已是新版，嫌疑集中在‘页面还在跑旧注入’或‘同一台机器上另有旧实例窗口’。main.js的checkAndUpdateScript只删temp.js并打印自动更新已禁用，不会覆盖本地脚本。",
+      "为此增加构建标记：核心IIFE导出window.__xcVisibleCardTraceBuild=2026-09-19-full-print-v1，openDebugFromButton打开调试时输出‘[可见牌] trace:build 2026-09-19-full-print-v1 maxItems=0’。缺失该行=页面仍加载旧脚本，需彻底退出所有微端窗口后重开（dom-ready才会重新read-local-script）；有该行却仍见截断=截断来自其它代码路径，需拿完整日志行继续定位。"
     ]
   },
   handSortFloatingPanel: {

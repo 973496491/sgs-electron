@@ -21401,19 +21401,72 @@
   let visibleCardTraceSequence = 0;
   let visibleCardActiveTrace = null;
   const visibleCardRenderCauses = new Map();
+  // 构建标记：调试窗口打开时打印，用来确认运行页面加载的是全量打印版还是旧的 24 项截断版。
+  const VISIBLE_CARD_TRACE_BUILD = "2026-09-19-full-print-v1";
+  window.__xcVisibleCardTraceBuild = VISIBLE_CARD_TRACE_BUILD;
+  // 按 seq 记住技能名，让 event:done / render:after 也能按“世论”等技能名检索。
+  const visibleCardTraceSpellNames = new Map();
+  function rememberVisibleCardTraceSpellName(seq, spellName) {
+    try {
+      visibleCardTraceSpellNames.set(seq, spellName);
+      while (visibleCardTraceSpellNames.size > 200) {
+        const oldest = visibleCardTraceSpellNames.keys().next().value;
+        visibleCardTraceSpellNames.delete(oldest);
+      }
+    } catch (error) {}
+  }
   function isVisibleCardTraceEnabled() {
     return !!(window.XC && window.XC.isDebug &&
       typeof window.__xcAppendLocalSkinDebugLine === "function");
   }
+  // 可见牌诊断序列化：技能隐藏数据（如世论 Params 54 项、ProtoObj 全部字段名）需要全量可见，
+  // 因此不再按 24 项截断；循环引用/过深对象降级为占位符，序列化失败也不丢整条日志。
+  function visibleCardTraceArrayLimit() {
+    // 默认全量输出；确有超大数组拖慢面板时，可在调试会话里设置 window.XC.visibleCardTraceMaxItems = 200。
+    const limit = Number(window.XC && window.XC.visibleCardTraceMaxItems);
+    return Number.isFinite(limit) && limit > 0 ? limit : 0;
+  }
+  function buildVisibleCardTraceValue(value, ancestors, depth) {
+    if (value === null || typeof value !== "object") return value;
+    if (depth > 12) return "[深度截断]";
+    if (ancestors.indexOf(value) !== -1) return "[循环引用]";
+    ancestors.push(value);
+    let result;
+    if (Array.isArray(value)) {
+      const limit = visibleCardTraceArrayLimit();
+      const size = limit > 0 && value.length > limit ? limit : value.length;
+      result = value
+        .slice(0, size)
+        .map((item) => buildVisibleCardTraceValue(item, ancestors, depth + 1));
+      if (size < value.length) result.push("…共 " + value.length + " 项");
+    } else {
+      result = {};
+      for (const key of Object.keys(value)) {
+        let item;
+        try {
+          item = value[key];
+        } catch (error) {
+          item = "[取值失败]";
+        }
+        result[key] = buildVisibleCardTraceValue(item, ancestors, depth + 1);
+      }
+    }
+    ancestors.pop();
+    return result;
+  }
   function logVisibleCardTrace(stage, data) {
     if (!isVisibleCardTraceEnabled()) return;
     try {
-      const text = JSON.stringify(data, (key, value) =>
-        Array.isArray(value) && value.length > 24
-          ? value.slice(0, 24).concat("…共 " + value.length + " 项")
-          : value);
+      const text = JSON.stringify(buildVisibleCardTraceValue(data, [], 0));
       window.__xcAppendLocalSkinDebugLine("[可见牌] " + stage + " " + text, false);
-    } catch (error) {}
+    } catch (error) {
+      try {
+        window.__xcAppendLocalSkinDebugLine(
+          "[可见牌] " + stage + " 序列化失败：" + String(error),
+          false,
+        );
+      } catch (appendError) {}
+    }
   }
   function snapshotVisibleCardZone(zoneID) {
     try {
@@ -21435,7 +21488,8 @@
     if (!isVisibleCardTraceEnabled() || !message || typeof message !== "object") return null;
     try {
       const className = String(message.ClassName || message.className || "");
-      if (!/MoveCard|UseCard|UseSpell|FriendHandcard|GamePlayCard|Spell.*Ntf|RoleOptTarget|RoleSpellOpt|DealPileTop/i.test(className)) return null;
+      // RoleOpt 覆盖 GsCRoleOptTargetNtf 及其它技能选项通知/应答（世论等技能数据都在 Params/Datas）。
+      if (!/MoveCard|UseCard|UseSpell|FriendHandcard|GamePlayCard|Spell.*Ntf|RoleOpt|RoleSpellOpt|DealPileTop/i.test(className)) return null;
       const fields = ["CardIDs", "CardID", "CardId", "cardId", "Cards", "CardCount",
         "SeatID", "seatId", "castSeatId", "FromID", "FromZone", "FromPosition",
         "FromZoneParam", "ToID", "ToZone", "ToPosition", "ToZoneParam", "MoveType",
@@ -21447,7 +21501,8 @@
       // 技能名称由当前运行时配置解析，避免凭数值猜测知天的技能号。
       let spellName;
       try { spellName = _0x47b943.spellDict[spellID]?.name; } catch (error) {}
-      const trace = { seq: ++visibleCardTraceSequence, className, steps: [], zones: new Set() };
+      const trace = { seq: ++visibleCardTraceSequence, className, spellName, steps: [], zones: new Set() };
+      if (spellName) rememberVisibleCardTraceSpellName(trace.seq, spellName);
       const deckRelated = Number(message.FromZone) === 1 || Number(message.ToZone) === 1 ||
         /RoleOptTarget|RoleSpellOpt|DealPileTop/i.test(className);
       if (deckRelated) trace.zones.add("1-255");
@@ -21480,7 +21535,7 @@
   function finishVisibleCardTrace(trace) {
     if (!trace || !isVisibleCardTraceEnabled()) return;
     logVisibleCardTrace(trace.error ? "event:error" : "event:done", {
-      seq: trace.seq, className: trace.className, stage: trace.stage,
+      seq: trace.seq, className: trace.className, spellName: trace.spellName, stage: trace.stage,
       error: trace.error, steps: trace.steps, after: [...trace.zones].map(snapshotVisibleCardZone),
     });
   }
@@ -21498,12 +21553,16 @@
           keys: element ? Array.from(element.querySelectorAll(":scope>.shoupai"), node => node.dataset.key) : [] };
       };
       logVisibleCardTrace(error ? "render:error" : "render:after", {
-        seq: cause, model: snapshotVisibleCardZone(zoneID), main: read(primaryID),
+        seq: cause, spellName: visibleCardTraceSpellNames.get(cause),
+        model: snapshotVisibleCardZone(zoneID), main: read(primaryID),
         mirror: read(area === 5 ? "s" + seatDiv : area === 4 ? "smark" + zoneID : area === 1 ? "deckBottomEdge" : null),
         error: error ? String(error.stack || error).slice(0, 1200) : undefined,
       });
     } catch (snapshotError) {
-      logVisibleCardTrace("render:error", { seq: cause, zone: zoneID, error: String(error || snapshotError) });
+      logVisibleCardTrace("render:error", {
+        seq: cause, spellName: visibleCardTraceSpellNames.get(cause), zone: zoneID,
+        error: String(error || snapshotError),
+      });
     }
   }
   function setVisibleCardResult(html) {
@@ -33968,6 +34027,16 @@
       installLocalSkinDebugResponseHook();
       appendLocalSkinDebugLine(
         "\u8c03\u8bd5\u7a97\u53e3\u5df2\u6253\u5f00",
+        true,
+      );
+      // 用于区分“日志还没生效”和“技能数据仍被截断”：缺失此行说明页面还在跑旧脚本。
+      appendLocalSkinDebugLine(
+        "[可见牌] trace:build " +
+          (window.__xcVisibleCardTraceBuild || "unknown") +
+          " maxItems=" +
+          (Number(window.XC.visibleCardTraceMaxItems) > 0
+            ? window.XC.visibleCardTraceMaxItems
+            : 0),
         true,
       );
       var hasEightPveFigureScheduler =

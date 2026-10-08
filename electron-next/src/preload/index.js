@@ -13,6 +13,7 @@ function sendMsg(msg, ...arg) {
 contextBridge.exposeInMainWorld('electronAPI', {
   loadElectronFrame,
   sendMsg,
+  clearCurrentAccountSession: () => ipcRenderer.invoke('clear-current-account-session'),
   onMessage: (callback) => {
     const subscription = (event, msg, param) => callback(msg, param)
     ipcRenderer.on('rendererMsg', subscription)
