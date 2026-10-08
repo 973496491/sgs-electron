@@ -31397,20 +31397,31 @@
               ((game[J(589)] = null),
               Card[J(827)](Card[J(504)](({ key: n }) => n > 0))),
               null !== game[J(636)] && 1 == Ln && (F[J(805)] = yn = XC[J(733)]);
+          // 心幽/元嫡的牌堆摸牌也显示来源；其它摸牌仍沿用原来的排除规则。
+          const xieLingYuDrawName = Mn === 1 && Ln === 1
+            ? un === 4016 ? "心幽" : un === 4015 ? "元嫡" : ""
+            : "";
           if (
             globalConfig[J(444)] &&
             5 == Cn &&
             12 != Ln &&
             Bn == room[J(541)] &&
             un &&
-            Mn > 1 &&
+            (Mn > 1 || xieLingYuDrawName) &&
             Mn < 255
           ) {
-            let n = null == (H = _0x47b943[J(459)][un]) ? void 0 : H[J(704)];
+            let n = xieLingYuDrawName || (null == (H = _0x47b943[J(459)][un]) ? void 0 : H[J(704)]);
             n = n ? "[" + (_0x427ffc[n] || n[J(687)](0, 2)) + "]" : "";
             let t = 5 == Ln && 255 != wn && wn != room[J(541)] ? wn : null,
               e = null !== t ? room[J(704)](t, !1) : "";
-            laya[J(609)](dn, "​" + n + (e || ""), (n) => n[J(711)]("​"));
+            const tagCardIDs = xieLingYuDrawName
+              ? dn.filter((id) => Number.isInteger(id) && id > 0)
+              : dn;
+            if (!xieLingYuDrawName || tagCardIDs.length) {
+              laya[J(609)](tagCardIDs, "​" + n + (e || ""), (n) => n[J(711)]("​"));
+              if (xieLingYuDrawName)
+                stepVisibleCardTrace("drawtag:queue", null, tagCardIDs, xieLingYuDrawName);
+            }
           }
           if (
             !(

@@ -24,6 +24,7 @@ function slice(start, end) {
 const modelSource = slice(source.includes("  // 可见牌诊断") ? "  // 可见牌诊断" : "  const _Card = class n {", "  function mergeGoodsList(");
 const logicSource = slice("  function logic(n)", "  function _0x1741(");
 const gameStartSource = slice("        start() {", "        enter(n, t, e) {");
+const markSource = slice("        (this[r(526)] = ", "        this[r(648)]");
 const mirrorSource = slice("  function _0x226fc5(", "  function _0xe558(") +
   slice("  function _0x2ae8f3(", "  function _0x2f6cfa(") +
   slice("  function syncZoneMirrors(", "  function clearZoneMirrors(");
@@ -92,6 +93,7 @@ function fixture() {
   globalThis._0x4b1bae = card => String(card.id);
   globalThis._0x20d6a4 = { markSpell: {} };
   globalThis._0x47b943 = { spellDict: {}, cardDict: {} };
+  globalThis._0x427ffc = {};
   globalThis._0x58eae0 = { userID: 123, v: true };
   globalThis.Qcard = { query: new Set(), name: {}, counter() {}, draw() {} };
   globalThis.room = { myID: 1, mySeats: [1], size: 3, getOrder: seat => seat, getSeatUI: () => null, name: seat => String(seat), dealCard() {} };
@@ -99,6 +101,22 @@ function fixture() {
   globalThis.globalConfig = { cardLabelSwitch: false };
   globalThis.globalState = { configHandCards: [], configHandCardsRejected: false, autoBotSwitch: 0 };
   globalThis.laya = { mark() {}, init() {} };
+  globalThis.markCalls = [];
+  globalThis.markTimers = [];
+  globalThis.setTimeout = callback => { markTimers.push(callback); return markTimers.length; };
+  globalThis.flushMarks = () => { markTimers.splice(0).forEach(callback => callback()); };
+  globalThis.handContainer = {
+    cardUis: [],
+    getCardUiBy(id, ignored, list) { return list.find(ui => ui.Card.CardId === id); },
+  };
+  globalThis.addHandUI = id => {
+    const ui = {
+      Card: { CardId: id, TagArr1: ["原生技能"] }, tempCardTag: [],
+      AddCardTag(tag) { if (!this.tempCardTag.includes(tag)) this.tempCardTag.push(tag); },
+    };
+    handContainer.cardUis.push(ui);
+    return ui;
+  };
   globalThis.timer = { delay() {} };
   globalThis.AddShunJiCardTags = () => {};
   globalThis.logLightRoomDispatch = globalThis.logLightRoomDispatchProbe = () => {};
@@ -116,8 +134,16 @@ function harness() {
   const context = vm.createContext({});
   context._0x4efae6 = key => tables._0x3911.all[key];
   context._0x576026 = key => tables._0x497b.all[key];
+  context._0x47c207 = key => tables._0x3812.all[key];
   context._0xcbf83c = context._0xe558 = key => tables._0xe558.all[key];
   vm.runInContext("(" + fixture.toString() + ")()", context);
+  vm.runInContext("(function(r,x,v){" + markSource + "null;}).call(laya,_0x47c207,handContainer,handContainer.cardUis);" + `
+    const actualMark = laya.mark;
+    laya.mark = (ids, tag, ...args) => {
+      markCalls.push({ ids: Array.from(ids), tag });
+      return actualMark(ids, tag, ...args);
+    };
+  `, context);
   vm.runInContext("let _c,_d,_e,_f,_g,_h,_i,_0x380c88=[],_0x140c16='';\n" + modelSource + mirrorSource + logicSource +
     "\ngame.start=({" + gameStartSource + "}).start;\n" + `
     globalThis.Card = Card; globalThis.Zone = Zone;
@@ -169,6 +195,82 @@ test("missing auxiliary result control does not prevent actual movement", h => {
   assert.deepEqual(h.value('Zone.obj["3-255"].map(card=>card.id)'), [7]);
 });
 if (!baseline) {
+  test("XinYou and YuanDi draws apply separate origin tags through the real laya.mark", h => {
+    h.run(`
+      globalConfig.cardLabelSwitch=true;
+      Zone.init([7,14,22,91],"1-255");
+      for(const [id,spell] of [[7,4016],[14,4015],[22,0]]) {
+        move({FromID:255,FromZone:1,FromPosition:DING,ToID:1,ToZone:5,CardIDs:[id],SpellID:spell});
+        addHandUI(id);
+      }
+      flushMarks(); flush();
+    `);
+    assert.deepEqual(h.value("handContainer.cardUis.map(ui=>ui.tempCardTag)"), [["\u200b[心幽]"],["\u200b[元嫡]"],[]]);
+    assert.deepEqual(h.value("handContainer.cardUis.map(ui=>ui.Card.TagArr1)"), [["原生技能"],["原生技能"],["原生技能"]]);
+    assert.deepEqual(h.value("Zone.shoupai(1)"), [7,14,22]);
+    assert(h.context.logs.some(line => line.includes('"stage":"drawtag:queue"') && line.includes("心幽")));
+    assert(h.context.logs.some(line => line.includes('"stage":"drawtag:queue"') && line.includes("元嫡")));
+    assert(!h.context.logs.some(line => line.includes("event:error")));
+  });
+  test("draw tags respect the switch, target seat, sending flag and known-card boundary", h => {
+    h.run(`
+      Zone.init([7,14,22,91,92,93],"1-255");
+      move({FromID:255,FromZone:1,FromPosition:DING,ToID:1,ToZone:5,CardIDs:[7],SpellID:4016});
+      globalConfig.cardLabelSwitch=true;
+      move({FromID:255,FromZone:1,FromPosition:DING,ToID:2,ToZone:5,CardIDs:[14],SpellID:4015});
+      move({FromID:255,FromZone:1,FromPosition:DING,ToID:1,ToZone:5,CardIDs:[22],SpellID:4016,isSend:true});
+      move({FromID:255,FromZone:1,FromPosition:DING,ToID:1,ToZone:5,CardIDs:[0],SpellID:4016});
+      move({FromID:255,FromZone:1,FromPosition:DING,ToID:1,ToZone:5,CardIDs:[91,0],CardCount:2,SpellID:4015});
+      flushMarks(); flush();
+    `);
+    assert.deepEqual(h.value("markCalls"), []);
+    assert(!h.context.logs.some(line => line.includes("event:error")));
+  });
+  test("draw tags support seat zero and lowercase message names with diagnostics off", h => {
+    h.run(`
+      XC.isDebug=false; room.myID=0; room.mySeats=[0]; globalConfig.cardLabelSwitch=true;
+      Zone.init([7,14,91],"1-255");
+      globalThis.drawIds=[7,14];
+      move({ClassName:undefined,className:"PubGsCMoveCard",FromID:255,FromZone:1,FromPosition:DING,
+        ToID:0,ToZone:5,CardIDs:drawIds,CardCount:2,SpellID:4016});
+      addHandUI(7); addHandUI(14); flushMarks(); flush();
+    `);
+    assert.deepEqual(h.value("drawIds"), [7,14]);
+    assert.deepEqual(h.value("handContainer.cardUis.map(ui=>ui.tempCardTag)"), [["\u200b[心幽]"],["\u200b[心幽]"]]);
+    assert.deepEqual(h.value("logs"), []);
+  });
+  test("draw-tag exceptions do not label initial costs, returns or other skills", h => {
+    h.run(`
+      globalConfig.cardLabelSwitch=true; setHand(1,[7]);
+      move({SpellID:4016,ToZone:2,MoveType:4});
+      move({FromID:255,FromZone:2,ToID:1,ToZone:5,SpellID:4016,MoveType:1});
+      setHand(2,[14]); move({FromID:2,ToID:1,ToZone:5,CardIDs:[14],SpellID:4015,MoveType:1});
+      Zone.init([22,91],"1-255");
+      move({FromID:255,FromZone:1,FromPosition:DING,ToID:1,ToZone:5,CardIDs:[22],SpellID:9999});
+      flushMarks(); flush();
+    `);
+    assert.deepEqual(h.value("markCalls"), []);
+  });
+  test("existing non-draw origin tags still use the configured name and source player", h => {
+    h.run(`
+      globalConfig.cardLabelSwitch=true; _0x47b943.spellDict[9999]={name:"顺手牵羊"};
+      _0x427ffc["顺手牵羊"]="顺手"; setHand(2,[7]);
+      move({FromID:2,ToID:1,ToZone:5,SpellID:9999,MoveType:18});
+      addHandUI(7); flushMarks(); flush();
+    `);
+    assert.deepEqual(h.value("handContainer.cardUis[0].tempCardTag"), ["\u200b[顺手]2"]);
+    assert.deepEqual(h.value("Zone.shoupai(1)"), [7]);
+  });
+  test("queued origin tags safely skip a card UI that is no longer present", h => {
+    h.run(`
+      globalConfig.cardLabelSwitch=true; Zone.init([7,91],"1-255");
+      move({FromID:255,FromZone:1,FromPosition:DING,ToID:1,ToZone:5,SpellID:4015});
+      flushMarks(); flush();
+    `);
+    assert.equal(h.run("markCalls.length"), 1);
+    assert.deepEqual(h.value("handContainer.cardUis"), []);
+    assert(!h.context.logs.some(line => line.includes("event:error")));
+  });
   test("real game.start reaches its state transition through the debug-panel bridge", h => {
     h.run('Zone.init([],"1-255"); game.isGameStart=false; game.start(); flush();');
     assert.equal(h.run("game.isGameStart"), true);

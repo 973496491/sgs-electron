@@ -32724,6 +32724,30 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  xieLingYuDrawTags: {
+    title: "谢灵毓心幽 / 元嫡摸牌来源标签",
+    verifiedAt: "2026-10-08",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/谢灵毓摸牌标签.md",
+    searchKeywords: [
+      "谢灵毓", "心幽", "元嫡", "769", "4016", "4015", "XinYou", "YuanDi",
+      "摸牌来源标签", "xieLingYuDrawName", "PubGsCMoveCard", "MoveType=1", "cardLabelSwitch",
+      "laya.mark", "getCardUiBy", "AddCardTag", "tempCardTag", "drawtag:queue",
+      "DiscardIgnoreCards", "OPT_DATA_DISCARD_IGNORE", "回退", "dom-ready"
+    ],
+    decodedIndexes: {
+      _0x497b: { "424": "GsCUpdateRoleDataExNtf", "444": "cardLabelSwitch", "541": "myID", "605": "isSend", "609": "mark", "652": "PubGsCMoveCard" },
+      _0x3812: { "436": "getCardUiBy", "526": "mark", "1146": "cardLabelSwitch", "1523": "AddCardTag" }
+    },
+    chain: [
+      "官方配置769/XieLingYu、4016/XinYou/心幽、4015/YuanDi/元嫡。PubGsCMoveCard(O$t)字段包含SpellID、FromZone、ToZone、ToID、CardIDs、MoveType；Mode_Deal=1、牌堆1、手牌5。服务端具体实战报文仍待验证，不根据发动时间窗口猜所有摸牌归属。",
+      "心幽继承的SkillCardRemark返回空，未自建牌号表；元嫡UpdateRoleDataResponse维护牌名记录。DataID=21且非IsSpell是通用免弃牌Datas；DiscardIgnoreCards getter仅弃牌阶段及InOwnRound2返回，不能当成出牌阶段完整心幽牌表。",
+      "既有logic来源标签以MoveType>1排除摸牌。现xieLingYuDrawName仅在MoveType=1、FromZone=1且SpellID为4016/4015时返回技能名；再沿原cardLabelSwitch、ToZone=5、ToID=myID门槛，仅正整数实际CardIDs进入laya.mark。普通摸牌/他人/发送/未知牌/弃牌成本不新增标记。",
+      "laya.seatUIs绑定mark，setTimeout后按getCardUiBy取本人牌UI，再AddCardTag写独立tempCardTag/cardTagBtn3，不写Card.TagArr1。第三个matcher形参目前未使用；不要误认有按matcher替换标签功能。回合结束保留来源文字，原生Clear清临时标签；没有独立缓存恢复完整重建或重连前来源。",
+      "drawtag:queue通过既有stepVisibleCardTrace写调试窗口，表示调用入口而非已绘制。新增6项测试抽取真实logic与laya.mark，修前30过3失败、修后33全通过，覆盖两技能混合、普通摸牌排除、原生标签共存、延迟UI、座位0、开关和未知牌边界。",
+      "已同步实际AppData/Roaming/SGSOL/三国杀打小抄.js并备份before-xin-you-yuan-di-tags-2026-10-08T14-26-06-824Z.bak，保留CRLF，需dom-ready重载。回退只恢复MoveType>1、原取名/mark调用，删除新增过滤与日志，保留既有来源标签及其他功能。"
+    ]
+  },
   cardFaceMarks: {
     title: "牌面标记 / 族荀攸百出与小抄已有标签挂钩",
     verifiedAt: "2026-10-08",
