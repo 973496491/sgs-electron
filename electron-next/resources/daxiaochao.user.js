@@ -18233,6 +18233,47 @@
         var t;
         const e = n,
           i = null == (t = laya[e(868)](e(224), null, 0)) ? void 0 : t[e(738)];
+        function layoutAutoShouQiConfigWindow(win) {
+          const content = win.contentSprite;
+          if (!content) return;
+          const original = win.__xcAutoSQKLayoutNodes ||
+            (win.__xcAutoSQKLayoutNodes = new WeakMap());
+          const cards = new Set([
+            ...(win.equipCardUIs || []),
+            ...(win.jinNangCardUIs || []),
+            ...(win.basicCardUIs || []),
+            ...(win.handCardUIs || []),
+            ...(win.otherCardUIs || []),
+            ...(win.cardUIPool || []),
+          ]);
+          // 原生背景/标题和按钮还存放在绘制列表中，不能只移动 _children。
+          const nodes = new Set([
+            ...(content._children || []),
+            ...(content.textureList || []),
+            ...(content.drawContaniers || []),
+          ]);
+          for (const node of nodes) {
+            if (!node || node.destroyed || cards.has(node)) continue;
+            if (!original.has(node)) {
+              original.set(node, {
+                x: Number(node.x) || 0,
+                y: Number(node.y) || 0,
+                width: Number(node.width) || 0,
+              });
+            }
+            const base = original.get(node);
+            const trickHeader = base.x >= 381 && base.y >= 34 && base.y < 179;
+            node.x = base.x - (trickHeader ? 364 : 0);
+            node.y = base.y + (trickHeader || base.y >= 183 ? 148 : 0);
+            if (
+              node === win.equipCardBg || node === win.jinNangCardBg ||
+              node === win.basicCardBg ||
+              (base.x === 17 && base.y === 332 && base.width === 712)
+            ) node.width = 812;
+          }
+          // 三类候选各占一行，已选牌和确认区整体下移一行；重复打开不累加。
+          win.initBg(845, 636, 845);
+        }
         redefine(i, e(907), {
           value: function () {
             const n = e;
@@ -18353,55 +18394,48 @@
           redefine(i, e(933), {
             value: function (n, t, i, a, r, l, o) {
               const c = e;
+              if (i === this.equipCardUIs) {
+                a = 71; r = 46; l = 751; o = 6;
+              } else if (i === this.jinNangCardUIs) {
+                a = 71; r = 194; l = 751; o = 6;
+              } else if (i === this.basicCardUIs) {
+                a = 71; r = 342; l = 751; o = 6;
+              }
               return (
-                435 == a && (l = 387),
-                651 == l && (l = 751),
                 this[c(358)][c(756)](this, [n, t, i, a, r, l, o])
               );
             },
           }),
           redefine(i, e(566), {
             value: function () {
-              const n = e;
-              this[n(1187)](845, 488, 845),
-                (this[n(836)][n(982)] += 100),
-                (this[n(1118)][n(982)] += 100);
-              let t = {};
-              (t[n(1715)] = {}),
-                (t[n(1715)][n(451)] = {}),
-                (t[n(1715)][n(451)][n(160)] = [
-                  14, 135, 103, 64, 6005, 144, 32, 4300, 6004, 12053, 327, 25,
-                  130, 2, 15, 16, 6, 7, 138, 112,
-                ]),
-                this[n(933)](
-                  this[n(717)],
-                  [14, 135, 103],
-                  this[n(1312)],
-                  71,
-                  46,
-                  287,
-                  0,
-                ),
-                this[n(933)](
-                  this[n(717)],
-                  [64, 6005, 144, 32, 4300, 6004, 12053],
-                  this[n(1313)],
-                  435,
-                  46,
-                  387,
-                  0,
-                ),
-                this[n(933)](
-                  this[n(717)],
-                  [327, 25, 130, 2, 6, 7, 138, 112],
-                  this[n(1375)],
-                  71,
-                  194,
-                  751,
-                  0,
-                );
+              layoutAutoShouQiConfigWindow(this);
+              this.updateCardUIs(
+                this.contentSprite,
+                // 绝影使用 1010，避开既有 83「任意 +1 马」分组。
+                [14, 135, 103, 52, 70, 1010, 134, 108],
+                this.equipCardUIs, 71, 46, 751, 6,
+              );
+              this.updateCardUIs(
+                this.contentSprite,
+                [64, 6005, 144, 32, 4300, 6004, 12053],
+                this.jinNangCardUIs, 71, 194, 751, 6,
+              );
+              this.updateCardUIs(
+                this.contentSprite,
+                [25, 130, 2, 6, 7, 138, 112],
+                this.basicCardUIs, 71, 342, 751, 6,
+              );
+              window.__xcAutoSQKDebugLog &&
+                window.__xcAutoSQKDebugLog("config:layout", {
+                  width: this.width,
+                  height: this.height,
+                  equipment: this.equipCardUIs.length,
+                  tricks: this.jinNangCardUIs.length,
+                  basics: this.basicCardUIs.length,
+                });
             },
           });
+        autoShouQiConfirmHandler = i && i[e(907)];
       })(),
       (async function () {
         const t = n,
@@ -20397,6 +20431,7 @@
           (!this[t(370)] && n) ||
             this[t(624)] ||
             ((this[t(370)] = !1),
+            closeAutoShouQiDialog("reset"),
             (this[t(624)] = !0),
             (UI[t(186)] = []),
             (UI[t(443)] = 0),
@@ -20425,6 +20460,7 @@
         ready(n) {
           var t, e;
           const i = _0x4efae6;
+          closeAutoShouQiDialog("reset");
           cancelEightPveFigureOut("room.ready");
           this[i(458)](!0), resetAdvancedFeatureTrial(), (room[i(259)] = n);
           logLightRoomContext("room-ready", n);
@@ -28182,11 +28218,12 @@
         cards: l,
         cardUiCount: o,
         configLen: (globalState.configHandCards || []).length,
-        hasConfigWindow: !!n,
+        hasConfigWindow: !!n || isAutoShouQiDialogOpen(),
         hasAskWindow: !!t,
         hasUseBtn: !!e,
       });
-    if (n) return void cancelAutoShouQiFallback("config-window-present");
+    if (n || isAutoShouQiDialogOpen())
+      return void cancelAutoShouQiFallback("config-window-present");
     const c = globalState.configHandCards || [];
     if (!c.length) {
       if (
@@ -28234,7 +28271,221 @@
       void retryAutoShouQiFallback(700)
     );
   }
+  // 自动手气独立选牌面板；只负责选择，继续使用原命中和 useBtn 链路。
+  var autoShouQiDialog = null, autoShouQiConfirmHandler;
+  function getAutoShouQiChoiceGroups() {
+    return [
+      { name: "装备", hint: "武器与四种防御坐骑", tone: "gold", cards: [
+        [14, "诸葛连弩", "弩"], [135, "古锭刀", "刀"], [103, "丈八蛇矛", "矛"],
+        [52, "爪黄飞电", "+1"], [70, "的卢", "+1"], [1010, "绝影", "+1"],
+        [134, "骅骝", "+1"], [108, "寒冰剑", "剑"],
+      ] },
+      { name: "锦囊", hint: "单牌或组合", tone: "blue", cards: [
+        [64, "无懈可击", "策"], [6005, "拆 / 顺", "策"], [144, "兵粮寸断", "策"],
+        [32, "乐不思蜀", "策"], [4300, "兵 / 乐", "策"], [6004, "锦囊", "策"],
+        [12053, "伤害锦囊", "策"],
+      ] },
+      { name: "基本牌", hint: "回复、防御与进攻", tone: "red", cards: [
+        [25, "桃", "桃"], [130, "酒", "酒"], [2, "闪", "闪"],
+        [6, "任意杀", "杀"], [7, "普通杀", "杀"], [138, "属性杀", "杀"], [112, "火杀", "杀"],
+      ] },
+    ];
+  }
+  function isAutoShouQiDialogOpen() {
+    return !!(autoShouQiDialog && autoShouQiDialog.element.isConnected &&
+      autoShouQiDialog.element.open);
+  }
+  function closeAutoShouQiDialog(reason = "dismiss") {
+    const state = autoShouQiDialog;
+    if (!state) return;
+    autoShouQiDialog = null;
+    if (state.element.open) state.element.close();
+    state.element.remove();
+    state.focus && state.focus.isConnected && state.focus.focus();
+    if (reason === "reset" || reason === "save") return;
+    if (reason === "reject") globalState.configHandCards = [];
+    if (!(globalState.configHandCards || []).length) {
+      globalState.configHandCardsRejected = true;
+      cancelAutoShouQiFallback("rejected");
+    } else {
+      scheduleAutoShouQiFallback("config:close", 350);
+    }
+    window.__xcAutoSQKDebugLog && window.__xcAutoSQKDebugLog("config:close", {
+      ui: "panel", reason, rejected: !!globalState.configHandCardsRejected,
+    });
+  }
+  function saveAutoShouQiDialog(mode) {
+    const state = autoShouQiDialog;
+    if (!state || !state.selected.length) return;
+    let cards = state.cards;
+    try {
+      const latest = Array.from(Zone.shoupai(room.myID) || []).filter(id => id > 0);
+      if (latest.length) cards = latest;
+    } catch (error) {}
+    const target = state.selected.slice();
+    // 复用已挂钩的原生确认 handler，避免复制保存、检查、点击和兜底规则。
+    if (typeof autoShouQiConfirmHandler !== "function") {
+      state.status.textContent = "选牌尚未就绪，请稍后重试";
+      return;
+    }
+    const submit = {
+      handCardIDs: target,
+      sqkHandCardMode: mode,
+      genItem: { handCardIDs: cards },
+      Close: () => closeAutoShouQiDialog("save"),
+    };
+    autoShouQiConfirmHandler.call(submit);
+  }
+  function openAutoShouQiDialog(cards, source) {
+    if (!document.body || typeof HTMLDialogElement === "undefined") return false;
+    if (isAutoShouQiDialogOpen()) {
+      autoShouQiDialog.cards = Array.from(cards);
+      autoShouQiDialog.render();
+      return true;
+    }
+    closeAutoShouQiDialog("reset");
+    const panel = document.createElement("dialog");
+    panel.id = "xcAutoShouQiDialog";
+    panel.setAttribute("aria-labelledby", "xcSQKTitle");
+    panel.innerHTML = `
+      <style>
+        #xcAutoShouQiDialog{box-sizing:border-box;width:min(860px,calc(100vw - 32px));max-width:none;max-height:calc(100vh - 32px);padding:0;border:1px solid #545044;border-radius:18px;background:#191b20;color:#ece8df;box-shadow:0 24px 100px #0009;font:14px/1.5 "Microsoft YaHei",sans-serif;overflow:hidden}
+        #xcAutoShouQiDialog[open]{display:flex;flex-direction:column}
+        #xcAutoShouQiDialog::backdrop{background:#080b12a8;backdrop-filter:blur(4px)}
+        #xcAutoShouQiDialog *{box-sizing:border-box}
+        #xcAutoShouQiDialog button{font:inherit;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+        #xcAutoShouQiDialog button:focus-visible{outline:2px solid #eed69c;outline-offset:3px}
+        #xcAutoShouQiDialog .sqk-head{padding:20px 24px 15px;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #ffffff0d}
+        #xcAutoShouQiDialog .sqk-eyebrow{font-size:11px;color:#c8ad76;letter-spacing:3px;margin-bottom:3px}
+        #xcAutoShouQiDialog h2{font-size:22px;line-height:1.5;font-weight:600;margin:0;letter-spacing:1px}
+        #xcAutoShouQiDialog .sqk-sub{font-size:12px;color:#999ba3;margin-top:4px}
+        #xcAutoShouQiDialog .sqk-close{width:32px;height:32px;border:1px solid #ffffff16;border-radius:50%;color:#b3b3bd;background:transparent;font-size:22px;line-height:1}
+        #xcAutoShouQiDialog .sqk-body{padding:16px 24px;overflow:auto;min-height:0;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#55535a transparent}
+        #xcAutoShouQiDialog section+section{margin-top:18px}
+        #xcAutoShouQiDialog .sqk-section-title{display:flex;align-items:baseline;gap:10px;margin-bottom:9px;font-weight:600}
+        #xcAutoShouQiDialog .sqk-section-title span{font-size:11px;color:#8d909a;font-weight:400}
+        #xcAutoShouQiDialog .sqk-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
+        #xcAutoShouQiDialog .sqk-card{position:relative;min-width:0;min-height:83px;padding:10px 3px 8px;display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:center;border:1px solid #ffffff14;border-radius:10px;background:linear-gradient(145deg,#2a2b31,#22242a);color:#dedbd5}
+        #xcAutoShouQiDialog .sqk-card:hover{background:#35363b;border-color:#b3a078;transform:translateY(-2px)}
+        #xcAutoShouQiDialog .sqk-symbol{font:600 25px/1.1 Georgia,"Microsoft YaHei",serif;color:#d6bc85}
+        #xcAutoShouQiDialog .sqk-blue .sqk-symbol{color:#9ab5cd}
+        #xcAutoShouQiDialog .sqk-red .sqk-symbol{color:#d59d91}
+        #xcAutoShouQiDialog .sqk-name{font-size:12px;white-space:nowrap}
+        #xcAutoShouQiDialog .sqk-card[aria-pressed="true"]{background:linear-gradient(145deg,#493e2b,#302b25);border-color:#d2b478;box-shadow:inset 0 0 0 1px #d2b47833;color:#fff1cf}
+        #xcAutoShouQiDialog .sqk-card[aria-pressed="true"]:after{content:"✓";position:absolute;right:6px;top:2px;color:#e7c988;font-size:12px}
+        #xcAutoShouQiDialog .sqk-card:disabled{opacity:.4;cursor:default;transform:none}
+        #xcAutoShouQiDialog .sqk-foot{padding:14px 24px 18px;background:#14161b;border-top:1px solid #ffffff12;flex-shrink:0}
+        #xcAutoShouQiDialog .sqk-summary{display:flex;align-items:center;gap:8px;min-height:28px;margin-bottom:11px;flex-wrap:wrap;color:#9a9ba3;font-size:12px}
+        #xcAutoShouQiDialog .sqk-chips{display:flex;gap:6px;flex-wrap:wrap}
+        #xcAutoShouQiDialog .sqk-chip{border:1px solid #a88a553b;background:#d2b47812;color:#dbc89f;border-radius:5px;padding:3px 8px;font-size:12px}
+        #xcAutoShouQiDialog .sqk-actions{display:flex;gap:9px;align-items:center}
+        #xcAutoShouQiDialog .sqk-status{flex:1;color:#93959f;font-size:11px}
+        #xcAutoShouQiDialog .sqk-action{border:1px solid #7b6b4b;border-radius:8px;padding:9px 16px;background:#242327;color:#ddc593;font-weight:600;white-space:nowrap}
+        #xcAutoShouQiDialog .sqk-primary{background:#d5ba82;color:#262319;border-color:#d5ba82}
+        #xcAutoShouQiDialog .sqk-action:hover{filter:brightness(1.13)}
+        #xcAutoShouQiDialog .sqk-action:disabled{opacity:.35;cursor:default;filter:none}
+        #xcAutoShouQiDialog .sqk-skip{border:0;background:none;color:#9698a3;padding:7px 0;font-size:12px;margin-right:5px}
+        @media(max-width:680px){#xcAutoShouQiDialog .sqk-grid{grid-template-columns:repeat(4,minmax(0,1fr))}#xcAutoShouQiDialog .sqk-head,#xcAutoShouQiDialog .sqk-body,#xcAutoShouQiDialog .sqk-foot{padding-left:16px;padding-right:16px}#xcAutoShouQiDialog .sqk-status{display:none}#xcAutoShouQiDialog .sqk-actions{justify-content:space-between}#xcAutoShouQiDialog .sqk-action{padding:9px 12px}}
+      </style>
+      <header class="sqk-head"><div><div class="sqk-eyebrow">自动手气</div><h2 id="xcSQKTitle">选择目标手牌</h2><div class="sqk-sub">选择偏好的牌，满足条件后自动停止换牌。</div></div><button type="button" class="sqk-close" aria-label="关闭">×</button></header>
+      <div class="sqk-body"></div>
+      <footer class="sqk-foot"><div class="sqk-summary"><span class="sqk-count"></span><div class="sqk-chips"></div></div><div class="sqk-actions"><button type="button" class="sqk-skip">本局不使用</button><span class="sqk-status" role="status" aria-live="polite"></span><button type="button" class="sqk-action" data-mode="any" title="任意一项目标出现即停止">任一出现</button><button type="button" class="sqk-action sqk-primary" data-mode="all" title="所有目标都出现后停止">全部出现</button></div></footer>`;
+    const state = {
+      element: panel, focus: document.activeElement, cards: Array.from(cards),
+      selected: Array.from(new Set(globalState.configHandCards || [])).slice(0, 4),
+      status: panel.querySelector(".sqk-status"), buttons: [], names: new Map(),
+    };
+    const body = panel.querySelector(".sqk-body");
+    for (const group of getAutoShouQiChoiceGroups()) {
+      const section = document.createElement("section");
+      section.className = "sqk-" + group.tone;
+      const title = document.createElement("div");
+      title.className = "sqk-section-title";
+      title.textContent = group.name;
+      const hint = document.createElement("span");
+      hint.textContent = group.hint + " · " + group.cards.length;
+      title.append(hint);
+      const grid = document.createElement("div");
+      grid.className = "sqk-grid";
+      for (const [id, name, symbol] of group.cards) {
+        state.names.set(id, name);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "sqk-card";
+        button.dataset.cardId = String(id);
+        button.setAttribute("aria-label", name);
+        const mark = document.createElement("span"), label = document.createElement("span");
+        mark.className = "sqk-symbol";
+        mark.textContent = symbol;
+        label.className = "sqk-name";
+        label.textContent = name;
+        button.append(mark, label);
+        button.onclick = () => {
+          const index = state.selected.indexOf(id);
+          if (index >= 0) state.selected.splice(index, 1);
+          else if (state.selected.length < 4) state.selected.push(id);
+          state.render();
+        };
+        grid.append(button);
+        state.buttons.push(button);
+      }
+      section.append(title, grid);
+      body.append(section);
+    }
+    state.render = () => {
+      for (const button of state.buttons) {
+        const selected = state.selected.includes(Number(button.dataset.cardId));
+        button.setAttribute("aria-pressed", String(selected));
+        button.disabled = !selected && state.selected.length >= 4;
+      }
+      panel.querySelector(".sqk-count").textContent = "已选 " + state.selected.length + " / 4";
+      state.status.textContent = state.selected.length ? "选择停止换牌的条件" : "点击上方卡牌添加目标";
+      const chips = panel.querySelector(".sqk-chips");
+      chips.replaceChildren();
+      for (const id of state.selected) {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "sqk-chip";
+        const name = state.names.get(id) || XC.sqkName[id] || XC.allCard[id].name || "目标牌";
+        chip.textContent = name + " ×";
+        chip.setAttribute("aria-label", "移除" + name);
+        chip.onclick = () => { state.selected = state.selected.filter(value => value !== id); state.render(); };
+        chips.append(chip);
+      }
+      panel.querySelectorAll("[data-mode]").forEach(button => { button.disabled = !state.selected.length; });
+    };
+    panel.querySelector(".sqk-close").onclick = () => closeAutoShouQiDialog();
+    panel.querySelector(".sqk-skip").onclick = () => closeAutoShouQiDialog("reject");
+    panel.querySelectorAll("[data-mode]").forEach(button => {
+      button.onclick = () => saveAutoShouQiDialog(button.dataset.mode);
+    });
+    panel.addEventListener("cancel", event => { event.preventDefault(); closeAutoShouQiDialog(); });
+    panel.addEventListener("keydown", event => event.stopPropagation());
+    panel.addEventListener("click", event => {
+      if (event.target === panel) {
+        const bounds = panel.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right ||
+            event.clientY < bounds.top || event.clientY > bounds.bottom) closeAutoShouQiDialog();
+      }
+    });
+    autoShouQiDialog = state;
+    document.body.append(panel);
+    state.render();
+    panel.showModal();
+    window.__xcAutoSQKDebugLog && window.__xcAutoSQKDebugLog("config:panel-show", {
+      source, cards: state.cards, target: state.selected, candidates: state.buttons.length,
+    });
+    return true;
+  }
   function triggerAutoShouQiConfigWindow(n, t = "deal") {
+    try {
+      if (openAutoShouQiDialog(n, t)) return true;
+    } catch (error) {
+      closeAutoShouQiDialog("reset");
+      window.__xcAutoSQKDebugLog && window.__xcAutoSQKDebugLog("config:panel-error", {
+        message: error && error.message,
+      });
+    }
     const e = { generalId: 634, handCardIDs: n };
     try {
       const i = typeof laya !== "undefined" && laya && laya.ged,
@@ -28252,6 +28503,7 @@
       a && i.event("CARD_CONFIG_VIP", e),
         setTimeout(() => {
           try {
+            if (isAutoShouQiDialogOpen()) return;
             const a =
               typeof laya !== "undefined" &&
               laya &&
@@ -31522,6 +31774,7 @@
                       var t, e;
                       const n = J,
                         a = globalState[n(874)];
+                      if (isAutoShouQiDialogOpen()) return;
                       window.__xcAutoSQKDebugLog &&
                         window.__xcAutoSQKDebugLog("deal:timer-fired", {
                           cards: dn,
