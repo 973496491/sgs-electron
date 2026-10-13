@@ -13,8 +13,15 @@ const urlList = [
 
 const webview = document.getElementById('wb')
 let currentPackageId = null
+const accountPicker = SGSAccountPicker.attach(webview, {
+  document,
+  getPackageId: () => currentPackageId
+})
 
 const msgList = {
+  openAccountPicker() {
+    accountPicker.open()
+  },
   changeSize() {
     if (!webview) return
     webview
@@ -197,6 +204,12 @@ if (close) {
 }
 
 const menutTemplate = [
+  {
+    text: '账号选择（OL）',
+    events: {
+      click: () => accountPicker.open()
+    }
+  },
   {
     text: '切换账号（OL）',
     events: {

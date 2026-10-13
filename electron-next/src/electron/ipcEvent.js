@@ -104,6 +104,12 @@ module.exports = {
 
       const menuContextTemplate = [
         {
+          label: '账号选择（OL）',
+          click: () => {
+            contents.send('rendererMsg', 'openAccountPicker')
+          }
+        },
+        {
           label: '切换账号（OL）',
           click: () => {
             contents.send('rendererMsg', 'switchAccount')

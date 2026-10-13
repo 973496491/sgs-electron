@@ -32724,6 +32724,24 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  independentAccountPicker: {
+    title: "独立账号选择 / 别名账号密码编辑面板",
+    verifiedAt: "2026-10-13",
+    sourceFile: "electron-next/src/renderer/account-picker.js",
+    searchKeywords: ["独立账号选择", "编辑面板", "别名", "默认首项", "单选高亮", "首位新增", "上下箭头", "修改删除", "主界面按钮", "水平居中", "2/3", "自由拖动", "标题栏拖动", "makeDraggable", "dialogPosition", "sap-drag-shield", "拖动误点击", "sgsAccountPickerLauncher", "updateLauncher", "登录界面消失", "sandbox", "preloadRequire", "module not found", "getAccountPicker", "sgsAccountPickerLoadError", "sgsAccountPicker.v1", "SGSAccountPicker", "openAccountPicker", "fillLogin", "managerData", "revision", "account-picker.cjs", "account-picker-electron.cjs", "回退"],
+    decodedIndexes: {},
+    chain: [
+      "账号管理位于 Electron 外壳，不是 userscript decoder 链。菜单账号选择（OL） -> rendererMsg/openAccountPicker 或菜单直接调用 -> accountPicker.open；公共 account-picker.js 用浏览器全局 SGSAccountPicker 或 CommonJS attach 接入，弹窗挂外壳 document.body。",
+      "主界面按钮：attach -> 外壳 body 的 sgsAccountPickerLauncher -> picker.open，left:50%/top:66.6667%/translate(-50%,-50%)，中心水平居中且垂直约 2/3。仅 OL 登录页显示，updateLauncher 随 dom-ready/did-navigate/did-navigate-in-page 刷新，主框架导航开始隐藏；游戏场景不遮挡，菜单仍可开面板。",
+      "自由拖动：makeDraggable 分别绑定按钮本体和 sap-header；5px 阈值、pointer capture、临时 sap-drag-shield、document 捕获尾随 click，防止拖动误开。位置只在内存保存，弹窗 dialogPosition 可关闭再开复用；resize/ResizeObserver 限制在视口内，关闭及导航取消清理。旧 Electron 遮罩使用 left/top/right/bottom 而非 inset，click 拦截放祖先阶段以早于 onclick。50 项浏览器检查及实际引擎鼠标拖动验证通过。",
+      "用户无需兼容旧链路：移除登录页 manager/manager_add、rememberCurrentAccount 和初始密码回填。新存储为外壳 localStorage.sgsAccountPicker.v1，版本 1 + accounts[{id,alias,account,password}]，旧 managerData 不读不迁移不删；不按游戏 webview partition 分库。",
+      "密码明文显示：用户要求本地管理无需掩码，fields(data,prefix) 的 add-password/edit-password 改用 type=text。仅添加/修改面板显示类型改变，本地存储原本就是明文，保存/回填及官方登录框类型不变；回退恢复密码分支 type=password。50 项界面检查通过。",
+      "选择页默认首项、单选高亮，只能选择，底部编辑/确定；空列表确定仅关闭。编辑页顶部独立添加区首位新增，上下箭头排序，每项修改/删除，修改变行内输入及确定，确认保存后恢复修改。稳定 id 保持选中及草稿，revision 检测其他窗口更新，存储失败不提交内存变更。",
+      "确定 -> attach.fill 校验 OL packageId=1/2 和精确登录页 -> executeJavaScript(fillLogin) 再次校验地址及输入节点 -> 写账号/密码、input/change、启用按钮 -> 关闭。无 click/submit/自动登录/自动退出；账号及别名用文本渲染，密码不 trim。",
+      "运行版 F:/Game/SGSOL/resources/app/index_wd.html 用普通 script 加载 script/account-picker.js，preload 通过 window.SGSAccountPicker/getAccountPicker 延后初始化。真实 Electron 10.4.5 的 sandbox preload 禁止 require 本地模块；原接法实测 module not found 导致 preload 中断、window.loadElectronFrame 缺失和 webview.src=null。组件初始化失败显示 sgsAccountPickerLoadError，不能阻断登录网址和主链挂钩。",
+      "保留 native SGS_login-remember_checked/注销/协议初始化及原切换账号链，execute 先排除非登录页；重启客户端加载，不编译 asar。存储、39 项 Chromium DOM、菜单 IPC 检查及 account-picker-electron.cjs 的真实引擎正常/组件缺失启动检查通过；隔离配置与本地 HTTPS 登录桩，不进行真实账号认证。备份、回归点与回退路径见代码架构表独立账号选择章节。",
+    ],
+  },
   wallpaperLocalImage: {
     title: "壁纸设置 / 本地图片入口与静态渲染可行性",
     verifiedAt: "2026-10-08",
