@@ -32724,6 +32724,25 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  wallpaperLocalImage: {
+    title: "壁纸设置 / 本地图片入口与静态渲染可行性",
+    verifiedAt: "2026-10-08",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: ["壁纸设置", "本地图片", "wallpaperContainer", "wallpaperDialog", "skinPaperDialogSwitch", "skinPaperSwitch", "allPaperSwitch", "paper.setBg", "paperRes", "SgsFlatImage", "BackgroundLayer", "FileReader", "readAsDataURL", "本地视频优先", "__SGS_LOCAL_VIDEO_BG_ACTIVE__", "居中裁切"],
+    decodedIndexes: {
+      _0x871b: { 344: "wallpaperContainer", 345: "wallpaperDialog", 436: "allPaperSwitch", 456: "wallpaperBound", 498: "skinPaperSwitch", 545: ".explanation" },
+      _0x3812: { 179: "switch", 230: "RogueSmallMapScene", 232: "setBg", 498: "skinPaperSwitch", 558: "::paperRes", 654: "__SGS_LOCAL_VIDEO_BG_ACTIVE__", 1056: "RogueLikeBigMapScene", 1177: "allPaperSwitch", 1240: "SgsFlatImage", 1263: "BackgroundLayer", 1567: "executeSwitchScene" },
+      _0x262d: { 178: "#cardBackLocalFileInput", 240: "readAsDataURL" },
+      W: { 127: "localDel", 142: "setItem", 194: "getItem", 198: "removeItem", 236: "localGet", 250: "localSet" },
+    },
+    chain: [
+      "addFrame -> _0x310ee8 为 wallpaperContainer .explanation 绑定 click -> _0x208a6c -> wallpaperDialog.showModal。模板只有皮肤壁纸和全局壁纸开关，没有本地图片选择入口；其中本地保存皮肤的提示是下载，cardBackLocalFileInput 是卡背专用。",
+      "ChangeSkinWindow 背景按钮 -> _0x495cfb / 皮肤详情设为壁纸 -> _0x333387 -> paper.setBg。type=0 将 url 写入 SgsFlatImage.skin，按真实宽高居中放大铺满裁切，RGB 0.8 压暗；渲染不要求 url 必须是皮肤资源，但本地 Data URL/Blob 尚未在实际游戏验证。",
+      "paper.res 的 url/type/width/height 经 XC.localSet(userID+'::paperRes',res,true) 写 localStorage JSON，login 读回，SceneManager.executeSwitchScene 与面板 change 调 paper.switch。skinPaperSwitch 必需，allPaperSwitch 控制局外显示，保留 RogueLikeBigMapScene/RogueSmallMapScene 排除。",
+      "__SGS_LOCAL_VIDEO_BG_ACTIVE__ 为真时纸面背景仅保存不显示；本次未定位该 flag 生产者。现有 setBg 不等待静态贴图加载成功，后续本地导入需先验证图片解码、尺寸及存储错误。",
+      "卡背 _0x198c60 已封装 FileReader.readAsDataURL，可复用读取模式；不要套用卡背应用函数 _0x45a0fa。拟议选择图片 -> 读取真实尺寸 -> 保存内容 -> paper.setBg(type:0)，大图宜压缩或 IndexedDB，不能只持久化临时 blob URL。此次仅调查，不改游戏逻辑。",
+    ],
+  },
   topMarqueeBlock: {
     title: "屏蔽弹幕 / 顶部右至左跑马灯开关",
     verifiedAt: "2026-10-08",
