@@ -32724,6 +32724,72 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  panelPlaceholderButtons: {
+    title: "独立面板 / 结果样式下方九个占位按钮移除",
+    verifiedAt: "2026-10-13",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: ["结果样式", "界小抄功能", "九个按钮", "9个按钮", "占位按钮", "小抄", "开发", "小伙伴", "霜迟", "孤独尊", "无所谓", "埃城", "辉神", "人富", "test1", "type1", "type2", "type3", "type4", ":empty", "domInit", "Qcard.name", "Qcard.number", "queryone", "cardTypeDetail", "回归", "回退"],
+    decodedIndexes: {
+      _0x871b: {
+        "110": "cardType",
+        "198": "type4",
+        "241": "queryone",
+        "259": "getElementById",
+        "293": "appendChild",
+        "394": "innerHTML",
+        "396": "number",
+        "534": "name",
+        "619": "type"
+      },
+      _0x3911: {
+        "329": "init",
+        "483": "cardTypeDetail",
+        "532": "type"
+      }
+    },
+    chain: [
+      "addFrame -> window.XC.iframe 的 D() 编码模板：结果样式与界小抄功能之间，type1 原有小抄/开发/小伙伴，type2 原有霜迟/孤独尊/无所谓/埃城/辉神/人富；唯一静态ID为小抄按钮test1。九个均为无绑定占位内容，已直接删除，不需保留隐藏按钮。",
+      "ready -> Qcard.init -> domInit 原本先清空 type1..4，再按 _0x2fd892[牌ID].type 从 Qcard.name 创建牌名按钮，type4 从 Qcard.number 创建 numberN。按钮分别调用 Qcard.queryone(name,牌名)/queryone(number,N)，再由 Qcard.draw 写 cardTypeDetail。保留四个分组、cardTypeContainer、cardTypeDetail 与邻接 result/jie-header，不能永久隐藏整个 type 区。",
+      "模板新增 #type1:empty,#type2:empty,#type3:empty,#type4:empty{display:none}，清除被删按钮间的空格，空组无padding/margin/阴影占位；加入真实按钮后自动恢复。只改同一处编码模板，执行函数、配置、场景限制均不变，无轮询/观察器；之前支持我们隐藏兼容节点保持。",
+      "headless Chromium 真实模板/原domInit配模拟Qcard：首次与重建两轮18项通过，覆盖删除、空组高度、实际按钮恢复、queryone点击、不重复和空数据；既有 top-marquee-block.cjs 34项通过。回退恢复九个静态按钮并删empty样式，保留赞助区清理。未游戏内实测。",
+      "已备份并同步 AppData/Roaming/SGSOL/三国杀打小抄.js 的同一模板，保留其余实际正文与行尾。源码、实际脚本及彩虹表语法检查通过；重载页面/重开客户端生效，未热替换、未编译asar，备份路径见架构表。"
+    ]
+  },
+  supportPanelSection: {
+    title: "独立面板 / 支持我们区块移除与隐藏兼容节点",
+    verifiedAt: "2026-10-13",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: ["独立面板", "支持我们", "赞助区块", "ACContainer", "ACSubmit", "#AC", "activate", "act", "createParticleEffect", "_0x4484c9", "_0x318e37", "_0x3f649d", "iframe-source", "jie-group-title", "隐藏兼容节点", "空值判断", "回归", "回退"],
+    decodedIndexes: {
+      _0x871b: {
+        "128": "nextElementSibling",
+        "219": ".panel-header",
+        "259": "getElementById",
+        "272": ".external-link",
+        "288": "iframe-source",
+        "363": ".jie-header",
+        "394": "innerHTML",
+        "441": "ACSubmit",
+        "472": "iframe",
+        "564": "createIframe",
+        "573": "maxHeight",
+        "593": "onclick",
+        "647": "scrollHeight"
+      },
+      _0x2e57: {
+        "296": "getElementById",
+        "339": "ACSubmit"
+      }
+    },
+    chain: [
+      "addFrame 将 window.XC.iframe 写入 createIframe 内的 iframe-source。D() 编码数组中的模板已删除界小抄功能末尾、secKillList 后的支持我们赞助链接，并将相邻 ACContainer（AC/ACSubmit）设为 style=display:none、aria-hidden=true。链接前一个和表单后两个 width 专属间隔同时删除，界小抄功能区与秒杀连点器保留。",
+      "_0x4484c9 无判空执行 document.getElementById(ACSubmit).onclick=debounce(act,300)，直接删除按钮会中断后续 _0x1f427a/_0x318e37。赞助链接只走 _0x318e37 -> external-link -> openLink(dataset.url)，可单独删除。",
+      "activate 的 setTimeout 还会自动调用 act。act 在 try 外调用 createParticleEffect(ACSubmit)，gsap 存在时读取节点 getBoundingClientRect；try 内读写 AC.value/placeholder，随后进行现有状态与按钮初始化。只改 onclick 判空不足以物理删除表单，缺节点直接 return 也会跳过初始化。",
+      "用户确认采用隐藏兼容节点方案：保留输入框/按钮 ID、默认空输入、placeholder 写回与 onclick；模板重建自动沿用隐藏属性，无新增轮询/观察器。仅替换一处编码模板，可执行逻辑、权限、配置与场景门槛不变。未来彻底删 DOM 仍须解耦 act 的 UI 操作与初始化，不能只在缺节点时早退。",
+      "保留 panel-header/nextElementSibling 结构和 _0x3f649d 的 scrollHeight 展开。headless Chromium 使用真实模板和原 act/createParticleEffect/_0x3f649d，首次与重建两轮共14项通过（请求/游戏服务mock），覆盖隐藏零占位、原绑定/初始化、读写、折叠；既有 top-marquee-block.cjs 34项通过。回退恢复链接、表单显示和三个间隔，无配置迁移。",
+      "已备份并同步 AppData/Roaming/SGSOL/三国杀打小抄.js 的同一处模板，保留其余实际内容与行尾；实际 read-local-script/dom-ready 加载链已核实。源码及实际脚本语法检查通过，需重载页面或重开客户端生效，未热替换、未游戏内实测、未编译 asar。备份路径见架构表。"
+    ]
+  },
   independentAccountPicker: {
     title: "独立账号选择 / 别名账号密码编辑面板",
     verifiedAt: "2026-10-13",
