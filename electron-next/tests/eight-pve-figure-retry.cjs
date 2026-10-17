@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 const assert = require("node:assert/strict");
+const native = require("./fixtures/eight-pve-native-figure.cjs");
 const sourceArg = process.argv.indexOf("--source");
 assert(sourceArg < 0 || process.argv[sourceArg + 1], "--source requires a path");
 const source = fs.readFileSync(sourceArg < 0
@@ -44,10 +45,13 @@ function harness() {
     globalState: {},
     Qcard: { init() {} }, Zone: { init() {} },
     game: { end() {}, spellSpace: {} },
-    clearSWJGSeatOrder() {}, resetAdvancedFeatureTrial() {},
+    clearSWJGSeatOrder() {}, resetAdvancedFeatureTrial() {}, closeAutoShouQiDialog() {},
     logLightRoomContext() {}, domInit() {}, patchSkinBtn() {},
     recGameRecord() {}, scheduleAutoShouQiFallback() {},
     laya: { gamescene: {}, [d(648)]() {}, [g(559)]: { [g(290)]() {} } },
+    c1t: { IsFigureMode: true, IsViewer: false },
+    sJt: { I: () => ({ SystemSets: { DefaultOpenFigure: true } }) },
+    XBi: { I: () => ({ RemoveUserOptFigure() {} }) },
   });
   context.window = context;
   context.laya.figureOut = (source, attempt) => {
@@ -57,7 +61,9 @@ function harness() {
   vm.runInContext(schedulerSource +
     "\nlaya.reset=({" + resetSource + "}).reset;" +
     "\ngame.ready=({" + readySource + "}).ready;" +
-    "\nglobalThis.realFigureOut=({" + figureSource + "}).figureOut;", context);
+    "\nglobalThis.realFigureOut=({" + figureSource + "}).figureOut;" +
+    "\nglobalThis.NativeFigure=class {" + native.managerMethods + "};" +
+    "\nglobalThis.nativeUpdateFigure=({" + native.seatUpdateFigure + "}).updateFigure;", context);
   const run = code => vm.runInContext(code, context);
   return {
     calls, logs, jobs, context, run,
@@ -79,7 +85,12 @@ function harness() {
     useRealFigureOut() {
       const seats = Array.from({ length: 8 }, (_, i) => ({
         seat: { figure: 0, playerInfo: { ClientId: i + 100 } },
-        figureManager: { Figure: 0, repaint() {} }, repaint() {},
+        figureManager: Object.assign(new context.NativeFigure(), {
+          figureValue: 0, currentFigure: { texture: "figure_0", visible: false },
+          getFigureSource: figure => "figure_" + figure,
+          setCurrentFigure(texture) { this.currentFigure.texture = texture; },
+          layout() {}, repaint() {},
+        }), repaint() {},
       }));
       const controller = {
         TableSetting: { IsChooseFigure: true },
@@ -188,7 +199,7 @@ test("a reentrant hook cannot start an extra immediate timer", h => {
 });
 test("real figureOut reads late data on retry and preserves already disclosed identity", h => {
   const { controller, seats } = h.useRealFigureOut();
-  seats[0].figureManager.Figure = 3;
+  seats[0].figureManager.SetFigure(3);
   h.context.controller = null;
   h.schedule("game.start"); h.advance(1500); h.context.controller = controller;
   h.advance(10500);
@@ -206,6 +217,149 @@ test("real figureOut retains the PVE and reconnect restrictions", h => {
   h.advance(10000);
   assert(seats.every(ui => ui.figureManager.Figure === 0));
   assert.equal(h.calls.length, 2);
+});
+test("native getter-only managers change the actual icon, not just the backing value", h => {
+  const { seats } = h.useRealFigureOut();
+  assert.equal(h.schedule("game.start").reason, "complete");
+  assert.deepEqual(seats.map(ui => ui.figureManager.currentFigure.texture),
+    [1, 2, 2, 4, 3, 3, 3, 3].map(figure => "figure_" + figure));
+  assert(seats.every(ui => ui.figureManager.currentFigure.visible));
+  assert(seats.every(ui => !Object.hasOwn(ui.figureManager, "Figure")));
+});
+test("an already readable identity with a stale icon is still rendered", h => {
+  const { seats } = h.useRealFigureOut();
+  seats[0].figureManager.figureValue = 3;
+  assert.equal(h.schedule("game.start").reason, "complete");
+  assert.equal(seats[0].figureManager.currentFigure.texture, "figure_3");
+  assert.equal(seats[0].seat.figure, 3);
+});
+test("a disclosed model identity wins over the inferred seat order", h => {
+  const { seats } = h.useRealFigureOut();
+  seats[0].seat.figure = 3;
+  h.schedule("game.start");
+  assert.equal(seats[0].figureManager.Figure, 3);
+  assert.equal(seats[0].seat.figure, 3);
+});
+test("native seat updateFigure also refreshes the bottom manager and layout", h => {
+  const { seats } = h.useRealFigureOut(), bottom = [], positions = [];
+  seats.forEach(ui => Object.assign(ui, {
+    updateFigure: h.context.nativeUpdateFigure,
+    isShowDDZZgIcon: () => false,
+    otherTopManager: { x: 3, y: 6 },
+    spPosLayout: (...args) => positions.push(args),
+    bottomManager: { SetFigure: figure => bottom.push(figure) },
+  }));
+  assert.equal(h.schedule("game.start").reason, "complete");
+  assert.deepEqual(bottom, [1, 2, 2, 4, 3, 3, 3, 3]);
+  assert.deepEqual(positions, seats.map(() => [3, 6]));
+});
+test("native rendering preserves SubFigure and the self identity preference", h => {
+  const { seats } = h.useRealFigureOut();
+  seats[0].seat.SubFigure = 9;
+  seats[0].figureManager.seat = { IsSelf: true };
+  h.context.sJt.I = () => ({ SystemSets: { DefaultOpenFigure: false } });
+  h.schedule("game.start");
+  assert.equal(seats[0].figureManager.subFigureValue, 9);
+  assert.equal(seats[0].figureManager.Figure, 1);
+  assert.equal(seats[0].figureManager.currentFigure.texture, "figure_0");
+  assert.equal(seats[1].figureManager.currentFigure.texture, "figure_2");
+});
+test("late data after timeout wakes once without resetting the ten-retry budget", h => {
+  const { controller, seats } = h.useRealFigureOut();
+  h.context.controller = null;
+  h.schedule("room.ready"); h.advance(11000);
+  assert.equal(h.calls.length, 11);
+  h.context.controller = controller;
+  assert.equal(h.schedule("seatUIs").reason, "complete");
+  assert.equal(h.calls.at(-1).attempt, 10);
+  assert(seats.every(ui => ui.figureManager.currentFigure.visible));
+  h.advance(10000); h.schedule("skills");
+  assert.equal(h.calls.length, 12);
+  assert.equal(h.jobs.size, 0);
+});
+test("chooseFigure becoming true in the same scene invalidates an early skip", h => {
+  const { controller, seats } = h.useRealFigureOut();
+  controller.TableSetting.IsChooseFigure = false;
+  assert.equal(h.schedule("room.ready").reason, "choose-figure-off");
+  h.advance(1500); controller.TableSetting.IsChooseFigure = true;
+  assert.equal(h.schedule("game.start").reason, "complete");
+  assert(seats.every(ui => ui.figureManager.currentFigure.visible));
+});
+test("native identity clearing after success is repaired by the next lifecycle event", h => {
+  const { seats } = h.useRealFigureOut();
+  h.schedule("game.start"); h.advance(1500);
+  seats.forEach(ui => { ui.seat.figure = 0; ui.figureManager.SetFigure(0); });
+  assert.equal(h.schedule("skills").reason, "complete");
+  assert.deepEqual(seats.map(ui => ui.figureManager.Figure), [1, 2, 2, 4, 3, 3, 3, 3]);
+  assert.equal(h.calls.length, 2);
+  h.advance(10000);
+  assert.equal(h.calls.length, 2);
+});
+test("icon clearing alone invalidates success and repeated hooks share a 1s deadline", h => {
+  const { seats } = h.useRealFigureOut();
+  h.schedule("game.start"); h.advance(100);
+  seats[1].figureManager.currentFigure.visible = false;
+  for (let i = 0; i < 8; i++) { h.schedule("skills"); h.advance(100); }
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.jobs.size, 1);
+  h.advance(100);
+  assert.deepEqual(h.calls.map(call => call.at), [0, 1000]);
+  assert.equal(seats[1].figureManager.currentFigure.visible, true);
+  assert.equal(h.jobs.size, 0);
+});
+test("UI replacement within the same scene invalidates success", h => {
+  const original = h.useRealFigureOut();
+  h.schedule("game.start"); h.advance(1500);
+  const replacement = h.useRealFigureOut();
+  original.scene.seatContainer.seatUIs = replacement.seats;
+  h.context.controller = original.controller;
+  h.context.laya.gamescene = original.scene;
+  h.schedule("seatUIs");
+  assert(replacement.seats.every(ui => ui.figureManager.currentFigure.visible));
+  assert.equal(h.calls.length, 2);
+});
+test("a native refresh exception retries even if it already wrote Figure", h => {
+  const { seats } = h.useRealFigureOut(), manager = seats[1].figureManager;
+  manager.SetFigure = function (figure) { this.figureValue = figure; throw Error("texture pending"); };
+  assert.equal(h.schedule("game.start").reason, "figure-ui-refresh-failed");
+  assert.equal(manager.Figure, 2);
+  assert.equal(manager.currentFigure.texture, "figure_0");
+  delete manager.SetFigure;
+  h.advance(1000);
+  assert.equal(manager.currentFigure.texture, "figure_2");
+  assert.equal(h.jobs.size, 0);
+  assert(h.logs.some(line => line.includes("texture pending")));
+});
+test("legacy backing writes use UpdateFigureTex and cannot report missing UI as complete", h => {
+  const { seats } = h.useRealFigureOut();
+  seats.forEach(ui => { ui.figureManager.SetFigure = undefined; });
+  seats[1].figureManager.UpdateFigureTex = undefined;
+  assert.equal(h.schedule("game.start").reason, "figure-ui-refresh-unavailable");
+  assert.equal(seats[0].figureManager.currentFigure.texture, "figure_1");
+  delete seats[1].figureManager.UpdateFigureTex;
+  h.advance(1000);
+  assert.equal(seats[1].figureManager.currentFigure.texture, "figure_2");
+  assert.equal(h.jobs.size, 0);
+});
+test("changed data after timeout gets one attempt, not another timer cycle", h => {
+  const { controller } = h.useRealFigureOut();
+  h.context.controller = null;
+  h.schedule("game.start"); h.advance(11000);
+  controller.TabbleSeatInfos.datum.length = 0;
+  h.context.controller = controller;
+  assert.equal(h.schedule("skills").reason, "seat-info-not-ready");
+  assert.equal(h.calls.length, 12);
+  h.advance(10000); h.schedule("skills");
+  assert.equal(h.calls.length, 12);
+  assert.equal(h.jobs.size, 0);
+});
+test("a skipped task without a scene can recover when a scene arrives", h => {
+  const { scene } = h.useRealFigureOut();
+  h.context.laya.gamescene = null;
+  h.schedule("script.bootstrap"); h.advance(11000);
+  h.context.laya.gamescene = scene;
+  assert.equal(h.schedule("seatUIs").reason, "complete");
+  assert.equal(h.calls.at(-1).attempt, 10);
 });
 test("disabling debug does not disable the retry fallback", h => {
   h.context.XC.isDebug = false;

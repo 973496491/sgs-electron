@@ -188,5 +188,12 @@
 - 后续实测 `applied=7/writeFailed=0` 但图标仍不可见，说明只改 `figureValue` 没有触发原生 UI 刷新。执行器现同步 `seat.figure`，调用 `rightView.UpdateFigureList/__UpdateFigureList` 并对身份管理器和座位 UI 执行 `repaint()`；结果日志新增 `modelSynced/modelSyncFailed/repainted/refreshFailed/rightViewRefresh/refreshErrors`，便于区分状态写入与显示刷新。
 - userscript 初始化后另有 `script.bootstrap` 延迟入口，覆盖脚本中途加载、已经错过进房和开局通知的场景。
 - 实测出现 `debug-open:dispatch {"schedulerReady":true}` 后仍完全无身份日志，定位为旧 scheduler 在 `eightPveFigureRetryTimer` 为真时直接返回；timer 若已被场景生命周期清理，本地句柄不会自动归零，会永久吞掉所有新入口。
-- scheduler 现在每次新触发都先清理并替换旧 timer，并输出 `scheduler:start/invoke/result`；因此 `debug-open:dispatch` 后至少能看到执行器存在性和明确返回原因。
+- 当时 scheduler 每次新触发都先清理并替换旧 timer，并输出 `scheduler:start/invoke/result`；2026-10-08 改为保留原截止点合并 timer，2026-10-16 又增加终止后状态变化唤醒，当前链见下方补记和架构表。
 - 关键检索词：`openDebugFromButton`、`debug-open:v5-dispatch`、`v5-direct-result`、`v5-direct-error`、`v5-scheduler-result`、`__xcRunEightPveFigureOut`、`__xcAppendLocalSkinDebugLine`、`debug.open.v5`、`script.bootstrap`、`scheduleEightPveFigureOut`、`八人PVE身份`、`figureValue`、`seat.figure`、`UpdateFigureList`、`__UpdateFigureList`、`rightViewRefresh`、`IIFE`、`作用域桥`。
+
+### 2026-10-16 补记：身份数值不等于图标刷新
+
+- 复用原生客户端快照确认 `figureManager.SetFigure -> setCurrentFigure` 才会更新 `currentFigure.texture/visible`；旧 `figureValue + repaint + rightView.UpdateFigureList` 不会更新座位贴图，旧 `applied>0/rightViewRefresh=UpdateFigureList` 不能证明身份已可见。
+- 当前 `figureOut` 优先走 `seatUI.updateFigure -> figureManager.SetFigure`，保留 `SubFigure`、底栏布局、原生本人隐藏偏好；已非零的身份也重绘。仅兼容属性写入时补 `UpdateFigureTex`；缺失刷新能力返回 `figure-ui-refresh-unavailable`。日志新增 `uiUpdated/uiRefreshUnavailable`，`writeModes` 会标明实际原生入口；所有日志仍受调试开关控制。
+- 终止缓存不再覆盖整个场景：`getEightPveFigureState` 检测门槛/座位数据/身份模型/UI/贴图变化，后续事件输出 `scheduler:state-changed {source,attempt,previousReason}` 后补执行；同状态继续停止，间隔保持至少1秒，不重置十次重试预算。耗尽后变化只补一次，不新建十次循环。
+- 自动回归27项通过，旧代码同套测试14项失败；未进行游戏内视觉实测。回退和完整链路见 [代码架构表](代码架构表.md) 的“八人场 PVE 自动显示身份链路”。

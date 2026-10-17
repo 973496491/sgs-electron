@@ -12663,6 +12663,37 @@
   function getEightPveFigureScene() {
     try { return laya.gamescene || null; } catch (error) { return null; }
   }
+  function getEightPveFigureState() {
+    // 保存值和对象身份，不能只按 gamescene 缓存终止结果：同一场景会晚到数据或重建座位。
+    const scene = getEightPveFigureScene(), state = [scene];
+    try {
+      const controller = laya.class("RoomControler"),
+        setting = controller && (controller.TableSetting || controller.tableSetting),
+        infos = controller && (controller.TabbleSeatInfos || controller.tabbleSeatInfos),
+        datum = infos && infos.datum,
+        seats = scene && scene.seatContainer && scene.seatContainer.seatUIs,
+        rightView = scene && scene.rightView;
+      state.push(controller, setting && setting.IsChooseFigure, room.isDuanXian,
+        rightView, rightView && (rightView.UpdateFigureList || rightView.__UpdateFigureList));
+      state.push(datum && datum.length);
+      if (Array.isArray(datum)) datum.forEach((info) => {
+        const player = info && (info.SeatPlayerInfo || info.playerInfo);
+        state.push(player && String(player.ClientId ?? player.clientId));
+      });
+      state.push(seats && seats.length);
+      if (Array.isArray(seats)) seats.forEach((ui) => {
+        const seat = ui && ui.seat, player = seat && seat.playerInfo,
+          manager = ui && ui.figureManager, icon = manager && manager.currentFigure;
+        state.push(ui, seat, player && String(player.ClientId ?? player.clientId),
+          seat && seat.Figure, seat && seat.figure, seat && seat.SubFigure, manager,
+          manager && manager.Figure, manager && manager.SetFigure, manager && manager.UpdateFigureTex,
+          ui && ui.updateFigure, icon, icon && icon.texture, icon && icon.visible);
+      });
+    } catch (error) {
+      state.push(String((error && error.message) || error));
+    }
+    return state;
+  }
   function armEightPveFigureRetry(task) {
     if (task !== eightPveFigureRetryTask || task.finished || task.nextAt === null) return;
     // 保留原到期时间：重复入口不延长等待，也能恢复被外部清掉的 timer。
@@ -12675,12 +12706,28 @@
         eightPveFigureRetryTask.scene !== scene)
       cancelEightPveFigureOut("scene-changed");
     if (eightPveFigureRetryTask) {
-      armEightPveFigureRetry(eightPveFigureRetryTask);
-      return eightPveFigureRetryTask.result || { retry: true, reason: "figure-out-pending" };
+      const task = eightPveFigureRetryTask;
+      if (task.finished) {
+        const state = getEightPveFigureState();
+        if (!task.state || state.length !== task.state.length ||
+            state.some((value, index) => !Object.is(value, task.state[index]))) {
+          logEightPveFigure("scheduler:state-changed", {
+            source: String(source || "unknown"), attempt: task.attempt,
+            previousReason: task.result && task.result.reason,
+          });
+          task.finished = false;
+          task.source = String(source || "unknown");
+          // 仅响应实际变化；保留已用次数，不给每次技能刷新重开十次轮询。
+          task.nextAt = Math.max(Date.now(), task.lastRunAt + EIGHT_PVE_FIGURE_RETRY_INTERVAL);
+          if (task.nextAt <= Date.now()) return task.run();
+        }
+      }
+      armEightPveFigureRetry(task);
+      return task.result || { retry: true, reason: "figure-out-pending" };
     }
     const task = {
       source: String(source || "unknown"), attempt: 0, scene,
-      finished: false, nextAt: null, result: null, run: null,
+      finished: false, nextAt: null, result: null, run: null, state: null, lastRunAt: 0,
     };
     eightPveFigureRetryTask = task;
     logEightPveFigure("scheduler:start", {
@@ -12693,6 +12740,7 @@
       if (task !== eightPveFigureRetryTask || task.finished) return task.result;
       eightPveFigureRetryTimer = null;
       task.nextAt = null;
+      task.lastRunAt = Date.now();
       const currentScene = getEightPveFigureScene();
       if (task.scene && task.scene !== currentScene) {
         task.result = { retry: false, reason: "scene-changed" };
@@ -12730,6 +12778,7 @@
         };
       if (task !== eightPveFigureRetryTask) return result;
       task.result = result;
+      task.state = getEightPveFigureState();
       logEightPveFigure("scheduler:result", {
         source: task.source,
         attempt: task.attempt,
@@ -12749,7 +12798,7 @@
           attempt: task.attempt,
           reason: result.reason || "not-ready",
         });
-      // 保留终止结果，后续 skills/seatUIs 等入口不重新获得十次预算。
+      // 相同状态保持停止；后续生命周期观察到数据/UI 变化时可补执行，但不重置预算。
       task.finished = true;
       return result;
     };
@@ -14558,6 +14607,8 @@
         writeFailed = 0,
         modelSynced = 0,
         modelSyncFailed = 0,
+        uiUpdated = 0,
+        uiRefreshUnavailable = 0,
         repainted = 0,
         refreshFailed = 0,
         figureDescriptorSummary = null;
@@ -14605,70 +14656,108 @@
           clientIndex = clientIds.findIndex(
             (value) => value != null && clientId != null && String(value) === String(clientId),
           ),
-          figure = figureMap[clientIndex + 1] || 0,
+          inferredFigure = figureMap[clientIndex + 1] || 0,
           figureManager = null == seatUI ? void 0 : seatUI[l(1002)];
-        if (!figureManager || !figure) {
+        if (!figureManager || !inferredFigure) {
           unresolved++;
           return;
         }
-        const currentFigure = Number(figureManager[l(980)]) || 0;
-        if (currentFigure) {
-          if (currentFigure === Number(figure))
-            syncSeatFigure(seat, figure, clientId, l(1087));
-          alreadyShown++;
-          return;
-        }
+        const currentFigure = Number(figureManager[l(980)]) || 0,
+          modelFigure = Number(seat && (seat.Figure || seat[l(1087)])) || 0,
+          figure = modelFigure || currentFigure || inferredFigure,
+          subFigure = Number(seat && seat.SubFigure) || 0,
+          nativeUpdate = typeof seatUI.updateFigure === "function"
+            ? () => seatUI.updateFigure(figure, subFigure)
+            : typeof figureManager.SetFigure === "function"
+              ? () => figureManager.SetFigure(figure, subFigure) : null;
+        if (currentFigure) alreadyShown++;
         syncSeatFigure(seat, figure, clientId, l(1087));
-        try {
-          const descriptorInfo = findFigureDescriptor(figureManager, l(980)),
-            descriptor = null == descriptorInfo ? void 0 : descriptorInfo.descriptor,
-            getterText =
-              descriptor && typeof descriptor.get === "function"
-                ? Function.prototype.toString.call(descriptor.get)
-                : "";
-          if (!figureDescriptorSummary)
-            figureDescriptorSummary = {
-              depth: null == descriptorInfo ? -1 : descriptorInfo.depth,
-              hasGetter: !!(descriptor && descriptor.get),
-              hasSetter: !!(descriptor && descriptor.set),
-              writable: !!(descriptor && descriptor.writable),
-              configurable: !!(descriptor && descriptor.configurable),
-              getterText: getterText.slice(0, 180),
-            };
-          let writeMode = "";
-          if (descriptor && typeof descriptor.set === "function") {
-            descriptor.set.call(figureManager, figure);
-            writeMode = "descriptor-setter";
-          }
-          if (!writeMode && getterText) {
-            const backingMatch = getterText.match(
-                /return\s+this(?:\.([A-Za-z_$][\w$]*)|\[\s*["']([^"']+)["']\s*\])/,
-              ),
-              backingKey = backingMatch && (backingMatch[1] || backingMatch[2]);
-            if (backingKey && backingKey !== l(980)) {
-              figureManager[backingKey] = figure;
-              if (Number(figureManager[l(980)]) === Number(figure))
-                writeMode = "getter-backing:" + backingKey;
-            }
-          }
-          if (!writeMode && seat) {
-            seat[l(1087)] = figure;
-            if (Number(figureManager[l(980)]) === Number(figure))
-              writeMode = "seat.figure";
-          }
-          if (!writeMode) {
-            Object.defineProperty(figureManager, l(980), {
-              value: figure,
-              writable: true,
-              configurable: true,
-              enumerable: true,
+        let writeMode = "";
+        if (nativeUpdate) {
+          try {
+            // 原生方法会设置 currentFigure.texture/visible；只写 figureValue 后 repaint 不会换图。
+            nativeUpdate();
+            if (Number(figureManager[l(980)]) !== figure)
+              throw new Error("native-figure-write-not-reflected");
+            writeMode = typeof seatUI.updateFigure === "function"
+              ? "seatUI.updateFigure" : "figureManager.SetFigure";
+            uiUpdated++;
+          } catch (figureUiError) {
+            refreshFailed++;
+            if (refreshErrors.length < 4) refreshErrors.push({
+              stage: "seatUI.updateFigure/figureManager.SetFigure",
+              clientId: String(clientId), figure,
+              message: String((figureUiError && figureUiError.message) || figureUiError),
             });
-            writeMode = "figureManager-own-data";
+            return;
+          }
+        }
+        try {
+          if (!nativeUpdate) {
+            const descriptorInfo = findFigureDescriptor(figureManager, l(980)),
+              descriptor = null == descriptorInfo ? void 0 : descriptorInfo.descriptor,
+              getterText =
+                descriptor && typeof descriptor.get === "function"
+                  ? Function.prototype.toString.call(descriptor.get)
+                  : "";
+            if (!figureDescriptorSummary)
+              figureDescriptorSummary = {
+                depth: null == descriptorInfo ? -1 : descriptorInfo.depth,
+                hasGetter: !!(descriptor && descriptor.get),
+                hasSetter: !!(descriptor && descriptor.set),
+                writable: !!(descriptor && descriptor.writable),
+                configurable: !!(descriptor && descriptor.configurable),
+                getterText: getterText.slice(0, 180),
+              };
+            if (descriptor && typeof descriptor.set === "function") {
+              descriptor.set.call(figureManager, figure);
+              writeMode = "descriptor-setter";
+            }
+            if (!writeMode && getterText) {
+              const backingMatch = getterText.match(
+                  /return\s+this(?:\.([A-Za-z_$][\w$]*)|\[\s*["']([^"']+)["']\s*\])\s*[;}]/,
+                ),
+                backingKey = backingMatch && (backingMatch[1] || backingMatch[2]);
+              if (backingKey && backingKey !== l(980)) {
+                figureManager[backingKey] = figure;
+                if (Number(figureManager[l(980)]) === Number(figure))
+                  writeMode = "getter-backing:" + backingKey;
+              }
+            }
+            if (!writeMode && seat) {
+              seat[l(1087)] = figure;
+              if (Number(figureManager[l(980)]) === Number(figure))
+                writeMode = "seat.figure";
+            }
+            if (!writeMode) {
+              Object.defineProperty(figureManager, l(980), {
+                value: figure,
+                writable: true,
+                configurable: true,
+                enumerable: true,
+              });
+              writeMode = "figureManager-own-data";
+            }
           }
           if (Number(figureManager[l(980)]) !== Number(figure))
             throw new Error("figure-write-not-reflected");
           writeModes[writeMode] = (writeModes[writeMode] || 0) + 1;
-          applied++;
+          if (!currentFigure) applied++;
+          if (!nativeUpdate) {
+            if (typeof figureManager.UpdateFigureTex === "function") {
+              try {
+                figureManager.UpdateFigureTex();
+                if (figureManager.currentFigure) figureManager.currentFigure.visible = true;
+                uiUpdated++;
+              } catch (textureError) {
+                refreshFailed++;
+                if (refreshErrors.length < 4) refreshErrors.push({
+                  stage: "figureManager.UpdateFigureTex", clientId: String(clientId), figure,
+                  message: String((textureError && textureError.message) || textureError),
+                });
+              }
+            } else uiRefreshUnavailable++;
+          }
           [figureManager, seatUI].forEach((target) => {
             if (!target || typeof target.repaint !== "function") return;
             try {
@@ -14739,6 +14828,8 @@
         writeFailed,
         modelSynced,
         modelSyncFailed,
+        uiUpdated,
+        uiRefreshUnavailable,
         repainted,
         refreshFailed,
         rightViewRefresh,
@@ -14750,6 +14841,9 @@
       const shouldRetry =
         unresolved > 0 ||
         seatUIs.length < 8 ||
+        modelSyncFailed > 0 ||
+        refreshFailed > 0 ||
+        uiRefreshUnavailable > 0 ||
         rightViewRefresh === "unavailable" ||
         rightViewRefresh === "error";
       return {
@@ -14758,13 +14852,15 @@
           ? "figure-write-failed"
           : modelSyncFailed
             ? "figure-model-sync-failed"
-            : rightViewRefresh === "unavailable"
-              ? "figure-list-refresh-unavailable"
-              : rightViewRefresh === "error" || refreshFailed
-                ? "figure-ui-refresh-failed"
-                : shouldRetry
-                  ? "seat-client-id-unresolved"
-                  : "complete",
+            : uiRefreshUnavailable
+              ? "figure-ui-refresh-unavailable"
+              : rightViewRefresh === "unavailable"
+                ? "figure-list-refresh-unavailable"
+                : rightViewRefresh === "error" || refreshFailed
+                  ? "figure-ui-refresh-failed"
+                  : shouldRetry
+                    ? "seat-client-id-unresolved"
+                    : "complete",
         message:
           writeFailed || modelSyncFailed || refreshFailed
             ? writeErrors
@@ -16542,6 +16638,215 @@
       configurable: !0,
     });
   }
+  // 局内皮肤攻击动效：覆盖新版攻击/技能/互动和旧版两段专属技能，保留形态转换。
+  const SKIN_EFFECT_BLOCK_STORAGE_KEY = "xcSkinEffectsBlocked";
+  const skinEffectBlockState = {
+    enabled: (() => {
+      try { return localStorage.getItem(SKIN_EFFECT_BLOCK_STORAGE_KEY) === "true"; }
+      catch (_) { return false; }
+    })(),
+    hooks: [],
+    dispatcher: null,
+    retryTimer: null,
+  };
+
+  function logSkinEffectBlock(message, error) {
+    appendLocalSkinDebugLine("[皮肤屏蔽] " + message +
+      (error ? " " + String(error.message || error) : ""), false);
+  }
+
+  function getSkinEffectSeatUIs() {
+    const scene = laya.gamescene;
+    if (!scene || scene.destroyed) return [];
+    const seats = scene.seatContainer && scene.seatContainer.seatUIs;
+    return Array.from(new Set([scene.SelfSeatUi].concat(Array.isArray(seats) ? seats : [])))
+      .filter((ui) => ui && !ui.destroyed);
+  }
+
+  function disposeBlockedSkinEffect(effect) {
+    if (!effect || effect.destroyed) return;
+    // destroy 同时取消加载完成监听；仅 stop 不能阻止迟到的 Spine 加载回调。
+    if (typeof effect.offAll === "function") effect.offAll();
+    if (typeof effect.destroy === "function") effect.destroy();
+  }
+
+  function isBlockedSkinAction(type) {
+    return type === 1 || type === 2 || type === 3 || type === 5;
+  }
+
+  function isSkinSkillEffectUrl(url) {
+    return typeof url === "string" && /\/(?:animate|spine)\/(?:skillEffect\/[^/]+\/[^/]+\/jineng0\d+|skinEffect(?:New|Small|Big)\/[^/]+\/jineng02)\.(?:sk|json|skel)(?:[?#]|$)/i.test(url);
+  }
+
+  function clearBlockedSkinAnimation(ui) {
+    if (!ui || ui.destroyed || !isBlockedSkinAction(ui.playingNewSpType)) return;
+    const attack = ui.playingNewSpEffect;
+    const fullScreen = ui.newFullScreenEffect;
+    if (!attack && !fullScreen) return;
+    // 先释放旧全屏层，再让原生收尾继续可能等待中的形态转场。
+    // 收尾可能同步创建新播放器，因此后续只能销毁捕获的旧对象。
+    if (fullScreen) {
+      if (ui.newFullScreenEffect === fullScreen) ui.newFullScreenEffect = null;
+      try { disposeBlockedSkinEffect(fullScreen); }
+      catch (error) { logSkinEffectBlock("fullscreen:cleanup-error", error); }
+    }
+    if (!attack) return;
+    const skin = ui.playingSkinVo;
+    const seat = ui.seat;
+    let completed = false;
+    try {
+      if (typeof ui.aniNewcallBack === "function" && seat && !attack.destroyed) {
+        ui.aniNewcallBack();
+        completed = true;
+      }
+    } catch (error) { logSkinEffectBlock("attack:cleanup-error", error); }
+    finally {
+      if (ui.playingNewSpEffect === attack) ui.playingNewSpEffect = null;
+      try { disposeBlockedSkinEffect(attack); }
+      catch (error) { logSkinEffectBlock("attack:dispose-error", error); }
+    }
+    if (!completed && !ui.playingNewSpEffect && skin && seat) {
+      const dispatcher = skinEffectBlockState.dispatcher;
+      if (dispatcher && typeof skin.NewJudgeSkinID === "function")
+        dispatcher.event("SHOW_NEW_BIGSKIN_EFFECT", [true, skin.NewJudgeSkinID(seat.DySkinType)]);
+    }
+  }
+
+  function clearLegacySkinAnimation(ui) {
+    const effect = ui && ui.outAvatarEffect;
+    if (!effect) return;
+    try {
+      if (typeof ui.clearOutAvatarAni === "function") ui.clearOutAvatarAni();
+      else if (ui.seatAvatar && typeof ui.seatAvatar.ShowSkeleton === "function")
+        ui.seatAvatar.ShowSkeleton(true);
+    } finally {
+      if (ui.outAvatarEffect === effect) ui.outAvatarEffect = null;
+      disposeBlockedSkinEffect(effect);
+    }
+  }
+
+  function clearSkinSkillChildren(root) {
+    if (!root || root.destroyed || typeof root.getChildAt !== "function") return;
+    // 旧版第二段并不保存到 outAvatarEffect；只检查已核实的场景/座位特效层直属子节点。
+    // 不遍历皮肤详情窗口，也不触碰普通 hit、待机、背景或转场资源。
+    const children = [];
+    for (let i = 0; i < root.numChildren; i++) children.push(root.getChildAt(i));
+    for (const child of children)
+      if (child && !child.destroyed && isSkinSkillEffectUrl(child.EffectUrl || child.effectUrl))
+        disposeBlockedSkinEffect(child);
+  }
+
+  function clearVisibleSkinEffects() {
+    const seats = getSkinEffectSeatUIs();
+    for (const ui of seats) {
+      try {
+        clearBlockedSkinAnimation(ui);
+        clearLegacySkinAnimation(ui);
+        clearSkinSkillChildren(ui.effectSprite);
+      }
+      catch (error) { logSkinEffectBlock("seat:cleanup-error", error); }
+    }
+    const scene = laya.gamescene;
+    if (scene) {
+      clearSkinSkillChildren(scene);
+      if (typeof laya.class === "function") clearSkinSkillChildren(laya.class("PromptLayer"));
+    }
+  }
+
+  function onSkinEffectSceneChange() {
+    if (skinEffectBlockState.retryTimer !== null) clearTimeout(skinEffectBlockState.retryTimer);
+    skinEffectBlockState.retryTimer = null;
+    installSkinEffectBlocker();
+  }
+
+  function installSkinEffectBlocker(attempt = 0) {
+    let ready = false;
+    try {
+      const dispatcher = laya.ged;
+      if (dispatcher && dispatcher !== skinEffectBlockState.dispatcher &&
+          typeof dispatcher.on === "function" && typeof dispatcher.off === "function") {
+        if (skinEffectBlockState.dispatcher)
+          skinEffectBlockState.dispatcher.off("EXECUTE_SWITCH_SCENE", skinEffectBlockState, onSkinEffectSceneChange);
+        dispatcher.on("EXECUTE_SWITCH_SCENE", skinEffectBlockState, onSkinEffectSceneChange);
+        skinEffectBlockState.dispatcher = dispatcher;
+      }
+      for (const ui of getSkinEffectSeatUIs()) {
+        for (const method of ["onPlayNewSpEffect", "playGeneralSpEffect", "generalSpEffectStop1", "generalSpEffectStop2", "skill_Hurt"]) {
+          let target = ui;
+          while (target && !Object.prototype.hasOwnProperty.call(target, method))
+            target = Object.getPrototypeOf(target);
+          if (!target) continue;
+          const descriptor = Object.getOwnPropertyDescriptor(target, method);
+          if (!descriptor || typeof descriptor.value !== "function") continue;
+          const installed = skinEffectBlockState.hooks.find((hook) => hook.target === target && hook.method === method);
+          if (installed) {
+            ready = true;
+            continue;
+          }
+          if (!descriptor.configurable && !descriptor.writable) continue;
+          const original = descriptor.value;
+          const wrapper = function (first) {
+            if (skinEffectBlockState.enabled) {
+              if (method === "onPlayNewSpEffect" && isBlockedSkinAction(first)) return;
+              // false 让外层 playGeneralSkillEffect 继续普通技能名提示，不能吞掉整个 onUseSkill。
+              if (method === "playGeneralSpEffect") return false;
+              if (method === "generalSpEffectStop1" || method === "generalSpEffectStop2") {
+                clearLegacySkinAnimation(this);
+                return;
+              }
+              if (method === "skill_Hurt" && first && isSkinSkillEffectUrl(first.animUrl)) return;
+            }
+            return original.apply(this, arguments);
+          };
+          Object.defineProperty(target, method, { ...descriptor, value: wrapper });
+          skinEffectBlockState.hooks.push({ target, method, descriptor, wrapper });
+          ready = true;
+          logSkinEffectBlock("install:" + method);
+        }
+      }
+      if (skinEffectBlockState.enabled) clearVisibleSkinEffects();
+      // 局外只保留场景事件；进入局内后再核对座位实例，避免长期轮询。
+      if (ready || (skinEffectBlockState.dispatcher && !laya.gamescene)) {
+        if (skinEffectBlockState.retryTimer !== null) clearTimeout(skinEffectBlockState.retryTimer);
+        skinEffectBlockState.retryTimer = null;
+        return ready;
+      }
+    } catch (error) {
+      if (attempt === 0) logSkinEffectBlock("install:error", error);
+    }
+    if (attempt < 60 && skinEffectBlockState.retryTimer === null)
+      skinEffectBlockState.retryTimer = setTimeout(() => {
+        skinEffectBlockState.retryTimer = null;
+        installSkinEffectBlocker(attempt + 1);
+      }, 500);
+    return ready;
+  }
+
+  function setSkinEffectsBlocked(enabled) {
+    skinEffectBlockState.enabled = !!enabled;
+    try { localStorage.setItem(SKIN_EFFECT_BLOCK_STORAGE_KEY, String(skinEffectBlockState.enabled)); }
+    catch (error) { logSkinEffectBlock("save:error", error); }
+    installSkinEffectBlocker();
+    window.dispatchEvent(new CustomEvent("xc-skin-effects-change"));
+    logSkinEffectBlock(skinEffectBlockState.enabled ? "toggle:on" : "toggle:off");
+    return skinEffectBlockState.enabled;
+  }
+
+  function cleanupSkinEffectBlocker() {
+    if (skinEffectBlockState.retryTimer !== null) clearTimeout(skinEffectBlockState.retryTimer);
+    skinEffectBlockState.retryTimer = null;
+    if (skinEffectBlockState.dispatcher)
+      skinEffectBlockState.dispatcher.off("EXECUTE_SWITCH_SCENE", skinEffectBlockState, onSkinEffectSceneChange);
+    skinEffectBlockState.dispatcher = null;
+    for (const hook of skinEffectBlockState.hooks)
+      if (hook.target[hook.method] === hook.wrapper)
+        Object.defineProperty(hook.target, hook.method, hook.descriptor);
+    skinEffectBlockState.hooks.length = 0;
+  }
+
+  window.__xcSetSkinEffectsBlocked = setSkinEffectsBlocked;
+  window.__xcIsSkinEffectsBlocked = () => skinEffectBlockState.enabled;
+
   // 顶部跑马灯：仅控制 ShowMarquee，保留聊天消息与活动附加行。
   const TOP_MARQUEE_STORAGE_KEY = "xcTopMarqueeBlocked";
   const topMarqueeState = {
@@ -17312,6 +17617,7 @@
           (null == (t = laya[e(552)](e(798), e(721))) || t[e(572)]());
     })(),
       installTopMarqueeBlocker(),
+      installSkinEffectBlocker(),
       (async function () {
         var t, e;
         const i = n;
@@ -26368,6 +26674,9 @@
     cleanupTopMarqueeBlocker();
     if (typeof window.__xcCleanupTopMarqueeButton === "function")
       window.__xcCleanupTopMarqueeButton();
+    cleanupSkinEffectBlocker();
+    if (typeof window.__xcCleanupSkinEffectButton === "function")
+      window.__xcCleanupSkinEffectButton();
     return (
       window[a(439)](a(657), _0x3e479a),
       window[a(439)](a(657), _0x5e4f94),
@@ -27552,6 +27861,9 @@
     installTopMarqueeBlocker();
     if (typeof window.__xcInstallTopMarqueeButton === "function")
       window.__xcInstallTopMarqueeButton();
+    installSkinEffectBlocker();
+    if (typeof window.__xcInstallSkinEffectButton === "function")
+      window.__xcInstallSkinEffectButton();
   }
   function _0x4484c9() {
     const n = _0x41a3d0;
@@ -34786,6 +35098,148 @@
   }
 
   window.__xcInstallHandSortPanelButton = function () { waitForCardBackSwitch(0); };
+
+  // 皮肤屏蔽按钮：屏蔽弹幕右侧，同卡牌标签列；使用原生 data-tooltip 提示。
+  var skinEffectButtonLayout = null;
+  var skinEffectButtonTimer = null;
+
+  function syncSkinEffectButton() {
+    var input = document.getElementById("xcSkinEffectToggle");
+    if (!input) return;
+    input.disabled = typeof window.__xcSetSkinEffectsBlocked !== "function";
+    input.checked = !!(window.__xcIsSkinEffectsBlocked && window.__xcIsSkinEffectsBlocked());
+  }
+
+  function layoutSkinEffectButton() {
+    var state = skinEffectButtonLayout;
+    if (!state || !state.row.isConnected) return;
+    var column = getHandSortSwitchAnchor(state.cardLabel);
+    var line = getHandSortSwitchAnchor(state.marquee);
+    var own = state.row.querySelector(".slider");
+    if (!column || !line || !own) return;
+    var nativeContainer = state.cardLabel.closest(".switch-container");
+    if (nativeContainer) {
+      var width = nativeContainer.offsetWidth + "px";
+      if (state.row.style.width !== width) state.row.style.width = width;
+    }
+    var parent = state.parent;
+    var parentRect = parent.getBoundingClientRect();
+    var x = column.getBoundingClientRect();
+    var y = line.getBoundingClientRect();
+    if (!parentRect.width || !y.height) return;
+    var ownRect = own.getBoundingClientRect();
+    var rowRect = state.row.getBoundingClientRect();
+    var scaleX = parentRect.width / parent.offsetWidth || 1;
+    var scaleY = parentRect.height / parent.offsetHeight || scaleX;
+    var left = (x.left + x.width / 2 - parentRect.left -
+      (ownRect.left + ownRect.width / 2 - rowRect.left)) / scaleX +
+      parent.scrollLeft - parent.clientLeft;
+    var top = (y.top + y.height / 2 - parentRect.top -
+      (ownRect.top + ownRect.height / 2 - rowRect.top)) / scaleY +
+      parent.scrollTop - parent.clientTop;
+    var styles = { left: left + "px", top: top + "px", visibility: "visible" };
+    for (var key in styles)
+      if (state.row.style[key] !== styles[key]) state.row.style[key] = styles[key];
+  }
+
+  function cleanupSkinEffectButton() {
+    if (skinEffectButtonTimer !== null) clearTimeout(skinEffectButtonTimer);
+    skinEffectButtonTimer = null;
+    if (skinEffectButtonLayout) skinEffectButtonLayout.cleanup();
+    skinEffectButtonLayout = null;
+  }
+
+  function installSkinEffectButton(attempt) {
+    attempt = attempt || 0;
+    var cardLabel = document.getElementById("cardLabelSwitch");
+    var panel = cardLabel && cardLabel.closest(".setting.panel-content");
+    var header = panel && panel.previousElementSibling;
+    var marquee = panel && panel.querySelector("#xcTopMarqueeToggle");
+    if (!header || !header.matches("button.panel-header") || !marquee) {
+      if (attempt < 240 && skinEffectButtonTimer === null)
+        skinEffectButtonTimer = setTimeout(function () {
+          skinEffectButtonTimer = null;
+          installSkinEffectButton(attempt + 1);
+        }, 250);
+      return false;
+    }
+    if (skinEffectButtonLayout && skinEffectButtonLayout.row.isConnected &&
+        skinEffectButtonLayout.cardLabel === cardLabel && skinEffectButtonLayout.marquee === marquee) {
+      syncSkinEffectButton();
+      layoutSkinEffectButton();
+      return true;
+    }
+    cleanupSkinEffectButton();
+    if (getComputedStyle(panel).position === "static") panel.style.position = "relative";
+    var toggle = findSwitchContainer(cardLabel).cloneNode(true);
+    clearDuplicateIds(toggle);
+    for (var node of [toggle].concat(Array.from(toggle.querySelectorAll("*"))))
+      for (var attribute of Array.from(node.attributes))
+        if (/^on/i.test(attribute.name) || /^data-/.test(attribute.name) || attribute.name === "title")
+          node.removeAttribute(attribute.name);
+    var input = toggle.querySelector("input");
+    if (!input) return false;
+    // 独立状态，不交给旧的 input[id$="Switch"] 通用配置处理。
+    input.id = "xcSkinEffectToggle";
+    input.name = "";
+    input.type = "checkbox";
+    input.removeAttribute("checked");
+    input.setAttribute("aria-label", "皮肤屏蔽");
+    toggle.style.cssText = "position:relative;display:block;width:56px;height:26px;margin:0 0 0 10px";
+    var caption = document.createElement("label");
+    caption.htmlFor = input.id;
+    caption.className = "explanation";
+    caption.textContent = "皮肤屏蔽";
+    caption.style.cssText = "white-space:nowrap;cursor:pointer";
+    var row = document.createElement("div");
+    row.id = "xcSkinEffectSwitchRow";
+    row.className = "switch-container";
+    row.setAttribute("data-tooltip", "屏蔽局内皮肤特效");
+    row.style.cssText = "position:absolute;display:block;left:0;top:0;margin:0;height:auto;z-index:2;visibility:hidden";
+    row.appendChild(caption);
+    row.appendChild(toggle);
+    panel.appendChild(row);
+    input.addEventListener("change", function (event) {
+      event.stopPropagation();
+      if (window.__xcSetSkinEffectsBlocked) window.__xcSetSkinEffectsBlocked(input.checked);
+      syncSkinEffectButton();
+    });
+    row.addEventListener("click", function (event) { event.stopPropagation(); });
+    var frame = null;
+    function scheduleLayout() {
+      if (frame !== null) return;
+      frame = requestAnimationFrame(function () { frame = null; layoutSkinEffectButton(); });
+    }
+    var resize = new ResizeObserver(scheduleLayout);
+    [panel, header, cardLabel.closest(".switch-container"), marquee.closest(".switch-container")]
+      .forEach(function (node) { resize.observe(node); });
+    var observer = new MutationObserver(scheduleLayout);
+    [panel, header, marquee.closest(".switch-container")].forEach(function (node) {
+      observer.observe(node, { attributes: true, attributeFilter: ["style", "class", "hidden"] });
+    });
+    window.addEventListener("resize", scheduleLayout);
+    panel.addEventListener("scroll", scheduleLayout, true);
+    window.addEventListener("xc-skin-effects-change", syncSkinEffectButton);
+    skinEffectButtonLayout = {
+      row: row, parent: panel, cardLabel: cardLabel, marquee: marquee,
+      cleanup: function () {
+        resize.disconnect();
+        observer.disconnect();
+        if (frame !== null) cancelAnimationFrame(frame);
+        window.removeEventListener("resize", scheduleLayout);
+        panel.removeEventListener("scroll", scheduleLayout, true);
+        window.removeEventListener("xc-skin-effects-change", syncSkinEffectButton);
+        row.remove();
+      },
+    };
+    syncSkinEffectButton();
+    layoutSkinEffectButton();
+    return true;
+  }
+
+  window.__xcInstallSkinEffectButton = installSkinEffectButton;
+  window.__xcCleanupSkinEffectButton = cleanupSkinEffectButton;
+  installSkinEffectButton();
 
   // 顶部广播按钮：壁纸设置开关同一行，明牌框框开关同一列。
   var topMarqueeSwitchLayout = null;

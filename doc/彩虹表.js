@@ -32724,6 +32724,67 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  skinEffectBlock: {
+    title: "皮肤屏蔽 / 新旧皮肤特效漏拦修复",
+    verifiedAt: "2026-10-15",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/武将攻击动效链路.md",
+    searchKeywords: [
+      "皮肤屏蔽", "屏蔽局内皮肤特效", "屏蔽弹幕后面", "卡牌标签上面",
+      "xcSkinEffectToggle", "xcSkinEffectSwitchRow", "xcSkinEffectsBlocked",
+      "setSkinEffectsBlocked", "installSkinEffectBlocker", "clearBlockedSkinAnimation",
+      "部分皮肤漏拦", "clearLegacySkinAnimation", "playGeneralSpEffect", "outAvatarEffect",
+      "clearOutAvatarAni", "generalSpEffectStop1", "generalSpEffectStop2", "skill_Hurt",
+      "skillEffect", "HuDong", "JiNeng02", "jineng01.sk", "jineng02.json",
+      "installSkinEffectButton", "layoutSkinEffectButton", "onPlayNewSpEffect",
+      "GongJi", "EXECUTE_SWITCH_SCENE", "SHOW_NEW_BIGSKIN_EFFECT", "data-tooltip",
+      "skin-effect-block.cjs", "迟到加载", "转场重入", "回退", "回归", "dom-ready"
+    ],
+    decodedIndexes: {},
+    chain: [
+      "复用 generalAttackAnimation 的已核实入口；本次新增部分为明文控制器/按钮，没有新增混淆解码索引。用户澄清位置为屏蔽弹幕后面、卡牌标签上面，即屏蔽弹幕右侧同行、卡牌标签同列，保留原有明牌框框位置。",
+      "xcSkinEffectToggle -> __xcSetSkinEffectsBlocked -> setSkinEffectsBlocked；localStorage.xcSkinEffectsBlocked 保存，首次/非法值默认 false；xc-skin-effects-change 同步 UI。独立于 effectBlockSwitch/blockKillEffectSwitch，关闭原 this/参数/返回值透传。",
+      "初版仅拦新版 GongJi/type=3，用户反馈部分皮肤漏拦后确认旧版 NewSkinJudge=0 完全绕过该入口，其他新版动作也被放行。现在 setProto/addFrame -> installSkinEffectBlocker 沿真实座位原型按原型+方法包装 onPlayNewSpEffect/playGeneralSpEffect/generalSpEffectStop1/generalSpEffectStop2/skill_Hurt。新版拦1/2/3/5，保留4转场；旧版专属技能返回false保留外层普通技能名提示，拦受击/全屏后续创建。",
+      "旧版 playGeneralSpEffect -> SpellEffectData -> spellEffectAnimUrl/jineng01.sk或json -> outAvatarEffect -> STOPPED -> generalSpEffectStop1/2 -> skill_Hurt或全屏jineng02。清理新增 clearLegacySkinAnimation/clearOutAvatarAni，并从当前游戏场景、座位effectSprite、PromptLayer直属子节点按已核实皮肤技能URL清掉第二段残留；不遍历详情窗，不拦普通hit/待机/背景。",
+      "开启时 clearBlockedSkinAnimation 清理新版1/2/3/5，原生 aniNewcallBack 恢复原图后只销毁捕获的旧引用；保留收尾可能同步创建的4转场及其形态完成事件。EXECUTE_SWITCH_SCENE 换场后补装，晚座位500ms最多60次有限去重重试，局外只保留事件；Exit按方法名恢复原描述符。",
+      "installSkinEffectButton 克隆 cardLabelSwitch 的原生 switch/slider/status，explanation 标题在上方，行 data-tooltip=屏蔽局内皮肤特效 使用既有鼠标悬浮委托；X 对齐卡牌标签 slider，Y 对齐 xcTopMarqueeToggle slider。新 input 不用 Switch 后缀。观察器/rAF 处理缩放滚动，面板重建补装，Exit 清观察器/按钮/核心监听并恢复原方法。",
+      "首次43项只测攻击分支；加入真实旧版方法fixture及新版其他动作期望后，修前在第14项后复现HuDong漏拦。修后skin-effect-block.cjs 52项 + 5种偏好初始化通过，含旧版Bone SK/Spine JSON、两段技能、受击/全屏残留、关闭恢复及非皮肤hit保留；尚无用户具体皮肤实战日志。日志经appendLocalSkinDebugLine(...,false)。回退关闭恢复原生调用，完整回退删控制器/按钮及setProto/addFrame/Exit挂点。",
+      "首次实现与后续漏拦修复均已同步实际 AppData/Roaming/SGSOL/三国杀打小抄.js；漏拦修复备份后缀 before-skin-effect-coverage-2026-10-15T14-33-11-804Z.bak，保留CRLF，规范化正文一致。本次仅改皮肤控制器，不变更按钮/其他业务代码；需dom-ready重载，未热注入当前对局或编译asar。"
+    ]
+  },
+  generalAttackAnimation: {
+    title: "武将攻击动效 / 动态皮肤 GongJi 链路",
+    verifiedAt: "2026-10-15",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/武将攻击动效链路.md",
+    searchKeywords: [
+      "武将攻击动效", "攻击动画", "攻击特效", "GongJi",
+      "PubGsCUseCard", "108010", "21210", "ShowUseCardAni", "USE_CARD",
+      "useCardAniPlay", "onPlayNewSpEffect", "NEW_SKIN_PLAY_TYPE_sha",
+      "SkinItemID", "DySkinType", "NewSkinJudge", "IsChuChangOnlyDySkin",
+      "DynamicSkinBigSkeletonUrlNew", "skinEffectNew", "skinEffectSmall",
+      "skinEffectBig", "xingxiang.json", "speciaSkin", "AtackPlace",
+      "ChuKuang", "PLAY_NAME_LOSE", "SHOW_NEW_BIGSKIN_EFFECT",
+      "ClientSkinFromRep", "GeneralSkinManager", "回归", "回退"
+    ],
+    decodedIndexes: {
+      "_0x3812": {
+        "359": "SelfSeatUi",
+        "808": "GeneralSkinManager",
+        "938": "ClientSkinFromRep",
+        "1081": "DynamicSkinBigSkeletonUrlNew"
+      }
+    },
+    chain: [
+      "2026-10-15 复用已存在的 2026-10-08 官方 ES6 主程序和 Config.sgs；快照哈希、字符偏移、配置与验证范围见专项文档。没有改 userscript 或在游戏内播放验证。",
+      "PubGsCUseCard(108010/21210) -> ServerProxy_PubGsCUseCard -> seat.ShowUseCardAni(CardID,useType) -> USE_CARD -> addSeatListener/useCardAniPlay -> onPlayNewSpEffect(3)。杀要求 useType==1，南蛮/决斗/万箭也走 GongJi；无中/无懈/火攻走 HuDong。MsgGamePlayCardNtf 不是此触发入口。",
+      "播放要求 ShowGameSkinEffects、General.IsDynamic、NewSkinJudge，排除仅出场动态皮肤 newSkinJudge=103，已有 playingNewSpEffect 则早退。useCardAniPlay 即使命中播放仍返回 false。",
+      "cha_gs_dbs_fs_skininfo 的 generalskin.items.item/speciaSkin -> GetGeneralSkinBySkinID(seat.SkinItemID) -> DynamicSkinBigSkeletonUrlNew(seat.DySkinType,true) -> xingxiang.json/GongJi -> playEffect -> SpineTemplet(v4_0).loadAni -> 校验动作名 -> play。默认 skinEffectNew，isNewEffect=1 时局内 skinEffectSmall，展示 skinEffectBig，多形态追加 _state。",
+      "LABEL/aniEventNew 处理 ChuKuang/AtackPlace、zhenping、quanping；PlaySkinSoundByLabel 处理 audio 标签。SHOW_NEW_BIGSKIN_EFFECT(false) 隐藏原展示，STOPPED/PLAY_NAME_LOSE -> aniNewcallBack 清空状态并恢复原展示。攻击调用没有传入 DestSeatIDs，不应当作指定目标弹道。",
+      "小抄通过 laya.gamescene.SelfSeatUi 或场景 GetSeatUIBySeat 核对 UI；GeneralSkinManager 从 ServerProxy._events.ClientSkinFromRep 的 caller 定位，勿硬编码 xQt/KKt/$F 等快照符号。后续攻击挂钩限定 type===3，保留互动/技能/转场、监听解绑与原图恢复，日志仍走 appendLocalSkinDebugLine。",
+      "4 个真实方法抽取后以依赖桩验证 31 项通过，涵盖事件参数、牌与 useType、五类动作、门槛和目录/形态路径；未加载真实 Spine、未验证在线资源或游戏内效果。回归/回退关注忙碌早退、缺动作、方向/形态、停止后恢复及监听清理。"
+    ]
+  },
   panelPlaceholderButtons: {
     title: "独立面板 / 结果样式下方九个占位按钮移除",
     verifiedAt: "2026-10-13",
@@ -33327,7 +33388,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
   },
   eightPlayerPveFigureOut: {
     title: "八人场 PVE 自动显示身份链路",
-    verifiedAt: "2026-10-08",
+    verifiedAt: "2026-10-16",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
     searchKeywords: [
       "八人PVE身份",
@@ -33337,6 +33398,10 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "EIGHT_PVE_FIGURE_RETRY_INTERVAL", "EIGHT_PVE_FIGURE_MAX_RETRIES",
       "eightPveFigureRetryTask", "armEightPveFigureRetry", "cancelEightPveFigureOut",
       "nextAt", "scene-changed", "scheduler:cancel", "eight-pve-figure-retry.cjs",
+      "getEightPveFigureState", "scheduler:state-changed", "lastRunAt", "终止缓存",
+      "Figure_Changed", "seatUI.updateFigure", "figureManager.SetFigure", "UpdateFigureTex",
+      "currentFigure.texture", "currentFigure.visible", "SubFigure", "uiUpdated",
+      "uiRefreshUnavailable", "figure-ui-refresh-unavailable", "贴图未知", "原生刷新",
       "__xcScheduleEightPveFigureOut",
       "__xcRunEightPveFigureOut",
       "__xcAppendLocalSkinDebugLine",
@@ -33418,23 +33483,26 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     },
     chain: [
       "laya.figureOut 从 RoomControler.TableSetting/tableSetting.IsChooseFigure 判断八人 PVE 选身份场景，从 TabbleSeatInfos/tabbleSeatInfos.datum 读取八个 ClientId/clientId，再写入 gamescene.seatContainer.seatUIs[*] 的身份状态。",
-      "身份分配顺序保持 [1,2,2,4,3,3,3,3]，即主公、忠臣、忠臣、内奸、四名反贼；已有非零 Figure 不覆盖。",
+      "身份分配顺序保持 [1,2,2,4,3,3,3,3]，即主公、忠臣、忠臣、内奸、四名反贼；2026-10-16 明确优先已有非零座位模型 Figure/figure，再取 manager.Figure，最后才按座次推定，已有公开身份不被推定覆盖。",
       "旧链只在 laya.seatUIs 与 laya.skills 单次调用，TableSetting、datum 或 seatUIs 异步晚到会静默失效；game.start 同时受 !game.isGameStart && room.size 门槛影响。",
       "scheduleEightPveFigureOut 由 script.bootstrap、debug.open、room.ready、game.start、deal:start、laya.seatUIs、laya.skills 七个节点触发。2026-10-08 改为首次立即执行，result.retry=true 时每 1000ms 重试，最多 10 次，attempt=0..10，单轮最多 11 次调用；名义窗口从 300ms×30=9秒 改为 1000ms×10=10秒。script.bootstrap 保留原注入后 1 秒触发。",
       "eightPveFigureRetryTask 保存 source/attempt/scene/nextAt/result/finished/run；重复入口复用同一任务，armEightPveFigureRetry 按原 nextAt 剩余时间重挂单一 timer，不重置次数、不延长截止，同时可恢复被外部清掉的句柄。执行中 nextAt=null 阻止重入再排即时 timer。",
-      "成功、显式跳过或耗尽后保留终止结果，不被同场景后续入口重新启动；retry=false 不是成功的唯一标志。cancelEightPveFigureOut 接入 laya.reset 与 game.ready（source为room.ready）；场景切换和旧回调的任务引用检查防止旧局干扰新局，新局有完整十次预算。",
+      "成功、显式跳过或耗尽后仅在状态相同时缓存终止结果；retry=false 不等同成功。cancelEightPveFigureOut 接入 laya.reset 与 game.ready（source为room.ready）；场景切换和旧回调的任务引用检查防止旧局干扰新局，新局有完整十次预算。",
       "ClientId 比较使用 String 归一化，修复座位表与 UI 数字/字符串类型不同导致 indexOf 严格匹配失败；缺失客户端 ID、figureManager 或不足八个 seatUIs 时继续有限重试。",
-      "新版 figureManager.Figure 是 getter-only 访问器，直接赋值会抛 Cannot set property Figure ... which has only a getter；写入链依次尝试 descriptor setter、getter backing key、seat.figure(_0x3812:1087)、实例自有可写 Figure，并要求读回目标值。",
-      "仅写 figureManager.figureValue 虽能读回身份，但不会触发身份图标刷新，后续生命周期还会从空 seat.figure 重置七个隐藏身份；现先同步 seat.figure，再写 manager 状态，并调用 gamescene.rightView.UpdateFigureList(_0x3812:1498/930)，缺失时回退 __UpdateFigureList(_0x3812:246)，同时 repaint figureManager/seatUI。",
+      "新版 figureManager.Figure 为 getter-only；2026-10-16 优先 seatUI.updateFigure(figure,SubFigure)，缺失则 figureManager.SetFigure，均按原生链更新 currentFigure.texture/visible；保留原生本人身份隐藏偏好。两方法都缺失才依次尝试 descriptor setter、简单 getter backing key、seat.figure(_0x3812:1087)、实例自有可写 Figure，再调用 UpdateFigureTex，写后要求读回目标值。getter 正则限定直接字段，避免把 this.seat.Figure 的 seat 覆盖成数字。",
+      "旧 figureValue/seat.figure 写入加 repaint 仍不足以换图；原生快照确认 Figure_Changed -> updateFigure -> SetFigure -> setCurrentFigure/getFigureSource 才执行换图、可见性和布局。rightView.UpdateFigureList(_0x3812:1498/930)/__UpdateFigureList(_0x3812:246) 仅刷新右侧统计，继续保留但不能作为座位图标成功依据。已有非零 Figure 也必须调用原生 UI 刷新，不能直接 early return。",
       "每个座位独立捕获写入异常；figure-out:result 记录 writeFailed/writeModes/figureDescriptor/writeErrors。座位均解析但写入失败时返回 figure-write-failed 并保持停止，不强行重复写入。",
-      "刷新结果通过 modelSynced/modelSyncFailed/repainted/refreshFailed/rightViewRefresh/refreshErrors 输出；右侧刷新入口未就绪或异常时以 figure-list-refresh-unavailable/figure-ui-refresh-failed 有限重试。",
+      "刷新结果通过 modelSynced/modelSyncFailed/uiUpdated/uiRefreshUnavailable/repainted/refreshFailed/rightViewRefresh/refreshErrors 输出；writeModes 标记 seatUI.updateFigure/figureManager.SetFigure。原生刷新异常、模型同步失败或缺少 UpdateFigureTex 均有限重试，缺少图标刷新返回 figure-ui-refresh-unavailable，不能把可读 Figure 当成图标完成；uiUpdated 只证明接口调用，不代表游戏内验收。",
       "只有 IsChooseFigure 为真、room.isDuanXian 为假且 datum.length===8 时写身份；显式 IsChooseFigure=false 或断线重连跳过。",
       "原 SetPlayNameVisible(ClientId<4e9) 在 figureOut 开头独立刷新，不会被 PVE 身份门槛的提前返回吞掉。",
       "核心与调试窗口分属两个 IIFE；第二个 IIFE 导出 window.__xcAppendLocalSkinDebugLine，核心 logEightPveFigure 通过该桥写调试窗口，桥未就绪时最多暂存 50 行，避免跨作用域 ReferenceError 被空 catch 吞掉。",
       "核心导出 window.__xcRunEightPveFigureOut(source,attempt) 以访问闭包内真实 laya.figureOut；页面全局 laya 没有 figureOut，v4 的 localExecutorReady=false 属于作用域误判。",
       "openDebugFromButton 的 v5 探针输出 debug-open:v5-dispatch，通过执行桥调用真实 figureOut 并输出 v5-direct-result/v5-direct-error；scheduler 现在返回本次 result，handler 输出 v5-scheduler-result/v5-scheduler-error。",
       "调度器输出 scheduler:start/invoke/result/cancel；start.intervalMs/maxRetries=1000/10，invoke/result 每次记录 attempt 与能力/结果，cancel 记录 laya.reset/room.ready/scene-changed。沿既有 appendLocalSkinDebugLine 桥受调试开关控制；figureOut 空返回保持 figureOut-return-empty 并停止。手动 debug.open 的直接执行探针保留，不另建自动轮询。",
-      "eight-pve-figure-retry.cjs 抽取实际调度/执行/清理方法，虚拟时钟 13 项通过；visible-card-chain.cjs 的 33 项通过。覆盖精确时间、次数上限、重复入口、外部清 timer、成功/异常停止、新局、旧回调、场景切换、重入、真实 figureOut 数据晚到、PVE/重连门槛、已有身份保留与调试关闭；尚未新增游戏内实测。",
+      "2026-10-16 新增 getEightPveFigureState，task.state/lastRunAt 在每次执行后保存门槛、重连状态、座位 ID、模型/UI/manager、贴图可见性与接口能力。后续生命周期事件发现状态变化才 scheduler:state-changed 唤醒，距离上次不足1000ms时合并到原截止点；保留已用 attempt，不重开十次循环，耗尽后每次真实变化仅补一次。修复同一场景 choose-figure-off/超时/成功缓存吞掉晚到数据和原生重建；相同状态无额外调用。",
+      "eight-pve-figure-retry.cjs 用实际脚本及 fixtures/eight-pve-native-figure.cjs 的原生方法验证27项；同套测试旧代码13通过14失败，修复后全部通过；visible-card-chain.cjs 33项通过。包括未知贴图、原生updateFigure布局、SubFigure/本人显示偏好、模型身份优先、已非零manager仍换图、超时晚到、门槛变化、同场景重建、原生清空、异常恢复与耗尽后不续十次轮询。快照SHA-256 f62c194174dd2ff4531bc44a795616b6a51f449a3c7c2bec5270f390da55f245，未新增游戏内实测。",
+      "本次回退只还原 getEightPveFigureState/state/lastRunAt 相关调度和 figureOut 原生刷新段；入口、门槛、1000ms/10次常量不变。回归应验证贴图而不仅是 Figure 数值，并覆盖晚到数据唤醒、同状态停止、同场景座位重建、公开身份保留、普通场和重连门槛。",
+      "2026-10-16 已核对实际客户端 scriptPath/dom-ready -> loadScript，并只同步两段到 AppData/Roaming/SGSOL/三国杀打小抄.js；保留CRLF，反向替换验证其余内容不变，备份后缀 before-pve-native-figure-2026-10-16T14-34-41-656Z.bak。重载生效，未中断对局或生成asar。",
       "已仅同步调度器和 laya.reset/game.ready 两处入口到实际 AppData/Roaming/SGSOL/三国杀打小抄.js，保留 CRLF，备份后缀 before-pve-identity-retry-2026-10-08T15-14-20-433Z.bak；需 dom-ready 重载。仅回退时长改两常量为300/30；回退任务合并时还须移除两处 cancel 调用，保留身份映射与刷新链。",
       "回滚检索 scheduleEightPveFigureOut 和 __xcScheduleEightPveFigureOut，移除七个补调用及调度器，并将 seatUIs/skills 恢复为直接 this.figureOut()；仅回滚刷新补丁时移除 seat.figure 模型同步、repaint 和 rightView.UpdateFigureList/__UpdateFigureList 调用；回归重点检查身份图标可见且生命周期刷新后不消失、标准身份场不写入、断线重连不覆盖、已有 Figure 不覆盖。"
     ]
