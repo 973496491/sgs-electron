@@ -18,6 +18,10 @@ This workspace contains a patched Electron wrapper and the `daxiaochao.user.js` 
 - 打包规则：不要编译或重新生成 `asar` 文件；只修改源码和必要文档，除非用户明确要求编译 `asar`。
 - 排查规则：不要默认怀疑代码新旧或要求用户反复确认文件版本；应优先检查并修复实际运行链路、调用条件和日志出口。
 
+## Architecture and AI Development
+
+- 发布文件新增、删除、改名或移动时，必须在同一次修改中同步 [electron-next/release-files.json](electron-next/release-files.json) 的 `files/remove`；包内安装工具增删同步 `packageFiles`。打包入口为 [electron-next/pack.cmd](electron-next/pack.cmd)，发布包安装入口为 `install.cmd`。打包与安装共用该配置，不分别硬编码文件清单，也不只依靠目录递归收集。映射须覆盖小抄主脚本、剥离模块及 Roaming 中相关配套加载文件；具体文件、字段和废弃文件处理见 [rules.md](rules.md) 的“发布映射与文件增删”。
+
 ## Documentation Updates
 
 - Keep the OL guide at `doc/sanguosha.md`. Persist verified extraction methods and outstanding branches there; update `rules.md` and the related skill only when a reusable workflow changes. Verify local tools/artifacts exist before describing them as available, and distinguish ordinary AES-CFB data from the `_w` WASM branch.
