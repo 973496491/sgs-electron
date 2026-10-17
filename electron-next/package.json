@@ -9,7 +9,9 @@
   "license": "CC0-1.0",
   "scripts": {
     "start": "electron .",
-    "package": "npx @electron/packager ./ SGSOL --platform=win32 --out=./dist --electronVersion=39.2.7 --overwrite --icon=./icon.ico --ignore=.vscode"
+    "package": "npx @electron/packager ./ SGSOL --platform=win32 --out=./dist --electronVersion=39.2.7 --overwrite --icon=./icon.ico --ignore=.vscode",
+    "build:userscript": "node scripts/build-userscript-modules.cjs",
+    "check:userscript": "node scripts/build-userscript-modules.cjs --check"
   },
   "devDependencies": {
     "@electron/packager": "^19.0.1",

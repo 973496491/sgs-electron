@@ -24,7 +24,7 @@ for (const [saved, expected] of [["true", true], ["false", false], ["broken", fa
 }
 const button = slice("  // 顶部广播按钮：", "  function waitForCardBackSwitch(");
 const helpers = slice("  function findSwitchContainer(", "  function setLocalSkinSwitchState(") +
-  slice("  function getHandSortSwitchAnchor(", "  function syncHandSortPanelSwitch(");
+  slice("  function getHandSortSwitchAnchor(", "  // Hand-card main-panel host.");
 assert(!source.includes('redefine(laya[i(671)](i(996)), i(1128), { value: function () {} })'), "old permanent block removed");
 assert(source.includes("      installTopMarqueeBlocker(),"), "login patch installs the controller");
 assert(source.includes("      window.__xcInstallTopMarqueeButton();"), "panel rebuild reinstalls button");

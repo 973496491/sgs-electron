@@ -20,7 +20,7 @@ const controller = slice("  // 局内皮肤攻击动效：", "  // 顶部跑马�
 const skinButton = slice("  // 皮肤屏蔽按钮：", "  // 顶部广播按钮：");
 const marqueeButton = slice("  // 顶部广播按钮：", "  function waitForCardBackSwitch(");
 const helpers = slice("  function findSwitchContainer(", "  function setLocalSkinSwitchState(") +
-  slice("  function getHandSortSwitchAnchor(", "  function syncHandSortPanelSwitch(");
+  slice("  function getHandSortSwitchAnchor(", "  // Hand-card main-panel host.");
 const tooltip = slice("  let _0x5ee876 =", "  function _0x208a6c()");
 assert(source.includes("      installSkinEffectBlocker(),"), "login installs controller");
 assert(source.includes("      window.__xcInstallSkinEffectButton();"), "panel rebuild installs button");
