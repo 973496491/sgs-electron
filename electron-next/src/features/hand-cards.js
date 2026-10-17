@@ -184,7 +184,27 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
     if (!dialog) return;
     if (typeof dialog.close === "function") dialog.close();
     else { dialog.removeAttribute("open"); dialog.style.display = "none"; }
+    handSortSwitchLayout?.gear.setAttribute("aria-expanded", "false");
   };
+  function positionHandSortSettings() {
+    const dialog = handSortSettingsState?.dialog;
+    if (!active || !dialog?.open) return;
+    let anchor = handSortSwitchLayout?.input.isConnected
+      ? mainHost.getAnchor(handSortSwitchLayout.input) : null;
+    let rect = anchor?.getBoundingClientRect();
+    if (!rect?.width || !rect.height) rect = handSortPanelState?.panel?.getBoundingClientRect();
+    const width = dialog.offsetWidth, height = dialog.offsetHeight, gap = 8;
+    const maxLeft = Math.max(gap, window.innerWidth - width - gap);
+    const maxTop = Math.max(gap, window.innerHeight - height - gap);
+    let left = (window.innerWidth - width) / 2, top = (window.innerHeight - height) / 2;
+    if (rect?.width && rect.height) {
+      left = rect.left;
+      top = rect.bottom + gap;
+      if (top > maxTop) top = rect.top - height - gap;
+    }
+    dialog.style.left = Math.max(gap, Math.min(left, maxLeft)) + "px";
+    dialog.style.top = Math.max(gap, Math.min(top, maxTop)) + "px";
+  }
   function openSettings() {
     if (!ensureHandSortFloatingPanel()) return null;
     if (!handSortSettingsState?.dialog.isConnected) {
@@ -193,7 +213,7 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
       const dialog = document.createElement("dialog");
       dialog.id = "xcHandSortSettingsDialog";
       dialog.setAttribute("aria-labelledby", "xcHandSortSettingsTitle");
-      dialog.style.cssText = "width:360px;max-width:calc(100vw - 32px);padding:0;box-sizing:border-box;background:#28241f;color:#f2de9c;border:1px solid #8c7954;border-radius:10px;font:13px/1.5 Arial,sans-serif;box-shadow:0 10px 32px #0008";
+      dialog.style.cssText = "position:fixed;inset:auto;margin:0;transform:none;width:360px;max-width:calc(100vw - 32px);max-height:calc(100vh - 16px);overflow-y:auto;padding:0;box-sizing:border-box;background:#28241f;color:#f2de9c;border:1px solid #8c7954;border-radius:10px;font:13px/1.5 Arial,sans-serif;box-shadow:0 10px 32px #0008";
       const style = document.createElement("style");
       style.textContent = "#xcHandSortSettingsDialog::backdrop{background:#0007}#xcHandSortSettingsDialog .switch{position:relative;display:inline-block;width:56px;height:26px;flex:0 0 56px}#xcHandSortSettingsDialog .switch input{opacity:0;width:0;height:0}#xcHandSortSettingsDialog .slider{position:absolute;inset:0;border:1px solid #f2de9c;border-radius:34px;background:#23201d;cursor:pointer}#xcHandSortSettingsDialog .slider:before{position:absolute;content:'';height:20px;width:20px;left:2px;bottom:2px;background:#f2de9c;border-radius:50%}#xcHandSortSettingsDialog input:checked+.slider{background:#ff7b54}#xcHandSortSettingsDialog input:checked+.slider:before{transform:translateX(30px)}#xcHandSortSettingsDialog .status{position:absolute;top:50%;left:5px;transform:translateY(-50%);color:#555;pointer-events:none}#xcHandSortSettingsDialog input+.slider+.status:before{content:'关'}#xcHandSortSettingsDialog input:checked+.slider+.status:before{content:'开'}#xcHandSortSettingsDialog input:focus-visible+.slider{outline:2px solid #fff;outline-offset:2px}";
       dialog.appendChild(style);
@@ -260,6 +280,9 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
       });
       for (const name of ["pointerdown", "mousedown", "click", "keydown", "keyup"])
         settingsScope.listen(dialog, name, event => event.stopPropagation());
+      settingsScope.listen(dialog, "close", () => handSortSwitchLayout?.gear.setAttribute("aria-expanded", "false"));
+      settingsScope.listen(window, "resize", positionHandSortSettings);
+      settingsScope.listen(window, "scroll", positionHandSortSettings, true);
       document.body.appendChild(dialog);
       handSortSettingsState = { dialog, toggle, radios, scope: settingsScope };
     }
@@ -269,6 +292,8 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
       if (typeof dialog.showModal === "function") dialog.showModal();
       else { dialog.setAttribute("open", ""); dialog.style.display = "block"; }
     }
+    handSortSwitchLayout?.gear.setAttribute("aria-expanded", "true");
+    positionHandSortSettings();
     return dialog;
   };
   function refreshHandSortPanel() {
@@ -484,18 +509,28 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
     row.style.left = left + "px";
     row.style.top = top + "px";
     row.style.visibility = "visible";
-    var label = mainHost.ensureFloatingLabel(row, HAND_SORT_LABEL_ID, "整理手牌");
-    label.style.left = left + "px";
-    label.style.top = top - 18 + "px";
-    label.style.width = row.style.width;
-    label.style.pointerEvents = "auto";
-    label.style.cursor = "pointer";
-    label.title = "整理手牌设置";
-    label.onclick = openHandSortSettingsFromPanel;
-    state.gear.style.left = left + source.offsetWidth + 3 + "px";
-    state.gear.style.top = top - 18 + "px";
-    state.gear.style.visibility = "visible";
-    state.label = label;
+    var label = state.label;
+    var reference = mainHost.getControls().settings;
+    var caption = reference?.querySelector(".explanation");
+    var referenceAnchor = reference?.querySelector("input");
+    referenceAnchor = referenceAnchor && mainHost.getAnchor(referenceAnchor);
+    var captionRect = caption?.getBoundingClientRect(), anchorRect = referenceAnchor?.getBoundingClientRect();
+    if (captionRect?.width && anchorRect?.width) {
+      var referenceScaleX = anchorRect.width / referenceAnchor.offsetWidth || scaleX;
+      var referenceScaleY = anchorRect.height / referenceAnchor.offsetHeight || scaleY;
+      label.style.left = left + (ownRect.left - rowRect.left) / scaleX + (captionRect.left - anchorRect.left) / referenceScaleX + "px";
+      label.style.top = top + (ownRect.top - rowRect.top) / scaleY + (captionRect.top - anchorRect.top) / referenceScaleY + "px";
+      label.style.width = captionRect.width / referenceScaleX + "px";
+      var nativeStyle = getComputedStyle(caption);
+      for (var property of ["fontFamily", "fontSize", "fontWeight", "lineHeight", "letterSpacing", "color", "textAlign", "justifyContent", "alignItems"])
+        state.gear.style[property] = nativeStyle[property];
+    } else {
+      label.style.left = left + source.offsetWidth / 2 - 40 + "px";
+      label.style.top = top - 18 + "px";
+      label.style.width = "80px";
+    }
+    label.style.visibility = "visible";
+    positionHandSortSettings();
   }
 
   function insertHandSortPanelButton() {
@@ -540,16 +575,30 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
     for (var label of row.querySelectorAll("[for]")) label.htmlFor = HAND_SORT_SWITCH_ID;
     const mainScope = scope();
     parent.appendChild(row);
-    var gear = document.createElement("button");
+    var settingsLabel = document.createElement("span");
+    settingsLabel.id = HAND_SORT_LABEL_ID;
+    settingsLabel.className = "expandable-switch";
+    settingsLabel.style.cssText = "position:absolute;display:block;color:#f2de9c;font:14px/16px Arial,sans-serif;visibility:hidden;z-index:2147483647;pointer-events:auto";
+    settingsLabel.onclick = openHandSortSettingsFromPanel;
+    var gear = document.createElement("span");
     gear.id = "xcHandSortSettingsButton";
-    gear.type = "button";
-    gear.textContent = "⚙";
+    gear.className = "explanation";
+    gear.setAttribute("role", "button");
+    gear.tabIndex = 0;
+    gear.textContent = "整理手牌";
     gear.title = "整理手牌设置";
     gear.setAttribute("aria-label", "整理手牌设置");
     gear.setAttribute("aria-haspopup", "dialog");
-    gear.style.cssText = "position:absolute;width:16px;height:16px;padding:0;display:flex;align-items:center;justify-content:center;border:0;background:none;color:#f2de9c;font:13px/16px Arial,sans-serif;cursor:pointer;visibility:hidden;z-index:2147483647";
+    gear.setAttribute("aria-controls", "xcHandSortSettingsDialog");
+    gear.setAttribute("aria-expanded", "false");
+    // Native .expandable-switch .explanation::after supplies exactly the same gear as wallpaper/block settings.
+    gear.style.cssText = "margin:0;width:100%;cursor:pointer;position:relative";
     mainScope.listen(gear, "click", openHandSortSettingsFromPanel);
-    parent.appendChild(gear);
+    mainScope.listen(gear, "keydown", event => {
+      if (event.key === "Enter" || event.key === " ") openHandSortSettingsFromPanel(event);
+    });
+    settingsLabel.appendChild(gear);
+    parent.appendChild(settingsLabel);
     var frame = null;
     let stopped = false;
     const token = generation;
@@ -569,6 +618,8 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
     resize.observe(parent);
     resize.observe(mainHost.findSwitchContainer(exchange));
     resize.observe(source);
+    const reference = mainHost.getControls().settings;
+    if (reference) resize.observe(reference);
     var observer = new MutationObserver(function (records) {
       if (records.some(function (record) {
         return !row.contains(record.target) && !gear.contains(record.target) && record.target.id !== HAND_SORT_LABEL_ID &&
@@ -581,7 +632,7 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
     mainScope.listen(parent, "scroll", scheduleLayout, true);
     mainScope.listen(window, "xc-hand-sort-panel-visibility", syncHandSortPanelSwitch);
     const owner = {
-      row, input, parent, exchange, debug, gear, label: null,
+      row, input, parent, exchange, debug, gear, label: settingsLabel,
       cleanup: function () {
         if (stopped) return;
         stopped = true;

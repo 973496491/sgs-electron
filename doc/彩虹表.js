@@ -33317,7 +33317,16 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "scope",
       "generation",
       "统一dispose",
-      "只读查询无副作用"
+      "只读查询无副作用",
+      "设置面板最左边",
+      "开关旁展开",
+      "原生齿轮UI",
+      "expandable-switch",
+      "explanation::after",
+      "getControls.settings",
+      "positionHandSortSettings",
+      "滚动跟随",
+      "边缘避让"
     ],
     "decodedIndexes": {
       "_0x3911": {
@@ -33362,11 +33371,15 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "sort经客户端适配取当前本人cardUis，按CardNumber/FlowerOnSeat稳定排序再clear(false)/Draw/invalidateLayoutHandCard。旧主面板reorderFlower/reorderNumber继续通过reorderCard薄入口调用module.sort，未改变排序清选择语义。",
       "checkbox只存集合S，selectBySuit(false/true)按钮选S/非S；空S普通清空、空S反选全选、四花色反选选空。client识别手牌/上下文/权限，GameContext可选；数量与对象身份逐张检查，client.click保留原生事件。基本模式阻断隐藏动作，active/generation改变也中断正在执行的批次。",
       "Exit统一dispose：取消bootstrap、800ms可见刷新、主安装重试、rAF/观察器，移除全部自有DOM与事件scope并清引用；保留偏好。旧timeout/rAF、已移除input/标题的回调即使在重启后也无副作用。日志仍走注入的__xcAppendLocalSkinDebugLine，不用开发者控制台。",
-      "已验证任务前后除本功能两区块/状态声明/指定挂点外，userscript正文逐字一致；同步真实userData/三国杀打小抄.js保留CRLF，备份before-hand-cards-module-2026-10-17T10-27-41-111Z.bak。单脚本加载入口不变，重载生效，无热注入/asar生成。"
+      "已验证任务前后除本功能两区块/状态声明/指定挂点外，userscript正文逐字一致；同步真实userData/三国杀打小抄.js保留CRLF，备份before-hand-cards-module-2026-10-17T10-27-41-111Z.bak。单脚本加载入口不变，重载生效，无热注入/asar生成。",
+      "2026-10-17 设置入口对齐原生UI：宿主getControls.settings优先wallpaperContainer、回退blockEffectContainer；模块使用expandable-switch/explanation原生齿轮伪元素，读取参考caption字体/宽度/相对开关偏移并换算缩放。保留role=button、Enter/Space和aria-expanded，其他设置入口不变。",
+      "原生dialog全局CSS margin:0/inset:auto导致没有left/top的整理设置落在左侧。positionHandSortSettings在showModal后按整理开关anchor视口坐标定位：默认下方8px，空间不足翻上方并按视口8px夹住；无主开关时回退可见浮窗/中心。settingsScope管理resize/scroll/close，主入口重排也重定位；参考节点加入原ResizeObserver，退出清理所有自有回调。",
+      "已仅同步实际主脚本hand-cards生成段及host参考字段，并更新Roaming的modules/features/hand-cards.js，其他代码保留；备份before-hand-settings-anchor-2026-10-17T14-28-35-369Z.bak。版本仍1.0.0且与version.json一致，发布路径不变。"
     ],
     "regressionNotes": [
-      "独立模块真实DOM+模拟服务101项通过（原90+生命周期11），装配及实际桥接执行8项通过，顶部弹幕34项/皮肤屏蔽52项相邻回归通过。生成过期/语法检查通过，未游戏内实测。测试不再切片注入业务代码或访问私有状态，只直接加载工厂并观测公共接口/DOM。",
-      "回退需恢复before-hand-cards-module中的两原实现区块、状态声明及addFrame/Exit/共享等待挂点，并同步测试、文档、停用生成步骤。保留原存储键及共享DOM助手，不可只删模块文件而留下调用。"
+      "原生CSS下先复现设置弹窗定位失败，修后手牌DOM/模拟检查109项通过；原生两入口UI对照、缩放/滚动/边缘避让及键盘操作覆盖。装配/宿主8项、版本7项通过，未游戏内实测。之前模块化阶段相邻功能34/52项为历史验证，本次公共助手未改。",
+      "回退需恢复before-hand-cards-module中的两原实现区块、状态声明及addFrame/Exit/共享等待挂点，并同步测试、文档、停用生成步骤。保留原存储键及共享DOM助手，不可只删模块文件而留下调用。",
+      "回退本次UI/定位恢复模块的设置入口与openSettings/positionHandSortSettings段，并移除host getControls.settings后重新装配；保留模块化和既有选牌/偏好规则。"
     ],
     "moduleFile": "electron-next/src/features/hand-cards.js",
     "adapterFile": "electron-next/src/adapters/hand-cards-client.js",

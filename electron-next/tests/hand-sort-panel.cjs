@@ -7,6 +7,7 @@ const os = require("node:os");
 const http = require("node:http");
 const { spawn } = require("node:child_process");
 const assert = require("node:assert/strict");
+const vm = require("node:vm");
 
 const source = fs.readFileSync(path.join(__dirname, "../resources/daxiaochao.user.js"), "utf8");
 const createHandCardsModule = require("../src/features/hand-cards.js");
@@ -18,6 +19,25 @@ const anchorStart = source.indexOf("  function getHandSortSwitchAnchor(");
 const anchorEnd = source.indexOf("  // Hand-card main-panel host.", anchorStart);
 assert(commonStart >= 0 && commonEnd > commonStart && anchorStart >= 0 && anchorEnd > anchorStart);
 const helpersSource = source.slice(commonStart, commonEnd) + source.slice(anchorStart, anchorEnd);
+// Use the actual native caption/dialog CSS, including the margin:0/inset:auto rule.
+const tableStart = source.indexOf("  function D() {"), tableEnd = source.indexOf("    ];", tableStart);
+const templateStrings = vm.runInNewContext(source.slice(source.indexOf("[", tableStart), tableEnd + 5));
+function decodeTemplate(text) {
+  const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=";
+  let bytes = "", value = 0, count = 0;
+  for (const char of text) {
+    const n = alphabet.indexOf(char);
+    if (n < 0) continue;
+    value = count % 4 ? 64 * value + n : n;
+    if (count++ % 4) bytes += String.fromCharCode(255 & (value >> ((-2 * count) & 6)));
+  }
+  return decodeURIComponent(Array.from(bytes, c => "%" + c.charCodeAt(0).toString(16).padStart(2, "0")).join(""));
+}
+const nativeTemplate = templateStrings.filter(text => text.length > 3000).map(decodeTemplate).find(text => text.includes('id="wallpaperContainer"'));
+assert(nativeTemplate, "native settings template exists");
+const nativeSettingsCss = [...nativeTemplate.matchAll(/([^{}<>]+)\{([^{}]*)\}/g)]
+  .filter(match => /(^|,)\s*dialog(?:\b|[.:#])/.test(match[1]) || /\.expandable-switch|\.explanation|\.switch-container/.test(match[1]))
+  .map(match => match[0]).join("\n");
 const browserPath = [
   process.env.HAND_SORT_TEST_BROWSER,
   "C:/Program Files/Google/Chrome/Application/chrome.exe",
@@ -96,7 +116,7 @@ function moduleHarness() {
   }
   window.handCardsClient = createHandCardsClient({ getLaya: () => laya, isEnabled: () => testFeatureEnabled.value });
   window.handCardsHost = {
-    getControls: () => ({ exchange: document.getElementById("CDKNotificationSwitch"), debug: document.getElementById("localSkinDebugSwitch") }),
+    getControls: () => ({ exchange: document.getElementById("CDKNotificationSwitch"), debug: document.getElementById("localSkinDebugSwitch"), settings: document.getElementById("wallpaperContainer") || document.getElementById("blockEffectContainer") }),
     findSwitchContainer, clearDuplicateIds, clearText: setLocalSkinLabel,
     ensureFloatingLabel, getAnchor: getHandSortSwitchAnchor,
   };
@@ -167,12 +187,47 @@ async function browserChecks() {
     }), "suit labels hug the text without stretched trailing blank space");
     const gear = document.getElementById("xcHandSortSettingsButton");
     check(gear && gear.getAttribute("aria-haspopup") === "dialog", "main panel exposes a dedicated settings gear");
+    const nativeCaption = document.querySelector("#wallpaperContainer .explanation");
+    const blockCaption = document.querySelector("#blockEffectContainer .explanation");
+    const pseudoProperties = ["content", "fontSize", "right", "top", "transform", "opacity"];
+    check(gear.matches(".expandable-switch .explanation") && gear.textContent === "整理手牌" &&
+      pseudoProperties.every(key => getComputedStyle(gear, "::after")[key] === getComputedStyle(nativeCaption, "::after")[key] && getComputedStyle(gear, "::after")[key] === getComputedStyle(blockCaption, "::after")[key]), "hand settings reuse the same native gear pseudo-element as wallpaper and block settings");
+    function checkNativeCaption(label) {
+      const own = gear.getBoundingClientRect(), ref = nativeCaption.getBoundingClientRect();
+      const ownAnchor = getHandSortSwitchAnchor(toggle).getBoundingClientRect();
+      const refAnchor = getHandSortSwitchAnchor(document.getElementById("skinPaperSwitch")).getBoundingClientRect();
+      check(Math.abs(own.width - ref.width) < 1 && Math.abs(own.left - ownAnchor.left - (ref.left - refAnchor.left)) < 1 &&
+        Math.abs(own.top - ownAnchor.top - (ref.top - refAnchor.top)) < 1 && getComputedStyle(gear).font === getComputedStyle(nativeCaption).font, label);
+    }
+    checkNativeCaption("caption width, typography and switch-relative placement match the native settings entry");
     gear.click();
     const settingsDialog = document.getElementById("xcHandSortSettingsDialog");
     const suitToggle = document.getElementById("xcHandSuitSelectionToggle");
     const horizontal = settingsDialog.querySelector('input[value="horizontal"]');
     const vertical = settingsDialog.querySelector('input[value="vertical"]');
     check(settingsDialog.open && toggle.checked && panel.style.display === "block", "gear opens configuration without toggling the floating panel");
+    const switchAnchor = getHandSortSwitchAnchor(toggle).getBoundingClientRect();
+    const dialogRect = settingsDialog.getBoundingClientRect();
+    check(Math.abs(dialogRect.left - switchAnchor.left) < 1 && Math.abs(dialogRect.top - switchAnchor.bottom - 8) < 1, "settings dialog opens beside its switch under the native dialog CSS");
+    const settingsRoot = document.getElementById("createIframe");
+    settingsRoot.style.transform = "scale(0.75)";
+    handCards.requestMainPanel();
+    checkNativeCaption("settings caption keeps native alignment when the main panel is scaled");
+    let anchored = getHandSortSwitchAnchor(toggle).getBoundingClientRect(), positioned = settingsDialog.getBoundingClientRect();
+    check(Math.abs(positioned.left - anchored.left) < 1 && Math.abs(positioned.top - anchored.bottom - 8) < 1, "scaled main-panel coordinates anchor the unscaled dialog correctly");
+    settingsRoot.style.transform = "";
+    settingsRoot.style.left = innerWidth - 260 + "px";
+    settingsRoot.style.top = innerHeight - 70 + "px";
+    handCards.requestMainPanel();
+    positioned = settingsDialog.getBoundingClientRect(); anchored = getHandSortSwitchAnchor(toggle).getBoundingClientRect();
+    check(positioned.left >= 8 && positioned.right <= innerWidth - 7 && positioned.top >= 8 && positioned.bottom <= anchored.top - 7, "dialog flips above the switch and stays inside the viewport near the bottom-right edge");
+    settingsRoot.style.left = "55px"; settingsRoot.style.top = "70px";
+    window.dispatchEvent(new Event("scroll"));
+    positioned = settingsDialog.getBoundingClientRect(); anchored = getHandSortSwitchAnchor(toggle).getBoundingClientRect();
+    check(Math.abs(positioned.left - anchored.left) < 1 && Math.abs(positioned.top - anchored.bottom - 8) < 1, "open settings follow their anchor on scroll");
+    settingsRoot.style.left = "25px"; settingsRoot.style.top = "30px";
+    window.dispatchEvent(new Event("resize"));
+    handCards.requestMainPanel();
     check(settingsDialog.textContent.includes("·打开花色选中·") && settingsDialog.textContent.includes("切换面板UI样式") && suitToggle.checked && horizontal.checked && !vertical.checked, "settings show the requested switch and default horizontal radio group");
     gear.click();
     check(document.querySelectorAll("#xcHandSortSettingsDialog").length === 1, "reopening settings does not duplicate the dialog");
@@ -192,7 +247,10 @@ async function browserChecks() {
     check(horizontal.checked && !vertical.checked && settingsDialog.querySelectorAll('input[type="radio"]:checked').length === 1, "layout radio group always has exactly one selected option");
     check(panelView.suitInputs.every(input => input.parentElement.getBoundingClientRect().top === suitRects[0].top) && hand.layouts === 0, "horizontal layout restores without sorting or selecting cards");
     settingsDialog.querySelector(".dialog-close-btn").click();
-    check(!settingsDialog.open, "settings close button closes the dialog");
+    check(!settingsDialog.open && gear.getAttribute("aria-expanded") === "false", "settings close button closes the dialog and updates the entry state");
+    gear.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    check(settingsDialog.open && gear.getAttribute("aria-expanded") === "true", "native-style settings caption supports keyboard activation");
+    handCards.closeSettings();
     document.getElementById("handSortPanelLabel").click();
     check(settingsDialog.open && toggle.checked, "clicking the main caption opens settings like the native settings captions");
     handCards.closeSettings();
@@ -464,16 +522,18 @@ async function browserChecks() {
   }
 }
 
-const settingsFixture = '<style>.switch{position:relative;display:block;width:56px;height:26px}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;top:0;left:0;right:0;bottom:0;border:1px solid #f2de9c;border-radius:34px;background:#23201d}.slider:before{position:absolute;content:"";height:20px;width:20px;left:2px;bottom:2px;background:#f2de9c;border-radius:50%}.status{position:absolute;top:50%;left:5px;transform:translateY(-50%)}input:checked+.slider{background:#ff7b54}input:checked+.slider:before{transform:translateX(30px)}input+.slider+.status:before{content:"关"}input:checked+.slider+.status:before{content:"开"}</style>' +
+const settingsFixture = '<style>' + nativeSettingsCss + '.switch{position:relative;display:block;width:56px;height:26px}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;top:0;left:0;right:0;bottom:0;border:1px solid #f2de9c;border-radius:34px;background:#23201d}.slider:before{position:absolute;content:"";height:20px;width:20px;left:2px;bottom:2px;background:#f2de9c;border-radius:50%}.status{position:absolute;top:50%;left:5px;transform:translateY(-50%)}input:checked+.slider{background:#ff7b54}input:checked+.slider:before{transform:translateX(30px)}input+.slider+.status:before{content:"关"}input:checked+.slider+.status:before{content:"开"}</style>' +
   '<div id="createIframe" style="position:fixed;left:25px;top:30px;width:230px;height:200px;transform-origin:top left"><div id="nativeControls">' +
   '<label id="exchangeRow" class="switch" style="position:absolute;left:78px;top:25px"><input id="CDKNotificationSwitch" type="checkbox"><span class="slider"></span><span class="status"></span></label>' +
-  '<label id="debugRow" class="switch" style="position:absolute;left:150px;top:90px"><input id="localSkinDebugSwitch" type="checkbox"><span class="slider"></span><span class="status"></span></label></div></div>';
+  '<label id="debugRow" class="switch" style="position:absolute;left:150px;top:90px"><input id="localSkinDebugSwitch" type="checkbox"><span class="slider"></span><span class="status"></span></label>' +
+  '<div id="wallpaperContainer" class="switch-container expandable-switch" style="position:absolute;left:0;top:145px;width:72px;font:14px/16px Arial;color:#f2de9c"><span class="explanation">壁纸设置</span><label class="switch"><input id="skinPaperSwitch" type="checkbox"><span class="slider"></span></label></div>' +
+  '<div id="blockEffectContainer" class="switch-container expandable-switch" style="position:absolute;left:90px;top:145px;width:72px;font:14px/16px Arial;color:#f2de9c"><span class="explanation">屏蔽设置</span><label class="switch"><input id="effectBlockSwitch" type="checkbox"><span class="slider"></span></label></div></div></div>';
 const html = '<!doctype html><meta charset="utf-8">' + settingsFixture + '<pre id="result">PENDING</pre><script>(' + browserFixture + ')();</script><script>' + panelSource + '</script><script>' + helpersSource + '(' + moduleHarness + ')();</script><script>window.addEventListener("load", ' + browserChecks + ');</script>';
 const previewArgument = process.argv.find(arg => arg.startsWith("--preview="));
 const preview = process.argv.includes("--preview") || !!previewArgument;
 const previewMode = previewArgument?.split("=")[1] || "horizontal";
 const previewOptions = { suitSelection: previewMode !== "basic", orientation: previewMode === "vertical" ? "vertical" : "horizontal" };
-const previewHtml = '<!doctype html><meta charset="utf-8"><style>body{margin:0;background:#171922}</style><script>(' + browserFixture + ')();laya.gamescene={SelfSeatUi:{cardContainer:makeSelectableHand()}};localStorage.setItem("xcHandSortFloatingPanel",JSON.stringify({left:24,top:24,visible:true}));</script><script>' + panelSource + '</script><script>' + helpersSource + '(' + moduleHarness + ')();</script><script>window.addEventListener("load",()=>{handCards.mount();handCards.setVisible(true);handCards.setOptions(' + JSON.stringify(previewOptions) + ');' + (previewMode === "settings" ? 'handCards.openSettings();' : previewMode === "basic" ? '' : 'panelView.suitInputs.find(x=>x.value==="1").click();panelView.selectionButtons[1].click();') + '});</script>';
+const previewHtml = '<!doctype html><meta charset="utf-8"><style>body{margin:0;background:#171922}</style>' + (previewMode === "settings" ? settingsFixture : '') + '<script>(' + browserFixture + ')();laya.gamescene={SelfSeatUi:{cardContainer:makeSelectableHand()}};localStorage.setItem("xcHandSortFloatingPanel",JSON.stringify({left:24,top:24,visible:true}));</script><script>' + panelSource + '</script><script>' + helpersSource + '(' + moduleHarness + ')();</script><script>window.addEventListener("load",()=>{handCards.mount();handCards.setVisible(true);handCards.setOptions(' + JSON.stringify(previewOptions) + ');' + (previewMode === "settings" ? 'handCards.openSettings();' : previewMode === "basic" ? '' : 'panelView.suitInputs.find(x=>x.value==="1").click();panelView.selectionButtons[1].click();') + '});</script>';
 
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), "xc-hand-sort-test-"));
 const screenshotPath = path.join(profile, "hand-sort-panel-" + previewMode + ".png");
