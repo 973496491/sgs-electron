@@ -7,6 +7,7 @@ const EventEmitter = require('events')
 const spawnSync = require('child_process').spawnSync
 const update = require('../src/electron/release-update')
 const getInstallCoordinator = require('../src/electron/release-install').getInstallCoordinator
+const { stampVersion } = require('../scripts/build-userscript-modules.cjs')
 const project = path.resolve(__dirname, '..')
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'xc-auto-install-tests-'))
 const mapping = JSON.parse(fs.readFileSync(path.join(project, 'release-files.json'), 'utf8'))
@@ -26,6 +27,10 @@ function fixture(name) {
     fs.mkdirSync(path.dirname(file), { recursive: true })
     fs.copyFileSync(path.join(path.dirname(project), entry.source), file)
   }
+  // Test an older installed version independently of the developer's current version.json.
+  const script = path.join(target, '三国杀打小抄.js')
+  fs.writeFileSync(script, stampVersion(fs.readFileSync(script, 'utf8'), '0.0.9'))
+  fs.writeFileSync(path.join(target, 'version.json'), '{"version":"0.0.9"}\n')
   fs.writeFileSync(path.join(target, 'config.json'), '{"keep":"account and preferences"}')
   return target
 }

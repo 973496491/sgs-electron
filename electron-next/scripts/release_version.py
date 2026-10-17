@@ -22,11 +22,18 @@ def read_version(path: Path):
 
 def stamp_script(text: str, version: str):
     parse_version(version)
-    patterns = (
-        (r"(?m)^(//\s*@version\s+)[^\r\n]+", lambda m: m[1] + version),
-        (r'(const _0x43f342 = ")[^"]+("[,]?)', lambda m: m[1] + version + m[2]),
-        (r'(const _0x38a6c4 = ")[^"]+("[,]?)', lambda m: m[1] + version + m[2]),
-    )
+    patterns = [(r"(?m)^(//[ \t]*@version[ \t]+)[^\r\n]+", lambda m: m[1] + version)]
+    if re.search(r"\bconst\s+XIAOCHAO_VERSION\b", text):
+        if re.search(r"\bconst\s+(?:_0x43f342|_0x38a6c4)\b", text):
+            raise ValueError("Mixed unified and legacy script version declarations.")
+        patterns.append((r'(?m)^([ \t]*const XIAOCHAO_VERSION = ")[^"\r\n]+(";)',
+                         lambda m: m[1] + version + m[2]))
+    else:
+        # Previously published packages still contain the two legacy constants.
+        patterns.extend((
+            (r'(const _0x43f342 = ")[^"]+("[,]?)', lambda m: m[1] + version + m[2]),
+            (r'(const _0x38a6c4 = ")[^"]+("[,]?)', lambda m: m[1] + version + m[2]),
+        ))
     for pattern, replacement in patterns:
         text, count = re.subn(pattern, replacement, text)
         if count != 1:

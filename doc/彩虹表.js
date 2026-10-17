@@ -32724,28 +32724,49 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  peiXiuRouteCalculation: {
+    title: "裴秀地图 / 纯计算模块候选（仅评估，未迁移）",
+    verifiedAt: "2026-10-17",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: ["独立模块候选评估", "裴秀地图", "纯计算模块", "parsePeiXiuMap", "solvePeiXiuMap", "getPeiXiuRouteSegments", "getPeiXiuSolutionSummary", "handlePeiXiuRouteBackground", "PeiXiuMapBackground", "peixiuSpBg", "onGetSpBg", "__xcPeiXiuRouteCache", "_0x50b5"],
+    decodedIndexes: {
+      _0x3812: { "201": "SpecialBackground", "365": "SceneManager", "587": "onGetSpBg", "738": "__proto__", "1033": "peixiu", "1458": "__onGetSpBg", "1567": "executeSwitchScene" },
+      _0x50b5: { "519": "__xcPeiXiuRouteLayer", "522": "PeiXiuMapBackground", "530": "peixiuSpBg", "611": "__xcPeiXiuRouteCache", "617": "renderMapState", "618": "mapState", "619": "collectedCells", "625": "startCell", "629": "boardCellSlots", "657": "mapConfig", "659": "boardEffectRoot", "665": "Destroy", "677": "rewardCells" }
+    },
+    chain: [
+      "setProto 包装 SceneManager.executeSwitchScene，调用 _0x37c403 包装场景 onGetSpBg；原方法后取 SpecialBackground，与 hasAdvancedFeature('peixiu') 交给 handlePeiXiuRouteBackground。背景需 name=PeiXiuMapBackground 或 resName=peixiuSpBg，以及 mapState/boardCellSlots/boardEffectRoot 和原生绘制能力。",
+      "_0x177b67 包装 renderMapState/Destroy；_0x4c2b83 从 mapState.mapConfig、当前格与已收集格调用 solvePeiXiuMap，按输入摘要缓存到背景 __xcPeiXiuRouteCache，_0x1db296 用 Laya 绘制路线和摘要。界面关闭/Destroy 的清理与计算模块边界分开评估。",
+      "纯计算候选为 parsePeiXiuMap/solvePeiXiuMap/getPeiXiuRouteSegments/getPeiXiuSolutionSummary、坐标/移动/奖励位集助手及 _0x978528/_0xfc33e9 方向常量。求解队列/访问集合为调用局部状态；迁移需带齐助手并处理 decoder，保留原显示挂钩、权限门槛和 UI 状态，不整体搬走背景逻辑。",
+      "本次内存 VM 抽取实际 decoder/rotation/string array，189 个 _0x50b5 条目与生成表一致。无 DOM/游戏依赖下通过无奖励、一步可达、不可达、已收集、特殊格强制移动五场景，并核对输入不变和线段/摘要输出；未证明全地图正确性，未实施模块迁移或游戏内验收。"
+    ]
+  },
   startupVersionFlow: {
     title: "小抄月见版 / COS 检查、下载与自动安装",
     verifiedAt: "2026-10-17",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
+    embeddedVersionRoles: "2026-10-17 已统一为核心 XIAOCHAO_VERSION：原 _0x43f342 的请求 version、原 _0x38a6c4 的创建/展开标题、updateLog 和 DXCVersion 提示均引用它；两个混淆字段已从源码移除。",
+    localVersionPriority: "本地检测优先 userData/三国杀打小抄.js 的 @version，缺少脚本标记才回退同目录 version.json；工程 version.json 用于发布。已存在的版本记录仍先解析校验，非法内容会失败。",
+    localVersionMaintenance: "维护 electron-next/version.json 后执行 npm run build:userscript，stampVersion 同步工作脚本 @version 与 XIAOCHAO_VERSION；check:userscript 检查版本漂移。实际客户端仍读 Roaming，须同步脚本与记录后重新启动。本次同步统一为1.0.0，备份 before-version-unify-2026-10-17T13-59-21-699Z.bak。",
     moduleFile: "electron-next/src/electron/release-update.js",
     installerModule: "electron-next/src/electron/release-install.js",
     installerFile: "electron-next/scripts/install.ps1",
     manifestFile: "electron-next/version.json",
-    searchKeywords: ["小抄月见版", "启动版本获取", "checkAndUpdateScript", "createUpdateChecker", "release-update.js", "release-install.js", "getInstallCoordinator", "whenIdle", "RecoverOnly", "installProtocol", "下载并安装", "重试安装", "重启客户端", "before-quit", "suppressRemoteFallback", "File.Replace", "NullString", "xiaochao-install-state", "release-auto-install.cjs", "release_install.py", "cos-update.local.json", "version.json", "stamp_release", "upload_release", "DXCVersion", "WDVerSion", "sgsVersion", "updateLog", "0.0.9", "1.0.0", "COS版本清单", "downloadPackage", "packageInfo"],
+    searchKeywords: ["版本字段统一", "XIAOCHAO_VERSION", "stampVersion", "build:userscript", "check:userscript", "userscript-version.cjs", "release_version.py", "用户脚本元数据", "@version", "小抄月见版", "启动版本获取", "checkAndUpdateScript", "createUpdateChecker", "release-update.js", "release-install.js", "getInstallCoordinator", "whenIdle", "RecoverOnly", "installProtocol", "下载并安装", "重试安装", "重启客户端", "before-quit", "suppressRemoteFallback", "File.Replace", "NullString", "xiaochao-install-state", "release-auto-install.cjs", "release_install.py", "cos-update.local.json", "version.json", "stamp_release", "upload_release", "DXCVersion", "WDVerSion", "sgsVersion", "updateLog", "0.0.9", "1.0.0", "COS版本清单", "downloadPackage", "packageInfo"],
     decodedIndexes: {
       _0x871b: { "196": "WDVerSion", "313": "小抄已经更新到", "340": "三国杀小抄", "352": "setItem", "371": "title", "388": "getItem", "555": "replace", "596": "updateLog", "627": "DXCVersion", "653": "1.0.0" },
-      _0x2e57: { "197": "sgsVersion" }
+      _0x2e57: { "197": "sgsVersion", "238": "stringify", "269": "signup?code=", "272": "value", "342": "fromCharCode" }
     },
     chain: [
+      "版本唯一维护入口为工程version.json；构建器同步工作脚本元数据与唯一常量，保留其他头部声明和非版本正文。Python暂存盖章支持新旧格式，包验证拒绝元数据/常量/记录不一致；不修改检测/安装对@version的既有读取规则。",
       "实际宿主 createWindow -> checkAndUpdateScript -> getInstallCoordinator.whenIdle -> checker.check；注入路径/dialog/log、downloadDirectory/shell、共享installer和显式restart回调。实际read-local-script等待安装/恢复，失败返回suppressRemoteFallback；frame停止旧远端兜底。仓库window/main/interceptor同步接线，并优先读取Roaming已安装主脚本。",
       "WeakMap 按窗口合并交互，getInstallCoordinator按目标目录共享安装状态。0.0.9对1.0.0弹下载并安装/稍后；点击后签名下载并自动进入安装。packageInfo限定同桶同前缀ZIP，拒绝穿越、外部地址和重定向；signGet中文/空格签名与官方SDK一致。",
       "downloadPackage 独占请求/文件流/定时器/随机.part，提供promise/cancel；流式保存，校验Content-Length和ZIP标记，COPYFILE_EXCL避免覆盖既有文件，同名追加编号。5分钟总超时、30秒空闲超时、5GiB上限；任务栏进度由宿主管理，窗口关闭取消并清理临时文件和监听。",
       "下载完成调用本机runtime/install.ps1，不执行ZIP内安装器。installProtocol=1、单根ZIP路径/链接/重复项/体积检查、映射及版本核对通过后才改文件；系统独占锁防并发，先备份及写事务记录，再原子替换，主脚本和version.json最后提交。异常恢复原文件，未完成事务下次RecoverOnly恢复；配置/密钥/日志不覆盖。",
       "安装失败只重试已下载ZIP；成功提示重启客户端/稍后，只有用户点击才relaunch/quit。安装开始后关闭窗口不会打断提交；before-quit等安装/恢复结束。loader.whenIdle防混合版本注入，日志沿用app-log.txt。PS5.1 File.Replace必须传[NullString]::Value，$null会变空路径，中文脚本保留UTF-8 BOM。",
-      "main -> Init -> initFrame -> addFrame；创建标题和展开恢复两处已不用旧 _0x871b(340)，统一为小抄月见版加空格和 _0x38a6c4。@version/_0x43f342/_0x38a6c4 本地均为0.0.9，后者不再自带前导空格。DXCVersion/updateLog 仍是内嵌日志提示，不是远端版本来源。",
+      "main -> Init -> initFrame -> addFrame；创建标题和展开恢复统一为小抄月见版加空格和 XIAOCHAO_VERSION。DXCVersion 不同时提示并写回，updateLog 点击显示同一版本；仅本地提示，不查询云端。",
       "Init 设置 window.WDVerSion=1.0.0 是兼容标识；act 中 sgsVersion 是本地时间门槛，不是最新版本；_0x53d3d5 的 version 字段携带本地常量，不能误判为版本查询结果。",
-      "version.json 是工程版本来源，release_version.stamp_release 仅同步暂存副本；pack.cmd --version 1.0.0 保持工程和实际本地0.0.9。upload_release 从ZIP提取版本、拒绝旧版覆盖新版、先上传ZIP后覆盖云端version.json，并设置no-store；补传也读取该ZIP版本。",
+      "version.json 经 build:userscript 同步工作脚本，release_version.stamp_release 另负责发布暂存副本；pack.cmd --version 只覆盖交付。upload_release 从ZIP提取版本、拒绝旧版覆盖新版、先上传ZIP后发布version.json；补传也使用该ZIP版本。",
       "同次映射新增release-install.js及运行时install.ps1/release-common.ps1，共8个业务文件、12个包内文件；认证配置不打包。当前COS 1.0.0指向xiaochao-20261017-204331-525.zip(360370字节)，已包含全部新逻辑。宿主main/frame及运行时文件备份后缀before-auto-install-20261017-204529.bak。",
       "实际Electron10.4.5/Node12.16.3从私有COS下载并在独立userData副本中自动安装到1.0.0，验证退出延后到提交完成。13项PowerShell安装边界/恢复、5项自动链路、12项打包、17项发布、11项版本、16项下载验证通过。真实运行目录保留0.0.9供用户点击验收，不重启当前游戏、不编译asar。"
     ]
@@ -32950,10 +32971,12 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     ],
   },
   topMarqueeBlock: {
-    title: "屏蔽弹幕 / 顶部右至左跑马灯开关",
-    verifiedAt: "2026-10-08",
+    title: "屏蔽弹幕 / 独立模块与顶部跑马灯开关",
+    verifiedAt: "2026-10-17",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
+    moduleFile: "electron-next/src/features/top-marquee.js",
     searchKeywords: [
+      "独立弹幕模块", "top-marquee.js", "createTopMarqueeModule", "top-marquee-module.cjs", "__xcAttachTopMarqueeMainPanel", "generation", "后装挂钩", "build:userscript",
       "屏蔽弹幕", "顶部广播", "跑马灯", "全屏弹幕", "设置", "壁纸设置", "明牌框框",
       "wallpaperContainer", "skinPaperSwitch", "文字上方", "explanation", "switch-container",
       "seatUISwitch", "xcTopMarqueeToggle", "xcTopMarqueeSwitchRow", "xcTopMarqueeBlocked",
@@ -32971,15 +32994,20 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       _0x871b: { 134: 'input[id$="Switch"]', 288: "iframe-source", 305: "seatUISwitch", 344: "wallpaperContainer", 472: "iframe", 498: "skinPaperSwitch", 564: "createIframe" },
     },
     chain: [
+      "2026-10-17 已实施模块化：src/features/top-marquee.js 为唯一源码，生成器嵌入 top-marquee 区块，仍沿 read-local-script 单脚本注入。核心 IIFE 注入闭包 laya、Laya.timer、storage、日志；第二 IIFE 经 __xcAttachTopMarqueeMainPanel 提供共享 DOM 助手，不读取 window.laya。",
+      "模块私有拥有 core/UI/重试及 generation/controllerEpoch/buttonEpoch；start 仅激活，setProto/installTopMarqueeBlocker 与 addFrame 安装，Exit 统一 dispose。返回 start/install/dispose/attachMainPanel/requestMainPanel/detachMainPanel/setBlocked/isBlocked；旧桥保留，停止后调用不重建。",
+      "退出时取消两类重试、rAF、观察器及全部自有按钮/窗口监听；旧回调核对任务与世代。后装原生包装器不覆盖，保留其引用的本层但停用副作用，显式重启复用已有层。配置键、按钮布局、广播范围和队列行为不变。",
+
       "原始固定屏蔽为 login -> setProto -> redefine(ChatSysNewsManager.AddNotice,空函数) + ClearData；现已移除。新旧顶部广播分别经 ShowNewMarquee/ShowOldMarquee 汇合到 ShowMarquee，位置为 TYPE_TOP=0，startMove 从 gameWidth 移向 -totalWidth；活动附加行走另外的创建入口。",
       "setProto/addFrame -> installTopMarqueeBlocker，laya.class(PromptLayer,true) 取 FcmTipWindow.ParentLayerInstance，找到 ShowMarquee 所在原型后只安装一次；实例更新仍走原型挂钩。管理器通过 ServerProxy._events.decodeSSCChatmsgNtf 的 caller + timeOutNoticeId 定位，每次处理强制重新解析，避免换场使用旧缓存。",
-      "开关 xcTopMarqueeToggle -> __xcSetTopMarqueeBlocked -> setTopMarqueeBlocked，localStorage.xcTopMarqueeBlocked 持久化，首次默认 false。关闭时原方法原参数/this/返回值透传；开启时不创建顶部 UI，新广播仅对 nowPlayeNoticeId===message.ID 清 OnTimeOut 并调用 OnNoticPlayEnd 推进队列，旧广播仅清 BannerSystemNoticeList。",
+      "模块开关 xcTopMarqueeToggle -> setBlocked -> setTopMarqueeBlocked，兼容 __xcSetTopMarqueeBlocked 仍转发同一实例；localStorage.xcTopMarqueeBlocked 持久化，首次默认 false。关闭时原参数/this/返回值透传；开启时不创建顶部 UI，新广播只对匹配当前 ID 的消息清 OnTimeOut 并推进队列，旧广播只清 BannerSystemNoticeList。",
       "开启会定向清理 marqueeUIList 的顶部项与其 Laya 计时器，以及旧 marqueeUI；销毁前保存 isNew，按 ID 收尾，避免重叠旧 UI 结束新消息。保留 marqueeUIActList、普通聊天和 ShowTextPrompt；不调用 HideAllMarquee/ClearData，不吞聊天协议。旧 __AddNotice 仅在当前方法确为空函数时恢复。",
       "installTopMarqueeButton 克隆 seatUISwitch 的原生 switch/slider/status；Y 对齐 wallpaperContainer 内 skinPaperSwitch 的可见 slider（壁纸设置同一行），X 保持明牌框框 slider 列不变。按最新要求文字在开关上方，采用 switch-container + explanation + switch 纵向结构，继承原生字体和间距，容器宽度跟随明牌框框；布局仍以 slider 作锚点，文字上移不改变开关坐标。追加在 .setting.panel-content 内，随分区一起折叠，保留 header.nextElementSibling 链。id 不使用 Switch 后缀，避免通用配置绑定接管；文字点击及 xc-top-marquee-change 同步保留。",
       "ResizeObserver/有限节点 MutationObserver/resize/scroll 经 rAF 重排，坐标考虑缩放、边框与滚动；addFrame 重建后补装，幂等安装、解绑旧观察器。核心未就绪每 500ms 重试最多 60 次，登录/重建/点击可再次触发；Exit 恢复原方法、取消重试并清理按钮。日志统一 appendLocalSkinDebugLine，前缀 [屏蔽弹幕]。",
     ],
     regressionNotes: [
-      "top-marquee-block.cjs：真实嵌入面板 DOM + 抽取控制器，在 headless Chromium 验证 34 项，并验证 3 种持久化值的新上下文读取；游戏服务模拟，尚非游戏内实测。覆盖新旧队列、重复切换、原方法恢复、旧挂钩迁移、换实例、晚初始化、活动/聊天隔离、缩放/折叠/重建和文字点击。",
+      "模块化回退须同步原两区块、Exit/addFrame、生成器和发布映射/remove，不删除共享 DOM 助手；本机同步保留已安装1.0.0版本，工程0.0.9不变。备份 before-top-marquee-module-2026-10-17T13-31-18-014Z.bak，未热注入或生成asar。",
+      "模块化后 top-marquee-block.cjs 在真实 Chromium 保留原34项并新增5项，共39项通过；top-marquee-module.cjs 9项验证生命周期、后装挂钩及实际宿主接线。相邻皮肤52、手牌101、手牌装配8、调试显示10、打包安装12项通过；未游戏内实测。",
       "回退：删除控制器、按钮和 setProto/addFrame/Exit 挂点；如需恢复改造前行为再恢复固定 AddNotice 空函数。仅关闭按钮即恢复未来顶部广播，不需要恢复旧固定屏蔽；已清理的旧广播不补放。未生成 asar，实际脚本须在 dom-ready 重载。",
     ],
   },

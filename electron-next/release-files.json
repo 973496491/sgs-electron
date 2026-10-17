@@ -13,6 +13,11 @@
     },
     {
       "sourceRoot": "repo",
+      "source": "electron-next/src/features/top-marquee.js",
+      "target": "modules/features/top-marquee.js"
+    },
+    {
+      "sourceRoot": "repo",
       "source": "electron-next/src/adapters/hand-cards-client.js",
       "target": "modules/adapters/hand-cards-client.js"
     },

@@ -1,5 +1,5 @@
 // Run: node electron-next/tests/top-marquee-block.cjs [--source <userscript>]
-// Actual controller + decoded panel DOM in headless Chromium; game services are simulated.
+// Assembled module/host + decoded panel DOM in headless Chromium; game services are simulated.
 const fs = require("node:fs");
 const path = require("node:path");
 const os = require("node:os");
@@ -18,7 +18,8 @@ function slice(start, end) {
 }
 const controller = slice("  // 顶部跑马灯：", "  async function setProto()");
 for (const [saved, expected] of [["true", true], ["false", false], ["broken", false]]) {
-  const context = { window: {}, localStorage: { getItem: () => saved } };
+  const context = { document: {}, window: { setTimeout() {}, clearTimeout() {}, requestAnimationFrame() {},
+    cancelAnimationFrame() {}, getComputedStyle() {} }, localStorage: { getItem: () => saved } };
   vm.runInNewContext(controller, context);
   assert.equal(context.window.__xcIsTopMarqueeBlocked(), expected, "saved preference on fresh load: " + saved);
 }
@@ -48,6 +49,22 @@ const markup = strings.filter(s => s.length > 3000).map(decode).find(s => s.incl
 assert(markup, "actual panel template found");
 
 function fixture() {
+  const nativeSetTimeout = window.setTimeout.bind(window), nativeClearTimeout = window.clearTimeout.bind(window);
+  window.testTimers = new Map();
+  window.setTimeout = function (callback, delay, ...args) {
+    const id = nativeSetTimeout(() => { testTimers.delete(id); callback(...args); }, delay);
+    testTimers.set(id, { callback, delay });
+    return id;
+  };
+  window.clearTimeout = id => { testTimers.delete(id); nativeClearTimeout(id); };
+  window.testObservers = [];
+  for (const name of ["ResizeObserver", "MutationObserver"]) {
+    const Native = window[name];
+    window[name] = class extends Native {
+      constructor(callback) { super(callback); this.callback = callback; this.disconnected = false; testObservers.push(this); }
+      disconnect() { this.disconnected = true; return super.disconnect(); }
+    };
+  }
   window.logs = [];
   window.appendLocalSkinDebugLine = (line, force) => {
     if (force !== false) throw Error("must respect debug window visibility");
@@ -139,7 +156,7 @@ async function checks() {
   let headerClicks = 0;
   header.addEventListener("click", () => headerClicks++);
   function alignment(label) {
-    layoutTopMarqueeButton();
+    topMarquee.requestMainPanel();
     const target = center(document.querySelector("#xcTopMarqueeSwitchRow .slider"));
     const column = center(getHandSortSwitchAnchor(document.getElementById("seatUISwitch")));
     const row = center(getHandSortSwitchAnchor(document.getElementById("skinPaperSwitch")));
@@ -170,9 +187,9 @@ async function checks() {
     layer.marqueeUIActList.items.set(90, activity);
     Laya.timer.once(100, active, () => { throw Error("destroyed banner timer survived"); });
     chat.BannerSystemNoticeList.push({ ID: 3 }, { ID: 4 });
-    check(installTopMarqueeButton(), "button installs into actual panel");
+    check(topMarquee.requestMainPanel(), "button installs into actual panel");
     alignment("native panel");
-    const input = document.getElementById("xcTopMarqueeToggle");
+    let input = document.getElementById("xcTopMarqueeToggle");
     input.click();
     check(input.checked && __xcIsTopMarqueeBlocked() && localStorage.getItem("xcTopMarqueeBlocked") === "true", "click enables and persists block");
     check(headerClicks === 0 && header.nextElementSibling === settings && settings.contains(input),
@@ -200,8 +217,10 @@ async function checks() {
       "off restores both old and new future broadcasts");
     manager.nowPlayeNoticeId = 88;
     const ended = manager.ended;
-    finishBlockedTopMarquee({ ID: 77 });
+    topMarquee.setBlocked(true);
+    layer.ShowMarquee({ ID: 77 }, true);
     check(manager.nowPlayeNoticeId === 88 && manager.ended === ended, "old overlapping UI cannot end current message");
+    topMarquee.setBlocked(false);
     const originalAdd = manager.AddNotice;
     manager.__AddNotice = originalAdd;
     manager.AddNotice = function () {};
@@ -219,16 +238,20 @@ async function checks() {
     window.manager = makeManager();
     manager.AddNotice({ ID: 11 });
     check(layer.rendered.length === 0 && manager.nowPlayeNoticeId === 0, "prototype hook and fresh manager lookup survive service replacement");
-    cleanupTopMarqueeBlocker();
-    check(layer.ShowMarquee === nativeShow && topMarqueeState.hooks.length === 0, "cleanup restores native method");
+    topMarquee.dispose();
+    check(layer.ShowMarquee === nativeShow, "cleanup restores native method");
+    topMarquee.start();
+    topMarquee.requestMainPanel();
+    input = document.getElementById("xcTopMarqueeToggle");
     window.servicesReady = false;
-    check(!installTopMarqueeBlocker() && topMarqueeState.retryTimer !== null, "late services schedule retry");
-    const retry = topMarqueeState.retryTimer;
+    const retries = () => [...testTimers].filter(([, task]) => task.delay === 500);
+    check(!installTopMarqueeBlocker() && retries().length === 1, "late services schedule retry");
+    const retry = retries()[0][0];
     installTopMarqueeBlocker();
-    check(topMarqueeState.retryTimer === retry, "retry loop is deduplicated");
+    check(retries().length === 1 && retries()[0][0] === retry, "retry loop is deduplicated");
     window.servicesReady = true;
     await new Promise(resolve => setTimeout(resolve, 550));
-    check(layer.ShowMarquee !== nativeShow && topMarqueeState.retryTimer === null, "retry installs when services become ready");
+    check(layer.ShowMarquee !== nativeShow && retries().length === 0, "retry installs when services become ready");
     document.getElementById("createIframe").style.transform = "scale(0.75)";
     await frame();
     alignment("scaled panel");
@@ -241,22 +264,49 @@ async function checks() {
     alignment("expanded settings");
     document.querySelector('#xcTopMarqueeSwitchRow > label[for="xcTopMarqueeToggle"]').click();
     check(!input.checked && headerClicks === 0, "caption toggles without collapsing settings");
-    installTopMarqueeButton();
+    topMarquee.requestMainPanel();
     check(document.querySelectorAll("#xcTopMarqueeToggle").length === 1, "button reinstall has no duplicates");
     const parent = settings.parentElement;
     const clone = parent.cloneNode(true);
     clone.querySelector("#xcTopMarqueeSwitchRow").remove();
     parent.replaceWith(clone);
-    installTopMarqueeButton();
+    const staleInput = input;
+    const staleObservers = testObservers.filter(observer => !observer.disconnected);
+    topMarquee.requestMainPanel();
     check(document.querySelectorAll("#xcTopMarqueeToggle").length === 1 && !document.getElementById("xcTopMarqueeToggle").checked,
       "rebuilt panel restores switch state");
     check(logs.some(line => line.includes("toggle:on")) && logs.some(line => line.includes("toggle:off")), "diagnostics use debug-window bridge");
+    check(staleObservers.every(observer => observer.disconnected), "panel rebuild disconnects previous observers");
+    staleInput.checked = true;
+    staleInput.dispatchEvent(new Event("change"));
+    check(!topMarquee.isBlocked(), "detached controls cannot change current preference");
+    topMarquee.setBlocked(true);
+    const removedInput = document.getElementById("xcTopMarqueeToggle");
+    const oldObservers = testObservers.slice();
+    topMarquee.dispose();
+    topMarquee.dispose();
+    check(!document.getElementById("xcTopMarqueeToggle") && oldObservers.every(observer => observer.disconnected),
+      "dispose removes UI and disconnects all owned observers");
+    removedInput.checked = false;
+    removedInput.dispatchEvent(new Event("change"));
+    oldObservers.forEach(observer => observer.callback([]));
+    check(!topMarquee.requestMainPanel() && !topMarquee.setBlocked(false) && topMarquee.isBlocked() &&
+      localStorage.getItem("xcTopMarqueeBlocked") === "true", "stopped APIs and late callbacks preserve preference without remounting");
+    topMarquee.start();
+    topMarquee.install();
+    topMarquee.requestMainPanel();
+    topMarquee.start();
+    topMarquee.requestMainPanel();
+    removedInput.dispatchEvent(new Event("change"));
+    oldObservers.forEach(observer => observer.callback([]));
+    await frame();
+    check(document.querySelectorAll("#xcTopMarqueeToggle").length === 1 && document.getElementById("xcTopMarqueeToggle").checked,
+      "explicit restart restores preference and ignores old UI callbacks");
     document.getElementById("xcMarqueeTestResult").textContent = "PASS " + passed.length + " checks: " + passed.join("; ");
   } catch (error) {
     document.getElementById("xcMarqueeTestResult").textContent = "FAIL after " + passed.length + " checks: " + error.stack;
   } finally {
-    cleanupTopMarqueeBlocker();
-    cleanupTopMarqueeButton();
+    topMarquee.dispose();
   }
 }
 

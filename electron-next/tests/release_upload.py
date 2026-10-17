@@ -230,8 +230,8 @@ class ReleaseUploadTests(unittest.TestCase):
         record = package_release.PROJECT_ROOT / 'version.json'
         before = (script.read_bytes(), record.read_bytes())
         with redirect_stdout(io.StringIO()):
-            archive = package_release.build_release(self.root / 'versioned', self.root / 'roaming', 'python', '1.0.0')
-        self.assertEqual(archive_version(archive), '1.0.0')
+            archive = package_release.build_release(self.root / 'versioned', self.root / 'roaming', 'python', '9.8.7')
+        self.assertEqual(archive_version(archive), '9.8.7')
         self.assertEqual((script.read_bytes(), record.read_bytes()), before)
 
     def test_mapped_path_traversal_is_rejected(self):

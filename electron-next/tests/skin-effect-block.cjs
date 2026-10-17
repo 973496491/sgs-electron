@@ -19,6 +19,7 @@ function slice(start, end) {
 const controller = slice("  // 局内皮肤攻击动效：", "  // 顶部跑马灯：");
 const skinButton = slice("  // 皮肤屏蔽按钮：", "  // 顶部广播按钮：");
 const marqueeButton = slice("  // 顶部广播按钮：", "  function waitForCardBackSwitch(");
+const marqueeController = slice("  // 顶部跑马灯：", "  async function setProto()");
 const helpers = slice("  function findSwitchContainer(", "  function setLocalSkinSwitchState(") +
   slice("  function getHandSortSwitchAnchor(", "  // Hand-card main-panel host.");
 const tooltip = slice("  let _0x5ee876 =", "  function _0x208a6c()");
@@ -154,7 +155,7 @@ async function checks() {
   let headerClicks = 0;
   header.addEventListener("click", () => headerClicks++);
   function alignment(label) {
-    layoutTopMarqueeButton();
+    topMarquee.requestMainPanel();
     layoutSkinEffectButton();
     const a = center(document.querySelector("#xcSkinEffectSwitchRow .slider"));
     const x = center(getHandSortSwitchAnchor(document.getElementById("cardLabelSwitch")));
@@ -177,7 +178,7 @@ async function checks() {
     check(attack?.name === "GongJi" && attack.EffectUrl.endsWith("/xingxiang.json"), "off executes real native attack path");
     flushLoads();
     check(restores.at(-1).visible === false, "native loaded attack hides the original portrait");
-    installTopMarqueeButton();
+    topMarquee.requestMainPanel();
     check(installSkinEffectButton(), "button installs into actual panel");
     await frame();
     alignment("normal panel");
@@ -322,7 +323,7 @@ async function checks() {
     clone.querySelector("#xcTopMarqueeSwitchRow").remove();
     clone.querySelector("#xcSkinEffectSwitchRow").remove();
     parent.replaceWith(clone);
-    installTopMarqueeButton();
+    topMarquee.requestMainPanel();
     installSkinEffectButton();
     await frame();
     check(document.querySelectorAll("#xcSkinEffectToggle").length === 1 && !document.getElementById("xcSkinEffectToggle").checked,
@@ -335,7 +336,7 @@ async function checks() {
   } finally {
     cleanupSkinEffectBlocker();
     cleanupSkinEffectButton();
-    cleanupTopMarqueeButton();
+    topMarquee.dispose();
   }
 }
 
@@ -343,7 +344,7 @@ const html = '<!doctype html><meta charset="utf-8"><style>body{background:#20202
   '<div id="createIframe"><div id="iframe-source">' + markup.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "") + '</div></div><pre id="xcSkinEffectTestResult">PENDING</pre>' +
   '<script>window.onerror=function(message,url,line){document.getElementById("xcSkinEffectTestResult").textContent="FAIL script: "+message+" line "+line;};</script>' +
   '<script>(' + fixture + ')(' + JSON.stringify(native.seatMethods + native.legacySeatMethods) + ');</script><script>const tooltipStrings=' + JSON.stringify({ ...rainbow.all, ...rainbow.used }) +
-  ';const _0x41a3d0=n=>tooltipStrings[n];' + controller + helpers + tooltip + marqueeButton + skinButton + '</script><script>window.addEventListener("load",' + checks + ');</script>';
+  ';const _0x41a3d0=n=>tooltipStrings[n];' + controller + marqueeController + helpers + tooltip + marqueeButton + skinButton + '</script><script>window.addEventListener("load",' + checks + ');</script>';
 const browserPath = [process.env.SKIN_EFFECT_TEST_BROWSER, "C:/Program Files/Google/Chrome/Application/chrome.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"].find(p => p && fs.existsSync(p));
 assert(browserPath, "an installed Chromium browser is required");
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), "xc-skin-effect-test-"));

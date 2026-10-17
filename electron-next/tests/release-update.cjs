@@ -109,9 +109,11 @@ async function main() {
   } finally { await new Promise(resolve => server.close(resolve)) }
   await check('title writes use the local version in both creation and expansion', async () => {
     const script = fs.readFileSync(path.join(__dirname, '../resources/daxiaochao.user.js'), 'utf8')
-    assert.equal((script.match(/"小抄月见版 " \+ _0x38a6c4/g) || []).length, 2)
-    assert(!/(?:n|e)\(340\) \+ _0x38a6c4/.test(script))
-    assert(script.includes('const _0x38a6c4 = "0.0.9"'))
+    const expected = JSON.parse(fs.readFileSync(path.join(__dirname, '../version.json'), 'utf8')).version
+    assert.equal((script.match(/"小抄月见版 " \+ XIAOCHAO_VERSION/g) || []).length, 2)
+    assert.equal(script.match(/const XIAOCHAO_VERSION = "([^"]+)";/)[1], expected)
+    assert.equal(script.match(/^\/\/\s*@version\s+(\S+)/m)[1], expected)
+    assert(!/_0x43f342|_0x38a6c4/.test(script))
   })
   if (process.env.XC_UPDATE_LIVE_DIR) {
     await check('installed runtime reads COS and requests the 0.0.9 -> 1.0.0 dialog', async () => {

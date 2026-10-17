@@ -68,6 +68,7 @@
 |---|---|
 | `electron-next/resources/daxiaochao.user.js` | `三国杀打小抄.js` |
 | `electron-next/src/features/hand-cards.js` | `modules/features/hand-cards.js` |
+| `electron-next/src/features/top-marquee.js` | `modules/features/top-marquee.js` |
 | `electron-next/src/adapters/hand-cards-client.js` | `modules/adapters/hand-cards-client.js` |
 | `electron-next/src/electron/release-update.js` | `modules/runtime/release-update.js` |
 | `electron-next/src/electron/release-install.js` | `modules/runtime/release-install.js` |
@@ -75,7 +76,7 @@
 | `electron-next/scripts/release-common.ps1` | `modules/runtime/release-common.ps1` |
 | `electron-next/version.json` | `version.json` |
 
-2026-10-17 已接入自动安装，映射增加 `installProtocol:1` 和上述安装协调器/运行时 PS 工具，均在同次修改登记。手牌模块仍装配进主脚本，更新与安装模块由宿主主进程实际 require。自动安装只接受新协议包；安装顺序固定为其它业务文件、废弃文件、主脚本、最后版本记录。本机私有配置不打包，`remove` 当前为空。
+2026-10-17 已接入自动安装，映射增加 `installProtocol:1` 和上述安装协调器/运行时 PS 工具；随后屏蔽弹幕独立模块也登记同一映射，当前 9 个业务文件。手牌和屏蔽弹幕模块装配进主脚本，更新与安装模块由宿主主进程实际 require。自动安装只接受新协议包；安装顺序固定为其它业务文件、废弃文件、主脚本、最后版本记录。本机私有配置不打包，`remove` 当前为空。
 
 映射采用逐文件的 `files` 条目，字段约定如下；打包文件夹内使用 `files/` 加 `target` 保存文件，安装再按同一 `target` 落到目标目录。
 
@@ -90,11 +91,11 @@
 - **收集范围**：小抄主脚本、剥离业务模块、客户端适配及实际需要的辅助脚本/资源都显式登记，尤其不得遗漏 `%APPDATA%\SGSOL` 中与小抄有关的入口和配套加载文件。不将账号配置、缓存、日志、历史 `.bak` 或整个 Roaming 目录加入映射。
 - **同步义务**：新增发布文件时增加条目；删除文件时移除旧条目；改名、移动或改变安装位置时同步 `sourceRoot/source/target`。这些更新必须与对应文件变更一起完成，不能留待打包时人工补齐。纯内容修改且路径不变无需机械修改映射；与发布无关的测试、文档不登记。
 - **删除与旧路径**：同一配置的 `remove` 列表记录已废弃的小抄安装相对路径。删除发布文件或改变其安装目标时，移除旧映射并登记旧 `target`，供安装脚本清理旧文件；仅改变来源而安装目标不变时不登记删除。`remove` 不包含当前有效目标，不使用通配符或整目录清空；只处理明确废弃的小抄文件，保留用户数据。
-- **脚本职责**：Python 打包器按映射复制文件、同步暂存版本、极限压缩并发布 COS。手动和自动安装共用 `install.ps1/release-common.ps1` 与包内映射；自动入口使用本机运行时安装器，不直接执行 ZIP 中的脚本。当前为 8 个业务文件、3 个包根安装工具和 1 份映射，共 12 个文件。Python/SDK/凭据仍仅在开发端，客户端安装使用系统 Windows PowerShell 5.1 和 .NET。
+- **脚本职责**：Python 打包器按映射复制文件、同步暂存版本、极限压缩并发布 COS。手动和自动安装共用 `install.ps1/release-common.ps1` 与包内映射；自动入口使用本机运行时安装器，不直接执行 ZIP 中的脚本。当前为 9 个业务文件、3 个包根安装工具和 1 份映射，共 13 个文件。Python/SDK/凭据仍仅在开发端，客户端安装使用系统 Windows PowerShell 5.1 和 .NET。
 - **输出与使用**：每次打包生成全新的 `electron-next/release/xiaochao-年月日-时分秒-毫秒/` 及同名 `.zip`，保留文件夹，不合并旧目录或覆盖已有 ZIP。业务文件位于包内 `files/`，安装工具和映射位于包根目录，ZIP 内保留一个完整发布文件夹；成功后自动打开资源管理器并选中生成的 ZIP，双击脚本结束后保留窗口显示结果。打开文件位置失败只提示，不把已完成的打包判为失败。手动安装仍消费解压后的业务载荷；自动安装使用独立暂存目录并保留下载 ZIP。两者都不清空用户目录。
 - **极限 ZIP**：默认优先调用 PATH 或标准安装目录中的 `7z.exe`，使用 `a -tzip -mx=9 -mm=Deflate -mfb=258 -mpass=15`；UTF-8 临时列表逐项指定映射文件，完成后清理列表。保留标准 Deflate ZIP，Windows 自带解压可读取。找不到 7-Zip 时使用 Python `zipfile.ZIP_DEFLATED`、`compresslevel=9`。这是两种实现各自的最高压缩设置，不承诺不同压缩器得到完全相同体积。压缩失败返回 1，保留已生成目录，不执行上传。
 - **Python 环境与依赖**：2026-10-17 已核实 `C:\Python314\python.exe` 为 Python 3.14.4，pip/TLS/zlib 正常，无须升级解释器。在工程创建 `.venv-release`，安装 [scripts/requirements-release.txt](electron-next/scripts/requirements-release.txt) 中固定版本 `cos-python-sdk-v5==1.9.44`，`pip check` 通过。重建命令（在 `electron-next`）：`python -m venv .venv-release`，然后 `.venv-release\Scripts\python.exe -m pip install -r scripts\requirements-release.txt`。SDK 导入只发生在上传时，`--no-upload` 可仅用标准库/7-Zip 打包。
-- **版本来源与交付**：[version.json](electron-next/version.json) 是本地版本来源，采用三个数字分段。`scripts/release_version.py` 只在发布暂存目录同步 `@version`、`_0x43f342`、`_0x38a6c4` 与包内 `version.json`，不改工程源码或真实 Roaming；模块装配仍沿原流程执行。`--version 1.0.0` 可覆盖本次交付版本，当前测试保留工程/运行版 `0.0.9`、发布 `1.0.0`。普通发布须维护版本文件或显式传版本，不从 ZIP 时间戳推断版本。
+- **版本来源与交付**：[version.json](electron-next/version.json) 是统一维护入口，采用三个数字分段。在 `electron-next` 执行 `npm run build:userscript`，除装配模块外还同步工作脚本头部 `@version` 与唯一业务常量 `XIAOCHAO_VERSION`；`npm run check:userscript` 同时检查模块和版本是否过期。无需打包即可同步工作脚本，默认不写实际 Roaming。客户端检测仍优先实际加载脚本头部 `@version`，缺失才回退同目录记录，因此单改工程 JSON 而未装配/同步实际文件，不会改变当前客户端。原 `_0x43f342/_0x38a6c4` 已移除，请求参数、标题、更新提示统一引用 `XIAOCHAO_VERSION`。发布端 `scripts/release_version.py` 只调整暂存副本的 `@version/XIAOCHAO_VERSION` 与包内记录，仍兼容旧包的两个混淆常量；`--version` 只覆盖此次交付，不回写工作文件。
 - **COS 自动上传**：`upload_release` 从 ZIP 内取版本并检查与脚本一致，签名读取已有 `releases/version.json`，拒绝用旧版覆盖较新版本；随后先上传 ZIP、再上传固定路径的 JSON，只有两步都成功才报告发布完成。JSON 为 `version/packageKey/publishedAt`，使用 `application/json; charset=utf-8` 和 `Cache-Control: no-store, max-age=0`。`--upload-only` 也按该 ZIP 内记录发布，不使用后来变更的工程版本。需要所选目录的 `cos:GetObject` 和 `cos:PutObject`；ZIP 仍限单次 5 GB。保持桶原有私有权限，上传配置 `cos-upload.local.json`、环境变量及官方 SDK 使用方式沿原规则，凭据不进入 Git 或发布包。参考 [Python SDK](https://cloud.tencent.com/document/product/436/12269) 和 [PUT Object](https://cloud.tencent.com/document/product/436/7749)。
 - **本机更新配置**：主进程使用 `cos-update.local.json` 固定密钥签名 GET，不依赖 Python，不下发凭据到页面，不开放桶 ACL。宿主注入下载目录、共享 installer 和显式 restart 回调；用户点击“下载并安装”后自动完成下载及安装，成功提示“重启客户端 / 稍后”，仅点击重启才退出当前游戏。安装失败可用已下载 ZIP 重试，不重新下载。
 - **自动安装与恢复**：`release-install.js` 按目标目录合并任务，隐藏启动本机 `modules/runtime/install.ps1 -ArchivePath <ZIP> -ExpectedVersion <版本> -TargetDirectory <userData>`。PS 用单根目录暂存解压，拒绝路径越界、链接、重复路径、超过 5000 条目或 512 MiB 解压内容；核对协议、映射、包内脚本/版本和目标版本，自动模式拒绝降级。所有将修改的文件先备份并写 `.xiaochao-install-state.json`，逐文件原子替换，主脚本和版本最后写；失败按记录恢复，失败恢复资料保留。下次 `-RecoverOnly` 可继续恢复。`.xiaochao-install.lock` 用系统独占文件锁防跨进程并发，暂存和备份只清理自建 GUID 工作目录，ZIP 保留。
@@ -113,7 +114,7 @@
 
 ### 验收、回归与文档
 
-- 已落地的局部装配：整理手牌的唯一源码为 `electron-next/src/features/hand-cards.js` 和 `electron-next/src/adapters/hand-cards-client.js`。修改后在 `electron-next` 执行 `npm run build:userscript`，以 `npm run check:userscript` 检查交付脚本是否同步；不要手改 `resources/daxiaochao.user.js` 的两个 `GENERATED MODULE` 区块。装配只更新这两段，不生成 asar；其余手写代码和实际注入入口按原流程维护。模块状态/验证入口见架构表对应节。
+- 已落地的局部装配：整理手牌的唯一源码为 `electron-next/src/features/hand-cards.js` 和 `electron-next/src/adapters/hand-cards-client.js`，屏蔽弹幕的唯一源码为 `electron-next/src/features/top-marquee.js`。修改后在 `electron-next` 执行 `npm run build:userscript`，以 `npm run check:userscript` 检查交付脚本是否同步；不要手改主脚本的三个 `GENERATED MODULE` 区块。装配只更新登记区块及上述两处版本值，不生成 asar，其余手写内容保留。版本同步验证为 `node tests/userscript-version.cjs` 和 `python tests/release_version.py`；各业务模块验证入口见架构表。
 
 - 修改前从需求确定可观察行为及适用场景。简单任务可直接体现在验证与最终说明中，不强制另写方案文件；涉及取舍时在进度中简要说明选择及影响。
 - 对关键选牌、状态写入、异步重试和共享挂钩变更，运行相关既有测试；有覆盖缺口时补能证明行为的用例。按改动风险覆盖无上下文、数量限制、重复初始化、晚到数据、切场/重建、关闭/清理及共用入口相邻功能，不要求每次完整扫描所有功能。
