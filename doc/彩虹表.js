@@ -32724,6 +32724,32 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  startupVersionFlow: {
+    title: "小抄月见版 / COS 检查、下载与自动安装",
+    verifiedAt: "2026-10-17",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    moduleFile: "electron-next/src/electron/release-update.js",
+    installerModule: "electron-next/src/electron/release-install.js",
+    installerFile: "electron-next/scripts/install.ps1",
+    manifestFile: "electron-next/version.json",
+    searchKeywords: ["小抄月见版", "启动版本获取", "checkAndUpdateScript", "createUpdateChecker", "release-update.js", "release-install.js", "getInstallCoordinator", "whenIdle", "RecoverOnly", "installProtocol", "下载并安装", "重试安装", "重启客户端", "before-quit", "suppressRemoteFallback", "File.Replace", "NullString", "xiaochao-install-state", "release-auto-install.cjs", "release_install.py", "cos-update.local.json", "version.json", "stamp_release", "upload_release", "DXCVersion", "WDVerSion", "sgsVersion", "updateLog", "0.0.9", "1.0.0", "COS版本清单", "downloadPackage", "packageInfo"],
+    decodedIndexes: {
+      _0x871b: { "196": "WDVerSion", "313": "小抄已经更新到", "340": "三国杀小抄", "352": "setItem", "371": "title", "388": "getItem", "555": "replace", "596": "updateLog", "627": "DXCVersion", "653": "1.0.0" },
+      _0x2e57: { "197": "sgsVersion" }
+    },
+    chain: [
+      "实际宿主 createWindow -> checkAndUpdateScript -> getInstallCoordinator.whenIdle -> checker.check；注入路径/dialog/log、downloadDirectory/shell、共享installer和显式restart回调。实际read-local-script等待安装/恢复，失败返回suppressRemoteFallback；frame停止旧远端兜底。仓库window/main/interceptor同步接线，并优先读取Roaming已安装主脚本。",
+      "WeakMap 按窗口合并交互，getInstallCoordinator按目标目录共享安装状态。0.0.9对1.0.0弹下载并安装/稍后；点击后签名下载并自动进入安装。packageInfo限定同桶同前缀ZIP，拒绝穿越、外部地址和重定向；signGet中文/空格签名与官方SDK一致。",
+      "downloadPackage 独占请求/文件流/定时器/随机.part，提供promise/cancel；流式保存，校验Content-Length和ZIP标记，COPYFILE_EXCL避免覆盖既有文件，同名追加编号。5分钟总超时、30秒空闲超时、5GiB上限；任务栏进度由宿主管理，窗口关闭取消并清理临时文件和监听。",
+      "下载完成调用本机runtime/install.ps1，不执行ZIP内安装器。installProtocol=1、单根ZIP路径/链接/重复项/体积检查、映射及版本核对通过后才改文件；系统独占锁防并发，先备份及写事务记录，再原子替换，主脚本和version.json最后提交。异常恢复原文件，未完成事务下次RecoverOnly恢复；配置/密钥/日志不覆盖。",
+      "安装失败只重试已下载ZIP；成功提示重启客户端/稍后，只有用户点击才relaunch/quit。安装开始后关闭窗口不会打断提交；before-quit等安装/恢复结束。loader.whenIdle防混合版本注入，日志沿用app-log.txt。PS5.1 File.Replace必须传[NullString]::Value，$null会变空路径，中文脚本保留UTF-8 BOM。",
+      "main -> Init -> initFrame -> addFrame；创建标题和展开恢复两处已不用旧 _0x871b(340)，统一为小抄月见版加空格和 _0x38a6c4。@version/_0x43f342/_0x38a6c4 本地均为0.0.9，后者不再自带前导空格。DXCVersion/updateLog 仍是内嵌日志提示，不是远端版本来源。",
+      "Init 设置 window.WDVerSion=1.0.0 是兼容标识；act 中 sgsVersion 是本地时间门槛，不是最新版本；_0x53d3d5 的 version 字段携带本地常量，不能误判为版本查询结果。",
+      "version.json 是工程版本来源，release_version.stamp_release 仅同步暂存副本；pack.cmd --version 1.0.0 保持工程和实际本地0.0.9。upload_release 从ZIP提取版本、拒绝旧版覆盖新版、先上传ZIP后覆盖云端version.json，并设置no-store；补传也读取该ZIP版本。",
+      "同次映射新增release-install.js及运行时install.ps1/release-common.ps1，共8个业务文件、12个包内文件；认证配置不打包。当前COS 1.0.0指向xiaochao-20261017-204331-525.zip(360370字节)，已包含全部新逻辑。宿主main/frame及运行时文件备份后缀before-auto-install-20261017-204529.bak。",
+      "实际Electron10.4.5/Node12.16.3从私有COS下载并在独立userData副本中自动安装到1.0.0，验证退出延后到提交完成。13项PowerShell安装边界/恢复、5项自动链路、12项打包、17项发布、11项版本、16项下载验证通过。真实运行目录保留0.0.9供用户点击验收，不重启当前游戏、不编译asar。"
+    ]
+  },
   selectAllHandCards: {
     title: "全选手牌 / 反选按钮与缺失的 reach 初始化入口",
     verifiedAt: "2026-10-17",

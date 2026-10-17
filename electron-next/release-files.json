@@ -1,4 +1,5 @@
 {
+  "installProtocol": 1,
   "files": [
     {
       "sourceRoot": "repo",
@@ -14,6 +15,31 @@
       "sourceRoot": "repo",
       "source": "electron-next/src/adapters/hand-cards-client.js",
       "target": "modules/adapters/hand-cards-client.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/electron/release-update.js",
+      "target": "modules/runtime/release-update.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/electron/release-install.js",
+      "target": "modules/runtime/release-install.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/scripts/install.ps1",
+      "target": "modules/runtime/install.ps1"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/scripts/release-common.ps1",
+      "target": "modules/runtime/release-common.ps1"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/version.json",
+      "target": "version.json"
     }
   ],
   "packageFiles": [

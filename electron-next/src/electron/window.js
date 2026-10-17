@@ -1,7 +1,29 @@
-const { BrowserWindow } = require('electron')
+const { app, BrowserWindow, dialog, shell } = require('electron')
 const path = require('path')
+const fs = require('fs')
 const config = require('./config')
+const { createUpdateChecker } = require('./release-update')
 const group = new Map()
+let releaseChecker
+
+function checkReleaseUpdate(window) {
+  if (!releaseChecker) {
+    const userData = app.getPath('userData')
+    const outside = path.join(path.dirname(app.getPath('exe')), 'resources/daxiaochao.user.js')
+    const installedScript = path.join(userData, '三国杀打小抄.js')
+    releaseChecker = createUpdateChecker({
+      versionFile: path.join(userData, 'version.json'),
+      scriptFile: () => fs.existsSync(installedScript) ? installedScript :
+        (fs.existsSync(outside) ? outside : path.join(app.getAppPath(), 'resources/daxiaochao.user.js')),
+      credentialsFile: path.join(userData, 'cos-update.local.json'),
+      downloadDirectory: path.join(app.getPath('downloads'), '小抄更新'),
+      dialog, shell,
+      restart: () => { app.relaunch(); app.quit() },
+      log: message => fs.appendFileSync(path.join(userData, 'app-log.txt'), new Date().toISOString() + ' ' + message + '\n')
+    })
+  }
+  return releaseChecker.check(window)
+}
 
 // Create the browser window.
 function createElectronWindow(partition) {
@@ -54,6 +76,7 @@ function createElectronWindow(partition) {
 
   mainWindow.once('ready-to-show', function () {
     mainWindow.show()
+    void checkReleaseUpdate(mainWindow)
   })
 
   // Emitted when the window is closed.

@@ -4,8 +4,8 @@ function Resolve-ReleasePath {
 
     if ([string]::IsNullOrWhiteSpace($RelativePath) -or
         [IO.Path]::IsPathRooted($RelativePath) -or
-        $RelativePath -match '[:*?"<>|]' -or
-        @($RelativePath -split '[\\/]' | Where-Object { $_ -match '^\.{1,2}$' -or $_ -match '[ .]$' }).Count) {
+        $RelativePath -match '[:*?"<>|\x00-\x1f]' -or
+        @($RelativePath -split '[\\/]' | Where-Object { $_ -eq '' -or $_ -match '^\.{1,2}$' -or $_ -match '[ .]$' }).Count) {
         throw "Expected a relative file path: $RelativePath"
     }
     $base = [IO.Path]::GetFullPath($Root).TrimEnd('\', '/')

@@ -2,6 +2,10 @@
 node_modules
 /dist
 /release
+/.venv-release
+/cos-upload.local.json
+__pycache__/
+*.pyc
 
 
 # local env files

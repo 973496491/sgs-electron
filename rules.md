@@ -60,7 +60,7 @@
 ### 发布映射与文件增删
 
 - **唯一配置**：[electron-next/release-files.json](electron-next/release-files.json) 是已建立的小抄发布文件映射，打包与安装共用这一份配置。打包时随发布文件夹带上配置副本，安装直接读取包内副本，不依赖开发仓库。此配置是文件搬运映射，不是运行时自动加载清单，也不替代现有模块装配定义。
-- **具体入口**：双击 [electron-next/pack.cmd](electron-next/pack.cmd)，调用 [scripts/package-release.ps1](electron-next/scripts/package-release.ps1)。打包入口的 `xcProjectRoot` 固定为 `C:\Users\97349\Downloads\electron\electron-next`，可单独复制到桌面使用，当前桌面副本名为 `小抄打包.cmd`；工程迁移时更新该变量及入口副本。安装模板为 [scripts/install.cmd](electron-next/scripts/install.cmd)、[scripts/install.ps1](electron-next/scripts/install.ps1)，共用路径助手 [scripts/release-common.ps1](electron-next/scripts/release-common.ps1)；它们由映射的 `packageFiles` 复制到发布包根目录。安装入口继续按自身位置查找包内脚本，使用时先解压 ZIP，再双击发布包内的 `install.cmd`。
+- **具体入口**：双击 [electron-next/pack.cmd](electron-next/pack.cmd)，调用 Python [scripts/package_release.py](electron-next/scripts/package_release.py)。入口优先使用工程 `.venv-release/Scripts/python.exe`，否则使用 `py -3` 或 `python`；`xcProjectRoot` 固定为 `C:\Users\97349\Downloads\electron\electron-next`，桌面副本为 `小抄打包.cmd`。工程迁移或入口变更须同步变量及桌面副本。旧 `scripts/package-release.ps1` 已由 Python 打包器替代。安装模板仍为 [scripts/install.cmd](electron-next/scripts/install.cmd)、[scripts/install.ps1](electron-next/scripts/install.ps1)，共用路径助手 [scripts/release-common.ps1](electron-next/scripts/release-common.ps1)，由 `packageFiles` 复制到包根目录；解压 ZIP 后双击 `install.cmd`，安装端不要求 Python。
 
 当前 `files` 的完整业务清单如下，执行时始终以 JSON 映射为准；文件增删时同时维护本节涉及的文件名。
 
@@ -69,8 +69,13 @@
 | `electron-next/resources/daxiaochao.user.js` | `三国杀打小抄.js` |
 | `electron-next/src/features/hand-cards.js` | `modules/features/hand-cards.js` |
 | `electron-next/src/adapters/hand-cards-client.js` | `modules/adapters/hand-cards-client.js` |
+| `electron-next/src/electron/release-update.js` | `modules/runtime/release-update.js` |
+| `electron-next/src/electron/release-install.js` | `modules/runtime/release-install.js` |
+| `electron-next/scripts/install.ps1` | `modules/runtime/install.ps1` |
+| `electron-next/scripts/release-common.ps1` | `modules/runtime/release-common.ps1` |
+| `electron-next/version.json` | `version.json` |
 
-2026-10-17 核对 `%APPDATA%\SGSOL`，当前独立小抄加载脚本只有 `三国杀打小抄.js`，已由工程主脚本映射覆盖，没有其他需额外登记的 Roaming 加载脚本。此记录不是未来文件清单的替代；以后出现配套加载文件须登记。`remove` 当前为空，尚无本发布流程需要清理的旧安装路径。
+2026-10-17 已接入自动安装，映射增加 `installProtocol:1` 和上述安装协调器/运行时 PS 工具，均在同次修改登记。手牌模块仍装配进主脚本，更新与安装模块由宿主主进程实际 require。自动安装只接受新协议包；安装顺序固定为其它业务文件、废弃文件、主脚本、最后版本记录。本机私有配置不打包，`remove` 当前为空。
 
 映射采用逐文件的 `files` 条目，字段约定如下；打包文件夹内使用 `files/` 加 `target` 保存文件，安装再按同一 `target` 落到目标目录。
 
@@ -85,15 +90,26 @@
 - **收集范围**：小抄主脚本、剥离业务模块、客户端适配及实际需要的辅助脚本/资源都显式登记，尤其不得遗漏 `%APPDATA%\SGSOL` 中与小抄有关的入口和配套加载文件。不将账号配置、缓存、日志、历史 `.bak` 或整个 Roaming 目录加入映射。
 - **同步义务**：新增发布文件时增加条目；删除文件时移除旧条目；改名、移动或改变安装位置时同步 `sourceRoot/source/target`。这些更新必须与对应文件变更一起完成，不能留待打包时人工补齐。纯内容修改且路径不变无需机械修改映射；与发布无关的测试、文档不登记。
 - **删除与旧路径**：同一配置的 `remove` 列表记录已废弃的小抄安装相对路径。删除发布文件或改变其安装目标时，移除旧映射并登记旧 `target`，供安装脚本清理旧文件；仅改变来源而安装目标不变时不登记删除。`remove` 不包含当前有效目标，不使用通配符或整目录清空；只处理明确废弃的小抄文件，保留用户数据。
-- **脚本职责**：打包脚本按映射复制文件到发布文件夹；安装脚本按包内映射移动/覆盖到 `%APPDATA%\SGSOL`，并处理明确登记的废弃文件。脚本不维护第二份业务文件清单，不用“扫描到什么就打包什么”替代映射。安装采用 CMD + Windows PowerShell，不使用 Python。
-- **输出与使用**：每次打包生成全新的 `electron-next/release/xiaochao-年月日-时分秒-毫秒/` 及同名 `.zip`，保留文件夹，不合并旧目录或覆盖已有 ZIP。业务文件位于包内 `files/`，安装工具和映射位于包根目录，ZIP 内保留一个完整发布文件夹；成功后自动打开资源管理器并选中生成的 ZIP，双击脚本结束后保留窗口显示结果。打开文件位置失败只提示，不把已完成的打包判为失败。安装会将解压后的业务文件移走，同名目标覆盖；再次安装可重新解压 ZIP 或使用另一份完整发布包，不会自动清空安装目录。
-- **快速 ZIP**：默认优先调用 PATH 或标准安装目录中的 `7z.exe`，参数 `a -tzip -mx=1`；找不到 7-Zip 时使用系统 `Compress-Archive -CompressionLevel Fastest`。已核实本机 `C:\Program Files\7-Zip\7z.exe` 可用，Windows PowerShell 5.1 的快速 ZIP 分支也已实测。压缩失败返回非零退出码，输出目录保留，不把失败的压缩当作发布成功。
-- **参数与维护**：`package-release.ps1 -OutputDirectory <新目录> -SgsolDirectory <Roaming来源目录>` 可调整发布位置和 `sgsol` 来源；`-CompressionTool Auto|7Zip|Windows` 可选择压缩实现，默认 `Auto`；`-NoOpen` 关闭完成后的资源管理器定位，用于自动化测试。`install.ps1 -TargetDirectory <安装目录>` 可用于隔离测试，默认仍为当前用户 `%APPDATA%\SGSOL`。打包只复制现有文件并压缩，不自动装配源码；修改独立模块后先按模块对应的装配流程更新主脚本。安装的模块副本不由这些脚本自动加载。
-- **搬运边界**：仅接受各自根目录内的相对文件路径；拒绝越界路径、链接重定向、把有效目标列入 `remove` 或按目录删除。缺失文件/复制移动失败会返回非零退出码，不静默漏文件；这些是文件操作的边界与错误处理，不执行哈希、版本或游戏运行校验。
-- **脚本验证**：[electron-next/tests/release-package.cjs](electron-next/tests/release-package.cjs) 在临时目录调用真实 Windows PowerShell 5.1 和移到桌面的 CMD 入口，验证映射来源、安装工具、两种快速 ZIP 解压后的完整文件及顶层目录、中文/空格/方括号路径、覆盖与移动、增删改名映射、废弃文件处理、已有 ZIP 保留和用户配置保留；执行 `node electron-next/tests/release-package.cjs`。测试不安装到真实 Roaming。
-- **范围限制**：这项工作只管理文件收集、路径对应、快速 ZIP 压缩和安装搬运，不据此添加哈希校验、自动加载改造、备份回滚框架或 asar 编译。已有业务开发与模块装配的验证要求仍按原规则执行。
+- **脚本职责**：Python 打包器按映射复制文件、同步暂存版本、极限压缩并发布 COS。手动和自动安装共用 `install.ps1/release-common.ps1` 与包内映射；自动入口使用本机运行时安装器，不直接执行 ZIP 中的脚本。当前为 8 个业务文件、3 个包根安装工具和 1 份映射，共 12 个文件。Python/SDK/凭据仍仅在开发端，客户端安装使用系统 Windows PowerShell 5.1 和 .NET。
+- **输出与使用**：每次打包生成全新的 `electron-next/release/xiaochao-年月日-时分秒-毫秒/` 及同名 `.zip`，保留文件夹，不合并旧目录或覆盖已有 ZIP。业务文件位于包内 `files/`，安装工具和映射位于包根目录，ZIP 内保留一个完整发布文件夹；成功后自动打开资源管理器并选中生成的 ZIP，双击脚本结束后保留窗口显示结果。打开文件位置失败只提示，不把已完成的打包判为失败。手动安装仍消费解压后的业务载荷；自动安装使用独立暂存目录并保留下载 ZIP。两者都不清空用户目录。
+- **极限 ZIP**：默认优先调用 PATH 或标准安装目录中的 `7z.exe`，使用 `a -tzip -mx=9 -mm=Deflate -mfb=258 -mpass=15`；UTF-8 临时列表逐项指定映射文件，完成后清理列表。保留标准 Deflate ZIP，Windows 自带解压可读取。找不到 7-Zip 时使用 Python `zipfile.ZIP_DEFLATED`、`compresslevel=9`。这是两种实现各自的最高压缩设置，不承诺不同压缩器得到完全相同体积。压缩失败返回 1，保留已生成目录，不执行上传。
+- **Python 环境与依赖**：2026-10-17 已核实 `C:\Python314\python.exe` 为 Python 3.14.4，pip/TLS/zlib 正常，无须升级解释器。在工程创建 `.venv-release`，安装 [scripts/requirements-release.txt](electron-next/scripts/requirements-release.txt) 中固定版本 `cos-python-sdk-v5==1.9.44`，`pip check` 通过。重建命令（在 `electron-next`）：`python -m venv .venv-release`，然后 `.venv-release\Scripts\python.exe -m pip install -r scripts\requirements-release.txt`。SDK 导入只发生在上传时，`--no-upload` 可仅用标准库/7-Zip 打包。
+- **版本来源与交付**：[version.json](electron-next/version.json) 是本地版本来源，采用三个数字分段。`scripts/release_version.py` 只在发布暂存目录同步 `@version`、`_0x43f342`、`_0x38a6c4` 与包内 `version.json`，不改工程源码或真实 Roaming；模块装配仍沿原流程执行。`--version 1.0.0` 可覆盖本次交付版本，当前测试保留工程/运行版 `0.0.9`、发布 `1.0.0`。普通发布须维护版本文件或显式传版本，不从 ZIP 时间戳推断版本。
+- **COS 自动上传**：`upload_release` 从 ZIP 内取版本并检查与脚本一致，签名读取已有 `releases/version.json`，拒绝用旧版覆盖较新版本；随后先上传 ZIP、再上传固定路径的 JSON，只有两步都成功才报告发布完成。JSON 为 `version/packageKey/publishedAt`，使用 `application/json; charset=utf-8` 和 `Cache-Control: no-store, max-age=0`。`--upload-only` 也按该 ZIP 内记录发布，不使用后来变更的工程版本。需要所选目录的 `cos:GetObject` 和 `cos:PutObject`；ZIP 仍限单次 5 GB。保持桶原有私有权限，上传配置 `cos-upload.local.json`、环境变量及官方 SDK 使用方式沿原规则，凭据不进入 Git 或发布包。参考 [Python SDK](https://cloud.tencent.com/document/product/436/12269) 和 [PUT Object](https://cloud.tencent.com/document/product/436/7749)。
+- **本机更新配置**：主进程使用 `cos-update.local.json` 固定密钥签名 GET，不依赖 Python，不下发凭据到页面，不开放桶 ACL。宿主注入下载目录、共享 installer 和显式 restart 回调；用户点击“下载并安装”后自动完成下载及安装，成功提示“重启客户端 / 稍后”，仅点击重启才退出当前游戏。安装失败可用已下载 ZIP 重试，不重新下载。
+- **自动安装与恢复**：`release-install.js` 按目标目录合并任务，隐藏启动本机 `modules/runtime/install.ps1 -ArchivePath <ZIP> -ExpectedVersion <版本> -TargetDirectory <userData>`。PS 用单根目录暂存解压，拒绝路径越界、链接、重复路径、超过 5000 条目或 512 MiB 解压内容；核对协议、映射、包内脚本/版本和目标版本，自动模式拒绝降级。所有将修改的文件先备份并写 `.xiaochao-install-state.json`，逐文件原子替换，主脚本和版本最后写；失败按记录恢复，失败恢复资料保留。下次 `-RecoverOnly` 可继续恢复。`.xiaochao-install.lock` 用系统独占文件锁防跨进程并发，暂存和备份只清理自建 GUID 工作目录，ZIP 保留。
+- **加载与退出协调**：实际宿主 `read-local-script`、仓库版本地脚本协议读取均先等待 `whenIdle()`；恢复失败时阻止注入，禁止转旧远程脚本兜底。仓库版资源解析优先使用已安装的 Roaming 主脚本。用户在安装途中退出时 `before-quit` 先等安装/恢复结束再退出；关闭窗口不会杀掉正在提交的安装器。成功不热替换页面，重启才完整加载新模块。诊断沿用 `app-log.txt`，不新增控制台日志。
+- **固定密钥配置**：打包端模板为 `cos-upload.example.json`，真实文件为被 Git 忽略的 `cos-upload.local.json`，字段 `bucket/region/prefix/secret_id/secret_key`；对应 `COS_BUCKET/COS_REGION/COS_PREFIX/COS_SECRET_ID/COS_SECRET_KEY` 环境变量优先，默认前缀 `releases/`。`.venv-release` 和真实配置均不进入发布包。客户端本机读取配置与打包配置分别维护，业务包只携带无凭据的检查代码。
+- **上传失败与重试**：缺少配置/SDK、权限错误或上传失败返回 2，保留 ZIP，打印 `pack.cmd --upload-only "<zip路径>"` 用于不重新打包的补传。网络错误、429、5xx 最多尝试 3 次，每次重新打开文件；403 不重复重试。SDK 关闭内部重复重试及原始日志，错误输出仅含状态/错误码，不打印密钥；收到 ETag 才报告上传完成，避免把重定向响应误判成功。默认最后定位本地 ZIP，上传失败也可找到产物。
+- **参数与维护**：`pack.cmd --output-directory <新目录> --sgsol-directory <Roaming来源目录>` 调整路径；`--compression-tool auto|7zip|python` 选择实现；`--no-open` 禁止资源管理器定位；`--no-upload` 明确仅本地打包；`--cos-config <JSON路径>` 指定认证配置；`--version <版本>` 覆盖本次交付版本；`--upload-only <ZIP路径>` 补传 ZIP 及版本清单，与 `--version` 互斥。原长参数别名保留，旧 `Windows` 压缩选项映射到 Python level 9。打包只同步暂存版本，不自动重建手牌模块；安装仍支持 `install.ps1 -TargetDirectory <安装目录>`。
+- **搬运边界**：仅接受各自根目录内的相对文件路径；拒绝越界路径、链接重定向、把有效目标列入 `remove` 或按目录删除。缺失文件/复制移动失败会返回非零退出码，不静默漏文件；自动安装还核对包协议和版本；这些检查不等于游戏内验收，不新增哈希校验流程。
+- **脚本验证**：`node electron-next/tests/release-package.cjs` 在临时目录通过实际 CMD/Python 打包、Windows 自带解压和 PowerShell 安装器验证 12 项：两种 ZIP 的完整内容及顶层目录、中文/空格/方括号路径、覆盖移动、映射增删改名、废弃路径限制、已有 ZIP 和用户配置保留。`.venv-release\Scripts\python.exe tests\release_upload.py`（在 `electron-next`）通过真实 SDK + 回环 HTTP 服务验证上传文件字节、签名、路径编码、重试预算、403、重定向、配置隔离、补传及缺配置时保留 ZIP；不连接真实 COS，不安装到真实 Roaming。真实云上传结果单独记录于架构表，不把回环测试当成云端验收。
+- **范围限制**：自动安装只改映射声明的 userData 业务文件，保留账号、用户配置、认证文件、缓存和日志；不更新 Electron 本体、不编译 asar、不自动中断当前对局。事务备份仅用于本次安装失败/中断恢复，不扩展成通用备份框架；主进程日志走 `app-log.txt`，userscript 仍按原规则写调试窗口。
+- **版本检查验证**：`tests/release_upload.py` 当前 17 项，包含发布顺序、失败不写版本清单、旧包防倒退和暂存版本隔离。`node electron-next/tests/release-update.cjs` 默认执行离线/回环检查；显式设置 `XC_UPDATE_LIVE_DIR` 可使用指定本机配置读取真实 COS，设置 `XC_UPDATE_HOST_MAIN` 可验证实际宿主包装器。这两项测试拦截 dialog，不弹真实窗口、不安装文件；`XC_UPDATE_TEST_REPORT` 可输出运行引擎与结果。已用实际 Electron 10.4.5 的 Node 12.16.3 验证完整 11 项；真实可见弹窗与游戏场景效果仍由用户启动验收。
+- **客户端下载验证**：`node electron-next/tests/release-download.cjs` 默认验证 15 项：目录/同桶限制、官方 SDK 中文签名样例、流式字节、并发及同名文件保留、403/重定向/非 ZIP/超限/中断/超时/磁盘错误、稍后不下载、完成定位、手动重试和关闭清理。设置同样的 `XC_UPDATE_LIVE_DIR/XC_UPDATE_HOST_MAIN` 后增加真实宿主下载检查，目标限定在测试临时目录，核对与已发布 ZIP 字节一致及本地脚本/版本不变；共 16 项，已在实际 Electron 10.4.5 / Node 12.16.3 通过。测试不打开真实弹窗或资源管理器。
+- **自动安装验证**：`python electron-next/tests/release_install.py` 验证真实 PowerShell 安装、版本最后提交、写入失败恢复、残留事务恢复、文件锁及坏包/路径/协议/版本边界；`node electron-next/tests/release-auto-install.cjs` 验证下载后自动安装、重试复用 ZIP、窗口关闭不打断提交、读取等待和并发版本隔离。设置 `XC_INSTALL_LIVE_HOST`、`XC_INSTALL_LIVE_USERDATA` 后，实际宿主链路会从真实 COS 下载并只安装到临时副本；测试还验证 before-quit 在提交后才退出，实际 userData 不升级。`XC_UPDATE_TEST_REPORT` 保存引擎/结果。PowerShell 5.1 的 `File.Replace` 第三个参数必须用 `[NullString]::Value`，普通 `$null` 会被转换为空路径；脚本含中文路径，保留 UTF-8 BOM。
 
-检索关键词：`发布映射`、`文件增删`、`release-files.json`、`sourceRoot`、`source`、`target`、`remove`、`Roaming加载文件`、`打包安装`、`同步映射`、`绝对定位`、`桌面打包`、`快速ZIP`、`7-Zip`、`CompressionTool`、`Fastest`。
+检索关键词：`发布映射`、`文件增删`、`release-files.json`、`sourceRoot`、`source`、`target`、`remove`、`Roaming加载文件`、`打包安装`、`同步映射`、`绝对定位`、`桌面打包`、`Python打包`、`极限压缩`、`7-Zip`、`compresslevel=9`、`package_release.py`、`cos_upload.py`、`cos-upload.local.json`、`COS自动上传`、`固定密钥`、`PutObject`、`upload-only`、`no-upload`、`release_upload.py`。
 
 ### 验收、回归与文档
 

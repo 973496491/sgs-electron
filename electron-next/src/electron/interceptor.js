@@ -3,6 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const { pathToFileURL } = require('url')
 const { openConfigFile } = require('./configFile')
+const { getInstallCoordinator } = require('./release-install')
 
 const programDir = app.isPackaged ? path.dirname(app.getPath('exe')) : app.getAppPath()
 const packagedResourceDir = path.join(programDir, 'resources')
@@ -68,6 +69,10 @@ function isInside(candidate, root) {
 
 function resolveResourcePath(localFile) {
   const relativePath = normalizeLocalResource(localFile)
+  if (relativePath === 'daxiaochao.user.js') {
+    const installed = path.join(app.getPath('userData'), '三国杀打小抄.js')
+    if (fs.existsSync(installed)) return installed
+  }
   const roots = [packagedResourceDir, bundledResourceDir]
   const candidates = roots.map((root) => path.resolve(root, relativePath))
   return candidates.find((filePath) => roots.some((root) => isInside(filePath, root)) && fs.existsSync(filePath))
@@ -84,6 +89,9 @@ module.exports = function () {
       }
 
       const relativePath = resolveAtomResource(request.url)
+      if (relativePath === 'daxiaochao.user.js') {
+        await getInstallCoordinator({ targetDirectory: app.getPath('userData') }).whenIdle()
+      }
       const safePath = resolveResourcePath(relativePath)
       if (!safePath) {
         throw new Error(`Missing local resource: ${relativePath}`)

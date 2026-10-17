@@ -1,4 +1,4 @@
-// Exercise Windows PowerShell 5.1 and the shipped CMD entry points in a temporary tree.
+// Exercise the Python packer, relocated CMD launcher, ZIP extraction and PowerShell installer.
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
@@ -36,7 +36,7 @@ function command(script, args, expected = 0) {
 }
 function pack(name, expected = 0, options = []) {
   const output = path.join(sandbox, "发布 包", name);
-  command(desktopLauncher, ["-OutputDirectory", output, "-SgsolDirectory", roaming, "-NoOpen", ...options], expected);
+  command(desktopLauncher, ["-OutputDirectory", output, "-SgsolDirectory", roaming, "-NoOpen", "--no-upload", ...options], expected);
   return output;
 }
 function unpack(output) {
@@ -67,13 +67,20 @@ function assertInstalled() {
 }
 
 try {
-  for (const relative of ["electron-next/pack.cmd", "electron-next/scripts/package-release.ps1",
+  for (const relative of ["electron-next/pack.cmd", "electron-next/scripts/package_release.py", "electron-next/scripts/cos_upload.py", "electron-next/scripts/release_version.py",
     ...mapping.packageFiles.map(entry => entry.source)]) {
     write(path.join(fixtureRepo, relative), fs.readFileSync(path.join(repository, relative)));
   }
   // File transport does not execute business code; keep fixtures independent of feature commits.
   for (const [index, entry] of mapping.files.entries()) {
-    write(source(entry), Buffer.from(`// release fixture ${index}\r\n// 中文业务文件\r\n`));
+    if (entry.source.startsWith("electron-next/scripts/")) {
+      write(source(entry), fs.readFileSync(path.join(repository, entry.source)));
+      continue;
+    }
+    const data = entry.target === "version.json" ? '{"version":"0.0.9"}\n' :
+      entry.target === "三国杀打小抄.js" ? '// @version      0.0.9\r\nconst _0x43f342 = "0.0.9";\r\nconst _0x38a6c4 = "0.0.9";\r\n' :
+      `// release fixture ${index}\r\n// 中文业务文件\r\n`;
+    write(source(entry), Buffer.from(data));
   }
   // Keep the actual launcher behavior, pointing its absolute project path at this fixture.
   const launcher = fs.readFileSync(path.join(project, "pack.cmd"), "utf8")
@@ -102,11 +109,11 @@ try {
     assert(!fs.existsSync(path.join(bundle, "files/config.json")));
     assert(fs.statSync(bundle + ".zip").size > 0);
   });
-  check("the fast ZIP extracts all payload and installer files under one release folder", () => {
+  check("the Ultra ZIP extracts all payload and installer files under one release folder", () => {
     bundle = unpack(bundle);
   });
-  check("Windows Fastest compression also preserves all files and Chinese bracket paths", () => {
-    unpack(pack("windows-fastest", 0, ["-CompressionTool", "Windows"]));
+  check("Python level 9 compression also preserves all files and Chinese bracket paths", () => {
+    unpack(pack("python-maximum", 0, ["-CompressionTool", "Python"]));
   });
   check("install.cmd moves files, overwrites old content and preserves configuration", () => {
     install(bundle);
@@ -181,7 +188,7 @@ try {
     mapping.remove.pop();
   });
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(project, "release-files.json"), "utf8")), original);
-  process.stdout.write(`${passed} release packaging/install checks passed (Windows PowerShell 5.1).\n`);
+  process.stdout.write(`${passed} release checks passed (Python packer + Windows PowerShell 5.1 installer).\n`);
 } finally {
   // Delete only this test's freshly allocated directory, never an installation.
   const resolved = fs.realpathSync(sandbox);

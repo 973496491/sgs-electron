@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         三国杀打小抄
 // @namespace    https://xxxxxxxxxxxxxx/scripts/448004
-// @version      3.5.0
+// @version      0.0.9
 // @author       小麦 孤独尊
 // @description  打小抄支持网页版和微端，微端文件请加群 830137048
 // @icon         https://xxxxxxxxxxxx/bfs/new_dyn/17ec41a0ca79633b77399065ab80da3f2138912.png
@@ -7858,7 +7858,7 @@
       return n;
     })();
   }
-  const _0x43f342 = "3.5.0",
+  const _0x43f342 = "0.0.9",
     _0x52c882 = _0x1ca036(237);
   function _0x158314(n, t = _0x1ca036(363), e = _0xe6ae52[_0x1ca036(359)]) {
     const i = _0x1ca036;
@@ -27171,7 +27171,7 @@
     { json2html: _0x2c2351, array2table: _0x216df9 } = window.XC,
     _0x46e1d4 = C3rHCNrFDgLTzq();
   let _0x2cfc9b = null;
-  const _0x38a6c4 = " " + "3.5.0"[_0x41a3d0(555)](/^2\.9\./, ""),
+  const _0x38a6c4 = "0.0.9",
     _0x378fb5 =
       "\n修复酒馆任务进度显示;\n【界小抄】;\n为所有武将增加全选/反选按钮;\n新增拓展黑名单, 再也不怕黑名单不够用了;\n新增自动手气卡配置: 全部出现、任一出现模式;\n"
         [_0x41a3d0(555)](/；/g, _0x41a3d0(526))
@@ -28300,7 +28300,7 @@
       var i = document[n(162)](n(335));
       (i.id = n(371)),
         (i[n(580)] = n(640)),
-        (i[n(650)] = n(340) + _0x38a6c4),
+        (i[n(650)] = "小抄月见版 " + _0x38a6c4),
         t[n(293)](e),
         (t[n(366)] = function () {
           const t = n;
@@ -28473,7 +28473,7 @@
             (document[e(259)](e(564))[e(580)][e(385)] = e(266)),
             (document[e(259)](e(564))[e(580)][e(193)] = "1"),
             (document[e(259)](e(564))[e(580)][e(514)] = e(428)),
-            (document[e(259)](e(371))[e(650)] = e(340) + _0x38a6c4),
+            (document[e(259)](e(371))[e(650)] = "小抄月见版 " + _0x38a6c4),
             (document[e(259)](e(564))[e(580)][e(657)] = e(212)),
             _0x3f649d({ defer: !0 }));
     }),

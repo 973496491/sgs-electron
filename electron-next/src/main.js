@@ -4,6 +4,17 @@ const ipcEvent = require('./electron/ipcEvent')
 const createWindow = require('./electron/window')
 const interceptor = require('./electron/interceptor')
 const { openConfigFile } = require('./electron/configFile')
+const { getInstallCoordinator } = require('./electron/release-install')
+let quitAfterInstall = false
+
+app.on('before-quit', (event) => {
+  const installer = getInstallCoordinator({ targetDirectory: app.getPath('userData') })
+  if (!installer.isInstalling()) return
+  event.preventDefault()
+  if (quitAfterInstall) return
+  quitAfterInstall = true
+  installer.whenIdle().catch(() => {}).then(() => app.quit())
+})
 
 protocol.registerSchemesAsPrivileged([
   {
