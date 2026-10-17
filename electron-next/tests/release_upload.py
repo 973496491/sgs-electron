@@ -151,12 +151,12 @@ class ReleaseUploadTests(unittest.TestCase):
             cos_upload.load_settings(self.root / "missing.json")
         self.assertEqual(self.server.requests, [])
 
-    def test_default_command_packs_then_reports_upload_failure_and_keeps_zip(self):
+    def test_explicit_upload_packs_then_reports_upload_failure_and_keeps_zip(self):
         output = self.root / "package"
         capture = io.StringIO()
         with redirect_stdout(capture), redirect_stderr(capture):
             code = package_release.main(["--output-directory", str(output), "--compression-tool", "python",
-                                         "--cos-config", str(self.root / "missing.json"), "--no-open"])
+                                         "--cos-config", str(self.root / "missing.json"), "--no-open", "--upload"])
         self.assertEqual(code, 2)
         self.assertTrue(zipfile.is_zipfile(str(output) + ".zip"))
         self.assertIn("--upload-only", capture.getvalue())

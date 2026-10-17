@@ -109,6 +109,13 @@ try {
     assert(!fs.existsSync(path.join(bundle, "files/config.json")));
     assert(fs.statSync(bundle + ".zip").size > 0);
   });
+  check("an unattended desktop launch defaults to local packaging without COS configuration", () => {
+    const output = path.join(sandbox, "发布 包", "default-local");
+    const result = command(desktopLauncher, ["--output-directory", output, "--sgsol-directory", roaming,
+      "--no-open", "--cos-config", path.join(sandbox, "missing-cos.json")]);
+    assert(result.stdout.includes("本地打包完成，未上传云端。"), result.stdout);
+    assert(fs.statSync(output + ".zip").size > 0);
+  });
   check("the Ultra ZIP extracts all payload and installer files under one release folder", () => {
     bundle = unpack(bundle);
   });
@@ -116,12 +123,26 @@ try {
     unpack(pack("python-maximum", 0, ["-CompressionTool", "Python"]));
   });
   check("install.cmd moves files, overwrites old content and preserves configuration", () => {
-    install(bundle);
+    const result = install(bundle);
+    assert(result.stdout.includes("[1/7] 检查目标目录与安装状态"), result.stdout);
+    assert(result.stdout.includes("[7/7] 完成安装并清理临时文件"), result.stdout);
+    assert(result.stdout.includes("安装成功"), result.stdout);
+    assert(result.stdout.includes("已安装版本：0.0.9"), result.stdout);
+    assert(result.stdout.includes("完整安装日志："), result.stdout);
+    assert(result.stdout.includes("安装程序已结束，可以关闭此窗口。"), result.stdout);
     assertInstalled();
     for (const entry of mapping.files) assert(!fs.existsSync(path.join(bundle, "files", entry.target)));
     assert(!fs.existsSync(path.join(destination, "modules/old-feature.js")));
     assert.equal(fs.readFileSync(path.join(destination, "config.json"), "utf8"), '{"keep":"user configuration"}');
     assert.equal(fs.readFileSync(path.join(destination, "modules/user-note.txt"), "utf8"), "keep this unrelated file");
+  });
+  check("reusing a consumed package reports failure and tells the user to extract it again", () => {
+    const result = install(bundle, 1);
+    assert(result.stdout.includes("安装失败，未完成安装"), result.stdout);
+    assert(result.stdout.includes("失败步骤：检查安装包与文件清单"), result.stdout);
+    assert(result.stdout.includes("请重新解压完整 ZIP"), result.stdout);
+    assert(!result.stdout.includes("安装成功"), result.stdout);
+    assertInstalled();
   });
   check("a fresh package installs again over an existing installation", () => {
     install(pack("second"));

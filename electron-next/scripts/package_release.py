@@ -1,4 +1,4 @@
-"""Build the mapped release, compress it at maximum ZIP level, then upload to COS."""
+"""Build the mapped release, compress at maximum ZIP level, and optionally upload to COS."""
 
 import argparse
 from datetime import datetime
@@ -132,14 +132,76 @@ def build_release(output: Path, sgsol: Path, tool: str, version=None) -> Path:
     return archive
 
 
+def select_archive_in_explorer(archive: Path):
+    # Use a Unicode item ID instead of Explorer command-line quoting. With cidl=0,
+    # SHOpenFolderAndSelectItems opens the parent and selects this exact item.
+    import ctypes
+    ole32 = ctypes.WinDLL("ole32")
+    shell32 = ctypes.WinDLL("shell32")
+    ole32.CoInitialize.argtypes = [ctypes.c_void_p]
+    ole32.CoInitialize.restype = ctypes.c_long
+    ole32.CoUninitialize.argtypes = []
+    ole32.CoUninitialize.restype = None
+    ole32.CoTaskMemFree.argtypes = [ctypes.c_void_p]
+    ole32.CoTaskMemFree.restype = None
+    shell32.SHParseDisplayName.argtypes = [ctypes.c_wchar_p, ctypes.c_void_p,
+                                         ctypes.POINTER(ctypes.c_void_p), ctypes.c_uint, ctypes.c_void_p]
+    shell32.SHParseDisplayName.restype = ctypes.c_long
+    shell32.SHOpenFolderAndSelectItems.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_void_p, ctypes.c_uint]
+    shell32.SHOpenFolderAndSelectItems.restype = ctypes.c_long
+
+    def check(result):
+        if result < 0:
+            raise OSError(f"Windows Shell HRESULT 0x{result & 0xffffffff:08X}")
+
+    initialized = ole32.CoInitialize(None)
+    # A caller that already initialized COM in another mode can still use it.
+    if initialized != -2147417850:  # RPC_E_CHANGED_MODE
+        check(initialized)
+    item = ctypes.c_void_p()
+    try:
+        check(shell32.SHParseDisplayName(str(archive), None, ctypes.byref(item), 0, None))
+        check(shell32.SHOpenFolderAndSelectItems(item, 0, None, 0))
+    finally:
+        if item.value:
+            ole32.CoTaskMemFree(item)
+        if initialized >= 0:
+            ole32.CoUninitialize()
+
+
 def show_archive(archive: Path):
     if os.name != "nt":
         return
+    archive = archive.absolute()
     try:
-        # Explorer owns the visible UI; the Python helper itself remains hidden.
-        subprocess.Popen([str(Path(os.environ["WINDIR"]) / "explorer.exe"), f'/select,"{archive}"'])
-    except OSError:
-        print("The ZIP is available, but its folder could not be opened.", file=sys.stderr)
+        select_archive_in_explorer(archive)
+        print(f"已打开输出目录并选中 ZIP：{archive}", flush=True)
+    except OSError as exc:
+        try:
+            os.startfile(str(archive.parent))
+            print(f"未能选中 ZIP，已打开所在目录：{archive.parent}\nZIP 文件：{archive.name}", flush=True)
+        except OSError:
+            print(f"打开目录失败，请手动打开：{archive.parent}\nZIP 文件：{archive.name}\n原因：{exc}",
+                  file=sys.stderr, flush=True)
+
+
+def choose_upload(choice, upload_only=False):
+    if upload_only or choice is not None:
+        return upload_only or choice
+    if sys.stdin is None or not sys.stdin.isatty():
+        print("当前没有交互输入，仅在本机打包；自动上传请显式使用 --upload。", flush=True)
+        return False
+    print("\n本次打包是否上传到云端？\n  1. 仅本地打包（默认）\n  2. 打包并上传到云端", flush=True)
+    while True:
+        try:
+            answer = input("请选择 1 / 2，直接回车选 1：").strip().lower()
+        except EOFError:
+            return False
+        if answer in ("", "1", "n", "no", "否"):
+            return False
+        if answer in ("2", "y", "yes", "是"):
+            return True
+        print("请输入 1（仅本地）或 2（上传云端）。", flush=True)
 
 
 def parse_args(argv=None):
@@ -151,12 +213,15 @@ def parse_args(argv=None):
                         choices=("auto", "7zip", "python", "windows"), default="auto",
                         help="auto uses 7-Zip Ultra; python/windows uses Python Deflate level 9")
     parser.add_argument("--cos-config", type=Path, default=PROJECT_ROOT / "cos-upload.local.json")
-    parser.add_argument("--no-upload", "-NoUpload", action="store_true", help="explicitly build a local package only")
+    upload = parser.add_mutually_exclusive_group()
+    upload.add_argument("--upload", "-Upload", dest="upload", action="store_true", help="upload to COS without prompting")
+    upload.add_argument("--no-upload", "-NoUpload", dest="upload", action="store_false", help="build locally without prompting")
+    parser.set_defaults(upload=None)
     parser.add_argument("--version", help="override the staged release version without changing the working/local version")
     parser.add_argument("--upload-only", type=Path, help="retry uploading an existing ZIP without repackaging")
     parser.add_argument("--no-open", "-NoOpen", action="store_true")
     args = parser.parse_args(argv)
-    if args.upload_only and (args.no_upload or args.output_directory or args.version):
+    if args.upload_only and (args.upload is False or args.output_directory or args.version):
         parser.error("--upload-only cannot be combined with --no-upload, --version or --output-directory")
     return args
 
@@ -168,19 +233,25 @@ def main(argv=None):
     args = parse_args(argv)
     archive = None
     try:
+        should_upload = choose_upload(args.upload, bool(args.upload_only))
+        print("本次模式：上传现有 ZIP。" if args.upload_only else
+              "本次模式：打包并上传到云端。" if should_upload else "本次模式：仅本地打包，不上传云端。", flush=True)
         if args.upload_only:
             archive = args.upload_only.absolute()
         else:
             output = args.output_directory or PROJECT_ROOT / "release" / ("xiaochao-" + datetime.now().strftime("%Y%m%d-%H%M%S-%f")[:-3])
             archive = build_release(output, args.sgsol_directory, args.compression_tool, args.version)
-        if not args.no_upload:
+        # Reveal the completed local archive immediately, even if cloud upload is slow or fails.
+        if archive.is_file() and not args.no_open:
+            show_archive(archive)
+        if should_upload:
             result = upload_release(archive, load_settings(args.cos_config))
             print("COS release and version manifest uploaded.", flush=True)
             print("Object URL: " + result["url"], flush=True)
             print("Version URL: " + result["manifest_url"], flush=True)
             print("Download access follows the bucket's existing permissions.", flush=True)
         else:
-            print("Local package completed; COS upload explicitly disabled.", flush=True)
+            print("本地打包完成，未上传云端。", flush=True)
         return 0
     except UploadError as exc:
         print("Upload failed: " + str(exc), file=sys.stderr, flush=True)
@@ -190,9 +261,9 @@ def main(argv=None):
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
         print("Package failed: " + str(exc), file=sys.stderr, flush=True)
         return 1
-    finally:
-        if archive and archive.is_file() and not args.no_open:
-            show_archive(archive)
+    except KeyboardInterrupt:
+        print("\n已取消。", file=sys.stderr, flush=True)
+        return 130
 
 
 if __name__ == "__main__":

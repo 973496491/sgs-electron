@@ -45,15 +45,19 @@ class InstallTests(unittest.TestCase):
                     bundle.writestr(name, content)
         return archive
 
-    def run_installer(self, archive=None, expected='1.0.0', script=None, recovery=False):
+    def run_installer(self, archive=None, expected='1.0.0', script=None, recovery=False, show_progress=False):
         args = [str(POWERSHELL), '-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass',
                 '-File', str(script or PROJECT / 'scripts/install.ps1'), '-TargetDirectory', str(self.target)]
         if recovery:
             args += ['-RecoverOnly']
         else:
             args += ['-ArchivePath', str(archive or self.archive()), '-ExpectedVersion', expected]
+        if show_progress:
+            args += ['-ShowProgress']
         result = subprocess.run(args, capture_output=True, encoding='utf-8', errors='replace',
                                 creationflags=subprocess.CREATE_NO_WINDOW)
+        if show_progress:
+            return result.returncode, result.stdout + result.stderr
         line = next((line for line in result.stdout.splitlines() if line.startswith('XC_INSTALL_RESULT:')), None)
         self.assertIsNotNone(line, result.stdout + result.stderr)
         return result.returncode, json.loads(line[len('XC_INSTALL_RESULT:'):])
@@ -91,8 +95,44 @@ class InstallTests(unittest.TestCase):
         script = self.instrumented("    [IO.File]::AppendAllText('" + str(log).replace("'", "''") + "', [IO.Path]::GetFileName($Target) + [Environment]::NewLine)")
         status, result = self.run_installer(script=script)
         self.assertEqual(status, 0, result)
-        writes = log.read_text().splitlines()
+        writes = log.read_text(encoding='utf-8').splitlines()
         self.assertEqual(writes[-2:], ['三国杀打小抄.js', 'version.json'])
+
+    def test_visible_progress_reports_all_steps_verified_success_and_log(self):
+        status, output = self.run_installer(show_progress=True)
+        self.assertEqual(status, 0, output)
+        positions = [output.index(f'[{i}/7]') for i in range(1, 8)]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn('[4/4] 已写入：version.json', output)
+        self.assertIn('安装成功', output)
+        self.assertIn('已安装版本：1.0.0', output)
+        self.assertIn(str(self.target), output)
+        self.assertIn('4 个文件全部写入并校验通过', output)
+        self.assertIn('完全退出并重新打开客户端', output)
+        self.assertNotIn('XC_INSTALL_RESULT:', output)
+        logs = list((self.target / '.xiaochao-install-logs').glob('*.log'))
+        self.assertEqual(len(logs), 1)
+        text = logs[0].read_text(encoding='utf-8-sig')
+        self.assertIn('安装成功', text)
+        self.assertIn('校验通过：modules/a.js', text)
+
+    def test_visible_failure_reports_step_and_rollback_without_success(self):
+        script = self.instrumented("    $script:testWrites++\n    if ($script:testWrites -eq 2) { throw 'simulated-write-failure' }")
+        status, output = self.run_installer(script=script, show_progress=True)
+        self.assertEqual(status, 1, output)
+        self.assertIn('失败步骤：安装文件并清理废弃文件', output)
+        self.assertIn('simulated-write-failure', output)
+        self.assertIn('已恢复原文件，本次更新未安装', output)
+        self.assertNotIn('安装成功', output)
+        self.assert_old()
+
+    def test_content_verification_detects_a_silent_failed_copy_and_restores(self):
+        script = self.instrumented("    $script:testWrites++\n    if ($script:testWrites -eq 1) { return }")
+        status, result = self.run_installer(script=script)
+        self.assertEqual(status, 1, result)
+        self.assertEqual(result['code'], 'installed-file-mismatch')
+        self.assertTrue(result['restored'])
+        self.assert_old()
 
     def test_failure_after_first_replacement_restores_all_originals(self):
         script = self.instrumented("    $script:testWrites++\n    if ($script:testWrites -eq 2) { throw 'simulated-write-failure' }")

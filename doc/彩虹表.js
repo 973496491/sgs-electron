@@ -32751,6 +32751,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     moduleFile: "electron-next/src/electron/release-update.js",
     installerModule: "electron-next/src/electron/release-install.js",
     installerFile: "electron-next/scripts/install.ps1",
+    manualInstallProgress: "install.cmd 默认传 -ShowProgress；Write-InstallStage/Write-InstallMessage 列七步与逐文件结果，日志在目标目录 .xiaochao-install-logs。SHA256 校验所有安装内容后才提交成功，失败显示步骤与恢复状态，成功提示重启。无开关保留 XC_INSTALL_RESULT 自动安装协议；手动成功消费 files 载荷，再次安装需重新解压。CMD 为 ASCII，PS1 保留 UTF-8 BOM。检索：安装进度、安装成功、失败步骤、Get-InstallFileHash、release_install.py。",
     manifestFile: "electron-next/version.json",
     searchKeywords: ["版本字段统一", "XIAOCHAO_VERSION", "stampVersion", "build:userscript", "check:userscript", "userscript-version.cjs", "release_version.py", "用户脚本元数据", "@version", "小抄月见版", "启动版本获取", "checkAndUpdateScript", "createUpdateChecker", "release-update.js", "release-install.js", "getInstallCoordinator", "whenIdle", "RecoverOnly", "installProtocol", "下载并安装", "重试安装", "重启客户端", "before-quit", "suppressRemoteFallback", "File.Replace", "NullString", "xiaochao-install-state", "release-auto-install.cjs", "release_install.py", "cos-update.local.json", "version.json", "stamp_release", "upload_release", "DXCVersion", "WDVerSion", "sgsVersion", "updateLog", "0.0.9", "1.0.0", "COS版本清单", "downloadPackage", "packageInfo"],
     decodedIndexes: {
