@@ -64,6 +64,39 @@ def mapped_transfers(mapping: dict, roots: dict, output: Path) -> list:
     return transfers
 
 
+def validate_card_theme_resources(mapping: dict, roots: dict):
+    entries = {entry["target"].replace("\\", "/"): entry for entry in mapping["files"]}
+    manifests, references = 0, set()
+    for target, entry in entries.items():
+        if not re.fullmatch(r"card-themes/[^/]+/manifest\.json", target):
+            continue
+        source = release_path(roots[entry["sourceRoot"]], entry["source"])
+        data = json.loads(source.read_text(encoding="utf-8-sig"))
+        if not isinstance(data, dict) or data.get("schemaVersion") != 1:
+            raise ValueError(f"Unsupported card theme manifest: {target}")
+        groups = [data.get(name) for name in ("faces", "ranks", "suits")]
+        if any(not isinstance(group, dict) for group in groups):
+            raise ValueError(f"Invalid card theme groups: {target}")
+        refs = list(groups[1].values()) + list(groups[2].values())
+        for variants in groups[0].values():
+            if not isinstance(variants, dict):
+                raise ValueError(f"Invalid face variants: {target}")
+            refs.extend(variants.values())
+        prefix = target.rsplit("/", 1)[0] + "/"
+        for relative in refs:
+            if relative is None or relative == "":
+                continue  # An intentional native-layer fallback is not a missing release asset.
+            if not isinstance(relative, str) or not re.fullmatch(r"(?:faces|ranks|suits)/[A-Za-z0-9_-]+\.png", relative):
+                raise ValueError(f"Invalid card theme resource reference in {target}: {relative}")
+            resource_target = prefix + relative
+            if resource_target not in entries:
+                raise ValueError(f"Card theme resource missing from release-files.json: {resource_target}")
+            references.add(resource_target)
+        manifests += 1
+    if manifests:
+        print(f"Card theme resources verified: {manifests} manifest(s), {len(references)} PNG file(s).", flush=True)
+
+
 def find_seven_zip():
     executable = shutil.which("7z.exe") or shutil.which("7z")
     if executable:
@@ -117,6 +150,7 @@ def build_release(output: Path, sgsol: Path, tool: str, version=None) -> Path:
         raise ValueError(f"Output folder or ZIP already exists. Use a new name: {output}")
     roots = {"repo": PROJECT_ROOT.parent, "sgsol": sgsol.absolute()}
     transfers = mapped_transfers(mapping, roots, output)
+    validate_card_theme_resources(mapping, roots)
     output.mkdir(parents=True, exist_ok=False)
     for source, target in transfers:
         target.parent.mkdir(parents=True, exist_ok=True)

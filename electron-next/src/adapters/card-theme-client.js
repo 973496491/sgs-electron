@@ -3,6 +3,7 @@ module.exports = function createCardThemeClient({ window, getLaya, getEngine, ge
   let normalPrototype = null, enabled = false;
   const hooks = [];
   const pendingLoads = new Set();
+  let bridgeBootstrap = null;
   function cardOf(ui) { return ui && (ui.Card || ui.theCard); }
   function listUis() {
     try { return getRegisteredUis().filter(ui => ui && !ui.destroyed); } catch (_) { return []; }
@@ -98,12 +99,36 @@ module.exports = function createCardThemeClient({ window, getLaya, getEngine, ge
     }
     normalPrototype = null;
   }
+  function bootstrapLegacyBridge() {
+    if (bridgeBootstrap) return bridgeBootstrap;
+    bridgeBootstrap = Promise.resolve().then(() => {
+      try {
+        const remote = window.electron && window.electron.remote;
+        if (!remote || typeof remote.require !== 'function' || !remote.app) return false;
+        const path = remote.require('path');
+        const file = path.join(remote.app.getPath('userData'), 'modules/runtime/card-theme-assets.js');
+        const runtime = remote.require(file);
+        const result = runtime && typeof runtime.bootstrapCardThemeAssets === 'function' && runtime.bootstrapCardThemeAssets();
+        if (result && result.ok) { log('旧客户端素材接口已自动接通'); return true; }
+      } catch (_) {}
+      log('旧客户端素材接口初始化失败，保留原生图层');
+      return false;
+    });
+    return bridgeBootstrap;
+  }
   async function readAsset(relative) {
     const api = window.daxiaochaoElectron;
-    if (api && typeof api.readCardThemeAsset === 'function') return api.readCardThemeAsset(relative);
     const ipc = window.electron && window.electron.ipcRenderer;
-    if (ipc && typeof ipc.invoke === 'function') return ipc.invoke('read-card-theme-asset', relative);
-    return { ok: false, code: 'host-unavailable' };
+    const invoke = api && typeof api.readCardThemeAsset === 'function' ? value => api.readCardThemeAsset(value) :
+      ipc && typeof ipc.invoke === 'function' ? value => ipc.invoke('read-card-theme-asset', value) : null;
+    if (!invoke) return { ok: false, code: 'host-unavailable' };
+    try { return await invoke(relative); }
+    catch (error) {
+      // A file failure or installation barrier is not a missing handler and must not trigger another registration.
+      if (!/No handler registered for ['"]read-card-theme-asset['"]/.test(String(error && error.message || error))) throw error;
+      if (!(await bootstrapLegacyBridge())) return { ok: false, code: 'host-unavailable' };
+      return invoke(relative);
+    }
   }
   function makeTexture(dataUrl, logicalSize) {
     return new Promise(resolve => {

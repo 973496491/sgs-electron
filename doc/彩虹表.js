@@ -32729,7 +32729,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     verifiedAt: "2026-10-21",
     sourceFile: "electron-next/resources/daxiaochao.user.js；src/features/card-theme.js；src/adapters/card-theme-client.js；src/electron/card-theme-assets.js",
     docFile: "doc/代码架构表.md",
-    searchKeywords: ["塔罗牌接入", "xcCardFaceTheme", "13张共用点数", "原始猫猫塔罗互斥", "read-card-theme-asset", "逐层回退", "enableRequest", "DisplayFlower", "ChangeFlowerAndNumber", "原始插画叠加", "原始文字残留", "isNewCardUI", "updateNewCardFace", "bmpFace2", "bmpNormalName", "owned.content"],
+    searchKeywords: ["塔罗牌接入", "xcCardFaceTheme", "13张共用点数", "原始猫猫塔罗互斥", "read-card-theme-asset", "bootstrapCardThemeAssets", "旧宿主自动接线", "remote.require", "逐层回退", "enableRequest", "DisplayFlower", "ChangeFlowerAndNumber", "原始插画叠加", "原始文字残留", "isNewCardUI", "updateNewCardFace", "bmpFace2", "bmpNormalName", "owned.content"],
     decodedIndexes: {
       _0x262d: { "133": "UpdateCardFace", "136": "bmpFace", "166": "miaoCardSwitch", "238": "__cardTheme", "249": "disabled", "285": "#originCardUseBtn", "300": "laya", "314": "cardBackSwitch", "323": "SetCardFace", "326": "__SetCardFace", "343": "#miaoCardUseBtn", "389": "#originCardCell", "393": "setEnabled", "476": "texture", "554": "#miaoCardCell" }
     },
@@ -32738,13 +32738,15 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "首批只有Shan_png+1/2、HanBingJian_png+3；其它组合全原生。组合内底图/数字/花色独立回退。ranks键1..13红黑共用，目前只有2.png；suits只有heart.png。用户确认攻击范围按画面，不设置特殊模式范围门槛。",
       "UpdateCardFace/SetCardFace/Draw后按当前ResName/DisplayFlower/CardNumber，ChangeFlowerAndNumber按参数与UI/Card身份，普通刷新清临时值；apply按图层幂等，已是所需纹理不先恢复原图，原生后来写入记作恢复值。空牌/易牌/扑克/装备独立renderer/特殊变牌与隐藏状态保留。",
       "_0x52c243保持单例，listCardUis显式查询；enableRequest防晚到猫猫启用，塔罗不改全局cards纹理Map。PNG私有Texture完整UV，sourceWidth/sourceHeight和逻辑宽高一致为93x130或19x17。",
-      "read-card-theme-asset经宿主读取Roaming/card-themes/tarot，仓库preload的daxiaochaoElectron与旧宿主window.electron.ipcRenderer接到同一协议；本机main需一次接线。6项素材和3项模块已登记release-files；不依赖归档或开发绝对路径。",
+      "read-card-theme-asset经宿主读取Roaming/card-themes/tarot，仓库preload的daxiaochaoElectron与旧宿主原有window.electron.ipcRenderer接到同一协议。接口缺失时经既有remote.require加载随包runtime模块的bootstrapCardThemeAssets，主进程自行注册并共享安装屏障；不再依赖手改main，不传渲染页回调。6项素材和3项模块已登记release-files；不依赖归档或开发绝对路径。",
       "闪动退回原图：skillCardLabelChange对普通牌也调UpdateMultiSkill，旧beforeSpecial先恢复而原生无状态/无动画分支不重画。specialFaceReason按实际IsMultiSkillState/AvatarSkill/扑克/SetChangeSkill参数决定让出，普通检查不清理、特殊结束补回；诊断按UI/Card/方法/状态去重写调试窗口。",
       "原始底图塔罗符号：现有setCardBack在普通UI原型包装SetCardFace并缓存__SetCardFace；若塔罗只挂父类，RefreshCardFace只重画底图时会绕过塔罗。现改为包装NormalCardUi原型的有效SetCardFace，已回归卡背先装/后装及卸载保留。",
       "Exit dispose/clear/Clear/destroy清理，addFrame重新start/mount，后装包装器保留、晚回调失效。两项问题修前均复现失败，修后29项原生方法/模拟检查通过，含40轮例行检查无多余纹理写入；既有14项实际DOM/PNG与Electron10 Node12读取6项为首版验证。用户已确认游戏内出现塔罗，修复仍待重新加载后回测，无asar变更。",
       "原始文字/下部插画叠加：2026-10-21官方ES6快照bb49b68b44ee8732248a310511bf2a88dfe3f080d12433c82762a9dfe31c94d2的NormalCardUi(Gqi)默认isNewCardUI=true；bmpFace只画cardFace_0背景，updateNewCardFace另画bmpFace2(face_<res>)、bmpNormalName(name_<res>)及bmpName/bmpNameBg/bmpCardType/bmpSmallDesc。只改bmpFace不会覆盖这些上层图元。来源、获取时间及方法摘录见OL指南分层卡面节。",
       "getFaceContentLayers列举六个原生内容层，feature.owned.content记录独立可见性；塔罗底图加载成功才隐藏，缺图和其它牌仍原生。updateNewCardFace前恢复后重新接管，resetNewCardFace前释放；指定UpdateCardFaceRes/UpdateCardFaceOrBackRes按UI/Card临时让出，普通重画解除。保留点数花色、选中框、技能标记、范围和其它功能层，不修改isNewCardUI标志。",
-      "tests/card-theme-layers.cjs使用保存的9段原生方法，修前复现bmpFace2覆盖塔罗，修后12项通过；原29项主题回归保留，浏览器以真实updateNewCardFace摘录驱动DOM内容层，18项通过。游戏内修复效果待用户重新加载确认。"
+      "tests/card-theme-layers.cjs使用保存的9段原生方法，修前复现bmpFace2覆盖塔罗，修后12项通过；原29项主题回归保留，浏览器以真实updateNewCardFace摘录驱动DOM内容层，18项通过。游戏内修复效果待用户重新加载确认。",
+      "旧宿主自动接线只响应No handler registered for指定素材通道，适配器Promise合并并发、每实例一次，后台WeakMap幂等；已有接口、缺图和安装错误不重复注册。card-theme-bootstrap.cjs 7项及隔离真实Electron10.4.5/Node12.16.3验证通过：没有宿主预注册也读到6项素材，注册次数1。",
+      "package_release.py新增validate_card_theme_resources，在创建输出前核对所有非空PNG引用已有发布映射，空项保留回退，漏映射拒绝。桌面入口与工程pack.cmd已同步；15项打包安装检查和桌面实际试包通过，未上传云端。"
     ]
   },
   peiXiuRouteCalculation: {

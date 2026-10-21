@@ -77,7 +77,8 @@ try {
       write(source(entry), fs.readFileSync(path.join(repository, entry.source)));
       continue;
     }
-    const data = entry.target === "version.json" ? '{"version":"0.0.9"}\n' :
+    const data = /^card-themes\/.+\/manifest\.json$/.test(entry.target) ? fs.readFileSync(path.join(repository, entry.source)) :
+      entry.target === "version.json" ? '{"version":"0.0.9"}\n' :
       entry.target === "三国杀打小抄.js" ? '// @version      0.0.9\r\nconst _0x43f342 = "0.0.9";\r\nconst _0x38a6c4 = "0.0.9";\r\n' :
       `// release fixture ${index}\r\n// 中文业务文件\r\n`;
     write(source(entry), Buffer.from(data));
@@ -97,6 +98,16 @@ try {
   write(path.join(destination, mapping.files[0].target), "previous version");
 
   let bundle;
+  check("a referenced PNG omitted from the release mapping stops packaging before output", () => {
+    const index = mapping.files.findIndex(entry => entry.target === "card-themes/tarot/ranks/2.png");
+    assert(index >= 0);
+    const removed = mapping.files.splice(index, 1)[0];
+    saveMapping();
+    try {
+      const output = pack("missing-theme-mapping", 1);
+      assert(!fs.existsSync(output)); assert(!fs.existsSync(output + ".zip"));
+    } finally { mapping.files.splice(index, 0, removed); saveMapping(); }
+  });
   check("a relocated desktop launcher copies mapped files and ships a standalone installer", () => {
     bundle = pack("first");
     for (const entry of mapping.files) {

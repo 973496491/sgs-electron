@@ -44,4 +44,22 @@ function registerCardThemeAssets({ ipcMain, ...options }) {
   return read;
 }
 
-module.exports = { CHANNEL, createCardThemeAssetReader, registerCardThemeAssets };
+// Called through the legacy host's existing remote.require. Everything retained by the
+// IPC handler belongs to the main process, so navigation never leaves renderer callbacks behind.
+function bootstrapCardThemeAssets() {
+  try {
+    const { app, ipcMain } = require('electron');
+    if (!app || !ipcMain) return { ok: false, code: 'host-unavailable' };
+    if (registrations.has(ipcMain)) return { ok: true };
+    const targetDirectory = app.getPath('userData');
+    const { getInstallCoordinator } = require(path.join(targetDirectory, 'modules/runtime/release-install.js'));
+    const installer = getInstallCoordinator({ targetDirectory });
+    registerCardThemeAssets({ ipcMain, roots: [path.join(targetDirectory, 'card-themes/tarot')],
+      whenIdle: () => installer.whenIdle() });
+    return { ok: true };
+  } catch (_) {
+    return { ok: false, code: 'bootstrap-failed' };
+  }
+}
+
+module.exports = { CHANNEL, createCardThemeAssetReader, registerCardThemeAssets, bootstrapCardThemeAssets };
