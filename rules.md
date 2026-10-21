@@ -70,13 +70,22 @@
 | `electron-next/src/features/hand-cards.js` | `modules/features/hand-cards.js` |
 | `electron-next/src/features/top-marquee.js` | `modules/features/top-marquee.js` |
 | `electron-next/src/adapters/hand-cards-client.js` | `modules/adapters/hand-cards-client.js` |
+| `electron-next/src/features/card-theme.js` | `modules/features/card-theme.js` |
+| `electron-next/src/adapters/card-theme-client.js` | `modules/adapters/card-theme-client.js` |
+| `electron-next/src/electron/card-theme-assets.js` | `modules/runtime/card-theme-assets.js` |
+| `electron-next/resources/card-themes/tarot/manifest.json` | `card-themes/tarot/manifest.json` |
+| `electron-next/resources/card-themes/tarot/faces/Shan_heart.png` | `card-themes/tarot/faces/Shan_heart.png` |
+| `electron-next/resources/card-themes/tarot/faces/Shan_diamond.png` | `card-themes/tarot/faces/Shan_diamond.png` |
+| `electron-next/resources/card-themes/tarot/faces/HanBingJian_spade.png` | `card-themes/tarot/faces/HanBingJian_spade.png` |
+| `electron-next/resources/card-themes/tarot/ranks/2.png` | `card-themes/tarot/ranks/2.png` |
+| `electron-next/resources/card-themes/tarot/suits/heart.png` | `card-themes/tarot/suits/heart.png` |
 | `electron-next/src/electron/release-update.js` | `modules/runtime/release-update.js` |
 | `electron-next/src/electron/release-install.js` | `modules/runtime/release-install.js` |
 | `electron-next/scripts/install.ps1` | `modules/runtime/install.ps1` |
 | `electron-next/scripts/release-common.ps1` | `modules/runtime/release-common.ps1` |
 | `electron-next/version.json` | `version.json` |
 
-2026-10-17 已接入自动安装，映射增加 `installProtocol:1` 和上述安装协调器/运行时 PS 工具；随后屏蔽弹幕独立模块也登记同一映射，当前 9 个业务文件。手牌和屏蔽弹幕模块装配进主脚本，更新与安装模块由宿主主进程实际 require。自动安装只接受新协议包；安装顺序固定为其它业务文件、废弃文件、主脚本、最后版本记录。本机私有配置不打包，`remove` 当前为空。
+2026-10-17 已接入自动安装及屏蔽弹幕模块；2026-10-21塔罗第一阶段增加两个装配模块、素材读取模块及6项PNG/清单，当前18个业务文件。手牌、屏蔽弹幕和卡面模块装配进主脚本，更新/安装/素材读取模块由宿主主进程实际 require。素材IPC须同时接通实际宿主，不能只发布PNG就认定旧宿主已支持。自动安装只接受新协议包；安装顺序固定为其它业务文件、废弃文件、主脚本、最后版本记录。本机私有配置不打包，`remove` 当前为空。
 
 映射采用逐文件的 `files` 条目，字段约定如下；打包文件夹内使用 `files/` 加 `target` 保存文件，安装再按同一 `target` 落到目标目录。
 

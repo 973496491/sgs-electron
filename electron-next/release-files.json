@@ -3,6 +3,51 @@
   "files": [
     {
       "sourceRoot": "repo",
+      "source": "electron-next/src/features/card-theme.js",
+      "target": "modules/features/card-theme.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/adapters/card-theme-client.js",
+      "target": "modules/adapters/card-theme-client.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/electron/card-theme-assets.js",
+      "target": "modules/runtime/card-theme-assets.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/manifest.json",
+      "target": "card-themes/tarot/manifest.json"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/Shan_heart.png",
+      "target": "card-themes/tarot/faces/Shan_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/Shan_diamond.png",
+      "target": "card-themes/tarot/faces/Shan_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/HanBingJian_spade.png",
+      "target": "card-themes/tarot/faces/HanBingJian_spade.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/2.png",
+      "target": "card-themes/tarot/ranks/2.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/suits/heart.png",
+      "target": "card-themes/tarot/suits/heart.png"
+    },
+    {
+      "sourceRoot": "repo",
       "source": "electron-next/resources/daxiaochao.user.js",
       "target": "三国杀打小抄.js"
     },

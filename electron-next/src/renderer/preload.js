@@ -1,7 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
 const daxiaochaoElectronApi = {
-  openConfigFile: () => ipcRenderer.invoke('open-config-file')
+  openConfigFile: () => ipcRenderer.invoke('open-config-file'),
+  readCardThemeAsset: relative => ipcRenderer.invoke('read-card-theme-asset', relative)
 }
 
 try {

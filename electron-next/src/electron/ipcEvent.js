@@ -4,6 +4,8 @@ const fs = require('fs')
 const createWindow = require('./window')
 const config = require('./config')
 const { openConfigFile } = require('./configFile')
+const { registerCardThemeAssets } = require('./card-theme-assets')
+const { getInstallCoordinator } = require('./release-install')
 // 程序目录
 const programDir = path.dirname(app.getPath('exe'))
 // 插件配置文件
@@ -31,6 +33,11 @@ function changeChannel(window, packageId, isSave = false) {
 
 module.exports = {
   windowEventInit() {
+    registerCardThemeAssets({
+      ipcMain,
+      roots: [path.join(app.getPath('userData'), 'card-themes/tarot'), path.join(__dirname, '../../resources/card-themes/tarot')],
+      whenIdle: () => getInstallCoordinator({ targetDirectory: app.getPath('userData') }).whenIdle()
+    })
     //
     ipcMain.on('window-close', function (e) {
       const win = BrowserWindow.fromWebContents(e.sender)

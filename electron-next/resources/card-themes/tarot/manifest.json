@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "tarot",
+  "revision": "phase1-20261021",
+  "faces": {
+    "Shan_png": { "1": "faces/Shan_heart.png", "2": "faces/Shan_diamond.png" },
+    "HanBingJian_png": { "3": "faces/HanBingJian_spade.png" }
+  },
+  "ranks": {
+    "1": null, "2": "ranks/2.png", "3": null, "4": null, "5": null,
+    "6": null, "7": null, "8": null, "9": null, "10": null,
+    "11": null, "12": null, "13": null
+  },
+  "suits": { "1": "suits/heart.png", "2": null, "3": null, "4": null },
+  "faceSize": [93, 130],
+  "symbolSize": [19, 17]
+}

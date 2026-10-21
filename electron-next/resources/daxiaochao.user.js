@@ -6098,9 +6098,11 @@
       return n;
     })();
   }
+  let cardThemeFeature = null;
   function _0x5db4b9(n = _0x293ce3()) {
     const t = _0x43fec8;
-    return _0x2beec1() && _0x19e0b1(n) && !!(null == n ? void 0 : n[t(166)]);
+    return _0x2beec1() && _0x19e0b1(n) &&
+      (cardThemeFeature ? cardThemeFeature.getMode() === "miao" : !!(null == n ? void 0 : n[t(166)]));
   }
   const _0x54ff2c = _0x43fec8(562),
     _0x3c2ff8 = _0x43fec8(496),
@@ -6115,8 +6117,8 @@
     _0x41f89e = _0x43fec8(150),
     _0x47b923 = _0x43fec8(478),
     _0x3b9f65 = _0x43fec8(177),
-    _0x59bbcf = { w: 4096, h: 2048 },
-    _0x2a4c5d = { x: 2046, y: 4, w: 186, h: 260 },
+    _0x59bbcf = { w: 2048, h: 4096 },
+    _0x2a4c5d = { x: 1556, y: 1612, w: 186, h: 260 },
     _0x2386b0 = _0x43fec8(462),
     _0x44cb2b = { w: 2045, h: 2015 },
     _0x3d67d7 = { x: 272, y: 764, w: 135, h: 190 },
@@ -6439,9 +6441,13 @@
       _0x1dffb0() || (_0x9fc0da() ? _0xe6980e() : _0x1a7f29(_0x3c2ff8)));
   }
   function _0x52c243() {
+    if (window.__cardTheme && window.__cardTheme.__xcThemeRuntime)
+      return window.__cardTheme;
     const n = _0x43fec8,
       t = _0x10ff56[n(300)],
       e = Object[n(435)](window[n(238)] || {}, {
+        __xcThemeRuntime: true,
+        enableRequest: 0,
         enabled: _0x5db4b9(),
         revision: 0,
         atlasReady: !1,
@@ -6619,6 +6625,10 @@
               }),
               a);
         },
+        listCardUis() {
+          this.seedRegistry();
+          return Array.from(this.cardUiRegistry).filter(ui => ui && !ui.destroyed);
+        },
         register(t) {
           const e = n;
           t && this[e(501)][e(250)](t);
@@ -6699,6 +6709,7 @@
               this[t(516)]);
         },
         async setEnabled(t, e = !0) {
+          const request = ++this.enableRequest;
           const i = n,
             a = _0x293ce3(),
             r = !!t,
@@ -6707,8 +6718,9 @@
             (e && a && a[i(166)] !== r && (a[i(166)] = r), l && !this[i(522)])
           ) {
             if (!(await this[i(450)]()))
-              return console[i(184)](i(167), _0x54ff2c), !1;
+              return appendLocalSkinDebugLine("[卡面主题] 猫猫图集加载失败"), !1;
           }
+          if (request !== this.enableRequest || (l && !_0x5db4b9())) return !1;
           const o = this[i(510)] !== l;
           return (
             (this[i(510)] = l),
@@ -6927,8 +6939,7 @@
     const n = _0x43fec8,
       t = _0x293ce3();
     if (!t || !_0x10ff56[n(300)]) return Promise[n(288)](!1);
-    return _0x52c243()
-      [n(393)](!!t[n(166)], !1)
+    return (cardThemeFeature ? cardThemeFeature.sync() : _0x52c243()[n(393)](!!t[n(166)], !1))
       [n(291)]((n) => (_0x2beec1() && _0x19e0b1(t) && _0xca70c3(), n));
   }
   function _0x198c60(n) {
@@ -7015,6 +7026,7 @@
       )
     )
       return () => {};
+    if (cardThemeFeature) cardThemeFeature.mount(n);
     const B = () => {
       const n = t,
         d = _0x293ce3();
@@ -7042,6 +7054,7 @@
         (o[n(249)] = B),
         (z[n(222)] = n(y ? 444 : 325)),
         (z[n(249)] = y);
+      if (cardThemeFeature) cardThemeFeature.updateUI();
     };
     return n[t(271)][t(364)] == t(409)
       ? (B(), B)
@@ -7049,9 +7062,11 @@
         a[t(229)](t(379), () => {
           const n = t,
             e = _0x293ce3();
+          if (cardThemeFeature) { if (a.isConnected) cardThemeFeature.setMode("original"); B(); return; }
           e && ((e[n(166)] = !1), B());
         }),
         o[t(229)](t(379), () => {
+          if (cardThemeFeature) { if (o.isConnected) cardThemeFeature.setMode("miao"); B(); return; }
           const n = t,
             e = _0x293ce3();
           e &&
@@ -15366,6 +15381,493 @@
       pullShadowBlacklistFromServer(!0)
     );
   }
+  // BEGIN GENERATED MODULE: card-theme-client
+  // Source: src/adapters/card-theme-client.js; run npm run build:userscript. Do not edit this block.
+  const createCardThemeClient = function createCardThemeClient({ window, getLaya, getEngine, getRegisteredUis, log = () => {} }) {
+    let normalPrototype = null, enabled = false;
+    const hooks = [];
+    const pendingLoads = new Set();
+    function cardOf(ui) { return ui && (ui.Card || ui.theCard); }
+    function listUis() {
+      try { return getRegisteredUis().filter(ui => ui && !ui.destroyed); } catch (_) { return []; }
+    }
+    function resolveNormalPrototype() {
+      try {
+        const type = getLaya().class('NormalCardUi');
+        const candidate = typeof type === 'function' ? type.prototype : type;
+        if (candidate && typeof candidate.ChangeFlowerAndNumber === 'function') return candidate;
+      } catch (_) {}
+      for (const ui of listUis()) {
+        for (let proto = Object.getPrototypeOf(ui); proto; proto = Object.getPrototypeOf(proto)) {
+          if (Object.prototype.hasOwnProperty.call(proto, 'ChangeFlowerAndNumber') &&
+              Object.prototype.hasOwnProperty.call(proto, 'UpdateCardFace')) return proto;
+        }
+      }
+      return null;
+    }
+    function describe(ui, temporary) {
+      const card = cardOf(ui);
+      if (!ui || ui.destroyed || !card || !normalPrototype || !normalPrototype.isPrototypeOf(ui) ||
+          ui.UpdateCardFace !== normalPrototype.UpdateCardFace || !ui.bmpFace ||
+          card.IsEmpty || card.IsYiCard || ui.IsYiCard || ui.isPokerCardFace || ui.IsPokerCardFace ||
+          ui.dontUpdateCard || ui.changeSkillTex || card.IsMultiSkillState ||
+          (card.IsVirtualCard && !card.VirtualShowOrignColorAndNumber)) return null;
+      const flower = temporary && temporary.card === card ? temporary.flower :
+        (card.DisplayFlower != null ? card.DisplayFlower : card.IsModyfifyByServer ? card.FlowerOnSeat : card.CardFlower);
+      const number = temporary && temporary.card === card ? temporary.number : card.CardNumber;
+      const resource = String(card.ResName || '');
+      return { card, key: resource.endsWith('_png') ? resource : resource + '_png', flower: Number(flower), number: Number(number) };
+    }
+    function specialFaceReason(ui, method, args = []) {
+      const card = cardOf(ui);
+      if (method === 'SwitchToPokerCardFace') return '扑克卡面';
+      if (method === 'UpdateMultiSkill') return card && card.IsMultiSkillState ? '多技能状态' : null;
+      if (method === 'UpdateSuiJiYingBian') return card && card.AvatarSkill ? '随机应变变牌' : null;
+      if (method === 'SetChangeSkill') return args[0] ? '技能变牌标识' : null;
+      if (method === 'UpdateCardFaceRes') return '指定牌面资源';
+      if (method === 'UpdateCardFaceOrBackRes') return '指定正反面资源';
+      return null;
+    }
+    function getFaceContentLayers(ui) {
+      if (!ui || !ui.isNewCardUI || typeof ui.updateNewCardFace !== 'function') return [];
+      // Current native normal cards render these above bmpFace; borders, tags and functional overlays stay native.
+      return ['bmpFace2', 'bmpNormalName', 'bmpNameBg', 'bmpName', 'bmpCardType', 'bmpSmallDesc']
+        .map(key => ({ key, node: ui[key] })).filter(item => item.node && typeof item.node.visible === 'boolean');
+    }
+    function wrap(target, name, before, after) {
+      if (!target || typeof target[name] !== 'function' || hooks.some(h => h.target === target && h.name === name)) return;
+      const descriptor = Object.getOwnPropertyDescriptor(target, name), original = target[name];
+      const entry = { target, name, descriptor, live: true, wrapper: null };
+      function invoke(callback, ui, args) {
+        if (!callback || !entry.live || !enabled) return;
+        try { callback(ui, args, name); } catch (error) { log('绘制适配失败', error); }
+      }
+      entry.wrapper = function (...args) {
+        invoke(before, this, args);
+        const result = original.apply(this, args);
+        invoke(after, this, args);
+        return result;
+      };
+      Object.defineProperty(target, name, { configurable: true, writable: true,
+        enumerable: descriptor ? descriptor.enumerable : false, value: entry.wrapper });
+      hooks.push(entry);
+    }
+    function install(callbacks) {
+      if (enabled && normalPrototype) return true;
+      normalPrototype = resolveNormalPrototype();
+      if (!normalPrototype) return false;
+      enabled = true;
+      wrap(normalPrototype, 'UpdateCardFace', callbacks.beforeUpdate, callbacks.afterUpdate);
+      wrap(normalPrototype, 'ChangeFlowerAndNumber', callbacks.beforeTemporary, callbacks.afterTemporary);
+      // setCardBack installs an own SetCardFace on this prototype and keeps __SetCardFace.
+      // Wrap the effective dispatch method, including that wrapper, rather than a bypassed parent method.
+      wrap(normalPrototype, 'SetCardFace', callbacks.beforeFace, callbacks.afterFace);
+      wrap(normalPrototype, 'updateNewCardFace', callbacks.beforeContentUpdate, callbacks.afterContentUpdate);
+      wrap(normalPrototype, 'resetNewCardFace', callbacks.beforeContentReset, null);
+      wrap(normalPrototype, 'Draw', null, callbacks.afterDraw);
+      for (const name of ['clear', 'Clear', 'destroy']) wrap(normalPrototype, name, callbacks.beforeClear, null);
+      for (const name of ['SwitchToPokerCardFace', 'UpdateSuiJiYingBian', 'UpdateMultiSkill', 'SetChangeSkill',
+        'UpdateCardFaceRes', 'UpdateCardFaceOrBackRes'])
+        wrap(normalPrototype, name, callbacks.beforeSpecial, callbacks.afterSpecial);
+      return true;
+    }
+    function dispose() {
+      enabled = false;
+      for (const cancel of [...pendingLoads]) cancel();
+      for (const hook of hooks.splice(0).reverse()) {
+        hook.live = false;
+        if (hook.target[hook.name] !== hook.wrapper) continue;
+        if (hook.descriptor) Object.defineProperty(hook.target, hook.name, hook.descriptor);
+        else delete hook.target[hook.name];
+      }
+      normalPrototype = null;
+    }
+    async function readAsset(relative) {
+      const api = window.daxiaochaoElectron;
+      if (api && typeof api.readCardThemeAsset === 'function') return api.readCardThemeAsset(relative);
+      const ipc = window.electron && window.electron.ipcRenderer;
+      if (ipc && typeof ipc.invoke === 'function') return ipc.invoke('read-card-theme-asset', relative);
+      return { ok: false, code: 'host-unavailable' };
+    }
+    function makeTexture(dataUrl, logicalSize) {
+      return new Promise(resolve => {
+        const engine = getEngine();
+        if (!engine || !engine.loader || !engine.Handler || !engine.Texture) return resolve(null);
+        let finished = false;
+        const timer = window.setTimeout(() => finish(null), 8000);
+        const cancel = () => {
+          if (typeof engine.loader.cancelLoadByUrl === 'function') engine.loader.cancelLoadByUrl(dataUrl);
+          finish(null);
+        };
+        pendingLoads.add(cancel);
+        function finish(value) {
+          if (finished) return;
+          finished = true;
+          window.clearTimeout(timer);
+          pendingLoads.delete(cancel);
+          resolve(value);
+        }
+        try {
+          engine.loader.load(dataUrl, engine.Handler.create(null, () => {
+            if (finished) return;
+            const texture = engine.loader.getRes(dataUrl);
+            if (!texture || texture.destroyed) return finish(null);
+            const result = engine.Texture.create(texture, 0, 0, texture.width, texture.height,
+              texture.offsetX || 0, texture.offsetY || 0, texture.sourceWidth, texture.sourceHeight);
+            result.width = logicalSize[0];
+            result.height = logicalSize[1];
+            // These standalone PNGs are untrimmed 2x artwork. Keep logical trim/source metrics consistent.
+            result.sourceWidth = logicalSize[0];
+            result.sourceHeight = logicalSize[1];
+            result.offsetX = 0;
+            result.offsetY = 0;
+            finish(result);
+          }), null, engine.Loader.IMAGE);
+        } catch (_) { finish(null); }
+      });
+    }
+    function releaseTexture(texture, dataUrl) {
+      try { if (texture && !texture.destroyed) texture.destroy(false); } catch (_) {}
+      try { if (dataUrl) getEngine().loader.clearRes(dataUrl); } catch (_) {}
+    }
+    return { cardOf, listUis, describe, specialFaceReason, getFaceContentLayers,
+      install, dispose, readAsset, makeTexture, releaseTexture };
+  };
+  // END GENERATED MODULE: card-theme-client
+  // BEGIN GENERATED MODULE: card-theme
+  // Source: src/features/card-theme.js; run npm run build:userscript. Do not edit this block.
+  const createCardThemeFeature = function createCardThemeFeature({ window, document, storage, client,
+    getConfig, setMiaoEnabled, log = () => {} }) {
+    const preferenceKey = 'xcCardFaceTheme';
+    const modes = ['original', 'miao', 'tarot'];
+    let selected = null, active = false, rendering = false, lifetime = 0, transition = 0;
+    let manifest = null, manifestJob = null, retryTimer = null, mounted = null;
+    const assets = new Map(), owned = new Map();
+    let temporary = new WeakMap();
+    let specialTrace = new WeakMap();
+    let nativeFaceOverride = new WeakMap(), contentTrace = new WeakMap();
+    const timers = { set: window.setTimeout.bind(window), clear: window.clearTimeout.bind(window) };
+    let writingConfig = false;
+    function report(message, error) {
+      try { log(message, error); } catch (_) {}
+    }
+    function readSelection() {
+      if (selected) return selected;
+      try { selected = storage.getItem(preferenceKey); } catch (_) {}
+      if (!modes.includes(selected)) {
+        const config = getConfig();
+        if (!config) { selected = null; return 'original'; }
+        selected = config.miaoCardSwitch ? 'miao' : 'original';
+      }
+      return selected;
+    }
+    function getMode() {
+      const config = getConfig();
+      return config && config.cardBackSwitch ? readSelection() : 'original';
+    }
+    function restoreContentLayer(ui, layer) {
+      if (ui[layer.key] === layer.node && !layer.node.destroyed && layer.node.visible === false)
+        layer.node.visible = layer.original;
+    }
+    function restoreContent(ui) {
+      const entry = owned.get(ui);
+      if (!entry || !entry.content) return;
+      for (const layer of entry.content) restoreContentLayer(ui, layer);
+      entry.content = [];
+    }
+    function restoreUi(ui) {
+      const entry = owned.get(ui);
+      if (!entry) return;
+      for (const layer of entry.layers) {
+        if (layer.node.texture === layer.applied) layer.node.texture = layer.original;
+      }
+      restoreContent(ui);
+      owned.delete(ui);
+    }
+    function restoreAll() { for (const ui of [...owned.keys()]) restoreUi(ui); }
+    function cached(path) {
+      const entry = path && assets.get(path);
+      return entry && entry.texture && !entry.texture.destroyed ? entry.texture : null;
+    }
+    function apply(ui) {
+      if (!active || !rendering || getMode() !== 'tarot' || !manifest) return restoreUi(ui);
+      if (nativeFaceOverride.has(ui) && nativeFaceOverride.get(ui) === client.cardOf(ui)) return restoreUi(ui);
+      const state = client.describe(ui, temporary.get(ui));
+      if (!state) return restoreUi(ui);
+      const variants = manifest.faces[state.key];
+      const facePath = variants && variants[String(state.flower)];
+      // Phase one only themes the three declared resource/suit pairs. Each layer falls back independently.
+      if (!facePath) return restoreUi(ui);
+      const previous = owned.get(ui);
+      const layers = [];
+      const replace = (node, path) => {
+        if (!node) return;
+        const prior = previous && previous.layers.find(layer => layer.node === node);
+        const stillOwned = prior && node.texture === prior.applied;
+        const texture = cached(path);
+        if (!texture) {
+          if (stillOwned) node.texture = prior.original;
+          return;
+        }
+        layers.push({ node, original: stillOwned ? prior.original : node.texture, applied: texture });
+        if (node.texture !== texture) node.texture = texture;
+      };
+      replace(ui.bmpFace, facePath);
+      replace(ui.bmpNumber, state.number >= 1 && state.number <= 13 ? manifest.ranks[String(state.number)] : null);
+      replace(ui.bmpFlower, state.flower >= 1 && state.flower <= 4 ? manifest.suits[String(state.flower)] : null);
+      const targets = cached(facePath) ? client.getFaceContentLayers(ui) : [];
+      const content = [], priorContent = previous && previous.content || [];
+      for (const prior of priorContent) {
+        if (!targets.some(item => item.node === prior.node && item.key === prior.key)) restoreContentLayer(ui, prior);
+      }
+      for (const { key, node } of targets) {
+        const prior = priorContent.find(layer => layer.node === node && layer.key === key);
+        content.push({ key, node, original: prior && node.visible === false ? prior.original : node.visible });
+        if (node.visible !== false) node.visible = false;
+      }
+      if (content.length && contentTrace.get(ui) !== state.card) {
+        contentTrace.set(ui, state.card);
+        report('接管分层卡面 res=' + state.key + ' hidden=' + content.map(item => item.key).join(','));
+      }
+      if (layers.length || content.length) owned.set(ui, { card: state.card, layers, content });
+      else owned.delete(ui);
+    }
+    function refresh() {
+      const uis = new Set([...client.listUis(), ...owned.keys()]);
+      for (const ui of uis) {
+        if (!ui || ui.destroyed) { owned.delete(ui); continue; }
+        try { apply(ui); } catch (error) { report('刷新失败', error); }
+      }
+    }
+    const callbacks = {
+      beforeUpdate(ui) { restoreContent(ui); temporary.delete(ui); nativeFaceOverride.delete(ui); },
+      afterUpdate: apply,
+      beforeFace(ui) { restoreContent(ui); nativeFaceOverride.delete(ui); },
+      afterFace: apply,
+      beforeContentUpdate(ui, args) {
+        restoreContent(ui);
+        const card = client.cardOf(ui);
+        if (args[0] && card && args[0] !== card.ResName) nativeFaceOverride.set(ui, card);
+      },
+      afterContentUpdate: apply,
+      beforeContentReset: restoreContent,
+      beforeTemporary(ui, args) {
+        temporary.set(ui, { card: client.cardOf(ui), flower: args[0], number: args[1] });
+      },
+      afterTemporary: apply,
+      afterDraw: apply,
+      beforeClear(ui) {
+        restoreUi(ui); temporary.delete(ui); specialTrace.delete(ui);
+        nativeFaceOverride.delete(ui); contentTrace.delete(ui);
+      },
+      beforeSpecial(ui, args, method) {
+        const reason = client.specialFaceReason(ui, method, args);
+        if (method === 'UpdateCardFaceRes' || method === 'UpdateCardFaceOrBackRes')
+          nativeFaceOverride.set(ui, client.cardOf(ui));
+        if (owned.has(ui)) {
+          const card = client.cardOf(ui), signature = reason || '普通检查';
+          let previous = specialTrace.get(ui);
+          if (!previous || previous.card !== card) {
+            previous = { card, methods: new Map() }; specialTrace.set(ui, previous);
+          }
+          if (previous.methods.get(method) !== signature) {
+            previous.methods.set(method, signature);
+            report((reason ? '进入原生特殊显示：' + reason : '普通技能检查保留塔罗') +
+              ' method=' + method + ' card=' + String(card && card.CardId || '') +
+              ' res=' + String(card && card.ResName || ''));
+          }
+        }
+        if (reason) { restoreUi(ui); temporary.delete(ui); }
+      },
+      afterSpecial: apply,
+    };
+    function install(attempt = 0) {
+      if (!active) return;
+      if (retryTimer != null) { timers.clear(retryTimer); retryTimer = null; }
+      if (client.install(callbacks)) { refresh(); return; }
+      if (attempt >= 60) { report('等待卡牌UI，重新打开卡牌设置后重试'); return; }
+      const epoch = lifetime;
+      retryTimer = timers.set(() => {
+        retryTimer = null;
+        if (active && epoch === lifetime) install(attempt + 1);
+      }, 500);
+    }
+    async function ensureManifest() {
+      if (manifest) return manifest;
+      if (manifestJob) return manifestJob;
+      const epoch = lifetime;
+      const job = (async () => {
+        try {
+          const result = await client.readAsset('manifest.json');
+          const value = result && result.manifest;
+          if (!result || !result.ok || !value || value.schemaVersion !== 1 || !value.faces || !value.ranks || !value.suits) {
+            report('本地素材清单不可用，保留原生图层'); return null;
+          }
+          if (!active || epoch !== lifetime) return null;
+          manifest = value;
+          return value;
+        } catch (error) { report('本地素材读取失败，保留原生图层', error); return null; }
+      })();
+      manifestJob = job;
+      try { return await job; } finally { if (manifestJob === job) manifestJob = null; }
+    }
+    function ensureAsset(path, size) {
+      if (!path) return Promise.resolve(null);
+      if (assets.has(path)) return assets.get(path).job;
+      const epoch = lifetime, entry = { texture: null, dataUrl: null, job: null };
+      assets.set(path, entry);
+      entry.job = (async () => {
+        try {
+          const result = await client.readAsset(path);
+          if (!result || !result.ok || !result.dataUrl) { report('缺少素材 ' + path + '，沿用原生图层'); return null; }
+          if (!active || epoch !== lifetime) return null;
+          entry.dataUrl = result.dataUrl;
+          const texture = await client.makeTexture(result.dataUrl, size);
+          if (!active || epoch !== lifetime) { client.releaseTexture(texture, result.dataUrl); return null; }
+          if (!texture) { report('素材加载失败 ' + path + '，沿用原生图层'); return null; }
+          entry.texture = texture;
+          refresh();
+          updateUI();
+          return texture;
+        } catch (error) { report('素材加载失败 ' + path, error); return null; }
+      })();
+      return entry.job;
+    }
+    async function ensureAssets() {
+      const value = await ensureManifest();
+      if (!value || !active) return;
+      const requests = [];
+      for (const variants of Object.values(value.faces))
+        for (const path of Object.values(variants)) requests.push(ensureAsset(path, [93, 130]));
+      for (const path of [...Object.values(value.ranks), ...Object.values(value.suits)])
+        requests.push(ensureAsset(path, [19, 17]));
+      await Promise.all(requests);
+    }
+    async function sync() {
+      if (!active) return false;
+      const operation = ++transition, epoch = lifetime, mode = getMode();
+      rendering = false;
+      restoreAll();
+      updateUI();
+      try { await setMiaoEnabled(mode === 'miao'); } catch (error) { report('切换原有卡面失败', error); }
+      if (!active || operation !== transition || epoch !== lifetime) return false;
+      rendering = mode === 'tarot';
+      if (rendering) await ensureAssets();
+      if (!active || operation !== transition || epoch !== lifetime) return false;
+      refresh(); updateUI();
+      return true;
+    }
+    async function setMode(mode) {
+      if (!active || !modes.includes(mode)) return false;
+      readSelection();
+      selected = mode;
+      try { storage.setItem(preferenceKey, mode); } catch (_) {}
+      writingConfig = true;
+      try {
+        const config = getConfig();
+        if (config) {
+          config.miaoCardSwitch = mode === 'miao';
+          if (mode !== 'original') config.cardBackSwitch = true;
+        }
+      } finally { writingConfig = false; }
+      install();
+      report('选择 ' + ({ original: '原始', miao: '猫猫', tarot: '塔罗' })[mode]);
+      return sync();
+    }
+    function onConfigChange(event) {
+      if (!active || writingConfig) return;
+      const property = event.detail && event.detail.property;
+      if (property !== 'cardBackSwitch' && property !== 'miaoCardSwitch') return;
+      if (property === 'miaoCardSwitch') {
+        const config = getConfig();
+        if (config && config.miaoCardSwitch) selected = 'miao';
+        else if (readSelection() === 'miao') selected = 'original';
+        try { storage.setItem(preferenceKey, selected); } catch (_) {}
+      }
+      sync();
+    }
+    function updateUI() {
+      if (!mounted) return;
+      const mode = getMode();
+      for (const [value, cellId, buttonId, label] of [
+        ['original', 'originCardCell', 'originCardUseBtn', '原始'],
+        ['miao', 'miaoCardCell', 'miaoCardUseBtn', '猫猫'],
+        ['tarot', 'tarotCardCell', 'tarotCardUseBtn', '塔罗'],
+      ]) {
+        const cell = mounted.querySelector('#' + cellId), button = mounted.querySelector('#' + buttonId);
+        if (cell) {
+          cell.classList.toggle('is-active', mode === value);
+          const title = cell.querySelector('.cardback-preview-label');
+          if (title) title.textContent = label;
+        }
+        if (button) {
+          button.setAttribute('role', 'radio'); button.setAttribute('aria-checked', String(mode === value));
+          button.disabled = mode === value;
+          button.textContent = mode === value ? '使用中' : '使用' + label;
+        }
+      }
+      const preview = mounted.querySelector('#tarotCardPreview');
+      const source = assets.get('faces/Shan_heart.png');
+      if (preview && source && source.dataUrl) preview.style.backgroundImage = 'url("' + source.dataUrl + '")';
+    }
+    function unmount() {
+      if (!mounted) return;
+      const cell = mounted.querySelector('#tarotCardCell');
+      if (cell) cell.remove();
+      const grid = mounted.querySelector('#originCardCell');
+      if (grid && grid.parentElement) {
+        grid.parentElement.style.gridTemplateColumns = '';
+        grid.parentElement.removeAttribute('role');
+        grid.parentElement.removeAttribute('aria-label');
+      }
+      mounted = null;
+    }
+    function mount(dialog) {
+      if (!active || !dialog) return;
+      if (mounted !== dialog) { unmount(); mounted = dialog; }
+      const origin = dialog.querySelector('#originCardCell');
+      if (!origin || !origin.parentElement) return;
+      const grid = origin.parentElement;
+      grid.style.gridTemplateColumns = 'repeat(auto-fit,minmax(140px,1fr))';
+      grid.setAttribute('role', 'radiogroup'); grid.setAttribute('aria-label', '卡面主题');
+      if (!dialog.querySelector('#tarotCardCell')) {
+        const cell = document.createElement('div');
+        cell.id = 'tarotCardCell'; cell.className = 'cardback-preview-cell';
+        const label = document.createElement('div'); label.className = 'cardback-preview-label'; label.textContent = '塔罗';
+        const preview = document.createElement('div'); preview.id = 'tarotCardPreview'; preview.className = 'cardback-preview-img';
+        const button = document.createElement('button'); button.id = 'tarotCardUseBtn'; button.type = 'button';
+        button.className = 'cardback-action-btn'; button.textContent = '使用塔罗';
+        button.addEventListener('click', () => {
+          if (active && mounted === dialog && dialog.isConnected) setMode('tarot');
+        });
+        cell.appendChild(label); cell.appendChild(preview); cell.appendChild(button); grid.appendChild(cell);
+      }
+      updateUI(); install();
+      ensureAssets().then(updateUI);
+    }
+    function start() {
+      if (active) { install(); return; }
+      active = true; lifetime++;
+      readSelection();
+      window.addEventListener('xc:config-change', onConfigChange);
+      install(); sync();
+    }
+    function dispose() {
+      if (!active) return;
+      active = false; rendering = false; lifetime++; transition++;
+      if (retryTimer != null) timers.clear(retryTimer);
+      retryTimer = null;
+      window.removeEventListener('xc:config-change', onConfigChange);
+      restoreAll(); client.dispose(); unmount();
+      temporary = new WeakMap();
+      specialTrace = new WeakMap();
+      nativeFaceOverride = new WeakMap(); contentTrace = new WeakMap();
+      for (const entry of assets.values()) client.releaseTexture(entry.texture, entry.dataUrl);
+      assets.clear(); manifest = null; manifestJob = null;
+    }
+    return { start, dispose, getMode, setMode, sync, mount, updateUI, refresh };
+  };
+  // END GENERATED MODULE: card-theme
   initCardThemeFeature({
     laya: laya,
     redefine: redefine,
@@ -15373,6 +15875,22 @@
     canUseCardBackFeature: () => !0,
   }),
     installCardThemeRuntime();
+  const cardThemeClient = createCardThemeClient({
+    window,
+    getLaya: () => laya,
+    getEngine: () => Laya,
+    getRegisteredUis: () => _0x52c243().listCardUis(),
+    log: (event, error) => appendLocalSkinDebugLine("[塔罗卡面] " + event +
+      (error ? "：" + String(error.message || error) : "")),
+  });
+  cardThemeFeature = createCardThemeFeature({
+    window, document, storage: localStorage, client: cardThemeClient,
+    getConfig: () => window.XC && window.XC.globalConfig,
+    setMiaoEnabled: enabled => _0x52c243().setEnabled(enabled, false),
+    log: (event, error) => appendLocalSkinDebugLine("[塔罗卡面] " + event +
+      (error ? "：" + String(error.message || error) : "")),
+  });
+  cardThemeFeature.start();
   const clickCard = (() => {
     const n = _0x47c207;
     function t(n) {
@@ -27489,6 +28007,7 @@
   function Exit() {
     var n, t, e, i;
     const a = _0x41a3d0;
+    cardThemeFeature.dispose();
     handCards.dispose();
     topMarquee.dispose();
     cleanupSkinEffectBlocker();
@@ -28672,6 +29191,8 @@
         _0x47344d();
     }
     _0x2a327f(), _0x4484c9(), _0x1b8c7a(), drawChatFace();
+    cardThemeFeature.start();
+    cardThemeFeature.mount(document.getElementById("cardThemeDialog"));
     handCards.start();
     handCards.mount();
     topMarquee.start();

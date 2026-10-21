@@ -4,6 +4,8 @@ const path = require("node:path");
 const assert = require("node:assert/strict");
 const root = path.resolve(__dirname, "..");
 const definitions = [
+  { id: "card-theme-client", file: "src/adapters/card-theme-client.js", name: "createCardThemeClient" },
+  { id: "card-theme", file: "src/features/card-theme.js", name: "createCardThemeFeature" },
   { id: "top-marquee", file: "src/features/top-marquee.js", name: "createTopMarqueeModule" },
   { id: "hand-cards-client", file: "src/adapters/hand-cards-client.js", name: "createHandCardsClient" },
   { id: "hand-cards", file: "src/features/hand-cards.js", name: "createHandCardsModule" },

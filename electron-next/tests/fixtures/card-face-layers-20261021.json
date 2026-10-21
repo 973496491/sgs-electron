@@ -1,0 +1,48 @@
+{
+  "source": {
+    "url": "https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs",
+    "retrievedAt": "2026-10-21T07:38:24.297Z",
+    "bytes": 5386498,
+    "sha256": "e01e94a8c0866067169418488c4834259ee6670ca49936f2014a6d052c98101b"
+  },
+  "plainSha256": "bb49b68b44ee8732248a310511bf2a88dfe3f080d12433c82762a9dfe31c94d2",
+  "className": "Gqi / NormalCardUi",
+  "methods": {
+    "SetCardFace": {
+      "offset": 17537076,
+      "source": "SetCardFace(t){let i=!0;t||(i=!1);let s=$H.I().GetBarDataById(ICt.Bottom_CardFace);if(!s||s.IsOpen,null==this.theCard)this.bmpFace.texture=hKi.GetEmptyTextrue(this.emptyRes);else if(this.theCard.IsEmpty){let s=\"cardBack_0\";if(t&&i){let i=t.CardBackId;JK.I().GetCardFaceVOByIdAndType(i,Ki.BACK)&&(s=\"cardBack_\"+i)}this.bmpFace.texture=uNt.GetRes(s),this.measure()}else{let s=null;this.isNewCardUI?s=this.getCardFaceBaseTexture(i?t:null):this.IsYiCard?s=uNt.GetRes(\"WuTianWuJie_png\"):(s=uNt.GetRes(this.theCard.ResName+\"_png\"),s||(s=uNt.GetRes(\"card_mask_1\"))),s&&(s.width=Jk.NORMAL_SIZE.width,s.height=Jk.NORMAL_SIZE.height),this.bmpFace.texture=s,this.measure(),this.updateNewCardFace()}}"
+    },
+    "getCardFaceBaseTexture": {
+      "offset": 17537764,
+      "source": "getCardFaceBaseTexture(t){let i=null;if(t){let s=t.CardFaceId;JK.I().GetCardFaceVOByIdAndType(s,Ki.FACE)&&s&&(i=uNt.GetRes(\"cardFace_\"+s))}return i||(i=uNt.GetRes(\"cardFace_0\")),i}"
+    },
+    "updateNewCardFace": {
+      "offset": 17537944,
+      "source": "updateNewCardFace(t=null){if(!this.isNewCardUI)return;let i=t||this.theCard.ResName,s=this.theCard,e=s?s.CardBaseType:Rmt.BASIC,h=\"face_\"+i,r=uNt.GetRes(h);r?(this.bmpFace2.visible=!0,this.bmpFace2.texture=r):this.bmpFace2.visible=!1;let n=\"name_\"+i,a=uNt.GetRes(n);if(e==Rmt.BASIC)this.bmpName.visible=!1,this.bmpNameBg.visible=!1,this.bmpCardType.visible=!1,this.bmpSmallDesc&&(this.bmpSmallDesc.visible=!1),a?(this.bmpNormalName.visible=!0,this.bmpNormalName.texture=a):this.bmpNormalName.visible=!1;else{this.bmpNormalName.visible=!1,e==Rmt.JINNANG?this.bmpNameBg.visible=!0:this.bmpNameBg.visible=!1,a?(this.bmpName.visible=!0,this.bmpName.texture=a):this.bmpName.visible=!1;let t=\"card_type\"+e,i=uNt.GetRes(t);i?(this.bmpCardType.texture=i,this.bmpCardType.visible=!0):this.bmpCardType.visible=!1;let s=uNt.GetRes(Gqi.SMALL_DESC_PREFIX);e==Rmt.JINNANG||e==Rmt.EQUIP?(this.bmpSmallDesc.texture=s,this.bmpSmallDesc.visible=!0):this.bmpSmallDesc.visible=!1}this.layout()}"
+    },
+    "UpdateCardFaceRes": {
+      "offset": 17538918,
+      "source": "UpdateCardFaceRes(t,i){if(this.isNewCardUI){if(t&&this.bmpFace2){let i=uNt.GetRes(t);i&&(this.bmpFace2.visible=!0,this.bmpFace2.texture=i)}if(i&&this.bmpNormalName){let t=uNt.GetRes(i);t&&(this.bmpNormalName.visible=!0,this.bmpNormalName.texture=t)}this.bmpName&&(this.bmpName.visible=!1),this.bmpNameBg&&(this.bmpNameBg.visible=!1),this.bmpCardType&&(this.bmpCardType.visible=!1),this.bmpSmallDesc&&(this.bmpSmallDesc.visible=!1),this.layout()}}"
+    },
+    "resetNewCardFace": {
+      "offset": 17539364,
+      "source": "resetNewCardFace(){this.bmpFace2&&(this.bmpFace2.visible=!1,this.bmpFace2.texture=hKi.GetEmptyTextrue(this.emptyRes)),this.bmpNormalName&&(this.bmpNormalName.visible=!1,this.bmpNormalName.texture=hKi.GetEmptyTextrue(this.emptyRes)),this.bmpNameBg&&(this.bmpNameBg.visible=!1),this.bmpName&&(this.bmpName.visible=!1,this.bmpName.texture=hKi.GetEmptyTextrue(this.emptyRes)),this.bmpCardType&&(this.bmpCardType.visible=!1,this.bmpCardType.texture=hKi.GetEmptyTextrue(this.emptyRes)),this.bmpSmallDesc&&(this.bmpSmallDesc.visible=!1,this.bmpSmallDesc.texture=hKi.GetEmptyTextrue(this.emptyRes))}"
+    },
+    "UpdateCardFace": {
+      "offset": 17539955,
+      "source": "UpdateCardFace(){if(this.dontUpdateCard)return;if(this.isPokerCardFace)return void this.UpdatePokerCardFace();super.UpdateCardFace();let t=this.theCard;if(t)if(t.IsEmpty)this.bmpFlower.texture=hKi.GetEmptyTextrue(this.emptyRes),this.bmpNumber.texture=hKi.GetEmptyTextrue(this.emptyRes),this.bmpRange.texture=hKi.GetEmptyTextrue(this.emptyRes);else if(t.IsVirtualCard&&!t.VirtualShowOrignColorAndNumber)this.bmpFlower.texture=uNt.GetRes(\"virtural_card_\"+t.VirtualColor),this.bmpNumber.texture=hKi.GetEmptyTextrue(this.emptyRes),this.bmpRange.texture=hKi.GetEmptyTextrue(this.emptyRes),this.layout();else{let i=t.IsModyfifyByServer?t.FlowerOnSeat:t.CardFlower;this.bmpFlower.texture=0==i?hKi.GetEmptyTextrue(this.emptyRes):uNt.GetRes(oj.GetFlowerResName(i)),this.bmpNumber.texture=0==t.CardNumber?hKi.GetEmptyTextrue(this.emptyRes):uNt.GetRes(oj.GetNumberResName(t.CardNumber,i)),this.layout()}else this.bmpFlower.texture=hKi.GetEmptyTextrue(this.emptyRes),this.bmpNumber.texture=hKi.GetEmptyTextrue(this.emptyRes),this.bmpRange.texture=hKi.GetEmptyTextrue(this.emptyRes)}"
+    },
+    "layout": {
+      "offset": 17556987,
+      "source": "layout(){super.layout();let t=33,i=this.isPokerCardFace;if(this.bmpPokerFace&&(this.bmpPokerFace.visible=i),this.width==Jk.MAX_SIZE.width?(this.bmpFlower.width=i?t:19,this.bmpFlower.height=i?t:17,this.bmpNumber.width=i?39:19,this.bmpNumber.height=i?39:17,this.bmpNumber.x=i?-1:4,this.bmpNumber.y=4):(this.bmpFlower.width=Math.ceil(.8*(i?t:19)),this.bmpFlower.height=Math.ceil(.8*(i?t:17)),this.bmpNumber.width=Math.ceil(.8*(i?t:19)),this.bmpNumber.height=Math.ceil(.8*(i?t:17)),this.bmpNumber.x=i?-1:3,this.bmpNumber.y=3),this.theCard&&this.theCard.IsVirtualCard&&!this.theCard.VirtualShowOrignColorAndNumber?(this.bmpFlower.x=2,this.bmpFlower.y=10):(this.bmpFlower.x=this.bmpNumber.x+(this.bmpNumber.width-this.bmpFlower.width>>1),this.bmpFlower.y=this.bmpNumber.y+this.bmpNumber.height+(i?-6:-2)),this.OBlightImg&&(this.OBlightImg.width=this.width+15,this.OBlightImg.height=this.height+15),this.bmpMask&&(this.bmpMask.width=this.width,this.bmpMask.height=this.height),this.bmpFace2&&this.bmpFace2.posInteger(this.width-this.bmpFace2.width>>1,this.bmpCardType.visible?28:50),this.bmpSmallDesc){let t=this.bmpFace2?this.bmpFace2.y+this.bmpFace2.height:0;this.bmpSmallDesc.pos(this.width-Gqi.SMALL_DESC_RIGHT,t+Gqi.SMALL_DESC_GAP)}if(this.bmpNormalName&&this.bmpNormalName.posInteger(1+(this.width-this.bmpNormalName.width>>1),7),this.bmpNameBg&&this.bmpNameBg.posInteger((this.width-this.bmpNameBg.width>>1)+Gqi.NAME_OFFSET_X,18-(this.bmpNameBg.height>>1)),this.bmpName){let t=Gqi.NAME_OFFSET_X;this.isLongEquipName()&&(t+=Gqi.LONG_NAME_OFFSET_X),this.bmpName.posInteger((this.width-this.bmpName.width>>1)+t,17-(this.bmpName.height>>1))}this.bmpCardType&&this.bmpCardType.pos(4,this.height-21),this.selectedBorder&&(this.selectedBorder.x=-6.5,this.selectedBorder.y=-6.5,this.selectedBorder.width=this.width+13,this.selectedBorder.height=this.height+13),this.selectedBorderBlue&&(this.selectedBorderBlue.x=-6,this.selectedBorderBlue.y=-6,this.selectedBorderBlue.width=this.width+11,this.selectedBorderBlue.height=this.height+12),this.guideTipBtn&&this.guideTipBtn.pos(this.width-2-this.guideTipBtn.width,this.height-4-this.guideTipBtn.height),this.defaultlBorder&&(this.defaultlBorder.x=-6.5,this.defaultlBorder.y=-6.5,this.defaultlBorder.width=this.width+13,this.defaultlBorder.height=this.height+13),this.cardEnhance&&this.cardEnhance.setSize(this.width,this.height,this.width/Jk.NORMAL_SIZE.width),this.cardFaceEffect&&(this.cardFaceEffect.scale=this.width/Jk.NORMAL_SIZE.width),this.cardFaceFx&&(this.cardFaceFx.scale=this.width/Jk.NORMAL_SIZE.width)}"
+    },
+    "ChangeFlowerAndNumber": {
+      "offset": 17544957,
+      "source": "ChangeFlowerAndNumber(t,i){this.changeFlower||(this.changeFlower=new CO(uNt.GetRes(\"change_color_bg\")),this.changeFlower.name=\"changeFlower\",this.addDrawChildAt(this.changeFlower,this.bmpFace.endIndex+1),this.changeFlower.posInteger(2,1)),this.bmpFlower.texture=0==t?hKi.GetEmptyTextrue(this.emptyRes):uNt.GetRes(oj.GetFlowerResName(t)),this.bmpNumber.texture=0==i?hKi.GetEmptyTextrue(this.emptyRes):uNt.GetRes(oj.GetNumberResName(i,t))}"
+    },
+    "UpdateCardFaceOrBackRes": {
+      "offset": 17571738,
+      "source": "UpdateCardFaceOrBackRes(t,i){i&&this.theCard?this.updateNewCardFace():this.resetNewCardFace();let s=uNt.GetRes(t);s&&(s.width=Jk.NORMAL_SIZE.width,s.height=Jk.NORMAL_SIZE.height),this.bmpFace.texture=s,this.bmpFlower.visible=!1,this.bmpNumber.visible=!1,this.bmpPokerFace&&(this.bmpPokerFace.visible=!1),this.measure()}"
+    }
+  }
+}

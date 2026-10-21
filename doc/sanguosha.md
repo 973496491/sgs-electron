@@ -64,6 +64,28 @@
 
 2026-10-15 复用仍存在的 2026-10-08 ES6 主程序和普通配置快照，定向解密 `cha_gs_dbs_fs_skininfo.sgs`，确认 `PubGsCUseCard -> ShowUseCardAni -> USE_CARD -> useCardAniPlay -> onPlayNewSpEffect(3) -> xingxiang.json/GongJi`。已核对皮肤/形态选路、`skinEffectNew/Small/Big`、Spine 加载、出框/震屏/全屏/声音标签与停止恢复。详见 [武将攻击动效链路](武将攻击动效链路.md)，彩虹表入口 `manualLookupNotes.generalAttackAnimation`；31 项抽取方法模拟验证通过，未游戏内实测或下载动画依赖，不改变全量归档及 WASM 分支的未完成状态。
 
+#### 分层卡面 / 原始插画叠加核验（2026-10-21）
+
+用户游戏内确认：塔罗背景、点数和花色已显示，原始“闪”的卡名和下部插画仍覆盖其上。本次定向取得官方 `sgsGame_a.sgs` 和 `libs/min/laya_a.sgs`，按已知ZIP方法解包，核对实际卡牌内容层；未重新下载全量配置或素材，未做完整客户端/WASM覆盖验证。
+
+| 来源 | 获取UTC时间 | 原包字节 / SHA-256 |
+|---|---|---|
+| [官方ES6主程序](https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs) | 2026-10-21 07:38:24 | 5386498 / `e01e94a8c0866067169418488c4834259ee6670ca49936f2014a6d052c98101b` |
+| [配套引擎包](https://web.sanguosha.com/220/h5_2/libs/min/laya_a.sgs) | 2026-10-21 07:37:15 | 452271 / `93e54cfa230bf85772fc73d0da5459832d8ebc45e2f71cdc11ef0e4ccfa30cf2` |
+
+原包、来源JSON、解出的主程序和22个引擎脚本当前保存在 `C:/Users/97349/AppData/Local/Temp/xc-tarot-engine-5jmgmo/`。明文主程序23053259字节，SHA-256为 `bb49b68b44ee8732248a310511bf2a88dfe3f080d12433c82762a9dfe31c94d2`。临时目录可被清理；仓库已保存9段相关原生方法、字符偏移、原包URL/获取时间/哈希于 `electron-next/tests/fixtures/card-face-layers-20261021.json`，对应行为检查为 `tests/card-theme-layers.cjs`。
+
+- 普通牌UI为本快照的 `Gqi extends xjt`，`isNewCardUI` 默认true；`SetCardFace -> getCardFaceBaseTexture` 选择 `cardFace_<id>` 或 `cardFace_0` 背景，再执行 `updateNewCardFace`。原牌插画由 `bmpFace2` 单独加载 `face_<ResName>`，基础牌名字由 `bmpNormalName` 加载 `name_<ResName>`；非基础牌另用 `bmpName/bmpNameBg/bmpCardType/bmpSmallDesc`。布局中基础插画通常y=50，存在类型图层时y=28，与用户看到的下部插画残留吻合。10月8日旧快照的单底图路径仍作为旧客户端依据，不能等同本快照的完整结构。
+- `updateNewCardFace` 会重新设置六个内容节点的可见性并调用layout，不能只在开关时隐藏一次。`UpdateCardFaceRes` 可直接改插画/名字（本快照有 `face_JunZi_<n>/name_JunZi` 调用）；`UpdateCardFaceOrBackRes` 可强制正反面并隐藏符号，应保留这些显式显示。`resetNewCardFace` 在Clear和扑克切换等路径清空内容层，主题卸载不能恢复已被原生清空的旧层。
+- 同时核对原生纹理图元 `CO`（旧快照为 `CSt`）的纹理setter、更新指令与图层可见性，以及首批三个186×260生产PNG的Alpha最小/最大均为255；本问题是独立内容层未接管，不能靠扩大PNG、覆盖选中框或清空全部上层节点解决。
+- 已接入的修复仅在匹配且塔罗底图加载成功时隐藏六个原生内容层，保存并恢复各自原生可见性。状态及清理归属见架构表；12项真实摘录方法/模拟检查通过，原主题29项保留，实际DOM/PNG检查增至18项。用户游戏内残留已定位，修复后的完整游戏场景仍待回测；以上资源请求时间不代表固定历史版本。
+
+检索关键词：`分层卡面`、`原始插画叠加`、`isNewCardUI`、`getCardFaceBaseTexture`、`cardFace_0`、`face_Shan`、`name_Shan`、`bmpFace2`、`bmpNormalName`、`UpdateCardFaceRes`、`UpdateCardFaceOrBackRes`、`resetNewCardFace`。
+
+塔罗第一阶段已经实现于 `electron-next/src/features/card-theme.js` 与 `src/adapters/card-theme-client.js`，并装配进主脚本；实施事实及回归见架构表“塔罗牌卡面第一阶段”。用户确定塔罗点数红黑共用13张，原生点数则为红黑各13项；目前接入点数2和红桃符号，空缺独立回退。首批三个资源/花色组合的武器范围按底图徽记，不按特殊模式校验；其他牌、装备槽及特殊显示仍走原生。用户已确认塔罗可以显示，后续分层修复的游戏内效果待回测。
+
+用户曾确认能显示塔罗，但会退回原图。2026-10-21复查10月8日本地主程序快照：`skillCardLabelChange -> UpdateMultiSkill` 是普通牌也会经过的例行链；`IsMultiSkillState=false` 且无 `multiSkillAnimate` 时该方法不重画，不能见调用即恢复主题。`RefreshCardFace` 则只调用 `this.SetCardFace`，不保证经过 `UpdateCardFace`；小抄已有卡背包装器在普通UI原型保存 `__SetCardFace`，后挂父类会被绕过，表现为原生底图与塔罗符号混合。两项已用真实抽取方法复现并修复，挂钩位置、状态判断及29项回归见架构表；源码偏移 `UpdateMultiSkill=17111220`、`RefreshCardFace=10266830` 仍只对该10月8日快照有效，游戏修复效果待回测。
+
 ## 二、解包数据是什么
 
 2026-08-08 抓取的 OL 客户端快照，解包后得到三类东西：

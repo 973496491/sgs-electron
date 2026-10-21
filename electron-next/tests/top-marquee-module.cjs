@@ -154,6 +154,7 @@ check("actual core and second-IIFE host wiring share the same instance", () => {
     },
     ...h.host, getHandSortSwitchAnchor: h.host.getAnchor,
     _0x41a3d0: () => "", handCards: { start() {}, mount() {}, dispose() {} },
+    cardThemeFeature: { dispose() {} },
   };
   const context = vm.createContext(sandbox);
   vm.runInContext(slice("  // 顶部跑马灯：", "  async function setProto()"), context);
