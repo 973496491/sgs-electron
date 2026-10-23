@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "scope": "4 suits + 13 shared ranks; separate from 197 card tasks",
+  "queue": [
+    "suit_heart",
+    "suit_diamond",
+    "suit_spade",
+    "suit_club",
+    "rank_A",
+    "rank_2",
+    "rank_3",
+    "rank_4",
+    "rank_5",
+    "rank_6",
+    "rank_7",
+    "rank_8",
+    "rank_9",
+    "rank_10",
+    "rank_J",
+    "rank_Q",
+    "rank_K"
+  ],
+  "done": {
+    "suit_heart": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\suit_heart.json",
+      "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "acceptedAt": "2026-10-21T06:47:44.133110+00:00"
+    },
+    "suit_diamond": {
+      "attempt": 3,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\suit_diamond.json",
+      "sha256": "346a83698acc29318c709335796c5a33229f624edc2ffa69e61f5f4077819d08",
+      "acceptedAt": "2026-10-21T07:19:46.462984+00:00"
+    },
+    "suit_spade": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\suit_spade.json",
+      "sha256": "8abc2f092a5c6395adb8220b8842825aef25efe65c10100cb1e6f2163d0051e3",
+      "acceptedAt": "2026-10-21T07:24:34.433947+00:00"
+    },
+    "suit_club": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\suit_club.json",
+      "sha256": "7f680748273570d316775d46a11b38a9c571e00c8b2f82006ca2b55f155e1788",
+      "acceptedAt": "2026-10-21T07:27:06.669083+00:00"
+    },
+    "rank_A": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_A.json",
+      "sha256": "1a670f7df3b9d761badc3e434b759e6810536e58f7766fc9dfa357fbf9e37ddb",
+      "acceptedAt": "2026-10-21T07:29:36.456735+00:00"
+    },
+    "rank_2": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_2.json",
+      "sha256": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058",
+      "acceptedAt": "2026-10-21T07:30:57.138233+00:00"
+    },
+    "rank_3": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_3.json",
+      "sha256": "4a7fbe221afa24790acc6e02d631f75d35d7494fb38b0a8483a7a46af3ad775a",
+      "acceptedAt": "2026-10-21T07:33:20.976870+00:00"
+    },
+    "rank_4": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_4.json",
+      "sha256": "64ef5027fa27ab85a432ffe1ea01ed64dd5b4d805db2bc60a9fdc47dcd548c69",
+      "acceptedAt": "2026-10-21T07:35:46.149302+00:00"
+    },
+    "rank_5": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_5.json",
+      "sha256": "cf722b330eb391759234cfd8ed9aaa998d30c84801c22da5ada101ec894e02d7",
+      "acceptedAt": "2026-10-21T07:38:20.989503+00:00"
+    },
+    "rank_6": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_6.json",
+      "sha256": "21311db6cdf4b8bf6b574b4398549cb940edd899b73a5a05b3085297ab5f8b4d",
+      "acceptedAt": "2026-10-21T07:40:50.740819+00:00"
+    },
+    "rank_7": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_7.json",
+      "sha256": "2f33009cd7217d7290c9725ba4232ccbba60e0859efbf6a607d7c36b21cf4465",
+      "acceptedAt": "2026-10-21T07:43:21.320454+00:00"
+    },
+    "rank_8": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_8.json",
+      "sha256": "93fd103953280a6a91a9ead289b822a22ff6e3a69aa470394933af228cd48698",
+      "acceptedAt": "2026-10-21T07:45:54.726182+00:00"
+    },
+    "rank_9": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_9.json",
+      "sha256": "aeb56316eb75da3616bc817261ad114896bc28ea9dac4018318869cf3b8ff18b",
+      "acceptedAt": "2026-10-21T07:48:38.467723+00:00"
+    },
+    "rank_10": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_10.json",
+      "sha256": "913a085169bba6d23ef8ce77ca8ca45e2281bbfdf765607c0494fe5f3a85e7f7",
+      "acceptedAt": "2026-10-21T07:51:37.196987+00:00"
+    },
+    "rank_J": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_J.json",
+      "sha256": "ed111a844dc0365121fd9a8039f93944c8a82b763414782791c1584bce35f881",
+      "acceptedAt": "2026-10-21T07:54:14.520467+00:00"
+    },
+    "rank_Q": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_Q.json",
+      "sha256": "ada3e196abd1b1ff60a9f88e78d251f58c8415f263004e37732e32116b31851a",
+      "acceptedAt": "2026-10-21T07:57:09.847133+00:00"
+    },
+    "rank_K": {
+      "attempt": 1,
+      "record": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\逐项记录\\rank_K.json",
+      "sha256": "318c9e5fba71a6fc87c51aa972f63c5696b31ecec64bd08b866c4eed74f34041",
+      "acceptedAt": "2026-10-21T07:59:54.793895+00:00"
+    }
+  },
+  "current": null,
+  "createdAt": "2026-10-21T06:47:27.734922+00:00",
+  "updatedAt": "2026-10-21T07:59:54.793906+00:00"
+}

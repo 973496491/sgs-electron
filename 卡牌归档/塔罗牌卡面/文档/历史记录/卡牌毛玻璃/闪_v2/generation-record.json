@@ -1,0 +1,47 @@
+{
+  "tool": "OpenAI Responses native image_generation",
+  "generatedAt": "2026-10-20T15:58:05.286Z",
+  "generationId": "ig_00f21487dd248881016ad78f5d830087d0b8c20f85b78cce8a",
+  "input": "../闪_v1/生成原稿/Shan-generated-1.png",
+  "generationOriginalMode": "RGB",
+  "generationOriginalAlpha": [
+    255,
+    255
+  ],
+  "outputTransparency": "none; all final pixels alpha=255",
+  "size": [
+    186,
+    260
+  ],
+  "processing": "AI border-blur edit; opaque PNG export; Lanczos size adaptation only",
+  "outputs": [
+    {
+      "file": "生成原稿.png",
+      "size": [
+        1061,
+        1482
+      ],
+      "mode": "RGB",
+      "sha256": "f920ce3000cb620c96cc76ff08c5974a2f7d848fa558138a7b84ee51b8deec0d"
+    },
+    {
+      "file": "Shan-border-blur-v2-large.png",
+      "size": [
+        1061,
+        1482
+      ],
+      "mode": "RGB",
+      "sha256": "e5397c6b5a076cdac66b452aad22d39356911ef5a7f029d7e8ebc7023399bc8d"
+    },
+    {
+      "file": "Shan_png.png",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "sha256": "aa4b46e90be00fcea24648f527335d3f93a9b9a4fb0064f3eef6866e3117168c"
+    }
+  ],
+  "status": "single-card preview; other cards not processed; not installed in game"
+}

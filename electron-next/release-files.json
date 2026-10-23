@@ -3,6 +3,11 @@
   "files": [
     {
       "sourceRoot": "repo",
+      "source": "electron-next/src/features/deck-visibility.js",
+      "target": "modules/features/deck-visibility.js"
+    },
+    {
+      "sourceRoot": "repo",
       "source": "electron-next/src/features/card-theme.js",
       "target": "modules/features/card-theme.js"
     },
@@ -73,6 +78,11 @@
     },
     {
       "sourceRoot": "repo",
+      "source": "electron-next/src/electron/release-bootstrap.js",
+      "target": "modules/runtime/release-bootstrap.js"
+    },
+    {
+      "sourceRoot": "repo",
       "source": "electron-next/src/electron/release-install.js",
       "target": "modules/runtime/release-install.js"
     },
@@ -90,6 +100,246 @@
       "sourceRoot": "repo",
       "source": "electron-next/version.json",
       "target": "version.json"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/JueDou_diamond.png",
+      "target": "card-themes/tarot/faces/JueDou_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/ShunShouQianYang_diamond.png",
+      "target": "card-themes/tarot/faces/ShunShouQianYang_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/GuanShiFu_diamond.png",
+      "target": "card-themes/tarot/faces/GuanShiFu_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/Sha_diamond.png",
+      "target": "card-themes/tarot/faces/Sha_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/FangTianHuaJi_diamond.png",
+      "target": "card-themes/tarot/faces/FangTianHuaJi_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/ZiXing_diamond.png",
+      "target": "card-themes/tarot/faces/ZiXing_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/ZhuGeLianNu_diamond.png",
+      "target": "card-themes/tarot/faces/ZhuGeLianNu_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/Tao_diamond.png",
+      "target": "card-themes/tarot/faces/Tao_diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/WanJianQiFa_heart.png",
+      "target": "card-themes/tarot/faces/WanJianQiFa_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/WuGuFengDeng_heart.png",
+      "target": "card-themes/tarot/faces/WuGuFengDeng_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/ChiTu_heart.png",
+      "target": "card-themes/tarot/faces/ChiTu_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/LeBuSiShu_heart.png",
+      "target": "card-themes/tarot/faces/LeBuSiShu_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/WuZhongShengYou_heart.png",
+      "target": "card-themes/tarot/faces/WuZhongShengYou_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/Sha_heart.png",
+      "target": "card-themes/tarot/faces/Sha_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/GuoHeChaiQiao_heart.png",
+      "target": "card-themes/tarot/faces/GuoHeChaiQiao_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/TaoYuanJieYi_heart.png",
+      "target": "card-themes/tarot/faces/TaoYuanJieYi_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/Tao_heart.png",
+      "target": "card-themes/tarot/faces/Tao_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/QiLinGong_heart.png",
+      "target": "card-themes/tarot/faces/QiLinGong_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/ZhuaHuangFeiDian_heart.png",
+      "target": "card-themes/tarot/faces/ZhuaHuangFeiDian_heart.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/suits/diamond.png",
+      "target": "card-themes/tarot/suits/diamond.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/suits/spade.png",
+      "target": "card-themes/tarot/suits/spade.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/suits/club.png",
+      "target": "card-themes/tarot/suits/club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/A.png",
+      "target": "card-themes/tarot/ranks/A.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/3.png",
+      "target": "card-themes/tarot/ranks/3.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/4.png",
+      "target": "card-themes/tarot/ranks/4.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/5.png",
+      "target": "card-themes/tarot/ranks/5.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/6.png",
+      "target": "card-themes/tarot/ranks/6.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/7.png",
+      "target": "card-themes/tarot/ranks/7.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/8.png",
+      "target": "card-themes/tarot/ranks/8.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/9.png",
+      "target": "card-themes/tarot/ranks/9.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/10.png",
+      "target": "card-themes/tarot/ranks/10.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/J.png",
+      "target": "card-themes/tarot/ranks/J.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/Q.png",
+      "target": "card-themes/tarot/ranks/Q.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/ranks/K.png",
+      "target": "card-themes/tarot/ranks/K.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/JueDou_club.png",
+      "target": "card-themes/tarot/faces/JueDou_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/Sha_club.png",
+      "target": "card-themes/tarot/faces/Sha_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/WuXieKeJi_club.png",
+      "target": "card-themes/tarot/faces/WuXieKeJi_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/ZhuGeLianNu_club.png",
+      "target": "card-themes/tarot/faces/ZhuGeLianNu_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/BaGuaZhen_club.png",
+      "target": "card-themes/tarot/faces/BaGuaZhen_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/GuoHeChaiQiao_club.png",
+      "target": "card-themes/tarot/faces/GuoHeChaiQiao_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/DiLu_club.png",
+      "target": "card-themes/tarot/faces/DiLu_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/LeBuSiShu_club.png",
+      "target": "card-themes/tarot/faces/LeBuSiShu_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/NanManRuQin_club.png",
+      "target": "card-themes/tarot/faces/NanManRuQin_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/JieDaoShaRen_club.png",
+      "target": "card-themes/tarot/faces/JieDaoShaRen_club.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/JueDou_spade.png",
+      "target": "card-themes/tarot/faces/JueDou_spade.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/CiXiongShuangGuJian_spade.png",
+      "target": "card-themes/tarot/faces/CiXiongShuangGuJian_spade.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/ShunShouQianYang_spade.png",
+      "target": "card-themes/tarot/faces/ShunShouQianYang_spade.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/resources/card-themes/tarot/faces/JueYing_spade.png",
+      "target": "card-themes/tarot/faces/JueYing_spade.png"
     }
   ],
   "packageFiles": [

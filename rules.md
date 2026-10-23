@@ -15,6 +15,7 @@
 | 窗口、类与挂钩方法 | 有 `window_class_registry.tsv` 时先定位注册，再核对类实现、实例获取和生命周期；本仓库类解析为 `laya.class`，指南示例 `QI.class/handleRuntimeEvent` 不能直接当作现有入口。 |
 | 原生事件 | 有 `event_names.tsv` 时先检索，再核对派发点与监听条件；脚本自己定义的事件可能不在原生事件表中，缺项本身不能证明事件无效。 |
 | 活动、武将、皮肤、卡牌配置 | 先定位解密 JSON 和主程序中的使用位置；活动时间结合客户端服务器时间与实际判断实现，配置存在不等于当前账号可领取、持有或可见。 |
+| 原始卡面、图集拆分与合并 | 先查 OL 指南的“卡牌拆分与原位合并”，离线卡牌素材统一在 `卡牌归档/`；使用 `tools/card_atlas.py` 与匹配的 atlas/图片；核对哈希、物理像素、scale、共享坐标和RGBA往返。不以UI预览常量或已加载的 `baseCardTexMap` 项数证明完整图集。 |
 
 三张 TSV 是从主程序生成的辅助索引，不是官方包内默认附带文件；缺少索引时可直接查主程序注册与调用点。资料搜索应围绕当前功能进行，完整解包清单不自动扩大当前任务范围。
 
@@ -62,7 +63,7 @@
 - **唯一配置**：[electron-next/release-files.json](electron-next/release-files.json) 是已建立的小抄发布文件映射，打包与安装共用这一份配置。打包时随发布文件夹带上配置副本，安装直接读取包内副本，不依赖开发仓库。此配置是文件搬运映射，不是运行时自动加载清单，也不替代现有模块装配定义。
 - **具体入口**：双击 [electron-next/pack.cmd](electron-next/pack.cmd)，调用 Python [scripts/package_release.py](electron-next/scripts/package_release.py)。入口优先使用工程 `.venv-release/Scripts/python.exe`，否则使用 `py -3` 或 `python`；`xcProjectRoot` 固定为 `C:\Users\97349\Downloads\electron\electron-next`，桌面副本为 `小抄打包.cmd`。工程迁移或入口变更须同步变量及桌面副本。旧 `scripts/package-release.ps1` 已由 Python 打包器替代。安装模板仍为 [scripts/install.cmd](electron-next/scripts/install.cmd)、[scripts/install.ps1](electron-next/scripts/install.ps1)，共用路径助手 [scripts/release-common.ps1](electron-next/scripts/release-common.ps1)，由 `packageFiles` 复制到包根目录；解压 ZIP 后双击 `install.cmd`，安装端不要求 Python。
 
-当前 `files` 的完整业务清单如下，执行时始终以 JSON 映射为准；文件增删时同时维护本节涉及的文件名。
+当前 `files` 的业务分组如下，具体逐文件来源始终以 JSON 映射为准；素材目录按清单逐项登记，不表示打包器递归收集目录。
 
 | 仓库来源（`sourceRoot=repo`） | `%APPDATA%\SGSOL` 下的安装位置（`target`） |
 |---|---|
@@ -74,18 +75,17 @@
 | `electron-next/src/adapters/card-theme-client.js` | `modules/adapters/card-theme-client.js` |
 | `electron-next/src/electron/card-theme-assets.js` | `modules/runtime/card-theme-assets.js` |
 | `electron-next/resources/card-themes/tarot/manifest.json` | `card-themes/tarot/manifest.json` |
-| `electron-next/resources/card-themes/tarot/faces/Shan_heart.png` | `card-themes/tarot/faces/Shan_heart.png` |
-| `electron-next/resources/card-themes/tarot/faces/Shan_diamond.png` | `card-themes/tarot/faces/Shan_diamond.png` |
-| `electron-next/resources/card-themes/tarot/faces/HanBingJian_spade.png` | `card-themes/tarot/faces/HanBingJian_spade.png` |
-| `electron-next/resources/card-themes/tarot/ranks/2.png` | `card-themes/tarot/ranks/2.png` |
-| `electron-next/resources/card-themes/tarot/suits/heart.png` | `card-themes/tarot/suits/heart.png` |
+| `electron-next/resources/card-themes/tarot/faces/` 中已登记的36张PNG | `card-themes/tarot/faces/` 对应文件 |
+| `electron-next/resources/card-themes/tarot/ranks/` 中A、2～10、J、Q、K共13张PNG | `card-themes/tarot/ranks/` 对应文件 |
+| `electron-next/resources/card-themes/tarot/suits/` 中heart、diamond、spade、club共4张PNG | `card-themes/tarot/suits/` 对应文件 |
 | `electron-next/src/electron/release-update.js` | `modules/runtime/release-update.js` |
+| `electron-next/src/electron/release-bootstrap.js` | `modules/runtime/release-bootstrap.js` |
 | `electron-next/src/electron/release-install.js` | `modules/runtime/release-install.js` |
 | `electron-next/scripts/install.ps1` | `modules/runtime/install.ps1` |
 | `electron-next/scripts/release-common.ps1` | `modules/runtime/release-common.ps1` |
 | `electron-next/version.json` | `version.json` |
 
-2026-10-17 已接入自动安装及屏蔽弹幕模块；2026-10-21塔罗第一阶段增加两个装配模块、素材读取模块及6项PNG/清单，当前18个业务文件。手牌、屏蔽弹幕和卡面模块装配进主脚本，更新/安装/素材读取模块由宿主主进程实际 require。旧客户端已有的Electron remote桥可在素材接口缺失时加载随包模块并自动注册；此兼容链已用Electron10验证，无需覆盖宿主main或重建asar，不能省略读取模块和安装协调器。自动安装只接受新协议包；安装顺序固定为其它业务文件、废弃文件、主脚本、最后版本记录。本机私有配置不打包，`remove` 当前为空。
+2026-10-17 已接入自动安装及屏蔽弹幕模块；2026-10-21塔罗第一阶段建立两个装配模块和素材读取模块，同日17:59素材批次扩展至36款底图、13个共用点数和4个花色。2026-10-22加入release-bootstrap，当前53张PNG加素材清单，共67个业务文件。手牌、屏蔽弹幕和卡面模块装配进主脚本，更新/安装/素材读取模块由宿主主进程实际 require。旧客户端已有的Electron remote桥可加载随包素材接口和更新引导；兼容链已用Electron10验证，无需覆盖宿主main或重建asar，不能省略引导、读取模块和安装协调器。自动安装只接受新协议包；安装顺序固定为其它业务文件、废弃文件、主脚本、最后版本记录。本机私有配置不打包，`remove` 当前为空。
 
 映射采用逐文件的 `files` 条目，字段约定如下；打包文件夹内使用 `files/` 加 `target` 保存文件，安装再按同一 `target` 落到目标目录。
 
@@ -101,19 +101,20 @@
 - **同步义务**：新增发布文件时增加条目；删除文件时移除旧条目；改名、移动或改变安装位置时同步 `sourceRoot/source/target`。这些更新必须与对应文件变更一起完成，不能留待打包时人工补齐。纯内容修改且路径不变无需机械修改映射；与发布无关的测试、文档不登记。
 - **卡面素材引用校验**：打包器在创建发布目录前校验映射内 `card-themes/*/manifest.json` 的faces/ranks/suits引用；每个非空PNG路径必须有对应 `files` 条目，缺项立即失败。null或空字符串保留原生回退语义；不会自动扫描目录或把整份卡牌归档加入包。新增图时须同时维护素材清单和发布映射。桌面 `小抄打包.cmd` 共用此校验，入口改动同步工程与桌面副本。
 - **删除与旧路径**：同一配置的 `remove` 列表记录已废弃的小抄安装相对路径。删除发布文件或改变其安装目标时，移除旧映射并登记旧 `target`，供安装脚本清理旧文件；仅改变来源而安装目标不变时不登记删除。`remove` 不包含当前有效目标，不使用通配符或整目录清空；只处理明确废弃的小抄文件，保留用户数据。
-- **脚本职责**：Python 打包器按映射复制文件、同步暂存版本、极限压缩，再按用户选择决定是否发布 COS。手动和自动安装共用 `install.ps1/release-common.ps1` 与包内映射；自动入口使用本机运行时安装器，不直接执行 ZIP 中的脚本。当前为 9 个业务文件、3 个包根安装工具和 1 份映射，共 13 个文件。Python/SDK/凭据仍仅在开发端，客户端安装使用系统 Windows PowerShell 5.1 和 .NET。
+- **脚本职责**：Python 打包器按映射复制文件、同步暂存版本、极限压缩，再按用户选择决定是否发布 COS。手动和自动安装共用 `install.ps1/release-common.ps1` 与包内映射；自动入口使用本机运行时安装器，不直接执行 ZIP 中的脚本。当前为 67 个业务文件、3 个包根安装工具和 1 份映射，共 71 个文件。Python/SDK/凭据仍仅在开发端，客户端安装使用系统 Windows PowerShell 5.1 和 .NET。
 - **输出与使用**：每次打包生成全新的 `electron-next/release/xiaochao-年月日-时分秒-毫秒/` 及同名 `.zip`，保留文件夹，不合并旧目录或覆盖已有 ZIP。业务文件位于包内 `files/`，安装工具和映射位于包根目录，ZIP 内保留一个完整发布文件夹；压缩成功即打开资源管理器并选中 ZIP，之后才开始可选上传，双击脚本结束后保留窗口显示结果。`show_archive -> select_archive_in_explorer` 使用 Windows `SHParseDisplayName/SHOpenFolderAndSelectItems` 传 Unicode 路径，避免把 `/select,"路径"` 作为 Python 参数再次转义而打开错误位置；失败回退 `os.startfile` 打开实际 ZIP 父目录，并说明未选中文件。两个入口都失败时显示绝对路径，不把已完成的打包判为失败。手动安装仍消费解压后的业务载荷；自动安装使用独立暂存目录并保留下载 ZIP。两者都不清空用户目录。
 - **极限 ZIP**：默认优先调用 PATH 或标准安装目录中的 `7z.exe`，使用 `a -tzip -mx=9 -mm=Deflate -mfb=258 -mpass=15`；UTF-8 临时列表逐项指定映射文件，完成后清理列表。保留标准 Deflate ZIP，Windows 自带解压可读取。找不到 7-Zip 时使用 Python `zipfile.ZIP_DEFLATED`、`compresslevel=9`。这是两种实现各自的最高压缩设置，不承诺不同压缩器得到完全相同体积。压缩失败返回 1，保留已生成目录，不执行上传。
 - **Python 环境与依赖**：2026-10-17 已核实 `C:\Python314\python.exe` 为 Python 3.14.4，pip/TLS/zlib 正常，无须升级解释器。在工程创建 `.venv-release`，安装 [scripts/requirements-release.txt](electron-next/scripts/requirements-release.txt) 中固定版本 `cos-python-sdk-v5==1.9.44`，`pip check` 通过。重建命令（在 `electron-next`）：`python -m venv .venv-release`，然后 `.venv-release\Scripts\python.exe -m pip install -r scripts\requirements-release.txt`。SDK 导入只发生在上传时，`--no-upload` 可仅用标准库/7-Zip 打包。
-- **版本来源与交付**：[version.json](electron-next/version.json) 是统一维护入口，采用三个数字分段。在 `electron-next` 执行 `npm run build:userscript`，除装配模块外还同步工作脚本头部 `@version` 与唯一业务常量 `XIAOCHAO_VERSION`；`npm run check:userscript` 同时检查模块和版本是否过期。无需打包即可同步工作脚本，默认不写实际 Roaming。客户端检测仍优先实际加载脚本头部 `@version`，缺失才回退同目录记录，因此单改工程 JSON 而未装配/同步实际文件，不会改变当前客户端。原 `_0x43f342/_0x38a6c4` 已移除，请求参数、标题、更新提示统一引用 `XIAOCHAO_VERSION`。发布端 `scripts/release_version.py` 只调整暂存副本的 `@version/XIAOCHAO_VERSION` 与包内记录，仍兼容旧包的两个混淆常量；`--version` 只覆盖此次交付，不回写工作文件。
-- **上传选项 / COS 自动上传**：桌面 `小抄打包.cmd` 与工程入口共用 `package_release.py:choose_upload`。无参数标志时先询问 `1 仅本地打包 / 2 打包并上传到云端`，回车默认1；无交互输入或EOF也仅本地，Ctrl+C取消。`--upload/-Upload` 与 `--no-upload/-NoUpload` 互斥并跳过询问；`--upload-only` 是显式补传，不再询问。仅本地模式不读取 COS 配置、不请求云端。选择上传后，`upload_release` 从 ZIP 内取版本并检查与脚本一致，签名读取已有 `releases/version.json`，拒绝用旧版覆盖较新版本；随后先上传 ZIP、再上传固定路径的 JSON，只有两步都成功才报告发布完成。JSON 为 `version/packageKey/publishedAt`，使用 `application/json; charset=utf-8` 和 `Cache-Control: no-store, max-age=0`。`--upload-only` 也按该 ZIP 内记录发布，不使用后来变更的工程版本。需要所选目录的 `cos:GetObject` 和 `cos:PutObject`；ZIP 仍限单次 5 GB。保持桶原有私有权限，上传配置 `cos-upload.local.json`、环境变量及官方 SDK 使用方式沿原规则，凭据不进入 Git 或发布包。参考 [Python SDK](https://cloud.tencent.com/document/product/436/12269) 和 [PUT Object](https://cloud.tencent.com/document/product/436/7749)。
-- **本机更新配置**：主进程使用 `cos-update.local.json` 固定密钥签名 GET，不依赖 Python，不下发凭据到页面，不开放桶 ACL。宿主注入下载目录、共享 installer 和显式 restart 回调；用户点击“下载并安装”后自动完成下载及安装，成功提示“重启客户端 / 稍后”，仅点击重启才退出当前游戏。安装失败可用已下载 ZIP 重试，不重新下载。
+- **版本来源与交付**：[version.json](electron-next/version.json) 是统一维护入口，采用三个数字分段。在 `electron-next` 执行 `npm run build:userscript`，除装配模块外还同步工作脚本头部 `@version` 与唯一业务常量 `XIAOCHAO_VERSION`；`npm run check:userscript` 同时检查模块和版本是否过期。无需打包即可同步工作脚本，默认不写实际 Roaming。客户端检测仍优先实际加载脚本头部 `@version`，缺失才回退同目录记录，因此单改工程 JSON 而未装配/同步实际文件，不会改变当前客户端。原 `_0x43f342/_0x38a6c4` 已移除，请求参数、标题、更新提示统一引用 `XIAOCHAO_VERSION`。2026-10-23起交互打包先读取工程版本，回车沿用或输入新版本，通过 `release_version.save_project_metadata` 同步写回工程记录和脚本两个版本标记；版本保存后再输入更新文案，写回主脚本 `_0x378fb5` 的字符串，回车保留，中英文分号沿原链转为换行。`--version` 也改为写回工程，`--notes` 可直接提供文案；没有终端且没显式参数时保留工程文件。`stamp_release` 继续只处理暂存副本并兼容旧包版本常量，底层 `build_release(..., version)` 的暂存盖章接口不变。
+- **上传选项 / COS 自动上传**：桌面 `小抄打包.cmd` 与工程入口共用 `package_release.py:choose_upload`。版本和文案完成后，无上传参数标志时询问 `1 仅本地打包 / 2 打包并上传到云端`，回车默认1；上传问题无交互输入或EOF也仅本地，Ctrl+C取消。版本/文案问题遇EOF取消构建，已保存的前一步保留。`--upload/-Upload` 与 `--no-upload/-NoUpload` 互斥并跳过询问；`--upload-only` 是显式补传，不再询问。仅本地模式不读取 COS 配置、不请求云端。选择上传后，`upload_release` 从 ZIP 内取版本并检查与脚本一致，签名读取已有 `releases/version.json`，拒绝用旧版覆盖较新版本；随后先上传 ZIP、再上传固定路径的 JSON，只有两步都成功才报告发布完成。JSON 为 `version/packageKey/publishedAt`，使用 `application/json; charset=utf-8` 和 `Cache-Control: no-store, max-age=0`。`--upload-only` 也按该 ZIP 内记录发布，不使用后来变更的工程版本。需要所选目录的 `cos:GetObject` 和 `cos:PutObject`；ZIP 仍限单次 5 GB。2026-10-22按用户授权保留桶默认私有，以桶策略仅允许匿名 `GetObject` 读取 `releases/*`，不开放列举、写入或其它路径；后续同前缀新包自动继承该策略。上传配置 `cos-upload.local.json`、环境变量及官方 SDK 使用方式沿原规则，凭据不进入 Git 或发布包。参考 [Python SDK](https://cloud.tencent.com/document/product/436/12269) 和 [PUT Object](https://cloud.tencent.com/document/product/436/7749)。
+- **本机更新配置**：公开更新目录可匿名GET，普通客户端不需要 `cos-update.local.json`。已有本机配置仍可签名GET；上传密钥只留在开发端，不下发页面或打入发布包。桶ACL不变，公开权限仅来自用户授权的 `releases/*` 只读策略。宿主注入下载目录、共享 installer 和显式 restart 回调；用户点击“下载并安装”后自动完成下载及安装，成功提示“重启客户端 / 稍后”，仅点击重启才退出当前游戏。安装失败可用已下载 ZIP 重试，不重新下载。
 - **自动安装与恢复**：`release-install.js` 按目标目录合并任务，隐藏启动本机 `modules/runtime/install.ps1 -ArchivePath <ZIP> -ExpectedVersion <版本> -TargetDirectory <userData>`。PS 用单根目录暂存解压，拒绝路径越界、链接、重复路径、超过 5000 条目或 512 MiB 解压内容；核对协议、映射、包内脚本/版本和目标版本，自动模式拒绝降级。所有将修改的文件先备份并写 `.xiaochao-install-state.json`，逐文件原子替换，主脚本和版本最后写；失败按记录恢复，失败恢复资料保留。下次 `-RecoverOnly` 可继续恢复。`.xiaochao-install.lock` 用系统独占文件锁防跨进程并发，暂存和备份只清理自建 GUID 工作目录，ZIP 保留。
 - **手动安装进度与成功判定**：双击 `install.cmd` 默认传 `-ShowProgress`，列出检查、备份、逐文件写入、校验和清理七步，最终显示成功/失败、版本/目录及重启提示，保留窗口。详细输出保存到目标目录 `.xiaochao-install-logs/install-<时间>-<GUID>.log`；失败列出所处步骤与恢复状态。共用安装器在删除事务记录前以 .NET SHA256 核对源/目标内容及废弃文件清理结果，校验失败执行原恢复链。无开关的自动调用继续只输出 `XC_INSTALL_RESULT`；CMD 保持 ASCII、PS1 为 UTF-8 BOM。手动成功仍消费包内业务文件，再次安装需重新解压，脚本会明确提示。仅文件内容变更，无须改发布映射。
 - **加载与退出协调**：实际宿主 `read-local-script`、仓库版本地脚本协议读取均先等待 `whenIdle()`；恢复失败时阻止注入，禁止转旧远程脚本兜底。仓库版资源解析优先使用已安装的 Roaming 主脚本。用户在安装途中退出时 `before-quit` 先等安装/恢复结束再退出；关闭窗口不会杀掉正在提交的安装器。成功不热替换页面，重启才完整加载新模块。诊断沿用 `app-log.txt`，不新增控制台日志。
+- **跨机器首次接入**：没有宿主启动检查的旧客户端，先手动安装一次包含 `release-bootstrap.js` 的完整包。主脚本 `bootstrapLocalReleaseUpdates` 经已有 `window.electron.remote` 将窗口ID交给主进程引导，不依赖游戏对象就绪；模块安装后续 `read-local-script` 等待/恢复屏障和退出等待，并执行更新检查。旧Electron10的 `_invokeHandlers` 能力已实测；缺失该能力则明确失败，不无保护地自动安装。首次脚本读取发生在引导之前，不能据此宣称改造了宿主最早读入时机。引导与已有宿主按同一窗口、版本记录路径及清单URL合并检查，避免重复弹窗；普通网页跳过，现代宿主保留自己的启动入口。发布包不含宿主main/frame或asar。
 - **固定密钥配置**：打包端模板为 `cos-upload.example.json`，真实文件为被 Git 忽略的 `cos-upload.local.json`，字段 `bucket/region/prefix/secret_id/secret_key`；对应 `COS_BUCKET/COS_REGION/COS_PREFIX/COS_SECRET_ID/COS_SECRET_KEY` 环境变量优先，默认前缀 `releases/`。`.venv-release` 和真实配置均不进入发布包。客户端本机读取配置与打包配置分别维护，业务包只携带无凭据的检查代码。
 - **上传失败与重试**：缺少配置/SDK、权限错误或上传失败返回 2，保留 ZIP，打印 `pack.cmd --upload-only "<zip路径>"` 用于不重新打包的补传。网络错误、429、5xx 最多尝试 3 次，每次重新打开文件；403 不重复重试。SDK 关闭内部重复重试及原始日志，错误输出仅含状态/错误码，不打印密钥；收到 ETag 才报告上传完成，避免把重定向响应误判成功。本地 ZIP 已在上传前定位，上传失败不重复打开目录。
-- **参数与维护**：`pack.cmd --output-directory <新目录> --sgsol-directory <Roaming来源目录>` 调整路径；`--compression-tool auto|7zip|python` 选择实现；`--no-open` 禁止资源管理器定位；`--upload` 明确上传，`--no-upload` 明确仅本地打包；两者均未指定时按上述交互规则选择；`--cos-config <JSON路径>` 指定认证配置；`--version <版本>` 覆盖本次交付版本；`--upload-only <ZIP路径>` 补传 ZIP 及版本清单，与 `--version` 互斥。原长参数别名保留，旧 `Windows` 压缩选项映射到 Python level 9。打包只同步暂存版本，不自动重建手牌模块；安装仍支持 `install.ps1 -TargetDirectory <安装目录>`。
+- **参数与维护**：`pack.cmd --output-directory <新目录> --sgsol-directory <Roaming来源目录>` 调整路径；`--compression-tool auto|7zip|python` 选择实现；`--no-open` 禁止资源管理器定位；`--upload` 明确上传，`--no-upload` 明确仅本地打包；两者均未指定时按上述交互规则选择；`--cos-config <JSON路径>` 指定认证配置；`--version <版本>` 同步保存工程版本后打包；`--notes <更新文案>` 保存工程文案后打包；`--upload-only <ZIP路径>` 补传 ZIP 及版本清单，与 `--version/--notes` 互斥且不读写工程元数据。原长参数别名保留，旧 `Windows` 压缩选项映射到 Python level 9。打包可写回版本和文案，但不自动重建功能模块，也不部署实际 Roaming；安装仍支持 `install.ps1 -TargetDirectory <安装目录>`。
 - **搬运边界**：仅接受各自根目录内的相对文件路径；拒绝越界路径、链接重定向、把有效目标列入 `remove` 或按目录删除。缺失文件/复制移动失败会返回非零退出码，不静默漏文件；自动安装还核对包协议和版本，落盘内容校验沿上述安装链；这些检查不等于游戏内验收。
 - **脚本验证**：`node electron-next/tests/release-package.cjs` 在临时目录通过实际 CMD/Python 打包、Windows 自带解压和 PowerShell 安装器验证 12 项：两种 ZIP 的完整内容及顶层目录、中文/空格/方括号路径、覆盖移动、映射增删改名、废弃路径限制、已有 ZIP 和用户配置保留。`.venv-release\Scripts\python.exe tests\release_upload.py`（在 `electron-next`）通过真实 SDK + 回环 HTTP 服务验证上传文件字节、签名、路径编码、重试预算、403、重定向、配置隔离、补传及缺配置时保留 ZIP；不连接真实 COS，不安装到真实 Roaming。真实云上传结果单独记录于架构表，不把回环测试当成云端验收。
 - **范围限制**：自动安装只改映射声明的 userData 业务文件，保留账号、用户配置、认证文件、缓存和日志；不更新 Electron 本体、不编译 asar、不自动中断当前对局。事务备份仅用于本次安装失败/中断恢复，不扩展成通用备份框架；主进程日志走 `app-log.txt`，userscript 仍按原规则写调试窗口。

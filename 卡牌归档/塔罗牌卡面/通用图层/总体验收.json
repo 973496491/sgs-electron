@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-21T08:01:05+00:00",
+  "reviewedAtLocal": "2026-10-21T16:01:05+08:00",
+  "reviewType": "independent-final-visual-overview",
+  "reviewer": "ui_final_review",
+  "result": "passed",
+  "scope": "已验收17项离线图层及其52种点数花色组合的独立视觉总览复核；不等于游戏内验收。",
+  "recordsRead": [
+    "README.md",
+    "manifest.json",
+    "verification.json"
+  ],
+  "visuallyViewedFiles": [
+    {
+      "file": "图层总览.png",
+      "dimensions": [760, 1202],
+      "method": "view_image，original，实际查看图片",
+      "coverage": "全部17项，深浅底，38×34资源和19×17 UI展示及放大预览"
+    },
+    {
+      "file": "52种组合.png",
+      "dimensions": [992, 378],
+      "method": "view_image，original，实际查看图片",
+      "coverage": "四花色×13点数，所有52组合在深浅底上的实际UI尺寸角落布局"
+    }
+  ],
+  "checks": [
+    {
+      "id": "standard-suits",
+      "result": "passed",
+      "finding": "红桃、方块、黑桃、梅花四种标准花色均存在且轮廓可区分。红桃和方块为红色金边；黑桃和梅花为黑色金边，深底主要由金边保持辨识。方块较细长、红桃较饱满，未造成花色混淆。"
+    },
+    {
+      "id": "complete-ranks",
+      "result": "passed",
+      "finding": "A、2、3、4、5、6、7、8、9、10、J、Q、K共13个点数齐全，与总览及52组合各行一致。"
+    },
+    {
+      "id": "style-consistency",
+      "result": "passed",
+      "finding": "点数呈统一香槟金衬线风格，与花色金边协调；单字符高度和基线视觉稳定。10按双字符自然比例显得略矮，但整体居中，没有明显横向挤扁或风格断裂。"
+    },
+    {
+      "id": "critical-ranks-at-ui-size",
+      "result": "passed",
+      "finding": "在19×17展示及52组合中，A的三角形轮廓、10的两个字符与0字腔、J的底部弯钩、Q的尾部及K的分叉斜笔仍可辨。10未读成单个0，Q与0可区分。"
+    },
+    {
+      "id": "dark-and-light-backgrounds",
+      "result": "passed-with-limitation",
+      "finding": "深底点数和花色金边清晰；浅底仍能辨识全部点数及四花色，但金色点数的明度接近浅底，视觉对比明显比深底轻。此处仅验收预览中展示的两种纯色背景。"
+    },
+    {
+      "id": "all-52-corner-layouts",
+      "result": "passed",
+      "finding": "逐行查看heart、diamond、spade、club与A至K的13列组合，共52种；每种均有深浅底展示。所有点数位于花色上方，保持可见间隔，未见相互覆盖、角落裁切或横向挤压。宽度最大的10、带尾部的Q和较宽的K也未侵入花色位置。"
+    }
+  ],
+  "existingStructuralEvidence": {
+    "source": "verification.json",
+    "accepted": 17,
+    "expected": 17,
+    "combinedRankSuitAlphaChecks": 52,
+    "approvedReuseBytes": "matched",
+    "fileAndPixelChecks": "passed",
+    "note": "本报告只引用已有数学校验记录，未重新运行validate.py；上述视觉结论来自实际查看两张总览图片，不由工具成功或这些文字记录推断。"
+  },
+  "limitations": [
+    "浅底上香槟金点数的对比较轻，后续复杂或相近色卡面可能进一步降低辨识度。",
+    "复核覆盖离线合成预览中的实际UI尺寸；未接入游戏，未验证客户端缩放、显示器差异、动态画面或最终卡面背景。",
+    "未加载高清原图，也未重新审核原生生成过程；既有逐项验收记录继续作为各项来源与导出依据。"
+  ],
+  "changeBoundary": "仅新增总体验收.json与总体验收.md；不生成或修改PNG，不修改state、manifest及已接受记录。"
+}

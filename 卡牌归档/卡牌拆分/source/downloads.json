@@ -1,0 +1,112 @@
+[
+  {
+    "file": "cards.atlas",
+    "url": "https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.atlas",
+    "finalUrl": "https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.atlas",
+    "status": 200,
+    "bytes": 32192,
+    "sha256": "f4ee16929bce2f4beb04020f87f8e4bdc267942a166bcda63913ace3d3630f15",
+    "retrievedAt": "2026-10-20T15:15:58.503496+00:00",
+    "keys": [
+      "frames",
+      "meta"
+    ],
+    "meta": {
+      "image": "cards.png",
+      "prefix": "cards/",
+      "scale": "1",
+      "compressTexturePCDDS": true
+    },
+    "frames": 111,
+    "sample": [
+      [
+        "AoZhanShaShan_png.png",
+        {
+          "frame": {
+            "idx": 0,
+            "x": 212,
+            "y": 4,
+            "w": 186,
+            "h": 260
+          },
+          "sourceSize": {
+            "w": 186,
+            "h": 260
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 186,
+            "h": 260
+          },
+          "scale": 2
+        }
+      ],
+      [
+        "BaGuaZhen_png.png",
+        {
+          "frame": {
+            "idx": 0,
+            "x": 406,
+            "y": 4,
+            "w": 186,
+            "h": 260
+          },
+          "sourceSize": {
+            "w": 186,
+            "h": 260
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 186,
+            "h": 260
+          },
+          "scale": 2
+        }
+      ],
+      [
+        "BaiBiDao_png.png",
+        {
+          "frame": {
+            "idx": 0,
+            "x": 600,
+            "y": 4,
+            "w": 186,
+            "h": 260
+          },
+          "sourceSize": {
+            "w": 186,
+            "h": 260
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 186,
+            "h": 260
+          },
+          "scale": 2
+        }
+      ]
+    ]
+  },
+  {
+    "file": "default.res.json",
+    "url": "https://web.sanguosha.com/220/h5_2/res/default.res.json",
+    "finalUrl": "https://web.sanguosha.com/220/h5_2/res/default.res.json",
+    "status": 200,
+    "bytes": 136065,
+    "sha256": "4b1bfb095720d4de8ce3e9a32fd73b58798ee2dc174864f0a75a1c21338fc452",
+    "retrievedAt": "2026-10-20T15:15:58.484813+00:00"
+  },
+  {
+    "file": "official-cards.png",
+    "url": "https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.png",
+    "finalUrl": "https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.png",
+    "status": 200,
+    "bytes": 9160999,
+    "sha256": "14e786fd774fc5a9e1de952ad6a042ec5b87220bf434bc2d8410584eae01c3df",
+    "retrievedAt": "2026-10-20T15:15:58.878161+00:00",
+    "matchesLocal": true
+  }
+]

@@ -1,0 +1,25 @@
+from pathlib import Path
+import json
+from PIL import Image
+
+folder = Path(__file__).resolve().parent
+root = folder.parents[2]
+deliver = root / '卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层'
+old = Image.open(deliver / 'red_2.png').convert('RGBA')
+generated = Image.open(folder / 'rank-shifted-native.png').convert('RGBA')
+def bounds(image):
+    return image.getchannel('A').point(lambda a: 255 if a > 8 else 0).getbbox()
+previous = bounds(old)
+target = (previous[0]-3, previous[1]-2, previous[2]-3, previous[3]-2)
+glyph = generated.crop(bounds(generated)).resize((previous[2]-previous[0], previous[3]-previous[1]), Image.Resampling.LANCZOS)
+updated = Image.new('RGBA', old.size, (0,0,0,0))
+updated.alpha_composite(glyph, target[:2])
+assert bounds(updated) == target, (bounds(updated), target)
+assert updated.getchannel('A').getextrema() == (0,255)
+updated.save(folder / 'rank-v2-native.png')
+record = {'canvas': updated.size, 'visibleBoundsThreshold': 'alpha > 8', 'previousBounds': previous,
+          'updatedBounds': target, 'offsetInsideLayerPx': [-3,-2], 'offsetUiUnits': [-1.5,-1],
+          'layerPlacementPx': [8,8], 'layerPlacementUi': [4,4],
+          'postprocess': 'Normalize the native edit to the previous visible glyph size and requested internal offset; preserve RGBA alpha.'}
+(folder / 'rank-adjustment.json').write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding='utf-8')
+print(json.dumps(record, ensure_ascii=False))

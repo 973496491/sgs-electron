@@ -1,0 +1,10 @@
+[TAROT-UI:suit_spade:v1]
+Use case: stylized-concept. Output exactly ONE standalone functional game UI sprite as a PNG with genuinely transparent alpha background.
+The one small reference image is a MATERIAL AND STYLE reference only; its dark preview matte must NOT appear in the output.
+Transparent outside the contour and inside all holes. Clean antialiased alpha, no baked checkerboard, no white/gray/black background, no card fragment or rectangular panel.
+Landscape canvas aspect 19:17. Leave generous clear padding, keep the complete subject inside the canvas. Legible when downscaled to 19x17 UI units.
+Subject: a single SPade suit, sharp upward tip, two rounded lower lobes and a short centered flared stem. Only this one standard playing-card suit silhouette.
+Material: deep black obsidian / black enamel with restrained cool gray reflections, a very fine champagne-gold beveled contour matching the reference heart. Keep reflections subtle and the body solid and readily recognized at tiny size.
+Center naturally on the canvas, visible height around 76% of canvas; preserve the normal suit's natural width and silhouette, generous transparent border on every side.
+No outer ring, medallion, plaque, rays, stars, glow, cast shadow, leaves, text other than the requested rank, extra symbols, watermark, contact sheet or mockup.
+The first bracketed tag is metadata only; never draw it.

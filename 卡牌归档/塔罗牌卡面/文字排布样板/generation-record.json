@@ -1,0 +1,144 @@
+{
+  "generatedOneAtATime": true,
+  "variants": [
+    {
+      "label": "借刀",
+      "displayText": "借刀",
+      "originalName": "借刀杀人",
+      "cardId": 77,
+      "suit": "梅花",
+      "rank": "Q",
+      "layout": "横排一行，左到右",
+      "generationId": "ig_0956ae17ea5bc79c016ad7abefffac87d0b8052ff9a6ab93fc",
+      "generatedAt": "2026-10-20T18:00:52.149Z",
+      "tool": "OpenAI Responses native image_generation",
+      "file": "01_借刀_梅花Q.png",
+      "promptFile": "../提示词/文字排布/01_借刀_梅花Q.txt",
+      "nativeSize": [
+        1061,
+        1482
+      ],
+      "nativeMode": "RGB",
+      "sha256": "848ce6bb9243b5d8806219fa97f0d05bc76113050a332ade6ac8454995913d95",
+      "status": "visually-reviewed-offline; awaiting user design feedback",
+      "scope": "Single flattened typography preview; not new separated UI layers or game integration.",
+      "visualReview": {
+        "nativeImage": true,
+        "ui93x130": true,
+        "inGame": false,
+        "checks": [
+          "exact requested title",
+          "requested reading order",
+          "suit/rank",
+          "separation from upper emblem"
+        ]
+      }
+    },
+    {
+      "label": "寒冰剑",
+      "displayText": "寒冰剑",
+      "originalName": "寒冰剑",
+      "cardId": 108,
+      "suit": "黑桃",
+      "rank": "2",
+      "layout": "三字横排，右下攻击范围徽记2",
+      "generationId": "ig_0c1520d577599cb5016ad7b4da8c9487d0a1ed1f45c3076515",
+      "generatedAt": "2026-10-20T18:39:15.317Z",
+      "tool": "OpenAI Responses native image_generation",
+      "file": "02_寒冰剑_黑桃2_攻击范围2.png",
+      "promptFile": "../提示词/文字排布/02_寒冰剑_黑桃2_攻击范围2.txt",
+      "nativeSize": [
+        1061,
+        1482
+      ],
+      "nativeMode": "RGB",
+      "sha256": "78a81c1eb0590a4ef75c68f4ff0823904972eade373c06d379986ea9c2e66863",
+      "status": "visually-reviewed-offline; awaiting user design feedback",
+      "scope": "Single flattened typography preview; not new separated UI layers or game integration.",
+      "attackRange": 2,
+      "rangeSource": "weapon-range-source.json",
+      "rangeBadge": "右下黑曜石圆形徽记、双细金环、数字2",
+      "visualReview": {
+        "nativeImage": true,
+        "ui93x130": true,
+        "inGame": false,
+        "checks": [
+          "correct title 寒冰剑",
+          "spade rank 2",
+          "separate bottom-right attack-range 2",
+          "readable lower-right badge"
+        ]
+      }
+    },
+    {
+      "label": "无懈可击",
+      "displayText": "无懈可击",
+      "originalName": "无懈可击",
+      "cardId": 65,
+      "suit": "梅花",
+      "rank": "K",
+      "layout": "2×2，上行无懈，下行可击",
+      "generationId": "ig_0e40709116361ac1016ad7add110a887d0aa32ec7081b8cf55",
+      "generatedAt": "2026-10-20T18:08:32.291Z",
+      "tool": "OpenAI Responses native image_generation",
+      "file": "03_无懈可击_梅花K.png",
+      "promptFile": "../提示词/文字排布/03_无懈可击_梅花K.txt",
+      "nativeSize": [
+        1061,
+        1482
+      ],
+      "nativeMode": "RGB",
+      "sha256": "ecfd4a09a44f68645186c41bd7c6593687f7cc6ac1f3abf31c560a0bf9aa850f",
+      "status": "visually-reviewed-offline; awaiting user design feedback",
+      "scope": "Single flattened typography preview; not new separated UI layers or game integration.",
+      "visualReview": {
+        "nativeImage": true,
+        "ui93x130": true,
+        "inGame": false,
+        "checks": [
+          "exact requested title",
+          "requested reading order",
+          "suit/rank",
+          "separation from upper emblem"
+        ]
+      }
+    }
+  ],
+  "supersededVariants": [
+    {
+      "label": "寒冰箭",
+      "displayText": "寒冰箭",
+      "originalName": "寒冰剑",
+      "cardId": 108,
+      "suit": "黑桃",
+      "rank": "2",
+      "layout": "横排一行，左到右",
+      "generationId": "ig_00b9cca8aacc14c0016ad7acd6a2b487d0aab467e0c158579a",
+      "generatedAt": "2026-10-20T18:05:10.472Z",
+      "tool": "OpenAI Responses native image_generation",
+      "file": "02_寒冰箭_黑桃2.png",
+      "promptFile": "../提示词/历史/02_寒冰箭_已废弃.txt",
+      "nativeSize": [
+        1061,
+        1482
+      ],
+      "nativeMode": "RGB",
+      "sha256": "f064a6e69a1a7fb3a0dc6e250f2fd3625c52faa5da26c3ce6b50cf888f58b6a1",
+      "status": "superseded; image removed by user request",
+      "scope": "Single flattened typography preview; not new separated UI layers or game integration.",
+      "visualReview": {
+        "nativeImage": true,
+        "ui93x130": true,
+        "inGame": false,
+        "checks": [
+          "exact requested title",
+          "requested reading order",
+          "suit/rank",
+          "separation from upper emblem"
+        ]
+      },
+      "imageRemoved": true,
+      "replacement": "02_寒冰剑_黑桃2_攻击范围2.png"
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "taskId": "GuoHeChaiQiao_png__club",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:GuoHeChaiQiao_png__club:v1]",
+  "status": "reviewed",
+  "savedAt": "2026-10-21T09:10:46.696775+00:00",
+  "generatedAt": "2026-10-21T09:10:43.782Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_0c566c08f88e46ef016ad88167c8e087d088d387d245729ef2",
+  "prompt": "[TAROT-PROD:GuoHeChaiQiao_png__club:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the club family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"过河拆桥\". Exactly 2 columns by 2 rows: top \"过河\", bottom \"拆桥\"; read across each row, whole block centered. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "revisedPrompt": "[TAROT-PROD:GuoHeChaiQiao_png__club:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the club family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"过河拆桥\". Exactly 2 columns by 2 rows: top \"过河\", bottom \"拆桥\"; read across each row, whole block centered. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "sourceCard": {
+    "id": "GuoHeChaiQiao_png__club",
+    "resourceKey": "GuoHeChaiQiao_png",
+    "suitValue": 4,
+    "suit": "club",
+    "suitName": "梅花",
+    "originalName": "过河拆桥",
+    "originalNames": [
+      "过河拆桥"
+    ],
+    "displayName": "过河拆桥",
+    "layout": "2x2-left-to-right-row-major",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      68,
+      69,
+      2042,
+      3068,
+      3069,
+      11068,
+      11069,
+      20092,
+      20093,
+      20427,
+      20997,
+      20998,
+      31137,
+      60427,
+      61058,
+      61263,
+      61267
+    ],
+    "representativeCardId": 68,
+    "representativeNumber": 3,
+    "representativeRank": "3",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 67
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 3,
+        "rank": "3",
+        "cardIds": [
+          68,
+          2042,
+          3068,
+          11068,
+          20092,
+          20997,
+          61263
+        ]
+      },
+      {
+        "number": 4,
+        "rank": "4",
+        "cardIds": [
+          69,
+          3069,
+          11069,
+          20093,
+          20998,
+          61267
+        ]
+      },
+      {
+        "number": 6,
+        "rank": "6",
+        "cardIds": [
+          20427,
+          60427,
+          61058
+        ]
+      },
+      {
+        "number": 8,
+        "rank": "8",
+        "cardIds": [
+          31137
+        ]
+      }
+    ],
+    "type": 2,
+    "subType": 0,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "4_830_186_260",
+    "sharedFrameNames": [
+      "GuoHeChaiQiao_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/GuoHeChaiQiao_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 28
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_0c566c08f88e46ef016ad88167c8e087d088d387d245729ef2",
+    "timestamp": "2026-10-21T09:10:43.782Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T17-08-51-01a15db8-6fa0-7e72-9af3-ad88d8991a89.jsonl",
+    "line": 64
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\GuoHeChaiQiao_png__club\\v1.png",
+    "bytes": 2482324,
+    "sha256": "078d016d6636a9283056faad783f6c72cb977af3a9415881b09d6430309b9f3f",
+    "rgbaSha256": "08ef0e5a0a700bd0b5926c148d96fca6b9ee7bd24c23dab67c2e87d2f2419944",
+    "size": [
+      1061,
+      1482
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\GuoHeChaiQiao_png__club\\v1_186x260.png",
+    "bytes": 113664,
+    "sha256": "c426f1183447854ca28a49cf774ef815ef8cf038ee739eb015db87b3f05e089b",
+    "rgbaSha256": "a024898a5e46698512256451b00927865c84cf78b5d57cca663c038490e62e63",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1061,
+    1482
+  ],
+  "nativeMode": "RGB",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 0.0007545746085644289,
+  "reviews": [
+    {
+      "at": "2026-10-21T09:11:10.746030+00:00",
+      "result": "accepted-offline",
+      "note": "已实际查看186×260交付PNG一次：简体标题为上排过河、下排拆桥，2×2顺序正确、笔画完整可辨；上中及右上梅花饰正确；无右下徽记或环圈；左上x8..46、y8..72为连续低对比暗底，无固定点数、功能小花色、金线悬饰或有边界补丁；完整外框保留。离线视觉检查通过，等待父流程提交及高清导出。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": {
+    "native": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\GuoHeChaiQiao_png__club.png",
+      "bytes": 2482324,
+      "sha256": "078d016d6636a9283056faad783f6c72cb977af3a9415881b09d6430309b9f3f",
+      "rgbaSha256": "08ef0e5a0a700bd0b5926c148d96fca6b9ee7bd24c23dab67c2e87d2f2419944",
+      "size": [
+        1061,
+        1482
+      ],
+      "mode": "RGB",
+      "format": "PNG"
+    },
+    "export": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\GuoHeChaiQiao_png__club.png",
+      "bytes": 113664,
+      "sha256": "c426f1183447854ca28a49cf774ef815ef8cf038ee739eb015db87b3f05e089b",
+      "rgbaSha256": "a024898a5e46698512256451b00927865c84cf78b5d57cca663c038490e62e63",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "format": "PNG"
+    }
+  },
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "awaiting-parent-commit"
+}

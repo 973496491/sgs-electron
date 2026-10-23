@@ -1,0 +1,60 @@
+from pathlib import Path
+import hashlib
+import json
+import shutil
+from PIL import Image
+
+folder = Path(__file__).resolve().parent
+root = folder.parents[2]
+target = root / '卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层'
+target.mkdir(exist_ok=False)
+names = ['Shan_heart_base.png', 'red_2.png', 'heart.png', '分层预览.png']
+report = []
+for name in names:
+    src = folder / 'assembled' / name
+    dst = target / name
+    shutil.copyfile(src, dst)
+    assert src.read_bytes() == dst.read_bytes()
+    with Image.open(dst) as image:
+        report.append({'file': name, 'size': image.size, 'mode': image.mode,
+                       'alpha': image.getchannel('A').getextrema() if 'A' in image.getbands() else None,
+                       'sha256': hashlib.sha256(dst.read_bytes()).hexdigest()})
+assert report[0]['size'] == (186, 260) and report[0]['alpha'] == (255, 255)
+for item in report[1:3]:
+    assert item['size'] == (38, 34) and item['alpha'] == (0, 255)
+
+text = '''# 红桃 2 · 按原生 UI 分层效果
+
+基于当前 `红桃2_点数预览.png` 的样式，用 OpenAI Responses 内置图像工具逐张制作底图、点数2和左上红桃。本目录只包含这三个素材和一张分层预览，没有制作其余点数、花色或游戏接入。
+
+## 文件与坐标
+
+| 文件 | 文件像素 | 93×130 UI 中的尺寸 | UI 左上坐标 | 186×260 合成坐标 |
+|---|---|---|---|---|
+| `Shan_heart_base.png` | 186×260 | 93×130 | (0,0) | (0,0) |
+| `red_2.png` | 38×34 | 19×17 | (4,4) | (8,8) |
+| `heart.png` | 38×34 | 19×17 | (4,19) | (8,38) |
+
+- `分层预览.png` 展示三个图层、按上述坐标重组的结果，以及实际93×130 UI尺寸示意。
+- 点数与花色文件拥有真实Alpha透明通道；棋盘格只存在于预览展示背景中，没有烘焙到透明素材里。符号包含透明留边，所以19×17是图层矩形，不是可见笔画的紧贴边界。
+- 底图去除左上的功能点数与小红桃；上方大红桃、右上红桃仍属于主题装饰。
+- `red_2` 沿用红桃/方块点数的逻辑命名，图案材质按当前预览保留浅金色。
+- 点数2来自原始牌表中的红桃闪示例（牌ID28）；本次没有扩展到整套A～K。
+
+## UI依据与检查
+
+依据 `doc/sanguosha.md` 的“点数 / 花色赋值与自定义图案可行性”，并复核已有2026-10-08客户端快照：`bF.MAX_SIZE` 与 `NORMAL_SIZE` 均为93×130；普通大尺寸分支的点数、花色各19×17，点数(4,4)，花色(4,19)。这两个矩形在高度上相交2个UI单位，透明留边使可见图案保持间距。导出按2倍像素建立，不改变原生UI布局。
+
+底图为不透明RGBA；两个符号的Alpha范围均为0～255，四角透明。合成预览使用交付的三层素材按整数坐标叠加。已检查分层和实际尺寸效果，未修改游戏、userscript、图集、发布映射或asar，未做游戏内接入验证。
+
+原参考是一张合成PNG，原本没有独立图层；本次为参照样式的图像编辑与透明提取，不声称能从原图恢复被遮挡处的原始像素。高分辨率生成中间稿保留在工程 `tmp/imagegen/heart2-split/`，本目录仅交付所需素材。
+
+## 生成记录与完整提示词
+
+'''
+for stem, label in [('base', '底图'), ('rank', '点数2'), ('suit', '红桃')]:
+    record = json.loads((folder / (stem + '-record.json')).read_text(encoding='utf-8'))
+    text += f"### {label}\n\n生成ID：`{record['id']}`。原始尺寸：{record['size'][0]}×{record['size'][1]}，模式：{record['mode']}。\n\n```text\n{record['prompt']}\n```\n\n"
+text += '## 文件校验\n\n```json\n' + json.dumps(report, ensure_ascii=False, indent=2) + '\n```\n'
+(target / 'README.md').write_text(text, encoding='utf-8')
+print(json.dumps({'directory': str(target), 'images': report}, ensure_ascii=False, indent=2))

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-20T18:58:21+00:00",
+  "status": "stopped",
+  "revision": 3,
+  "currentTask": {
+    "cardId": "encoding-check",
+    "beganAt": "2026-10-20T18:58:21+00:00",
+    "stage": "generating",
+    "artifactCandidates": [
+      "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\runtime\\verification-final-1792522701\\不存在的文件.txt"
+    ]
+  },
+  "done": {},
+  "failures": [],
+  "updatedAt": "2026-10-20T18:58:22+00:00",
+  "heartbeatAt": "2026-10-20T18:58:22+00:00",
+  "heartbeatEpoch": 1792522702.4464452,
+  "lastAction": "stop"
+}

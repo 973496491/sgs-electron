@@ -1,0 +1,23 @@
+{
+  "source": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\JueDou_png__spade\\v1.png",
+  "sourceSha256": "4066e5da7f1c2b7c9732b7482cdf7c9a925f207e81158db6d8f160c50eecae06",
+  "purpose": "Magenta edit-location annotation only; not a production image",
+  "maskOn186x260": [
+    8,
+    8,
+    46,
+    72
+  ],
+  "guide": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\参考图\\JueDou_png__spade.guide-v2.jpg",
+    "bytes": 105583,
+    "sha256": "0d324771c15f33c88d3fa09f661fe61f3e68edcb0777ec8b886c40e7be5447e8",
+    "rgbaSha256": "71b6c574f1ca7beb775805b5e793d2e79143ef799af37ddbb2e0c72bd0905200",
+    "size": [
+      465,
+      650
+    ],
+    "mode": "RGB",
+    "format": "JPEG"
+  }
+}

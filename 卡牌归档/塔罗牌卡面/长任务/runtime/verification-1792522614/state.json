@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-20T18:56:54+00:00",
+  "status": "stopped",
+  "revision": 9,
+  "currentTask": {
+    "cardId": "check-2",
+    "beganAt": "2026-10-20T18:56:56+00:00",
+    "stage": "failed-awaiting-recovery",
+    "artifactCandidates": [
+      "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\runtime\\verification-1792522614\\sample.txt"
+    ],
+    "lastError": "controlled test",
+    "candidateCheck": [
+      {
+        "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\runtime\\verification-1792522614\\sample.txt",
+        "exists": true,
+        "bytes": 18,
+        "sha256": "f2c14f9cb881ed2ced49b06273c5478f4dbc97d5f6760c9fa074e9517a4cd6d8"
+      }
+    ],
+    "recoveredAt": "2026-10-20T18:56:57+00:00"
+  },
+  "done": {
+    "check-1": {
+      "committedAt": "2026-10-20T18:56:55+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\runtime\\verification-1792522614\\sample.txt",
+          "exists": true,
+          "bytes": 18,
+          "sha256": "f2c14f9cb881ed2ced49b06273c5478f4dbc97d5f6760c9fa074e9517a4cd6d8"
+        }
+      ]
+    }
+  },
+  "failures": [
+    {
+      "cardId": "check-2",
+      "at": "2026-10-20T18:56:56+00:00",
+      "message": "controlled test"
+    }
+  ],
+  "updatedAt": "2026-10-20T18:56:57+00:00",
+  "heartbeatAt": "2026-10-20T18:56:57+00:00",
+  "heartbeatEpoch": 1792522617.3727562,
+  "lastAction": "stop"
+}

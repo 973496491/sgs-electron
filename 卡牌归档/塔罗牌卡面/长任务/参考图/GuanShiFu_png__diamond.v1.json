@@ -1,0 +1,224 @@
+{
+  "taskId": "GuanShiFu_png__diamond",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:GuanShiFu_png__diamond:v1]",
+  "preparedAt": "2026-10-21T05:32:53.173111+00:00",
+  "referenceSource": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Shan_png__diamond.png",
+  "reference": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\参考图\\GuanShiFu_png__diamond.v1.jpg",
+    "bytes": 82549,
+    "sha256": "3a7ee041d852564fb18cf21ba400d109026a96af1b3d1754454b695b4733f2ff",
+    "rgbaSha256": "d8d7f1d9970f95e26176d75a55ae22604cb601ee0f70656a1478de9af08458fb",
+    "size": [
+      465,
+      650
+    ],
+    "mode": "RGB",
+    "format": "JPEG"
+  },
+  "prompt": "[TAROT-PROD:GuanShiFu_png__diamond:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为方块，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：贯石斧。3字从左到右横排一行，整组居中，总宽约卡宽70%～74%，不压扁字形。\n右下角框内放一个清晰的“3”徽记，黑曜石/珐琅暗底、细香槟金边，与上中主花色同材质。徽记次于主标题，底部枝叶局部让位，数字/汉字无遮挡；只写该字符，不加“攻击范围”文案。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“贯石斧”与右下“3”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。",
+  "taskSnapshot": {
+    "id": "GuanShiFu_png__diamond",
+    "resourceKey": "GuanShiFu_png",
+    "suitValue": 2,
+    "suit": "diamond",
+    "suitName": "方块",
+    "originalName": "贯石斧",
+    "originalNames": [
+      "贯石斧"
+    ],
+    "displayName": "贯石斧",
+    "layout": "horizontal",
+    "status": "pending",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      5,
+      1090,
+      1262,
+      2018,
+      3005,
+      4087,
+      7004,
+      12096,
+      20207,
+      20526,
+      20527,
+      20528,
+      20529,
+      20530,
+      31145,
+      60207,
+      60995
+    ],
+    "representativeCardId": 5,
+    "representativeNumber": 5,
+    "representativeRank": "5",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 4
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 5,
+        "rank": "5",
+        "cardIds": [
+          5,
+          1090,
+          1262,
+          2018,
+          3005,
+          4087,
+          7004,
+          12096,
+          20207,
+          20526,
+          20527,
+          20528,
+          20529,
+          20530,
+          31145,
+          60207,
+          60995
+        ]
+      }
+    ],
+    "type": 3,
+    "subType": 1,
+    "elementalName": null,
+    "weaponRange": 3,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": "representative.attRange / short field h",
+    "weaponRangeVariants": [
+      {
+        "range": 1,
+        "cardIds": [
+          2018
+        ]
+      },
+      {
+        "range": 3,
+        "cardIds": [
+          5,
+          1090,
+          1262,
+          3005,
+          4087,
+          7004,
+          12096,
+          20207,
+          20526,
+          20527,
+          20528,
+          20529,
+          20530,
+          31145,
+          60207,
+          60995
+        ]
+      }
+    ],
+    "rangeMismatchCardIds": [
+      2018
+    ],
+    "badge": "3",
+    "badgePlacement": "lower-right",
+    "sharedFrameGroupId": "1556_540_186_260",
+    "sharedFrameNames": [
+      "GuanShiFu_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/GuanShiFu_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [
+      "同名同花色在部分模式存在其他攻击范围；本底图使用代表范围，不保证模式变体显示范围完全一致。"
+    ],
+    "sequence": 5
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  }
+}

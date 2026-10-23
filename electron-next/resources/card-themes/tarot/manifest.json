@@ -1,17 +1,124 @@
 {
   "schemaVersion": 1,
   "id": "tarot",
-  "revision": "phase1-20261021",
+  "revision": "accepted-20261021-175929",
   "faces": {
-    "Shan_png": { "1": "faces/Shan_heart.png", "2": "faces/Shan_diamond.png" },
-    "HanBingJian_png": { "3": "faces/HanBingJian_spade.png" }
+    "Shan_png": {
+      "1": "faces/Shan_heart.png",
+      "2": "faces/Shan_diamond.png"
+    },
+    "HanBingJian_png": {
+      "3": "faces/HanBingJian_spade.png"
+    },
+    "JueDou_png": {
+      "2": "faces/JueDou_diamond.png",
+      "4": "faces/JueDou_club.png",
+      "3": "faces/JueDou_spade.png"
+    },
+    "ShunShouQianYang_png": {
+      "2": "faces/ShunShouQianYang_diamond.png",
+      "3": "faces/ShunShouQianYang_spade.png"
+    },
+    "GuanShiFu_png": {
+      "2": "faces/GuanShiFu_diamond.png"
+    },
+    "Sha_png": {
+      "2": "faces/Sha_diamond.png",
+      "1": "faces/Sha_heart.png",
+      "4": "faces/Sha_club.png"
+    },
+    "FangTianHuaJi_png": {
+      "2": "faces/FangTianHuaJi_diamond.png"
+    },
+    "ZiXing_png": {
+      "2": "faces/ZiXing_diamond.png"
+    },
+    "ZhuGeLianNu_png": {
+      "2": "faces/ZhuGeLianNu_diamond.png",
+      "4": "faces/ZhuGeLianNu_club.png"
+    },
+    "Tao_png": {
+      "2": "faces/Tao_diamond.png",
+      "1": "faces/Tao_heart.png"
+    },
+    "WanJianQiFa_png": {
+      "1": "faces/WanJianQiFa_heart.png"
+    },
+    "WuGuFengDeng_png": {
+      "1": "faces/WuGuFengDeng_heart.png"
+    },
+    "ChiTu_png": {
+      "1": "faces/ChiTu_heart.png"
+    },
+    "LeBuSiShu_png": {
+      "1": "faces/LeBuSiShu_heart.png",
+      "4": "faces/LeBuSiShu_club.png"
+    },
+    "WuZhongShengYou_png": {
+      "1": "faces/WuZhongShengYou_heart.png"
+    },
+    "GuoHeChaiQiao_png": {
+      "1": "faces/GuoHeChaiQiao_heart.png",
+      "4": "faces/GuoHeChaiQiao_club.png"
+    },
+    "TaoYuanJieYi_png": {
+      "1": "faces/TaoYuanJieYi_heart.png"
+    },
+    "QiLinGong_png": {
+      "1": "faces/QiLinGong_heart.png"
+    },
+    "ZhuaHuangFeiDian_png": {
+      "1": "faces/ZhuaHuangFeiDian_heart.png"
+    },
+    "WuXieKeJi_png": {
+      "4": "faces/WuXieKeJi_club.png"
+    },
+    "BaGuaZhen_png": {
+      "4": "faces/BaGuaZhen_club.png"
+    },
+    "DiLu_png": {
+      "4": "faces/DiLu_club.png"
+    },
+    "NanManRuQin_png": {
+      "4": "faces/NanManRuQin_club.png"
+    },
+    "JieDaoShaRen_png": {
+      "4": "faces/JieDaoShaRen_club.png"
+    },
+    "CiXiongShuangGuJian_png": {
+      "3": "faces/CiXiongShuangGuJian_spade.png"
+    },
+    "JueYing_png": {
+      "3": "faces/JueYing_spade.png"
+    }
   },
   "ranks": {
-    "1": null, "2": "ranks/2.png", "3": null, "4": null, "5": null,
-    "6": null, "7": null, "8": null, "9": null, "10": null,
-    "11": null, "12": null, "13": null
+    "1": "ranks/A.png",
+    "2": "ranks/2.png",
+    "3": "ranks/3.png",
+    "4": "ranks/4.png",
+    "5": "ranks/5.png",
+    "6": "ranks/6.png",
+    "7": "ranks/7.png",
+    "8": "ranks/8.png",
+    "9": "ranks/9.png",
+    "10": "ranks/10.png",
+    "11": "ranks/J.png",
+    "12": "ranks/Q.png",
+    "13": "ranks/K.png"
   },
-  "suits": { "1": "suits/heart.png", "2": null, "3": null, "4": null },
-  "faceSize": [93, 130],
-  "symbolSize": [19, 17]
+  "suits": {
+    "1": "suits/heart.png",
+    "2": "suits/diamond.png",
+    "3": "suits/spade.png",
+    "4": "suits/club.png"
+  },
+  "faceSize": [
+    93,
+    130
+  ],
+  "symbolSize": [
+    19,
+    17
+  ]
 }

@@ -1,0 +1,11 @@
+[TAROT-UI:suit_diamond:v2]
+Use case: stylized-concept. Output exactly ONE standalone functional game UI sprite as a PNG with genuinely transparent alpha background.
+The one small reference image is a MATERIAL AND STYLE reference only; its dark preview matte must NOT appear in the output.
+Transparent outside the contour and inside all holes. Clean antialiased alpha, no baked checkerboard, no white/gray/black background, no card fragment or rectangular panel.
+Landscape canvas aspect 19:17. Leave generous clear padding, keep the complete subject inside the canvas. Legible when downscaled to 19x17 UI units.
+Subject: a single symmetric DIAMOND suit, straight four-sided elongated rhombus, sharp upper/lower and side corners. Only this one standard playing-card suit silhouette.
+Material: rich dark ruby-red enamel/crystal, a very fine champagne-gold beveled contour matching the reference heart. Keep reflections subtle and the body solid and readily recognized at tiny size.
+Center naturally on the canvas, visible height around 76% of canvas; preserve the normal suit's natural width and silhouette, generous transparent border on every side.
+No outer ring, medallion, plaque, rays, stars, glow, cast shadow, leaves, text other than the requested rank, extra symbols, watermark, contact sheet or mockup.
+The first bracketed tag is metadata only; never draw it.
+Targeted correction: Replace the concave curved outline with a regular four-sided rhombus: each of its four outer edges must be one perfectly STRAIGHT line between the top, right, bottom and left corners. No inward arcs, no outward arcs. Use one hairline champagne-gold contour, far thinner than the reference, at most 4 percent of the visible icon width. Keep dark ruby-red solid enamel and subtle faceting, no added flourishes, no second outline. Preserve genuine transparent alpha everywhere outside this single complete diamond.

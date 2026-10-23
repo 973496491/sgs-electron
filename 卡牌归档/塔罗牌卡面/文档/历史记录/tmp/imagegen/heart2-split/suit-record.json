@@ -1,0 +1,15 @@
+{
+  "id": "ig_0e03e1afb090f834016ad7a156721487d0a0ab6170c5f610d8",
+  "timestamp": "2026-10-20T17:14:48.834Z",
+  "size": [
+    1326,
+    1187
+  ],
+  "mode": "RGBA",
+  "alphaRange": [
+    0,
+    255
+  ],
+  "prompt": "Use case: background-extraction. The MOST RECENT close-up of a small ruby HEART is the EDIT TARGET. Extract exactly this heart suit emblem as ONE standalone UI sprite on a genuinely TRANSPARENT PNG background with an alpha channel. Preserve the approved heart silhouette, two rounded upper lobes and pointed bottom, rich dark ruby-red enamel/crystal body, fine champagne-gold beveled outline, and the same restrained reflections. This is the little functional corner heart, not the large central medallion. Remove ALL burgundy card background and tiny stray star/glint pixels outside the emblem. Keep only the heart and its narrow gold edge; no outer ring, rays, flourish, plaque, glow, cast shadow or text. Transparent outside the contour with clean antialiased edges; do not bake in checkerboard, black, gray or white. Use a landscape sprite canvas aspect 19:17. Center the heart; approximately 76–80% of canvas height, preserving its natural shape and generous clear padding on every side. The sprite must remain recognizable at 19x17 UI units. Output ONE transparent heart sprite only, not a sheet, not a card, no mockup.",
+  "nativeFile": "C:\\Users\\97349\\Downloads\\electron\\tmp\\imagegen\\heart2-split\\suit-native.png"
+}

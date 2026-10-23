@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         三国杀打小抄
 // @namespace    https://xxxxxxxxxxxxxx/scripts/448004
-// @version      1.0.0
+// @version      1.0.3
 // @author       小麦 孤独尊
 // @description  打小抄支持网页版和微端，微端文件请加群 830137048
 // @icon         https://xxxxxxxxxxxx/bfs/new_dyn/17ec41a0ca79633b77399065ab80da3f2138912.png
@@ -27,7 +27,25 @@
   "use strict";
 
   // Synchronized from electron-next/version.json by npm run build:userscript.
-  const XIAOCHAO_VERSION = "1.0.0";
+  const XIAOCHAO_VERSION = "1.0.3";
+
+  // Hand off once to the installed main-process module; navigation leaves no renderer callbacks behind.
+  function bootstrapLocalReleaseUpdates() {
+    const remote = window.electron && window.electron.remote;
+    if (!remote || !remote.app || typeof remote.require !== "function" ||
+        typeof remote.getCurrentWindow !== "function") return;
+    try {
+      const path = remote.require("path");
+      const runtime = remote.require(path.join(remote.app.getPath("userData"), "modules/runtime/release-bootstrap.js"));
+      const owner = remote.getCurrentWindow();
+      const result = runtime.bootstrapReleaseUpdates(owner && owner.id);
+      if (!result || !result.ok)
+        appendLocalSkinDebugLine("[自动更新] 初始化失败：" + (result && result.code || "bootstrap-failed"));
+    } catch (_) {
+      appendLocalSkinDebugLine("[自动更新] 更新模块未就绪，请安装完整更新包");
+    }
+  }
+  Promise.resolve().then(bootstrapLocalReleaseUpdates);
 
   const n$1 = c;
   !(function () {
@@ -15265,110 +15283,196 @@
           } catch (l) {}
       return null;
     },
-    async task(n) {
-      var t, e, i, a, r, l;
-      const o = _0x47c207,
-        c = laya[o(671)](o(1328)),
-        u = laya[o(671)](o(1614)),
-        f = laya[o(671)](o(1569));
-      if (!(n && c && u && f)) return;
-      (globalState[o(420)] = !0),
-        timer[o(1138)](
-          o(199),
-          () => {
-            globalState[o(420)] = !1;
-          },
-          6e3,
-        ),
-        c[o(1238)](),
-        await sleep(1e3),
-        null == (t = null == u ? void 0 : u[o(289)]) || t.call(u);
-      const x = laya[o(671)](o(1678)),
-        v =
-          (null == (e = null == x ? void 0 : x[o(1027)](1))
-            ? void 0
-            : e[o(347)]) ||
-          (null == (i = null == x ? void 0 : x[o(1027)](3))
-            ? void 0
-            : i[o(347)]),
-        s =
-          null == (a = null == x ? void 0 : x[o(1027)](2)) ? void 0 : a[o(347)],
-        z = [84800];
-      globalConfig[o(853)] && (v || z[o(1417)](58530), s || z[o(1417)](58531)),
-        Array[o(1643)](_0x1e5192[o(1110)])
-          [o(884)]((n) => c[o(1748)](n))
-          [o(1557)]((n) => {
-            var t, e, i;
-            const a = o;
-            return (
-              (null == n ? void 0 : n[a(410)]) &&
-              !(null == (t = n[a(694)]) ? void 0 : t[a(686)]) &&
-              u[a(542)](n.id) <= 1 &&
-              !(null ==
-              (i =
-                null == (e = null == n ? void 0 : n[a(694)])
-                  ? void 0
-                  : e[a(991)])
-                ? void 0
-                : i[a(1699)](({ ItemID: n }) => {
-                    var t;
-                    return null == (t = laya[a(1191)](n)) ? void 0 : t[a(1234)];
-                  }))
-            );
-          })
-          [o(1167)]((n) => {
-            var t, e;
-            const i = o;
-            if (z[i(1107)](n.id)) return;
-            (null ==
-            (e =
-              null == (t = null == n ? void 0 : n[i(694)]) ? void 0 : t[i(991)])
-              ? void 0
-              : e[i(1699)](({ ItemID: n }) => {
-                  var t, e;
-                  return String(
-                    (null ==
-                    (e =
-                      null == (t = _0x1e5192[i(507)])
-                        ? void 0
-                        : t.call(_0x1e5192, n))
-                      ? void 0
-                      : e[i(1559)]) || "",
-                  )[i(1107)](i(1495));
-                })) || c[i(821)](n.id, 0, n[i(1439)]);
-          }),
-        setTimeout(() => {
-          var n;
-          const t = o;
-          (null == u ? void 0 : u[t(393)]) && u[t(1718)](0, !1, !0),
-            Array[t(1643)](
-              { length: Math[t(1752)](Math[t(1651)](c[t(483)] / 3), 3) },
-              (n, e) => c[t(1165)](e + 1) || c[t(646)](e + 1),
-            ),
-            u[t(1596)] && u[t(1579)](),
-            (null == (n = f[t(641)](1)) ? void 0 : n[t(1185)]()) &&
-              (null == f || f[t(771)](1));
-        }, 1e3);
-      let d = u[o(516)](71) || u[o(516)](72);
-      null == (r = null == d ? void 0 : d[o(845)]) ||
-        r[o(1167)]((n) => 2 == u[o(1529)](n) && u[o(723)](d.id, n[o(1702)]));
-      const w = laya[o(671)](o(693));
-      _0x1e5192[o(998)][o(1167)]((n) => {
-        const t = o;
-        w[t(1623)](n) && !w[t(305)](n) && w[t(712)](n);
-      }),
-        Object[o(791)](
-          (null == (l = null == w ? void 0 : w[o(975)])
-            ? void 0
-            : l[o(1710)]) || {},
-        )
-          [o(1557)](([, n]) => n)
-          [o(884)](([n]) => +n)
-          [o(1167)]((n) => {
-            w[o(1714)](n);
-          });
+    task(enabled, source = "TASK_VIP") {
+      return autoTasks.request(enabled, source);
     },
   };
+  // 自动任务拥有订阅、单次执行和取消状态；原生管理器仍由 laya.class 适配。
+  const autoTasks = (() => {
+    let active = false, dispatcher = null, current = null;
+    function log(event, data = {}) {
+      appendLocalSkinDebugLine("[自动任务] " + event + " " + JSON.stringify(data));
+    }
+    function live(job) { return active && current === job && !job.cancelled; }
+    function pause(job, ms) {
+      return new Promise(resolve => {
+        job.wake = resolve;
+        job.timer = setTimeout(() => {
+          job.timer = null;
+          job.wake = null;
+          resolve(live(job));
+        }, ms);
+      });
+    }
+    function cancel(reason) {
+      const job = current;
+      current = null;
+      globalState.autoTaskRunning = false;
+      if (!job) return;
+      job.cancelled = true;
+      if (job.timer != null) clearTimeout(job.timer);
+      if (job.wake) job.wake(false);
+      job.timer = job.wake = null;
+      log("cancel", { source: job.source, reason });
+    }
+    function onConfig(event) {
+      if (event.detail && event.detail.property === "autoTaskSwitch" && !event.detail.value)
+        cancel("switch-off");
+    }
+    function onTask(enabled) { return request(enabled, "TASK_VIP"); }
+    function start() {
+      if (!active) {
+        active = true;
+        window.addEventListener("xc:config-change", onConfig);
+      }
+      const next = laya.ged;
+      if (next === dispatcher) return;
+      if (dispatcher) dispatcher.off("TASK_VIP", api, onTask);
+      dispatcher = null;
+      if (next && typeof next.on === "function" && typeof next.off === "function") {
+        next.on("TASK_VIP", api, onTask);
+        dispatcher = next;
+        log("listener-ready");
+      }
+    }
+    function dispose() {
+      active = false;
+      cancel("exit");
+      if (dispatcher) dispatcher.off("TASK_VIP", api, onTask);
+      dispatcher = null;
+      window.removeEventListener("xc:config-change", onConfig);
+    }
+    function step(job, name, action) {
+      if (!live(job)) return;
+      try { action(); }
+      catch (error) {
+        job.errors++;
+        log("step-error", { source: job.source, step: name, message: String(error.message || error) });
+      }
+    }
+    function manager(name) { return laya.class(name); }
+    async function run(job) {
+      let tasks, activity;
+      // Only probe/retry before sending requests. Repeated triggers share this bounded wait.
+      for (let attempt = 1; attempt <= 10 && live(job); attempt++) {
+        tasks = manager("TaskManager");
+        activity = manager("ActivityManager");
+        if (tasks && activity && typeof tasks.getTaskListFromServer === "function" &&
+            typeof tasks.GetAllTaskDataByTaskID === "function" &&
+            typeof tasks.RequestTaskAward === "function" && typeof activity.GetTaskItemType === "function") break;
+        if (attempt === 10) {
+          log("not-ready", { source: job.source, attempts: attempt,
+            taskManager: !!tasks, activityManager: !!activity });
+          return false;
+        }
+        if (!(await pause(job, 500))) return false;
+      }
+      if (!live(job)) return false;
+      globalState.autoTaskRunning = true;
+      log("start", { source: job.source });
+      tasks.getTaskListFromServer();
+      if (!(await pause(job, 1000))) return false;
+      step(job, "斗地主军典查询", () => activity.SendDDZTLLInfoReq());
+      step(job, "任务奖励", () => {
+        const welfare = manager("WelfareManger");
+        const card = type => welfare && welfare.GetCardDataByType(type);
+        const activeCard = type => { const value = card(type); return value && value.bActive; };
+        const excluded = [84800];
+        if (globalConfig.yuekaRemindSwitch) {
+          if (!(activeCard(1) || activeCard(3))) excluded.push(58530);
+          if (!activeCard(2)) excluded.push(58531);
+        }
+        for (const id of Array.from(_0x1e5192.taskIds)) step(job, "任务奖励:" + id, () => {
+          const task = tasks.GetAllTaskDataByTaskID(id);
+          if (!task || !task.CanAward || !task.baseVo || task.baseVo.HaveSelectReward ||
+              !(activity.GetTaskItemType(task.id) <= 1) || excluded.includes(task.id)) return;
+          const rewards = task.baseVo.TaskRewardItem || [];
+          if (rewards.some(({ ItemID }) => {
+            const goods = laya.goods(ItemID);
+            const config = _0x1e5192.goodsID && _0x1e5192.goodsID(ItemID);
+            return (goods && goods.CheckHasPropItem) || String(config && config.name || "").includes("抵价券");
+          })) return;
+          tasks.RequestTaskAward(task.id, 0, task.CanRewardCount);
+          job.requests++;
+        });
+      });
+      step(job, "节日签到", () => {
+        const sign = activity.GetNewFestivalSignData(71) || activity.GetNewFestivalSignData(72);
+        for (const award of sign && sign.awards || []) {
+          if (!live(job)) return;
+          if (activity.GetFesSignAwdState(award) === 2) {
+            activity.SendNewClientFestivalSignGetRewardReq(sign.id, award.date);
+            job.requests++;
+          }
+        }
+      });
+      step(job, "武将点灯和图鉴", () => {
+        const generals = manager("GameGeneralManager");
+        if (!generals) throw Error("GameGeneralManager 未就绪");
+        for (const series of _0x1e5192.seriesList) {
+          if (!live(job)) return;
+          if (generals.LampRewardCanAward(series) && !generals.LampHasReward(series)) {
+            generals.LampRewardReq(series);
+            job.requests++;
+          }
+        }
+        for (const [id, value] of Object.entries(generals.atlasGeneralDict && generals.atlasGeneralDict._maps || {})) {
+          if (!live(job)) return;
+          if (value) { generals.GeneralAtlasRewardReq(+id); job.requests++; }
+        }
+      });
+      if (!(await pause(job, 1000))) return false;
+      step(job, "斗地主军典奖励", () => {
+        if (activity.HasDDZTLLRewardRed) { activity.SendDDZTLLAwardReq(0, false, true); job.requests++; }
+      });
+      step(job, "任务军典奖励", () => {
+        for (let level = 1; level <= Math.min(Math.floor(tasks.JdTaskRewardNum / 3), 3); level++) {
+          if (!live(job)) return;
+          if (!tasks.HasRewardQuest(level)) { tasks.SendGetJdCalcQuestRewardReq(level); job.requests++; }
+        }
+      });
+      step(job, "军典奖励", () => {
+        if (activity.HasJDRewardRed) { activity.ReqDrawAllJDRwd(); job.requests++; }
+      });
+      step(job, "启程福利", () => {
+        const welfare = manager("NewFuLiManager");
+        if (!welfare) throw Error("NewFuLiManager 未就绪，本轮跳过启程福利");
+        const pass = welfare.GetPassData(1);
+        if (pass && pass.HasCanGetReward()) { welfare.SendSetOutRewardAllReq(1); job.requests++; }
+      });
+      // Preserve the old six-second popup suppression window, with cancellable ownership.
+      if (!(await pause(job, 4000))) return false;
+      log("finish", { source: job.source, requests: job.requests, errors: job.errors,
+        note: "已检查并提交符合条件的领取请求，到账以服务端响应为准" });
+      if (!job.errors && job.day != null) timer.lastTaskDate = job.day;
+      return job.errors === 0;
+    }
+    function request(enabled, source = "TASK_VIP", day = null) {
+      if (!active || !enabled) return Promise.resolve(false);
+      if ((source === "daily" || source === "game.end") && !globalConfig.autoTaskSwitch)
+        return Promise.resolve(false);
+      if (day != null && timer.lastTaskDate === day) return Promise.resolve(true);
+      if (current) {
+        if (day != null) current.day = day;
+        log("merged", { source });
+        return current.promise;
+      }
+      const job = { source, day, errors: 0, requests: 0, cancelled: false, timer: null, wake: null };
+      current = job;
+      job.promise = Promise.resolve().then(() => run(job)).catch(error => {
+        log("error", { source, message: String(error.message || error) });
+        return false;
+      }).finally(() => {
+        if (current === job) {
+          current = null;
+          globalState.autoTaskRunning = false;
+        }
+      });
+      return job.promise;
+    }
+    const api = Object.freeze({ start, dispose, request });
+    return api;
+  })();
   window.__xcRunEightPveFigureOut = function (source, attempt) {
     return laya.figureOut(
       String(source || "window.bridge"),
@@ -15621,7 +15725,7 @@
       if (!state) return restoreUi(ui);
       const variants = manifest.faces[state.key];
       const facePath = variants && variants[String(state.flower)];
-      // Phase one only themes the three declared resource/suit pairs. Each layer falls back independently.
+      // Only declared resource/suit pairs use the theme. Each layer falls back independently.
       if (!facePath) return restoreUi(ui);
       const previous = owned.get(ui);
       const layers = [];
@@ -22111,7 +22215,7 @@
               (n) => (n[t(269)][t(423)] = t(489)),
             ),
             console[t(247)](t(452)),
-            globalConfig[t(261)] && laya[t(559)][t(597)](t(366), !0),
+            globalConfig[t(261)] && autoTasks.request(true, "game.end"),
             timer[t(520)](t(192), _0x30ee40, 1e3)),
             n &&
               this[t(624)] &&
@@ -23425,12 +23529,16 @@
       const read = id => {
         const element = id && document.getElementById(id);
         return { id, present: !!element,
-          keys: element ? Array.from(element.querySelectorAll(":scope>.shoupai"), node => node.dataset.key) : [] };
+          hidden: element ? !!element.hidden : undefined,
+          keys: element ? Array.from(element.querySelectorAll(
+            id === "deckTopEdge" || id === "deckBottomEdge" ? ":scope>.xc-deck-slot" : ":scope>.shoupai"
+          ), node => node.dataset.key) : [] };
       };
       logVisibleCardTrace(error ? "render:error" : "render:after", {
         seq: cause, spellName: visibleCardTraceSpellNames.get(cause),
         model: snapshotVisibleCardZone(zoneID), main: read(primaryID),
         mirror: read(area === 5 ? "s" + seatDiv : area === 4 ? "smark" + zoneID : area === 1 ? "deckBottomEdge" : null),
+        deckTop: area === 1 ? read("deckTopEdge") : undefined,
         error: error ? String(error.stack || error).slice(0, 1200) : undefined,
       });
     } catch (snapshotError) {
@@ -23899,14 +24007,15 @@
         return [];
       let i = [],
         a = t[e(488)]();
+      const identifyVisibleSlot = (card, index) => a[index] > 0 ? card.identify(a[index]) : card;
       if (this[e(594)] == DING)
         i = this[e(240)]
           [e(488)](-t[e(428)])
-          [e(294)]((n) => n[e(275)](a[e(296)]()));
+          [e(294)](identifyVisibleSlot);
       else if (this[e(594)] != RAND)
         i = this[e(240)]
-          [e(488)](this[e(594)], t[e(428)])
-          [e(294)]((n) => n[e(275)](a[e(296)]()));
+          [e(488)](this[e(594)], this[e(594)] + t[e(428)])
+          [e(294)](identifyVisibleSlot);
       else if (1 != this[e(206)]) {
         let n = a[e(294)]((n) => Card[e(511)](n, !0)[e(187)]);
         this[e(240)]
@@ -23974,7 +24083,19 @@
           1 == this[a(206)] &&
             [3208, 7011, 987, 988, 3903][a(550)](e) &&
             (r = r[a(389)]());
-      else if (t[a(478)]((n) => n > 0)[a(428)] > 0) {
+      else if (t.length === this.count && t.some(id => id > 0) && t.some(id => id === 0)) {
+        // Unordered source: identify disclosed cards first, then retain the
+        // existing candidate-group rules when removing the unknown remainder.
+        const count = this.count;
+        try {
+          const ids = t.filter(id => id > 0);
+          const known = this.remove(ids, e, ids.length);
+          const hidden = this.remove([], e, count - ids.length);
+          r = t.map(id => id > 0 ? known.shift() : hidden.shift());
+        } finally {
+          this.count = count;
+        }
+      } else if (t[a(478)]((n) => n > 0)[a(428)] > 0) {
         let n = l[a(294)]((n) => Card[a(511)](n, !0)[a(187)]);
         this[a(240)]
           [a(488)]()
@@ -24087,10 +24208,10 @@
               r[n(442)](new Card(0, 0, this[n(486)]))
             );
           }),
-        t[a(478)]((n) => n > 0)[a(428)] == this[a(222)]
+        t.length === this.count && t.some(id => id > 0)
           ? t[a(302)]((n, t) => {
               var e;
-              return null == (e = r[t]) ? void 0 : e[a(275)](n);
+              return n > 0 && (null == (e = r[t]) ? void 0 : e[a(275)](n));
             })
           : r[a(478)]((n) => n[a(291)] > 0)[a(428)] == this[a(222)] &&
             r[a(302)](({ id: n }, e) => {
@@ -24142,6 +24263,8 @@
       const i = _0x4efae6;
       visibleCardRenderCauses.clear();
       (n[i(599)] = { unknown: new Set() }), (n[i(599)][e] = Card[i(329)](t, e));
+      deckVisibilityPanel.reset();
+      n.draw("1-255");
     }
     static [((_h = _0x4efae6(492)), (_i = _0x4efae6(200)), _0x4efae6(361))](t) {
       const e = _0x4efae6;
@@ -24176,6 +24299,8 @@
       var e, i;
       const a = _0x4efae6;
       if (isNaN(Card[a(291)])) return;
+      // Read ordered slots even if the main recorder DOM is absent or fails.
+      if (t === "1-255") drawDeckEdgeUI();
       let r = null,
         l = null,
         [o, c, u] =
@@ -25263,24 +25388,494 @@
     const t = _0xcbf83c;
     for (; null == n ? void 0 : n[t(593)]; ) n[t(710)](n[t(593)]);
   }
-  let _0x380c88 = [],
-    _0x140c16 = "",
-    _0x2742d9 = "";
-  function _0x5ebfcc(n) {
-    var t;
-    const e = _0xcbf83c;
-    return [
-      (null == (t = null == n ? void 0 : n[e(417)]) ? void 0 : t[e(806)]) || "",
-      (null == n ? void 0 : n[e(510)]) || "",
-      (null == n ? void 0 : n[e(800)]) ? 1 : 0,
-      (null == n ? void 0 : n[e(456)]) || "",
-      (null == n ? void 0 : n[e(730)]) || "",
-    ][e(790)]("|");
-  }
-  function _0x3e4c06(n) {
-    const t = _0xcbf83c;
-    return n[t(791)](_0x5ebfcc)[t(790)]("\n");
-  }
+  // BEGIN GENERATED MODULE: deck-visibility
+  // Source: src/features/deck-visibility.js; run npm run build:userscript. Do not edit this block.
+  const createDeckVisibilityPanel = function createDeckVisibilityPanel(options) {
+    const doc = options.document;
+    const win = options.window;
+    const expanded = { top: false, bottom: false };
+    let floatSize = null, resizeGrip = null;
+    const storageKey = "xcDeckVisibilitySettings";
+    let preferences = { visible: false, topLimit: 20, bottomLimit: 20 };
+    let preferenceSaved = true;
+    let sceneActive = false, controls = null, settingsPopup = null;
+    function validLimit(value) { return Number.isSafeInteger(value) && value > 0; }
+    function log(message) {
+      try { if (options.log) options.log(message); } catch (_) {}
+    }
+    try {
+      const saved = JSON.parse(options.storage && options.storage.getItem(storageKey) || "null");
+      if (saved && typeof saved === "object") preferences = {
+        visible: saved.visible === true,
+        topLimit: validLimit(saved.topLimit) ? saved.topLimit : 20,
+        bottomLimit: validLimit(saved.bottomLimit) ? saved.bottomLimit : 20,
+      };
+    } catch (error) { log("读取设置失败：" + String(error)); }
+    let root = null, panel = null, signature = null;
+    let position = null, drag = null, suppressClickUntil = 0;
+    let enabled = true;
+    const sections = new Map();
+    const styles = `
+      .xc-deck-floating{position:fixed;z-index:10000000000;width:max-content;max-width:calc(100vw - 16px);}
+      .xc-deck-panel{box-sizing:border-box;width:max-content;max-width:100%;padding:6px 6px 22px;border:1px solid #a78b54;
+        border-radius:8px;background:rgba(24,22,19,.94);color:#f2de9c;box-shadow:0 4px 14px #0007;
+        font:13px/1.4 "Microsoft YaHei",sans-serif;pointer-events:auto;user-select:none;
+        max-height:70vh;overflow:auto;overscroll-behavior:contain;}
+      .xc-deck-panel .xc-deck-toggle{box-sizing:border-box;display:inline-flex;align-items:center;
+        gap:8px;width:auto;white-space:nowrap;padding:6px 8px;margin:0;border:0;border-radius:4px;
+        background:#453b2b;color:#f2de9c;font:inherit;cursor:grab;text-align:left;touch-action:none;}
+      .xc-deck-floating[data-dragging="true"] .xc-deck-toggle{cursor:grabbing;}
+      .xc-deck-panel .xc-deck-toggle:hover{background:#615039;}
+      .xc-deck-panel .xc-deck-toggle:focus-visible{outline:2px solid #ead49b;outline-offset:-2px;}
+      .xc-deck-panel .xc-deck-section+.xc-deck-section{margin-top:6px;}
+      .xc-deck-panel .xc-deck-viewport{box-sizing:border-box;width:266px;max-width:calc(100vw - 30px);}
+      .xc-deck-panel .xc-deck-viewport[hidden]{display:none;}
+      .xc-deck-panel .xc-deck-list{display:flex;flex-direction:row;direction:ltr;flex-wrap:wrap;
+        justify-content:flex-start;gap:5px;padding:7px 2px 2px;align-content:flex-start;
+        box-sizing:border-box;max-height:none;overflow:visible;}
+      .xc-deck-panel .xc-deck-list[hidden]{display:none;}
+      .xc-deck-floating>.xc-deck-resize{position:absolute;right:3px;bottom:3px;width:16px;height:16px;
+        cursor:nwse-resize;touch-action:none;border-radius:2px;
+        background:repeating-linear-gradient(135deg,transparent 0 3px,#b7a174 3px 5px);
+        clip-path:polygon(100% 0,100% 100%,0 100%);}
+      .xc-deck-floating>.xc-deck-resize:focus-visible{outline:2px solid #ead49b;}
+      .xc-deck-panel .xc-deck-slot{display:flex;align-items:center;}
+      .xc-deck-panel .xc-deck-origin{display:inline-flex;align-items:center;justify-content:center;
+        box-sizing:border-box;min-width:30px;min-height:24px;flex-shrink:0;border:1px solid #b7a174;
+        border-radius:3px;background:#615039;color:#f2de9c;font-weight:bold;}
+      .xc-deck-panel .xc-deck-slot>.shoupai{display:inline-block!important;margin:0;float:none;}
+      .xc-deck-panel .xc-deck-unknown{display:inline-flex;align-items:center;justify-content:center;
+        box-sizing:border-box;min-width:30px;height:24px;border:1px dashed #8c8169;border-radius:3px;
+        color:#c5bba6;background:#353127;font-size:16px;}
+      .xc-deck-panel .xc-deck-empty{padding:4px;color:#b6ab95;font-size:12px;}
+    `;
+
+    function getRanges(cards) {
+      // Unknown node IDs are bookkeeping candidates, not visible card identities.
+      const slots = Array.from(cards || [], (card, index) => ({
+        index, card, known: !!card && card.key > 0 && card.id > 0,
+      }));
+      function trimUnknownTail(window) {
+        let last = window.length - 1;
+        while (last >= 0 && !window[last].known) last--;
+        return window.slice(0, last + 1);
+      }
+      return {
+        top: trimUnknownTail(slots.slice(0, preferences.topLimit)),
+        bottom: trimUnknownTail(slots.slice(-preferences.bottomLimit).reverse()),
+      };
+    }
+
+    function savePreferences() {
+      try {
+        if (options.storage) options.storage.setItem(storageKey, JSON.stringify(preferences));
+        return true;
+      } catch (error) { log("保存设置失败：" + String(error)); return false; }
+    }
+
+    function setVisible(value) {
+      if (!enabled) return false;
+      preferences.visible = !!value;
+      preferenceSaved = savePreferences();
+      if (controls) controls.input.checked = preferences.visible;
+      refresh(sceneActive);
+      return true;
+    }
+
+    function setLimits(topLimit, bottomLimit) {
+      if (!enabled || !validLimit(topLimit) || !validLimit(bottomLimit)) return false;
+      preferences.topLimit = topLimit;
+      preferences.bottomLimit = bottomLimit;
+      signature = null;
+      preferenceSaved = savePreferences();
+      refresh(sceneActive);
+      return true;
+    }
+
+    function closeSettings(restoreFocus) {
+      const state = settingsPopup;
+      if (!state) return;
+      settingsPopup = null;
+      state.cleanup();
+      state.node.remove();
+      state.owner.caption.setAttribute("aria-expanded", "false");
+      if (restoreFocus && state.owner.caption.isConnected) state.owner.caption.focus();
+    }
+
+    function openSettings(owner) {
+      if (!enabled || controls !== owner) return;
+      if (settingsPopup && settingsPopup.owner === owner) { closeSettings(true); return; }
+      closeSettings(false);
+      const node = doc.createElement("div");
+      node.id = "xcDeckVisibilitySettings";
+      node.setAttribute("role", "dialog");
+      node.setAttribute("aria-label", "牌堆记录设置");
+      node.style.cssText = "position:fixed;z-index:2147483647;width:240px;max-width:calc(100vw - 16px);box-sizing:border-box;padding:12px;border:1px solid #a78b54;border-radius:8px;background:#211e19;color:#f2de9c;box-shadow:0 4px 16px #0008;font:13px/1.5 Microsoft YaHei,sans-serif";
+      node.innerHTML = `<style>
+        #xcDeckVisibilitySettings label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:10px 0;}
+        #xcDeckVisibilitySettings input{box-sizing:border-box;width:82px;padding:4px;color:#f2de9c;background:#353127;border:1px solid #887955;border-radius:3px;}
+        #xcDeckVisibilitySettings button{padding:4px 9px;color:#f2de9c;background:#453b2b;border:1px solid #887955;border-radius:4px;cursor:pointer;}
+        #xcDeckVisibilitySettings .xc-deck-settings-head{display:flex;align-items:center;justify-content:space-between;}
+        #xcDeckVisibilitySettings p{margin:8px 0;font-size:12px;color:#b6ab95;}
+      </style><div class="xc-deck-settings-head"><strong>牌堆记录设置</strong><button type="button" data-close aria-label="关闭设置">×</button></div>
+      <form><label>顶部记录上限（张）<input name="topLimit" type="number" min="1" step="1" required></label>
+      <label>底部记录上限（张）<input name="bottomLimit" type="number" min="1" step="1" required></label>
+      <p>从牌顶或牌底起计数，问号也占一张。</p><p data-feedback role="status"></p><button type="submit">保存</button></form>`;
+      const top = node.querySelector('[name="topLimit"]'), bottom = node.querySelector('[name="bottomLimit"]');
+      const form = node.querySelector("form"), close = node.querySelector("[data-close]");
+      top.value = String(preferences.topLimit);
+      bottom.value = String(preferences.bottomLimit);
+      const removers = [];
+      function listen(target, type, callback, capture) {
+        target.addEventListener(type, callback, capture);
+        removers.push(() => target.removeEventListener(type, callback, capture));
+      }
+      function positionSettings() {
+        if (!settingsPopup || settingsPopup.node !== node) return;
+        const rect = owner.caption.getBoundingClientRect();
+        if (!owner.caption.isConnected || !rect.width || !rect.height) { closeSettings(false); return; }
+        const anchor = owner.container.getBoundingClientRect();
+        const width = node.offsetWidth, height = node.offsetHeight;
+        let y = Math.max(rect.bottom, anchor.bottom) + 8;
+        if (y + height > win.innerHeight - 8) y = Math.min(rect.top, anchor.top) - height - 8;
+        node.style.left = Math.max(8, Math.min(rect.left, win.innerWidth - width - 8)) + "px";
+        node.style.top = Math.max(8, Math.min(y, win.innerHeight - height - 8)) + "px";
+      }
+      listen(form, "submit", event => {
+        event.preventDefault();
+        if (!settingsPopup || settingsPopup.node !== node || controls !== owner) return;
+        const ok = setLimits(Number(top.value), Number(bottom.value));
+        node.querySelector("[data-feedback]").textContent = ok
+          ? preferenceSaved ? "已保存" : "已生效，未能保存到本机"
+          : "请填写大于 0 的整数";
+        positionSettings();
+      });
+      listen(close, "click", () => closeSettings(true));
+      listen(doc, "pointerdown", event => {
+        if (!node.contains(event.target) && !owner.container.contains(event.target)) closeSettings(false);
+      }, true);
+      listen(doc, "keydown", event => { if (event.key === "Escape") { event.preventDefault(); closeSettings(true); } });
+      listen(win, "resize", positionSettings);
+      listen(win, "scroll", positionSettings, true);
+      const observer = win.ResizeObserver ? new win.ResizeObserver(positionSettings) : null;
+      if (observer) { observer.observe(owner.caption); removers.push(() => observer.disconnect()); }
+      settingsPopup = { node, owner, cleanup() { removers.splice(0).forEach(remove => remove()); } };
+      doc.body.appendChild(node);
+      owner.caption.setAttribute("aria-expanded", "true");
+      positionSettings();
+      top.focus();
+    }
+
+    function cleanupControls() {
+      closeSettings(false);
+      if (!controls) return;
+      controls.input.onchange = controls.caption.onclick = controls.caption.onkeydown = controls.container.onclick = null;
+      controls.container.remove();
+      controls = null;
+    }
+
+    function mountControls() {
+      if (!enabled) return false;
+      const general = doc.getElementById("generalSwitch"), reference = doc.getElementById("wallpaperContainer");
+      const row = general && general.closest(".switch-container-row");
+      if (!row || !reference) { cleanupControls(); return false; }
+      if (controls && controls.container.parentNode === row && controls.container.isConnected) {
+        controls.input.checked = preferences.visible;
+        return true;
+      }
+      cleanupControls();
+      const container = reference.cloneNode(true);
+      for (const element of [container].concat(Array.from(container.querySelectorAll("*")))) {
+        element.removeAttribute("id");
+        for (const attribute of Array.from(element.attributes))
+          if (/^on/i.test(attribute.name) || /^data-/.test(attribute.name)) element.removeAttribute(attribute.name);
+      }
+      const input = container.querySelector("input"), caption = container.querySelector(".explanation");
+      if (!input || !caption) return false;
+      container.id = "xcDeckVisibilityControl";
+      container.setAttribute("data-tooltip", "开启牌顶、牌底浮层；点击齿轮设置记录上限");
+      input.id = "xcDeckVisibilityToggle"; // Avoid the native input[id$=Switch] binder.
+      input.name = "";
+      input.checked = preferences.visible;
+      input.disabled = false;
+      input.setAttribute("aria-label", "牌堆记录");
+      caption.textContent = "牌堆记录";
+      caption.setAttribute("role", "button");
+      caption.tabIndex = 0;
+      caption.setAttribute("aria-label", "牌堆记录设置");
+      caption.setAttribute("aria-haspopup", "dialog");
+      caption.setAttribute("aria-controls", "xcDeckVisibilitySettings");
+      caption.setAttribute("aria-expanded", "false");
+      caption.style.cursor = "pointer";
+      const owner = { container, input, caption };
+      controls = owner;
+      input.onchange = event => { event.stopPropagation(); if (controls === owner) setVisible(input.checked); };
+      caption.onclick = event => { event.preventDefault(); event.stopPropagation(); if (controls === owner) openSettings(owner); };
+      caption.onkeydown = event => { if (event.key === "Enter" || event.key === " ") caption.onclick(event); };
+      container.onclick = event => event.stopPropagation();
+      row.appendChild(container);
+      return true;
+    }
+
+    function release() {
+      stopDrag();
+      win.removeEventListener("resize", layout);
+      for (const { button } of sections.values()) {
+        button.onclick = button.onpointerdown = null;
+      }
+      if (resizeGrip) resizeGrip.onpointerdown = resizeGrip.onkeydown = null;
+      resizeGrip = null;
+      sections.clear();
+      if (root) root.remove();
+      root = panel = null;
+      signature = null;
+      suppressClickUntil = 0;
+    }
+
+    function clampPosition() {
+      if (!root) return;
+      const width = root.offsetWidth || 280, height = root.offsetHeight || 80;
+      const requested = position || { x: win.innerWidth - width - 18, y: 90 };
+      position = {
+        x: Math.max(8, Math.min(requested.x, win.innerWidth - width - 8)),
+        y: Math.max(8, Math.min(requested.y, win.innerHeight - height - 8)),
+      };
+      root.style.left = position.x + "px";
+      root.style.top = position.y + "px";
+    }
+
+    function constrainSize(size) {
+      const maxWidth = Math.max(80, win.innerWidth - 16);
+      const maxHeight = Math.max(72, Math.floor(win.innerHeight * 0.7));
+      return {
+        width: Math.max(Math.min(160, maxWidth), Math.min(size.width, maxWidth)),
+        height: Math.max(Math.min(100, maxHeight), Math.min(size.height, maxHeight)),
+      };
+    }
+
+    function layout() {
+      if (root && floatSize) {
+        const size = constrainSize(floatSize);
+        root.style.width = size.width + "px";
+        root.style.height = size.height + "px";
+        panel.style.width = "100%";
+        panel.style.height = "100%";
+        panel.style.maxHeight = "none";
+        for (const { viewport } of sections.values()) viewport.style.width = "100%";
+      }
+      clampPosition();
+    }
+
+    function stopDrag() {
+      win.removeEventListener("pointermove", moveDrag);
+      win.removeEventListener("pointerup", endDrag);
+      win.removeEventListener("pointercancel", endDrag);
+      win.removeEventListener("blur", stopDrag);
+      if (root) root.dataset.dragging = "false";
+      drag = null;
+    }
+
+    function beginDrag(event, resize = false) {
+      if (event.button !== 0 || !root) return;
+      stopDrag();
+      const rect = root.getBoundingClientRect();
+      drag = { pointer: event.pointerId, x: event.clientX, y: event.clientY,
+        left: rect.left, top: rect.top, moved: false, resize,
+        width: rect.width || root.offsetWidth || 280,
+        height: rect.height || root.offsetHeight || 120 };
+      win.addEventListener("pointermove", moveDrag, { passive: false });
+      win.addEventListener("pointerup", endDrag);
+      win.addEventListener("pointercancel", endDrag);
+      win.addEventListener("blur", stopDrag);
+      if (resize) event.preventDefault();
+      event.stopPropagation();
+    }
+
+    function moveDrag(event) {
+      if (!drag || event.pointerId !== drag.pointer) return;
+      const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+      if (!drag.moved && Math.abs(dx) + Math.abs(dy) < 5) return;
+      drag.moved = true;
+      if (drag.resize) {
+        floatSize = constrainSize({ width: drag.width + dx, height: drag.height + dy });
+        layout();
+      } else {
+        root.dataset.dragging = "true";
+        position = { x: drag.left + dx, y: drag.top + dy };
+        clampPosition();
+      }
+      event.preventDefault();
+    }
+
+    function endDrag(event) {
+      if (!drag || event.pointerId !== drag.pointer) return;
+      if (drag.moved) suppressClickUntil = Date.now() + 250;
+      stopDrag();
+    }
+
+    function mount() {
+      if (root && root.parentNode === doc.body && panel && panel.parentNode === root) return;
+      release();
+      const host = doc.createElement("div");
+      host.id = "deckEdgeUI";
+      host.className = "xc-deck-floating";
+      root = host;
+      panel = doc.createElement("div");
+      panel.className = "xc-deck-panel";
+      panel.setAttribute("role", "region");
+      panel.setAttribute("aria-label", "牌堆可见牌");
+      const style = doc.createElement("style");
+      style.textContent = styles;
+      panel.appendChild(style);
+      for (const [side, text] of [["top", "顶部卡牌"], ["bottom", "底部卡牌"]]) {
+        const section = doc.createElement("div");
+        section.className = "xc-deck-section";
+        const button = doc.createElement("button");
+        button.type = "button";
+        button.className = "xc-deck-toggle";
+        button.dataset.side = side;
+        const label = doc.createElement("span");
+        label.textContent = text;
+        const icon = doc.createElement("span");
+        icon.setAttribute("aria-hidden", "true");
+        button.appendChild(label);
+        button.appendChild(icon);
+        const list = doc.createElement("div");
+        list.id = side === "top" ? "deckTopEdge" : "deckBottomEdge";
+        list.className = "xc-deck-list";
+        const viewport = doc.createElement("div");
+        viewport.className = "xc-deck-viewport";
+        viewport.dataset.side = side;
+        button.setAttribute("aria-controls", list.id);
+        const entry = { button, icon, list, text, viewport };
+        sections.set(side, entry);
+        button.onclick = event => {
+          event.preventDefault();
+          event.stopPropagation();
+          // A handler saved from an old scene must not change the replacement panel.
+          if (root !== host || sections.get(side) !== entry) return;
+          if (Date.now() < suppressClickUntil) return;
+          expanded[side] = !expanded[side];
+          refresh(true);
+        };
+        button.onpointerdown = event => {
+          if (root === host && sections.get(side) === entry) beginDrag(event);
+        };
+        button.setAttribute("aria-description", "单击展开或关闭，拖动移动浮层");
+        section.appendChild(button);
+        viewport.appendChild(list);
+        section.appendChild(viewport);
+        panel.appendChild(section);
+      }
+      host.appendChild(panel);
+      const grip = doc.createElement("span");
+      grip.className = "xc-deck-resize";
+      grip.setAttribute("role", "button");
+      grip.setAttribute("tabindex", "0");
+      grip.setAttribute("aria-label", "调整牌堆浮层大小");
+      grip.title = "统一调整浮层宽高；方向键微调";
+      resizeGrip = grip;
+      grip.onpointerdown = event => {
+        if (root === host && resizeGrip === grip) beginDrag(event, true);
+      };
+      grip.onkeydown = event => {
+        const delta = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }[event.key];
+        if (!delta || root !== host || resizeGrip !== grip) return;
+        const box = host.getBoundingClientRect();
+        floatSize = constrainSize({ width: box.width + delta[0], height: box.height + delta[1] });
+        layout();
+        event.preventDefault();
+        event.stopPropagation();
+      };
+      host.appendChild(grip);
+      doc.body.appendChild(host);
+      win.addEventListener("resize", layout);
+      layout();
+    }
+
+    function renderList(side, slots) {
+      const { button, icon, list, text, viewport } = sections.get(side);
+      const open = expanded[side];
+      button.setAttribute("aria-expanded", String(open));
+      button.title = (open ? "关闭" : "展开") + text + "（可拖动）";
+      icon.textContent = open ? "▾" : "▸";
+      list.hidden = !open;
+      viewport.hidden = !open;
+      while (list.firstChild) list.removeChild(list.firstChild);
+      if (!open) return;
+      // Direction labels are presentation-only and never consume a card position or limit.
+      const origin = doc.createElement("span");
+      origin.className = "xc-deck-origin";
+      origin.textContent = side === "top" ? "顶" : "底";
+      list.appendChild(origin);
+      if (!slots.length) {
+        const empty = doc.createElement("span");
+        empty.className = "xc-deck-empty";
+        empty.textContent = "暂无已记录的可见牌";
+        list.appendChild(empty);
+        return;
+      }
+      const fragment = doc.createDocumentFragment();
+      slots.forEach(({ index, card, known }) => {
+        const slot = doc.createElement("span");
+        slot.className = "xc-deck-slot";
+        slot.dataset.index = String(index);
+        slot.dataset.key = String(known ? card.id : 0);
+        let face = null;
+        if (known) {
+          try { face = options.renderKnownCard(card); }
+          catch (error) {
+            if (options.log) options.log("牌堆卡牌绘制失败：" + String(error));
+          }
+        }
+        if (!face) {
+          face = doc.createElement("span");
+          face.className = "xc-deck-unknown";
+          face.textContent = "？";
+        }
+        slot.appendChild(face);
+        fragment.appendChild(slot);
+      });
+      list.appendChild(fragment);
+    }
+
+    function refresh(active) {
+      if (!enabled) return;
+      sceneActive = !!active;
+      if (!preferences.visible || !sceneActive || !doc.body) { release(); return; }
+      mount();
+      const cards = options.readCards() || [];
+      const nextSignature = cards.map(card => card && card.key > 0 ? card.id : 0).join(",") +
+        "|" + expanded.top + "|" + expanded.bottom;
+      if (signature !== nextSignature) {
+        const ranges = getRanges(cards);
+        renderList("top", ranges.top);
+        renderList("bottom", ranges.bottom);
+        signature = nextSignature;
+      }
+      layout();
+    }
+
+    // Keep expansion, position and the unified float size for this page; discard scene DOM/data.
+    return {
+      refresh, reset: release, getRanges, setVisible, setLimits, mountControls,
+      getSettings: () => ({ ...preferences }),
+      start() { enabled = true; },
+      dispose() { enabled = false; sceneActive = false; release(); cleanupControls(); },
+    };
+  };
+  // END GENERATED MODULE: deck-visibility
+  const deckVisibilityPanel = createDeckVisibilityPanel({
+    document,
+    window,
+    storage: {
+      getItem: key => localStorage.getItem(key),
+      setItem: (key, value) => localStorage.setItem(key, value),
+    },
+    readCards: () => isNaN(Card.key) ? [] : Zone.obj["1-255"] || [],
+    renderKnownCard: card => _0x226fc5(card.plot()),
+    log: text => appendLocalSkinDebugLine("[牌堆面板] " + text, false),
+  });
   function _0x226fc5(n) {
     const t = _0xcbf83c,
       e = n[t(465)](!0);
@@ -25334,29 +25929,7 @@
       _0x537542(n));
   }
   function _0x2f6cfa() {
-    const n = _0xcbf83c,
-      t = document[n(655)](n(813));
-    if (!t) return;
-    if (!UI[n(672)][n(525)] || !_0x380c88[n(525)])
-      return (
-        t[n(593)] && _0x3149bd(t),
-        (_0x2742d9 = ""),
-        void (t[n(485)][n(563)] = n(821))
-      );
-    const e = document[n(655)](n(721));
-    if (e && _0x2742d9 === _0x140c16)
-      return _0x537542(e), void (t[n(485)][n(563)] = n(690));
-    _0x3149bd(t);
-    const i = document[n(801)](n(668)),
-      a = document[n(797)]();
-    (i.id = n(721)), (i[n(510)] = n(583));
-    for (let r = _0x380c88[n(525)] - 1; r >= 0; r -= 1)
-      a[n(494)](_0x226fc5(_0x380c88[r]));
-    i[n(494)](a),
-      t[n(494)](i),
-      (_0x2742d9 = _0x140c16),
-      _0x537542(i),
-      (t[n(485)][n(563)] = n(690));
+    deckVisibilityPanel.refresh(!!UI.seatUIs.length);
   }
   function syncZoneMirrors({
     zoneID: n,
@@ -25367,11 +25940,7 @@
   }) {
     const r = _0xcbf83c;
     if (1 == t) {
-      const n = _0x3e4c06(i);
-      return (
-        n !== _0x140c16 && ((_0x380c88 = i[r(643)]()), (_0x140c16 = n)),
-        void drawDeckEdgeUI()
-      );
+      return void drawDeckEdgeUI();
     }
     if (5 != t) {
       if (4 == t) {
@@ -25397,42 +25966,13 @@
   }
   function clearZoneMirrors() {
     const n = _0xcbf83c;
-    (_0x380c88 = []),
-      (_0x140c16 = ""),
-      (_0x2742d9 = ""),
+    deckVisibilityPanel.reset();
       document[n(657)](n(676))[n(734)](_0x2ae8f3),
       document[n(657)](n(760))[n(734)]((t) => t[n(706)]()),
       drawDeckEdgeUI();
   }
   function drawDeckEdgeUI() {
-    var n;
-    const t = _0xcbf83c,
-      e = document[t(655)](t(813));
-    if (!e) return;
-    if (!UI[t(672)][t(525)])
-      return _0x3149bd(e), void (e[t(485)][t(563)] = t(821));
-    const i = UI[t(735)] || 1,
-      a = window[t(708)] || 1,
-      r = UI[t(743)]
-        ? (((UI[t(759)] + UI[t(581)]) * i) | 0) / a
-        : (UI[t(759)] + UI[t(581)]) * i,
-      l = 127 * i,
-      o = UI[t(743)] || (null == (n = laya[t(749)]) ? void 0 : n[t(689)]),
-      c = UI[t(743)]
-        ? UI[t(743)].x
-        : o
-          ? ((o.x * i) | 0) / a
-          : ((UI[t(729)] - 220 * i - l) | 0) / a,
-      u = UI[t(743)] ? UI[t(743)].y : (25 * i) / a,
-      f = (UI[t(824)] || [])
-        [t(828)]((n) => n[t(812)] <= c && n[t(691)] > u)
-        [t(609)]((n, e) => e[t(812)] - n[t(812)])[0],
-      x = f ? Math[t(599)](r, Math[t(495)](48, c - f[t(812)] - 8)) : r,
-      v = c - x - 4;
-    (e[t(485)][t(729)] = x + "px"),
-      (e[t(485)][t(496)] = v + "px"),
-      (e[t(485)][t(628)] = u + "px"),
-      _0x2f6cfa();
+    _0x2f6cfa();
   }
   function debounce(n, t) {
     let e;
@@ -27994,7 +28534,7 @@
     _0x46e1d4 = C3rHCNrFDgLTzq();
   let _0x2cfc9b = null;
   const _0x378fb5 =
-      "\n修复酒馆任务进度显示;\n【界小抄】;\n为所有武将增加全选/反选按钮;\n新增拓展黑名单, 再也不怕黑名单不够用了;\n新增自动手气卡配置: 全部出现、任一出现模式;\n"
+      "·修复自动任务不自动领取·"
         [_0x41a3d0(555)](/；/g, _0x41a3d0(526))
         [_0x41a3d0(555)](/;/g, _0x41a3d0(526));
   function Init() {
@@ -28032,9 +28572,11 @@
   function Exit() {
     var n, t, e, i;
     const a = _0x41a3d0;
+    autoTasks.dispose();
     cardThemeFeature.dispose();
     handCards.dispose();
     topMarquee.dispose();
+    deckVisibilityPanel.dispose();
     cleanupSkinEffectBlocker();
     if (typeof window.__xcCleanupSkinEffectButton === "function")
       window.__xcCleanupSkinEffectButton();
@@ -29053,12 +29595,7 @@
       (e[n(580)][n(175)] = n(189)),
       (e[n(580)][n(307)] = n(315)),
       (e[n(580)][n(255)] = "");
-    var i = document[n(162)](n(389));
-    (i.id = n(111)),
-      (i[n(537)] = n(487)),
-      (i[n(580)][n(255)] = n(315)),
-      t[n(293)](i),
-      globalConfig[n(305)]
+    globalConfig[n(305)]
         ? (t[n(580)][n(255)] = n(651))
         : ((t[n(580)][n(255)] = n(315)),
           document[n(215)](n(528))[n(257)](
@@ -29082,6 +29619,7 @@
     }
   }
   function addFrame() {
+    deckVisibilityPanel.start();
     const n = _0x41a3d0;
     let t = document[n(259)](n(564));
     if (!t) {
@@ -29227,6 +29765,7 @@
     installSkinEffectBlocker();
     if (typeof window.__xcInstallSkinEffectButton === "function")
       window.__xcInstallSkinEffectButton();
+    deckVisibilityPanel.mountControls();
   }
   function _0x4484c9() {
     const n = _0x41a3d0;
@@ -30343,7 +30882,7 @@
       { id: _0x41a3d0(551), action: dummy, type: _0x41a3d0(327) },
       {
         id: _0x41a3d0(278),
-        action: () => laya[_0x41a3d0(153)][_0x41a3d0(466)](_0x41a3d0(538), !0),
+        action: () => autoTasks.request(true, "switch"),
         type: _0x41a3d0(327),
       },
       {
@@ -30353,7 +30892,7 @@
       },
       {
         id: _0x41a3d0(569),
-        action: () => laya[_0x41a3d0(153)][_0x41a3d0(466)](_0x41a3d0(538), !0),
+        action: () => autoTasks.request(true, "button"),
         type: _0x41a3d0(467),
       },
       {
@@ -30405,6 +30944,7 @@
   }
   function initAllButtons() {
     const n = _0x41a3d0;
+    autoTasks.start();
     _0x408e48[n(558)][n(257)]((n) => _0x13a41d(n, !0));
     const t = !!_0x46e1d4.v;
     _0x408e48[n(148)][n(257)]((n) => _0x13a41d(n, t)), _0x1804b1();
@@ -32708,12 +33248,10 @@
         }
         (globalState[J(754)] = []), timer[J(758)](n);
         const t = Math[J(850)]((timer[J(571)]() + 288e5) / 864e5);
-        timer[J(420)] != t &&
-          (console[J(848)](J(678)),
-          initAllButtons(),
-          globalConfig[J(791)] && laya[J(889)][J(726)](J(613), !0),
-          _0xbbb545(J(566)),
-          (timer[J(420)] = t));
+        if (timer[J(420)] !== t) {
+          initAllButtons();
+          if (globalConfig.autoTaskSwitch) autoTasks.request(true, "daily", t);
+        }
       } else if (rn == J(422)) drawMiaoSha(n[J(512)]);
       else if (rn == J(553)) drawRogueLike(an), showShanHeTuSponsorPrompt(an);
       else if (rn == J(656))
@@ -33256,9 +33794,16 @@
           let n = dn[J(660)](0, 1)[0];
           dn[J(660)](n, 1);
         }
+        // Keep positional partial disclosure for ordinary deck moves. Existing
+        // skill counters and specialized movement branches still use their
+        // original all-known/all-hidden input; never mutate the incoming message.
+        const deckMixedVisibleIDs = (Ln === 1 || Cn === 1) && dn.length === zn &&
+          dn.every(id => Number.isInteger(id) && id >= 0) &&
+          dn.some(id => id > 0) && dn.some(id => id === 0) ? dn.slice() : null;
         dn[J(504)]((n) => n > 0)[J(544)] != zn &&
           0 != dn[J(504)]((n) => n > 0)[J(544)] &&
-          (stepVisibleCardTrace("move:mixed", null, dn, "clear-ids-count=" + zn), (dn = [])),
+          (stepVisibleCardTrace("move:mixed", null, dn,
+            (deckMixedVisibleIDs ? "retain-deck-slots-count=" : "clear-ids-count=") + zn), (dn = [])),
           1 == Ln &&
             yn == RAND &&
             [3208, 7011, 987, 988, 3903][J(591)](un) &&
@@ -33818,11 +34363,11 @@
                 n > 0 && 0 == dn[J(504)]((n) => n > 0)[J(544)] && (dn[0] = n),
                   delete game[un];
               } else $[J(554)](F[J(674)](dn));
-            else $[J(554)](F[J(674)](dn, un));
+            else $[J(554)](F[J(674)](deckMixedVisibleIDs || dn, un));
           else
             (7011 == un && 19 == Mn) ||
               (3744 == un && 21 == Mn) ||
-              F[J(751)](dn);
+              F[J(751)](deckMixedVisibleIDs || dn);
         }
       }
     } catch (an) {

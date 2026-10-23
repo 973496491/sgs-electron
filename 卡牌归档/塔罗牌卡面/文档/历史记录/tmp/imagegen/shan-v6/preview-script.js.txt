@@ -1,0 +1,33 @@
+
+  const suits = ['heart','diamond','spade','club'];
+  const labels = ['红桃','方块','黑桃','梅花'];
+  const step = document.getElementById('step');
+  const count = document.getElementById('count');
+  const direction = document.getElementById('direction');
+  function renderHand(id, base) {
+    const hand = document.getElementById(id);
+    const gap = Number(step.value), total = Number(count.value);
+    const vertical = direction.value === 'vertical';
+    hand.replaceChildren();
+    hand.style.width = `${186 + (vertical ? 0 : (total-1)*gap)}px`;
+    hand.style.height = `${260 + (vertical ? (total-1)*gap : 0)}px`;
+    for (let index=0; index<total; index++) {
+      const card = document.createElement('img');
+      card.src = `${base}/Shan_${suits[index%4]}.png`;
+      card.alt = `${labels[index%4]}闪`;
+      card.draggable = false;
+      card.style.left = `${vertical ? 0 : index*gap}px`;
+      card.style.top = `${vertical ? index*gap : 0}px`;
+      card.style.zIndex = String(index);
+      hand.append(card);
+    }
+  }
+  function render() {
+    document.getElementById('stepValue').textContent = `${step.value} px`;
+    document.getElementById('countValue').textContent = count.value;
+    renderHand('softHand','186x260');
+    renderHand('originalHand','../../闪_v5_四花色/186x260');
+  }
+  for (const control of [step,count,direction]) control.addEventListener('input',render);
+  render();
+

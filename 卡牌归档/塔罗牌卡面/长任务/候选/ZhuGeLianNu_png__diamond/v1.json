@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "taskId": "ZhuGeLianNu_png__diamond",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:ZhuGeLianNu_png__diamond:v1]",
+  "status": "rejected",
+  "savedAt": "2026-10-21T05:51:25.647197+00:00",
+  "generatedAt": "2026-10-21T05:51:14.324Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_03023a004dd95a2e016ad852984f0087d081ed0993c74ba164",
+  "prompt": "[TAROT-PROD:ZhuGeLianNu_png__diamond:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为方块，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：诸葛连弩。严格2列×2行，上行“诸葛”、下行“连弩”，从左到右再从上到下阅读；整组居中，总宽约卡宽60%，不改成传统竖排。\n右下角框内放一个清晰的“1”徽记，黑曜石/珐琅暗底、细香槟金边，与上中主花色同材质。徽记次于主标题，底部枝叶局部让位，数字/汉字无遮挡；只写该字符，不加“攻击范围”文案。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“诸葛连弩”与右下“1”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。",
+  "revisedPrompt": "[TAROT-PROD:ZhuGeLianNu_png__diamond:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为方块，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：诸葛连弩。严格2列×2行，上行“诸葛”、下行“连弩”，从左到右再从上到下阅读；整组居中，总宽约卡宽60%，不改成传统竖排。\n右下角框内放一个清晰的“1”徽记，黑曜石/珐琅暗底、细香槟金边，与上中主花色同材质。徽记次于主标题，底部枝叶局部让位，数字/汉字无遮挡；只写该字符，不加“攻击范围”文案。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“诸葛连弩”与右下“1”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。\n额外硬性字形与留位约束：标题严格使用简体“诸”（讠旁，绝非繁体諸）、“葛”、“连”（车字加辶，绝非繁体連）、“弩”，四字逐字准确且笔画完整。左上 x8..46、y8..72 的整组内悬饰、红金菱形、竖杆、悬垂小菱形和细线全部净空，仅保留最外卡框。沿用参考已清空的左上，不恢复任何饰件。字块宽度百分比是设计目标；保持字形完整、自然间隔与93×130清晰辨读。",
+  "sourceCard": {
+    "id": "ZhuGeLianNu_png__diamond",
+    "resourceKey": "ZhuGeLianNu_png",
+    "suitValue": 2,
+    "suit": "diamond",
+    "suitName": "方块",
+    "originalName": "诸葛连弩",
+    "originalNames": [
+      "诸葛连弩"
+    ],
+    "displayName": "诸葛连弩",
+    "layout": "2x2-left-to-right-row-major",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      14,
+      1082,
+      1256,
+      2014,
+      7010,
+      20201,
+      20501,
+      20502,
+      20503,
+      20504,
+      20505,
+      31147,
+      60201
+    ],
+    "representativeCardId": 14,
+    "representativeNumber": 1,
+    "representativeRank": "A",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 13
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 1,
+        "rank": "A",
+        "cardIds": [
+          14,
+          1082,
+          1256,
+          2014,
+          7010,
+          20201,
+          20501,
+          20502,
+          20503,
+          20504,
+          20505,
+          31147,
+          60201
+        ]
+      }
+    ],
+    "type": 3,
+    "subType": 1,
+    "elementalName": null,
+    "weaponRange": 1,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": "representative.attRange / short field h",
+    "weaponRangeVariants": [
+      {
+        "range": 1,
+        "cardIds": [
+          14,
+          66,
+          1082,
+          1256,
+          2014,
+          7010,
+          7044,
+          12066,
+          20201,
+          20202,
+          20501,
+          20502,
+          20503,
+          20504,
+          20505,
+          31147,
+          31152,
+          60201,
+          60202
+        ]
+      }
+    ],
+    "rangeMismatchCardIds": [],
+    "badge": "1",
+    "badgePlacement": "lower-right",
+    "sharedFrameGroupId": "392_2952_186_260",
+    "sharedFrameNames": [
+      "ZhuGeLianNu_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/ZhuGeLianNu_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 9
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_03023a004dd95a2e016ad852984f0087d081ed0993c74ba164",
+    "timestamp": "2026-10-21T05:51:14.324Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T13-49-20-01a15d01-c663-7123-b37e-0db587a6e530.jsonl",
+    "line": 53
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\ZhuGeLianNu_png__diamond\\v1.png",
+    "bytes": 2778441,
+    "sha256": "a8c9e29cbb20c47a9253956709ebb7fe1e7c0b05275d1bb524a5792c60c71d80",
+    "rgbaSha256": "240cd2bca8bf96b7b09e52595aaf7badc411f338461242841d0b64de863b90cf",
+    "size": [
+      1061,
+      1483
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\ZhuGeLianNu_png__diamond\\v1_186x260.png",
+    "bytes": 116659,
+    "sha256": "3e8b3279e18329c4038589e7a22d48e5476290b33402e76974dd35468cc6c8e6",
+    "rgbaSha256": "b0d4ad43c6f4096452f23c8aeb40748632313fd7ef4b16d7f5c88520214bd89a",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "nativeMode": "RGBA",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 7.975695879469669e-05,
+  "reviews": [
+    {
+      "at": "2026-10-21T05:52:46.907425+00:00",
+      "result": "rejected",
+      "note": "已检查465×650小JPEG、93×130 UI缩图及左上留位原始像素局部裁切。标题准确为简体诸葛连弩，2×2上诸葛/下连弩，诸为讠旁、连为车加辶，四字完整；主花色方块、右下范围数字1正确，边框完整，未见左上点数、功能花色或红金悬饰。退回原因：左上固定UI留位内出现明显黑色椭圆/环形暗红边残影，位于区域上半部；原像素裁切证实其为有边界的圆斑，不能确认是已净空的自然连续底材。未将其推断为特定牌点数，但不符合干净留位要求。后续仅需消除整块圆斑及环状边缘，均匀延续周围暗底；保留当前准确标题、布局、主方块及范围1。字号与布局按93×130可读性验收，未以宽度百分比机械退回。候选保留，未提升生产目录。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": null,
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "needs-new-attempt"
+}

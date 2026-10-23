@@ -1,0 +1,9 @@
+{"at": "2026-10-20T18:56:54+00:00", "action": "start", "revision": 1, "cardId": null}
+{"at": "2026-10-20T18:56:55+00:00", "action": "begin", "revision": 2, "cardId": "check-1"}
+{"at": "2026-10-20T18:56:55+00:00", "action": "artifact", "revision": 3, "cardId": "check-1"}
+{"at": "2026-10-20T18:56:55+00:00", "action": "commit", "revision": 4, "cardId": null}
+{"at": "2026-10-20T18:56:56+00:00", "action": "begin", "revision": 5, "cardId": "check-2"}
+{"at": "2026-10-20T18:56:56+00:00", "action": "fail", "revision": 6, "cardId": "check-2"}
+{"at": "2026-10-20T18:56:56+00:00", "action": "recover", "revision": 7, "cardId": "check-2"}
+{"at": "2026-10-20T18:56:57+00:00", "action": "recover", "revision": 8, "cardId": "check-2"}
+{"at": "2026-10-20T18:56:57+00:00", "action": "stop", "revision": 9, "cardId": "check-2"}

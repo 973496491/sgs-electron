@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "taskId": "WanJianQiFa_png__heart",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:WanJianQiFa_png__heart:v1]",
+  "status": "rejected",
+  "savedAt": "2026-10-21T06:03:49.706695+00:00",
+  "generatedAt": "2026-10-21T06:03:37.913Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_09c1df6e701cdb10016ad85592250887d0909d54af2235203e",
+  "prompt": "[TAROT-PROD:WanJianQiFa_png__heart:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为红桃，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：万箭齐发。严格2列×2行，上行“万箭”、下行“齐发”，从左到右再从上到下阅读；整组居中，总宽约卡宽60%，不改成传统竖排。\n此牌右下没有范围或属性徽记；若参考有徽记，应完整移除该圆环及其中数字/属性字，自然补回低对比底材，不得新增额外标记。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“万箭齐发”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。\r\n对象级删除：删除参考左上角整个小红桃及其金色心形外圈、内侧竖杆、悬垂小纹、斜细线、左上卷曲悬饰；在186×260基准x8..46、y8..72全部自然净空，只保留最外侧卡框。不要仅擦除小红桃后留下金色空环或竖杆；不要留下有边界的黑斑、椭圆补丁或暗红环边。自然连续、低对比暗灰/暗红底纹允许。上中主红桃及右上装饰红桃保留。\n字形硬性要求：只用简体“万箭齐发”，上排左万、右箭；下排左齐、右发。万必须是三画简体万，齐用简体齐，发用简体发，绝不能写成萬、齊、發。字宽比例只是设计目标，四字完整清晰、93×130仍易辨、与花色和下方枝叶留有间隔优先。",
+  "revisedPrompt": "[TAROT-PROD:WanJianQiFa_png__heart:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为红桃，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：万箭齐发。严格2列×2行，上行“万箭”、下行“齐发”，从左到右再从上到下阅读；整组居中，总宽约卡宽60%，不改成传统竖排。\n此牌右下没有范围或属性徽记；若参考有徽记，应完整移除该圆环及其中数字/属性字，自然补回低对比底材，不得新增额外标记。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“万箭齐发”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。\n对象级删除：删除参考左上角整个小红桃及其金色心形外圈、内侧竖杆、悬垂小纹、斜细线、左上卷曲悬饰；在186×260基准x8..46、y8..72全部自然净空，只保留最外侧卡框。不要仅擦除小红桃后留下金色空环或竖杆；不要留下有边界的黑斑、椭圆补丁或暗红环边。自然连续、低对比暗灰/暗红底纹允许。上中主红桃及右上装饰红桃保留。\n字形硬性要求：只用简体“万箭齐发”，上排左万、右箭；下排左齐、右发。万必须是三画简体万，齐用简体齐，发用简体发，绝不能写成萬、齊、發。字宽比例只是设计目标，四字完整清晰、93×130仍易辨、与花色和下方枝叶留有间隔优先。",
+  "sourceCard": {
+    "id": "WanJianQiFa_png__heart",
+    "resourceKey": "WanJianQiFa_png",
+    "suitValue": 1,
+    "suit": "heart",
+    "suitName": "红桃",
+    "originalName": "万箭齐发",
+    "originalNames": [
+      "万箭齐发"
+    ],
+    "displayName": "万箭齐发",
+    "layout": "2x2-left-to-right-row-major",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      27,
+      1029,
+      1215,
+      2001,
+      3027,
+      6067,
+      6367,
+      7158,
+      11027,
+      20105,
+      20442,
+      20984,
+      21059,
+      60442,
+      61073,
+      61215
+    ],
+    "representativeCardId": 27,
+    "representativeNumber": 1,
+    "representativeRank": "A",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 26
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 1,
+        "rank": "A",
+        "cardIds": [
+          27,
+          1029,
+          1215,
+          2001,
+          3027,
+          6067,
+          6367,
+          7158,
+          11027,
+          20105,
+          20984,
+          21059
+        ]
+      },
+      {
+        "number": 10,
+        "rank": "10",
+        "cardIds": [
+          20442,
+          60442,
+          61073,
+          61215
+        ]
+      }
+    ],
+    "type": 2,
+    "subType": 0,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "4_3510_186_260",
+    "sharedFrameNames": [
+      "WanJianQiFa_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/WanJianQiFa_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 11
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_09c1df6e701cdb10016ad85592250887d0909d54af2235203e",
+    "timestamp": "2026-10-21T06:03:37.913Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T14-01-30-01a15d0c-eb36-7fe0-8b3f-e803943d8e38.jsonl",
+    "line": 72
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\WanJianQiFa_png__heart\\v1.png",
+    "bytes": 2591290,
+    "sha256": "da035a88ce171c26c2a3e75338a292f74ea3568c2f73178af224e83c5f5ed9ed",
+    "rgbaSha256": "aa180e776a875498667aed02c27c48f42ff5461e14e83201db03d134e065e437",
+    "size": [
+      1061,
+      1483
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\WanJianQiFa_png__heart\\v1_186x260.png",
+    "bytes": 114797,
+    "sha256": "6c97d4b6dcb66a67642af05543cbd98be97cf439779af93eb798f5f927902374",
+    "rgbaSha256": "8e209da8ba0a465ea5e4c04f523686f8e210c1de2a36153a80b18f982d2f3bf0",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "nativeMode": "RGB",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 7.975695879469669e-05,
+  "reviews": [
+    {
+      "at": "2026-10-21T06:04:46.773961+00:00",
+      "result": "rejected",
+      "note": "实际查看465×650检查JPEG、93×130 UI PNG及原始像素左上留位裁切，未重复读取完整大PNG。万箭齐发四字均为简体，2×2上万箭/下齐发，93×130仍可辨；上中主红桃与右上装饰红桃保留，右下无范围或属性徽记，四边完整。失败项：左上小红桃虽删除，但186×260基准x8..46、y8..72区域仍有大金色卷曲悬饰、竖杆、斜金线和枝叶，原像素裁切(46,46,262,411)证实明显侵占独立UI留位，因此退回。下一独立attempt需完整移除该区域的内侧装饰整组，只保留最外框和自然连续低对比底纹；可考虑父流程已找到的红桃净空底图作必要纠错参考。原始PNG、186×260 RGBA、完整提示词、JSON/MD及SHA已保存；仅离线候选，未修改主队列或游戏接入。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": null,
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "needs-new-attempt"
+}

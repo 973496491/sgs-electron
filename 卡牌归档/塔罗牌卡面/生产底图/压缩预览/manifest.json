@@ -1,0 +1,719 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-21T09:53:56.168204+00:00",
+  "profile": "webp-max744x1040-under200000-v1",
+  "originalFilesModified": false,
+  "summary": {
+    "cards": 36,
+    "limitBytes": 200000,
+    "maxPreviewBytes": 185500,
+    "maxProductionPngBytes": 119558,
+    "originalBytes": 84399920,
+    "previewBytes": 5691060
+  },
+  "cards": [
+    {
+      "id": "HanBingJian_png__spade",
+      "file": "HanBingJian_png__spade.webp",
+      "bytes": 164174,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "17822c032c18c24b0f5fca786127e0fd496a624ee93d467d80b796f23872658f",
+      "sourceSha256": "c46751f3ad4117814432962c810b624f643c89680d516bfa43833a2762a16067",
+      "sourceBytes": 2424036,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "寒冰剑",
+      "suit": "黑桃",
+      "productionFile": "../186x260/HanBingJian_png__spade.png",
+      "productionBytes": 112785
+    },
+    {
+      "id": "JueDou_png__diamond",
+      "file": "JueDou_png__diamond.webp",
+      "bytes": 138988,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "e34f9886442fe2a780cdc0f93e661175cc65713829be4f192f370bc8830c24c5",
+      "sourceSha256": "2ae61d5758b02a8b9ff4d81ed3aaa9c9ffbdeaa6b158a335164f11aa580f5482",
+      "sourceBytes": 2203795,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "决斗",
+      "suit": "方块",
+      "productionFile": "../186x260/JueDou_png__diamond.png",
+      "productionBytes": 100704
+    },
+    {
+      "id": "Shan_png__diamond",
+      "file": "Shan_png__diamond.webp",
+      "bytes": 98424,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "8926f210c88685158e0aba4ed5dd9ca65e60d39d5efdf4cf2386625853a90249",
+      "sourceSha256": "a8506c7b5e9b2e473e4a7f9e3fb6a18a0be3f658a76afd3c25db6aff59bcd42f",
+      "sourceBytes": 1986104,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "闪",
+      "suit": "方块",
+      "productionFile": "../186x260/Shan_png__diamond.png",
+      "productionBytes": 103851
+    },
+    {
+      "id": "ShunShouQianYang_png__diamond",
+      "file": "ShunShouQianYang_png__diamond.webp",
+      "bytes": 133672,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "91729f61c3ada3bf184dc08b2dcd1e6a3f28a3c63021a418ff29bf0c49189c98",
+      "sourceSha256": "d57583478afac6a3d2b5d9fe8794ef0dbc09f14bc4ad0e8799b785101eed9db6",
+      "sourceBytes": 2092389,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "顺手牵羊",
+      "suit": "方块",
+      "productionFile": "../186x260/ShunShouQianYang_png__diamond.png",
+      "productionBytes": 105332
+    },
+    {
+      "id": "GuanShiFu_png__diamond",
+      "file": "GuanShiFu_png__diamond.webp",
+      "bytes": 142852,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "a003d4fa3284869973d9aa9715373feed5ac720c6e1b3bd51bc5ea7502d7afdd",
+      "sourceSha256": "7e726c5b8ca63bfea604da770a6f4c397b30aaea3f8fdab33db4d3e2fdd0707a",
+      "sourceBytes": 2140762,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "贯石斧",
+      "suit": "方块",
+      "productionFile": "../186x260/GuanShiFu_png__diamond.png",
+      "productionBytes": 103917
+    },
+    {
+      "id": "Sha_png__diamond",
+      "file": "Sha_png__diamond.webp",
+      "bytes": 125880,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "3692d9ac5ea722940f018c1f827d112cf801dfc4faa181e0c3cc1d8069b69252",
+      "sourceSha256": "6056743e28c923de9c2debb5d91ce80721571ff6e2a2e6274db07294e0547e17",
+      "sourceBytes": 2140857,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "杀",
+      "suit": "方块",
+      "productionFile": "../186x260/Sha_png__diamond.png",
+      "productionBytes": 104132
+    },
+    {
+      "id": "FangTianHuaJi_png__diamond",
+      "file": "FangTianHuaJi_png__diamond.webp",
+      "bytes": 147760,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "b8dc47bfd58b672dcf3cc6f1d59563426c4e127336ff8dbb1250f89508ba6a96",
+      "sourceSha256": "42a33005eeff7c69fec0051764fd95ed17caedec87795d5b89fa425ff992a92f",
+      "sourceBytes": 2195375,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "方天画戟",
+      "suit": "方块",
+      "productionFile": "../186x260/FangTianHuaJi_png__diamond.png",
+      "productionBytes": 106873
+    },
+    {
+      "id": "ZiXing_png__diamond",
+      "file": "ZiXing_png__diamond.webp",
+      "bytes": 170502,
+      "size": [
+        558,
+        780
+      ],
+      "sha256": "4b06c66823a6ef30994b67ed035adf11101ef32f57884ebb82a5d9095649eb8f",
+      "sourceSha256": "040a09aa9501ef365c01d213043281016a6417b8d4d8a500c77bfde1dc24db06",
+      "sourceBytes": 2633716,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "紫騂",
+      "suit": "方块",
+      "productionFile": "../186x260/ZiXing_png__diamond.png",
+      "productionBytes": 111478
+    },
+    {
+      "id": "ZhuGeLianNu_png__diamond",
+      "file": "ZhuGeLianNu_png__diamond.webp",
+      "bytes": 178018,
+      "size": [
+        557,
+        780
+      ],
+      "sha256": "8ed847c8620d08a97f4a42f13606a8a0bada38fa1d6e1c9f31c024da299c38e7",
+      "sourceSha256": "b1ee0a8feecc98175281d7891ddf7c2db35070ced362c360413f1926d449f95a",
+      "sourceBytes": 2742104,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "诸葛连弩",
+      "suit": "方块",
+      "productionFile": "../186x260/ZhuGeLianNu_png__diamond.png",
+      "productionBytes": 119558
+    },
+    {
+      "id": "Tao_png__diamond",
+      "file": "Tao_png__diamond.webp",
+      "bytes": 159032,
+      "size": [
+        558,
+        779
+      ],
+      "sha256": "9f957082698f6414748c8aaf0cac0a559c0712f066c5508e0a2de7bbf7324726",
+      "sourceSha256": "7795708d9e595a58d90a0192f60f54d03f329e5ce47f4b85f11e73120123c801",
+      "sourceBytes": 2596208,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "桃",
+      "suit": "方块",
+      "productionFile": "../186x260/Tao_png__diamond.png",
+      "productionBytes": 109517
+    },
+    {
+      "id": "WanJianQiFa_png__heart",
+      "file": "WanJianQiFa_png__heart.webp",
+      "bytes": 147424,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "9dcc85321405ccf6ebc88f1d2d80771e537d4e1f0be104745e14ace03cb4f152",
+      "sourceSha256": "e1b6e25e6f33874c06e696c57d4b34c4158f9ac7b289d7578ca2617c5d8c8342",
+      "sourceBytes": 2207799,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "万箭齐发",
+      "suit": "红桃",
+      "productionFile": "../186x260/WanJianQiFa_png__heart.png",
+      "productionBytes": 109775
+    },
+    {
+      "id": "Shan_png__heart",
+      "file": "Shan_png__heart.webp",
+      "bytes": 164968,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "ebceabb13a982182d4b378d379729a258f940a054fef8d7ca2efba09d553f8a5",
+      "sourceSha256": "063c5eb30594ca9486102ce85f8359cd8c2b6b8357849a5b021229b1715f520d",
+      "sourceBytes": 2254002,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "闪",
+      "suit": "红桃",
+      "productionFile": "../186x260/Shan_png__heart.png",
+      "productionBytes": 107872
+    },
+    {
+      "id": "WuGuFengDeng_png__heart",
+      "file": "WuGuFengDeng_png__heart.webp",
+      "bytes": 148484,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "abcb3de1f702b915e8f7a53ebe7577dde885850ed1da3ade9981f15cb07bc5cd",
+      "sourceSha256": "63d101e2bc3aff5ec617f11a6f32a355f53350aa99602c35616ce92f4d078378",
+      "sourceBytes": 2200420,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "五谷丰登",
+      "suit": "红桃",
+      "productionFile": "../186x260/WuGuFengDeng_png__heart.png",
+      "productionBytes": 110483
+    },
+    {
+      "id": "ChiTu_png__heart",
+      "file": "ChiTu_png__heart.webp",
+      "bytes": 146808,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "5bf508ef7231818c85111df0071c23f2c2f74a92f65c58a4cff60a4824896d2d",
+      "sourceSha256": "9f76926ad18ce83a9f7aa702d21aa516b8d57590d18c10666666843ad5973134",
+      "sourceBytes": 2242712,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "赤兔",
+      "suit": "红桃",
+      "productionFile": "../186x260/ChiTu_png__heart.png",
+      "productionBytes": 108177
+    },
+    {
+      "id": "LeBuSiShu_png__heart",
+      "file": "LeBuSiShu_png__heart.webp",
+      "bytes": 141180,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "052ec7ac9505841878d2ed185875b64d197af794f2a473b9fe2e1985c8d2ffed",
+      "sourceSha256": "e2d4da662f5ee8fef52a083e7c5ee77e8b6959d5634e83c25ef4f39281103deb",
+      "sourceBytes": 2164722,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "乐不思蜀",
+      "suit": "红桃",
+      "productionFile": "../186x260/LeBuSiShu_png__heart.png",
+      "productionBytes": 111102
+    },
+    {
+      "id": "WuZhongShengYou_png__heart",
+      "file": "WuZhongShengYou_png__heart.webp",
+      "bytes": 140718,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "c7c21ecb72d15f778804d950889b20597954f57671fa8dc5b19af47381cac3a6",
+      "sourceSha256": "a2978be0f3823c036b59b2c3f3f9d31381b4656f0cefa9c1b7396da5f6d69f40",
+      "sourceBytes": 2171563,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "无中生有",
+      "suit": "红桃",
+      "productionFile": "../186x260/WuZhongShengYou_png__heart.png",
+      "productionBytes": 111743
+    },
+    {
+      "id": "Sha_png__heart",
+      "file": "Sha_png__heart.webp",
+      "bytes": 155476,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "b1fc733202c27cdea826ba5b2460c8a819b4ac79bec85778d48bf4ae4b647435",
+      "sourceSha256": "b15970c2a04215a3b4d6e169828a7d4964af71a30508772141a4ea102625d61d",
+      "sourceBytes": 2272303,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "杀",
+      "suit": "红桃",
+      "productionFile": "../186x260/Sha_png__heart.png",
+      "productionBytes": 110383
+    },
+    {
+      "id": "GuoHeChaiQiao_png__heart",
+      "file": "GuoHeChaiQiao_png__heart.webp",
+      "bytes": 137200,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "c2dd821a9b0dd2c883ed9de95bf3410838b9928529c0885198fd71d98e2975e2",
+      "sourceSha256": "dab960218b541e08aec908de2f0aea41d7f702a9ba5b7bb421315d89507e8ee7",
+      "sourceBytes": 2247571,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "过河拆桥",
+      "suit": "红桃",
+      "productionFile": "../186x260/GuoHeChaiQiao_png__heart.png",
+      "productionBytes": 113233
+    },
+    {
+      "id": "TaoYuanJieYi_png__heart",
+      "file": "TaoYuanJieYi_png__heart.webp",
+      "bytes": 167818,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "19d00d6b00c062d77e53e5b2e4b55e50914f752093cef6bc7e16781f998e9556",
+      "sourceSha256": "c8eb4ec70073d2a1d06a84a5eb5af4f331f02e476059dd1bb084c2b87a3ea308",
+      "sourceBytes": 2291306,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "桃园结义",
+      "suit": "红桃",
+      "productionFile": "../186x260/TaoYuanJieYi_png__heart.png",
+      "productionBytes": 112554
+    },
+    {
+      "id": "Tao_png__heart",
+      "file": "Tao_png__heart.webp",
+      "bytes": 169530,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "4cbb1fffaa17e9a6158f22ecad1f3636cdaaf596e0c4554e7850774c0950a088",
+      "sourceSha256": "0f1eb07a30a6b75cb62dcd26f03db8db9c42c445ea99d5bd3f103bf1028a1975",
+      "sourceBytes": 2343683,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "桃",
+      "suit": "红桃",
+      "productionFile": "../186x260/Tao_png__heart.png",
+      "productionBytes": 109256
+    },
+    {
+      "id": "QiLinGong_png__heart",
+      "file": "QiLinGong_png__heart.webp",
+      "bytes": 172504,
+      "size": [
+        743,
+        1040
+      ],
+      "sha256": "9aa859bc2b0d9a612a2b35e83f856563595449f2a3e288bea80ff40e7c4fd55b",
+      "sourceSha256": "8fc889fff58fa92a4b2ce9ac3315d3cae5606de8c8ca3b84d7451473e1a82e74",
+      "sourceBytes": 2342517,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "麒麟弓",
+      "suit": "红桃",
+      "productionFile": "../186x260/QiLinGong_png__heart.png",
+      "productionBytes": 114418
+    },
+    {
+      "id": "ZhuaHuangFeiDian_png__heart",
+      "file": "ZhuaHuangFeiDian_png__heart.webp",
+      "bytes": 167960,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "3a4cc409620b9ee50328ad9c01016c12910eaa02a2be1f724381b5f7877c4580",
+      "sourceSha256": "6ba0988bda78b8540e700bacb7a9238b6d1de4c27aa0c7221ddabc8d2081d87d",
+      "sourceBytes": 2331389,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "爪黄飞电",
+      "suit": "红桃",
+      "productionFile": "../186x260/ZhuaHuangFeiDian_png__heart.png",
+      "productionBytes": 113208
+    },
+    {
+      "id": "JueDou_png__club",
+      "file": "JueDou_png__club.webp",
+      "bytes": 147518,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "aa905188ff977d7a44b566c685dd65fc6777d930ee4079e3f26e84b1ad24b8b3",
+      "sourceSha256": "672e2f0c3e9a50fa6a5dbefdd52b4ec1f5044391ff078a3cabb0e659d0a2e995",
+      "sourceBytes": 2350835,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "决斗",
+      "suit": "梅花",
+      "productionFile": "../186x260/JueDou_png__club.png",
+      "productionBytes": 108940
+    },
+    {
+      "id": "Sha_png__club",
+      "file": "Sha_png__club.webp",
+      "bytes": 176470,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "420f96521147270c393b71f9d6dcb9483a7f1b2b075af0f3e5a43546d744ee43",
+      "sourceSha256": "d86bfb56ed974f5751ecfa96a8bc6b19fd4af9ab795d9a462b3bda6b211977f1",
+      "sourceBytes": 2483134,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "杀",
+      "suit": "梅花",
+      "productionFile": "../186x260/Sha_png__club.png",
+      "productionBytes": 109267
+    },
+    {
+      "id": "WuXieKeJi_png__club",
+      "file": "WuXieKeJi_png__club.webp",
+      "bytes": 174846,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "2d07e63c392cb7aa695097c4aad2d068fb4645ed8627db2a1733bbec926e898c",
+      "sourceSha256": "7fd09cf75ccc04f9bad3181b72ffdb94d0ed7a1aa33155198b30e130c807ca18",
+      "sourceBytes": 2472087,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "无懈可击",
+      "suit": "梅花",
+      "productionFile": "../186x260/WuXieKeJi_png__club.png",
+      "productionBytes": 113299
+    },
+    {
+      "id": "ZhuGeLianNu_png__club",
+      "file": "ZhuGeLianNu_png__club.webp",
+      "bytes": 185500,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "3dc48188224034e4390cba9ead6bb83dc7a02ce96a4fd8b4f606c6e348d980f0",
+      "sourceSha256": "8adaa23fcce5e10e880367371f96f26d22cd7ad8ed5bba3593d661f221de7cc7",
+      "sourceBytes": 2532891,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "诸葛连弩",
+      "suit": "梅花",
+      "productionFile": "../186x260/ZhuGeLianNu_png__club.png",
+      "productionBytes": 113895
+    },
+    {
+      "id": "BaGuaZhen_png__club",
+      "file": "BaGuaZhen_png__club.webp",
+      "bytes": 166080,
+      "size": [
+        744,
+        1038
+      ],
+      "sha256": "c3aa37e26343ef631a3c212c728678aa598078831cc0875ba2ddeabc326d94f5",
+      "sourceSha256": "3577fca426293f2494e80ff24892f41facca34367f79845334b7bb013a58a46d",
+      "sourceBytes": 2370755,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "八卦阵",
+      "suit": "梅花",
+      "productionFile": "../186x260/BaGuaZhen_png__club.png",
+      "productionBytes": 109479
+    },
+    {
+      "id": "GuoHeChaiQiao_png__club",
+      "file": "GuoHeChaiQiao_png__club.webp",
+      "bytes": 176694,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "ca77ef7dbf771639cbc5d7d164e47e7574d2a569d06c880257a5a96ef24347b5",
+      "sourceSha256": "078d016d6636a9283056faad783f6c72cb977af3a9415881b09d6430309b9f3f",
+      "sourceBytes": 2482324,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "过河拆桥",
+      "suit": "梅花",
+      "productionFile": "../186x260/GuoHeChaiQiao_png__club.png",
+      "productionBytes": 113664
+    },
+    {
+      "id": "DiLu_png__club",
+      "file": "DiLu_png__club.webp",
+      "bytes": 181110,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "f6205061fbe93548adf3092bfb4a35940dd758e4c9eed3188c3bfbfa9245205f",
+      "sourceSha256": "83b3c8e160d1acd09e210c9b8cbf6ab389f5d7d6943250b157190fc53b20da00",
+      "sourceBytes": 2594091,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "的卢",
+      "suit": "梅花",
+      "productionFile": "../186x260/DiLu_png__club.png",
+      "productionBytes": 110062
+    },
+    {
+      "id": "LeBuSiShu_png__club",
+      "file": "LeBuSiShu_png__club.webp",
+      "bytes": 175316,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "842c0761b551668f964eef6631593d06c71b017e53c9ce7b82ef31d143af6792",
+      "sourceSha256": "df691cb76e095f1f8ffb4cb468df6f4b6801e06bf1cbf90e0d6aca2260181572",
+      "sourceBytes": 2447374,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "乐不思蜀",
+      "suit": "梅花",
+      "productionFile": "../186x260/LeBuSiShu_png__club.png",
+      "productionBytes": 113163
+    },
+    {
+      "id": "NanManRuQin_png__club",
+      "file": "NanManRuQin_png__club.webp",
+      "bytes": 174046,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "a4c1cafa973561fcd1ce8bcb89ec85ee5e365f1d1e494ac579a2776e0a5cd5e6",
+      "sourceSha256": "643c9b1754c7bc8df391967b6cf7a5c75e4fdf7070f78f2118480df71749d65b",
+      "sourceBytes": 2433748,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "南蛮入侵",
+      "suit": "梅花",
+      "productionFile": "../186x260/NanManRuQin_png__club.png",
+      "productionBytes": 113968
+    },
+    {
+      "id": "JieDaoShaRen_png__club",
+      "file": "JieDaoShaRen_png__club.webp",
+      "bytes": 169190,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "9d8a1d1345fb30a6709df27ee8de0a0915915f68d8ff67d6c5804d27785f4657",
+      "sourceSha256": "fca8f78dd6d147aa22f6863936df981d8d5c89f5b76ae56c3c33300c79ab0a27",
+      "sourceBytes": 2495605,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "借刀",
+      "suit": "梅花",
+      "productionFile": "../186x260/JieDaoShaRen_png__club.png",
+      "productionBytes": 108501
+    },
+    {
+      "id": "JueDou_png__spade",
+      "file": "JueDou_png__spade.webp",
+      "bytes": 121632,
+      "size": [
+        744,
+        1040
+      ],
+      "sha256": "6dd93286f7c4f9e5f8b9e783fc4bcbb65ac17b4a717c18e70900cab8c192217c",
+      "sourceSha256": "39ddd048162f1833efde2392422ef9bf29da182f34e957221fac49b7327e10b7",
+      "sourceBytes": 2226828,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "决斗",
+      "suit": "黑桃",
+      "productionFile": "../186x260/JueDou_png__spade.png",
+      "productionBytes": 116431
+    },
+    {
+      "id": "CiXiongShuangGuJian_png__spade",
+      "file": "CiXiongShuangGuJian_png__spade.webp",
+      "bytes": 180344,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "21f6941d2caeb24fd9b44edd5665c3a9b4bbb3461e318ed74ab727f6ea8b60e3",
+      "sourceSha256": "6dfc7e8688e275d03f881bb3a24b84b0dd4c17d509c34eb3673048b83785f4af",
+      "sourceBytes": 2479516,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "雌雄双股",
+      "suit": "黑桃",
+      "productionFile": "../186x260/CiXiongShuangGuJian_png__spade.png",
+      "productionBytes": 118660
+    },
+    {
+      "id": "ShunShouQianYang_png__spade",
+      "file": "ShunShouQianYang_png__spade.webp",
+      "bytes": 179816,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "e7ce6982a72259f80cd50da14d9933cde28be5798967d86e49abf335ec15b29d",
+      "sourceSha256": "a51caa0b7e28d4888a311dd6d6c02b6c99b69a1f765f8699369f64d951f8b25b",
+      "sourceBytes": 2449000,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "顺手牵羊",
+      "suit": "黑桃",
+      "productionFile": "../186x260/ShunShouQianYang_png__spade.png",
+      "productionBytes": 118386
+    },
+    {
+      "id": "JueYing_png__spade",
+      "file": "JueYing_png__spade.webp",
+      "bytes": 163126,
+      "size": [
+        744,
+        1039
+      ],
+      "sha256": "70fc481e6fa4cbb0e57496a03ec2f4fdd53bb0eed32bcfd67996d1a6fe5b6061",
+      "sourceSha256": "4de8ad5ce4d7239bd4e3360b44dfdb05ac27b02da23ae2a663428b9cdc961364",
+      "sourceBytes": 2356399,
+      "profile": "webp-max744x1040-under200000-v1",
+      "quality": 86,
+      "encoderMethod": 4,
+      "role": "lossy viewing copy; not the production PNG",
+      "name": "绝影",
+      "suit": "黑桃",
+      "productionFile": "../186x260/JueYing_png__spade.png",
+      "productionBytes": 115266
+    }
+  ]
+}

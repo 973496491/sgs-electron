@@ -1,0 +1,20 @@
+{
+  "generationId": "ig_051fea5d232504cf016ad7a385f62c87d0a9a01c99583b917b",
+  "timestamp": "2026-10-20T17:24:29.014Z",
+  "sourceSession": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T00-33-48-01a15a29-7116-7a22-91e0-c4330740cfcd.jsonl",
+  "sourceLine": 465,
+  "prompt": "Precise sprite-layout edit of the MOST RECENT transparent champagne-gold numeral 2. Keep the entire transparent canvas unchanged in its 19:17 landscape aspect ratio. Move only the existing numeral LEFT by 7.895% of canvas width and UP by 5.882% of canvas height (equivalent to left 3 pixels and up 2 pixels on a 38x34 sprite). Preserve the numeral's EXACT size, glyph shape, material, bevel, color, highlights, opacity and antialiased edges. This is a small translation inside the existing layer, NOT a redraw, resize, recentering or crop-to-content. The moved glyph should have slightly less empty space above and on the left, more empty space to its right and below. Keep every part of the numeral inside the canvas. Do not center it again. Output ONLY this one updated transparent PNG sprite, actual alpha transparency, no visible background, no checkerboard, no new decoration, no card, no additional symbols.",
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\来源原图\\rank_2_accepted_native.png",
+    "bytes": 778708,
+    "sha256": "a1402ea061a9457a7d6a2b9cd411ac5b56b5c97306320e536181371e7eed58e7",
+    "rgbaSha256": "9d69c9454c550b9ffaa96fc626dbf946c2b939508750a7cdbe6b7baac3f9acc4",
+    "size": [
+      1326,
+      1186
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "purpose": "Recovered existing native result for style reference only; accepted 38x34 asset is retained unchanged."
+}

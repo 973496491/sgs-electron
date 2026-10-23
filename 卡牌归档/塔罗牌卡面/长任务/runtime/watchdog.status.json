@@ -1,0 +1,12 @@
+{
+  "pid": 16032,
+  "startedAt": "2026-10-20T18:57:33+00:00",
+  "checkedAt": "2026-10-21T17:29:53+00:00",
+  "mode": "alarm",
+  "timeoutSeconds": 900.0,
+  "intervalSeconds": 15.0,
+  "heartbeatAgeSeconds": 27357.46,
+  "taskStatus": "running",
+  "currentCardId": "QingGangJian_png__spade",
+  "revision": 197
+}

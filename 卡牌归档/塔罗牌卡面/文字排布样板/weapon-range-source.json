@@ -1,0 +1,149 @@
+{
+  "verifiedAt": "2026-10-20T18:34:17.082928+00:00",
+  "configFile": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+  "configSha256": "5f4511709f238e7f8eb9ea53bdc944509ea0253d7adf9cb39e619c27cdd5ef40",
+  "officialSource": {
+    "url": "https://web.sanguosha.com/220/h5_2/res/config/Config.sgs",
+    "retrievedAt": "2026-10-20T15:37:48.924324+00:00",
+    "bytes": 4153280,
+    "sha256": "9d2b017d7112c1d5999d61b48600945b4139fe237d840a38784623114706de9f",
+    "savedEntry": "sys_playcard.sgs"
+  },
+  "mapping": {
+    "h": "attRange",
+    "i": "attDistance",
+    "j": "defDistance"
+  },
+  "scope": "军争牌ID1～161中的装备武器(type=3,subType=1)",
+  "weapons": [
+    {
+      "cardId": 5,
+      "name": "贯石斧",
+      "number": 5,
+      "color": 2,
+      "attackRange": 3,
+      "res": "GuanShiFu"
+    },
+    {
+      "cardId": 12,
+      "name": "方天画戟",
+      "number": 12,
+      "color": 2,
+      "attackRange": 4,
+      "res": "FangTianHuaJi"
+    },
+    {
+      "cardId": 14,
+      "name": "诸葛连弩",
+      "number": 1,
+      "color": 2,
+      "attackRange": 1,
+      "res": "ZhuGeLianNu"
+    },
+    {
+      "cardId": 44,
+      "name": "麒麟弓",
+      "number": 5,
+      "color": 1,
+      "attackRange": 5,
+      "res": "QiLinGong"
+    },
+    {
+      "cardId": 66,
+      "name": "诸葛连弩",
+      "number": 1,
+      "color": 4,
+      "attackRange": 1,
+      "res": "ZhuGeLianNu"
+    },
+    {
+      "cardId": 80,
+      "name": "雌雄双股剑",
+      "number": 2,
+      "color": 3,
+      "attackRange": 2,
+      "res": "CiXiongShuangGuJian"
+    },
+    {
+      "cardId": 84,
+      "name": "青釭剑",
+      "number": 6,
+      "color": 3,
+      "attackRange": 2,
+      "res": "QingGangJian"
+    },
+    {
+      "cardId": 96,
+      "name": "青龙偃月刀",
+      "number": 5,
+      "color": 3,
+      "attackRange": 3,
+      "res": "QingLongYanYueDao"
+    },
+    {
+      "cardId": 103,
+      "name": "丈八蛇矛",
+      "number": 12,
+      "color": 3,
+      "attackRange": 3,
+      "res": "ZhangBaSheMao"
+    },
+    {
+      "cardId": 108,
+      "name": "寒冰剑",
+      "number": 2,
+      "color": 3,
+      "attackRange": 2,
+      "res": "HanBingJian"
+    },
+    {
+      "cardId": 122,
+      "name": "朱雀羽扇",
+      "number": 1,
+      "color": 2,
+      "attackRange": 4,
+      "res": "ZhuQueYuShan"
+    },
+    {
+      "cardId": 135,
+      "name": "古锭刀",
+      "number": 1,
+      "color": 3,
+      "attackRange": 2,
+      "res": "GuDingDao"
+    }
+  ],
+  "hanbingBookEntry": {
+    "id": 66,
+    "cardid": 108,
+    "Name": "寒冰剑",
+    "Model": 1,
+    "ModelTab": 2,
+    "sortindex": 420,
+    "num": 1,
+    "Type": "装备牌",
+    "Time": "出牌阶段",
+    "Target": "自己",
+    "dese": "攻击范围：2<br/>技能：当你使用【杀】对目标角色造成伤害时，若该角色有牌，则你可以防止此伤害，然后你依次弃置其两张牌。",
+    "use": "1、寒冰剑可以克制卖血将，让其无法以血量换取优势<br/>2、发动寒冰剑拆除玩家关键装备，此时会带来大于伤害的收益",
+    "res": "HanBingJian",
+    "color": "3,2",
+    "gamelabelId": "22,3;22,6;156,3",
+    "tabLevel": "20"
+  },
+  "crossModeExample": {
+    "a": 2035,
+    "b": "寒冰剑",
+    "c": 3,
+    "d": 1,
+    "e": 24,
+    "f": 9,
+    "g": 3,
+    "h": 1,
+    "i": 0,
+    "j": 0,
+    "m": 201,
+    "p": "HanBingJian"
+  },
+  "note": "Range is distinct from rank and attack/defence distance; same-name cards in other modes may have a different attRange."
+}

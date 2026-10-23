@@ -1,0 +1,1086 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-20T18:57:23+00:00",
+  "status": "running",
+  "revision": 197,
+  "currentTask": {
+    "cardId": "QingGangJian_png__spade",
+    "beganAt": "2026-10-21T09:53:56+00:00",
+    "stage": "generating",
+    "artifactCandidates": [
+      "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\QingGangJian_png__spade.png"
+    ]
+  },
+  "done": {
+    "HanBingJian_png__spade": {
+      "committedAt": "2026-10-20T19:20:39+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\HanBingJian_png__spade.png",
+          "exists": true,
+          "bytes": 2424036,
+          "sha256": "c46751f3ad4117814432962c810b624f643c89680d516bfa43833a2762a16067"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\HanBingJian_png__spade.png",
+          "exists": true,
+          "bytes": 112785,
+          "sha256": "1a2450f30f09e49d518d82eaf064ac6361373576d3be8712aacdcde26fa34fa8"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\HanBingJian_png__spade.json",
+          "exists": true,
+          "bytes": 13060,
+          "sha256": "60e3368d1ad971f4e4015aa1d3950b618d7787f1759d2ee81899bde2232ffd1f"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\HanBingJian_png__spade.md",
+          "exists": true,
+          "bytes": 2915,
+          "sha256": "b81aad8c89f1e39fdd617317f6149fb80f0350adef9220fc4de6935fe49c3290"
+        }
+      ]
+    },
+    "JueDou_png__diamond": {
+      "committedAt": "2026-10-20T19:32:49+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\JueDou_png__diamond.png",
+          "exists": true,
+          "bytes": 2203795,
+          "sha256": "2ae61d5758b02a8b9ff4d81ed3aaa9c9ffbdeaa6b158a335164f11aa580f5482"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\JueDou_png__diamond.png",
+          "exists": true,
+          "bytes": 100704,
+          "sha256": "44a3b32b8c0e29863499588d3cdf54235219e2ebcf2b78f256cd2de9a74bc028"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JueDou_png__diamond.json",
+          "exists": true,
+          "bytes": 12923,
+          "sha256": "078f27f97485862fdfc208fb00f8d66ec67bdb5ba6a74bb94a3b062ea7b6f9f3"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JueDou_png__diamond.md",
+          "exists": true,
+          "bytes": 5018,
+          "sha256": "a7653a27734bc2732ead338966fb9b986ce108e43ab0d1c3cc8c4197e9cb8416"
+        }
+      ]
+    },
+    "Shan_png__diamond": {
+      "committedAt": "2026-10-21T05:26:18+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Shan_png__diamond.png",
+          "exists": true,
+          "bytes": 1986104,
+          "sha256": "a8506c7b5e9b2e473e4a7f9e3fb6a18a0be3f658a76afd3c25db6aff59bcd42f"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Shan_png__diamond.png",
+          "exists": true,
+          "bytes": 103851,
+          "sha256": "296aef3ae991dc3fb8644846e0435119bcd2504e92f322f62f52aae2fa25a406"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Shan_png__diamond.json",
+          "exists": true,
+          "bytes": 15611,
+          "sha256": "b16c9d0d79aef7821633b00042a57fc3c915d9f29c9078b381c24a4da11ea590"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Shan_png__diamond.md",
+          "exists": true,
+          "bytes": 2295,
+          "sha256": "86b4c2de5ff6edca9b7681376b964abb851fe7050bd5fc39cba7034d5923d298"
+        }
+      ]
+    },
+    "ShunShouQianYang_png__diamond": {
+      "committedAt": "2026-10-21T05:31:05+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\ShunShouQianYang_png__diamond.png",
+          "exists": true,
+          "bytes": 2092389,
+          "sha256": "d57583478afac6a3d2b5d9fe8794ef0dbc09f14bc4ad0e8799b785101eed9db6"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\ShunShouQianYang_png__diamond.png",
+          "exists": true,
+          "bytes": 105332,
+          "sha256": "b08ca658adcd255723c3195b8c171a455042db5610c4c2e75bedc83876b60052"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ShunShouQianYang_png__diamond.json",
+          "exists": true,
+          "bytes": 14990,
+          "sha256": "62309151f9e75223c3636cf5616b565cbf47006d189db60bd10dd2c6c902a10b"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ShunShouQianYang_png__diamond.md",
+          "exists": true,
+          "bytes": 6440,
+          "sha256": "10fe61e9dae0b6a1d50a4898e2b32ea6559a0c0368bfbf0c66013b697fdae41c"
+        }
+      ]
+    },
+    "GuanShiFu_png__diamond": {
+      "committedAt": "2026-10-21T05:35:20+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\GuanShiFu_png__diamond.png",
+          "exists": true,
+          "bytes": 2140762,
+          "sha256": "7e726c5b8ca63bfea604da770a6f4c397b30aaea3f8fdab33db4d3e2fdd0707a"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\GuanShiFu_png__diamond.png",
+          "exists": true,
+          "bytes": 103917,
+          "sha256": "f176446d28c3e9cfb34645aba5c7de081571489642b88073eac27327bc151be3"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\GuanShiFu_png__diamond.json",
+          "exists": true,
+          "bytes": 13661,
+          "sha256": "e54d8ea3568ffade579d0b006ac72b10586ee98ff0b29ddc313a2bb93b7b3ffe"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\GuanShiFu_png__diamond.md",
+          "exists": true,
+          "bytes": 3335,
+          "sha256": "66e37a36223b766e55b239cd1e94523945a1f8345eeed6acc80e6dddcf022f0e"
+        }
+      ]
+    },
+    "Sha_png__diamond": {
+      "committedAt": "2026-10-21T05:41:55+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Sha_png__diamond.png",
+          "exists": true,
+          "bytes": 2140857,
+          "sha256": "6056743e28c923de9c2debb5d91ce80721571ff6e2a2e6274db07294e0547e17"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Sha_png__diamond.png",
+          "exists": true,
+          "bytes": 104132,
+          "sha256": "6c68cc759ad7c6857c43672b66667dfdb05f9bf290ca9116822c0dcd6b142fa2"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Sha_png__diamond.json",
+          "exists": true,
+          "bytes": 15983,
+          "sha256": "e0f6d5a5decf23201e774c3beb377255091bf5f3000d2406e955343e2d84c39b"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Sha_png__diamond.md",
+          "exists": true,
+          "bytes": 6079,
+          "sha256": "b9b9c85c4b5413877b049b916042b0580fa1ba8fcd82510ca80a5fabf3afd6ac"
+        }
+      ]
+    },
+    "FangTianHuaJi_png__diamond": {
+      "committedAt": "2026-10-21T05:45:14+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\FangTianHuaJi_png__diamond.png",
+          "exists": true,
+          "bytes": 2195375,
+          "sha256": "42a33005eeff7c69fec0051764fd95ed17caedec87795d5b89fa425ff992a92f"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\FangTianHuaJi_png__diamond.png",
+          "exists": true,
+          "bytes": 106873,
+          "sha256": "fadeb2e639844bbb7e1d470497481927d6c85306e0d3cec58fc7510b44c9e775"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\FangTianHuaJi_png__diamond.json",
+          "exists": true,
+          "bytes": 13508,
+          "sha256": "71837bb619faf5753f442250f9be8eccc4b3e484ab03e8ad4a5326748c45b74a"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\FangTianHuaJi_png__diamond.md",
+          "exists": true,
+          "bytes": 3471,
+          "sha256": "9685243b094e812bf02c3a4c8d94bb8b81f868819291d9ea6867ef6f020df68b"
+        }
+      ]
+    },
+    "ZiXing_png__diamond": {
+      "committedAt": "2026-10-21T05:49:05+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\ZiXing_png__diamond.png",
+          "exists": true,
+          "bytes": 2633716,
+          "sha256": "040a09aa9501ef365c01d213043281016a6417b8d4d8a500c77bfde1dc24db06"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\ZiXing_png__diamond.png",
+          "exists": true,
+          "bytes": 111478,
+          "sha256": "6980b83edd715c63735abd886601d38758613859d983a771d42237c370b16ee0"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ZiXing_png__diamond.json",
+          "exists": true,
+          "bytes": 13929,
+          "sha256": "9441bb5a47929fabefc745e54f752e6354dd319093ade87420357b628ef68495"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ZiXing_png__diamond.md",
+          "exists": true,
+          "bytes": 6413,
+          "sha256": "d2342cbfb7d846ed19c88017d4acfc6f0a1906956ee8740e8c234b937f2410b3"
+        }
+      ]
+    },
+    "ZhuGeLianNu_png__diamond": {
+      "committedAt": "2026-10-21T05:57:57+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\ZhuGeLianNu_png__diamond.png",
+          "exists": true,
+          "bytes": 2742104,
+          "sha256": "b1ee0a8feecc98175281d7891ddf7c2db35070ced362c360413f1926d449f95a"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\ZhuGeLianNu_png__diamond.png",
+          "exists": true,
+          "bytes": 119558,
+          "sha256": "54bd71d7a4885f0d3e4116e8d039400c72564f18259d256c46f789566942651f"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ZhuGeLianNu_png__diamond.json",
+          "exists": true,
+          "bytes": 14683,
+          "sha256": "819a874fc387c73d8e0a9ba894aa7a739fe8f9f86e9e8a38772de7d6d5db9533"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ZhuGeLianNu_png__diamond.md",
+          "exists": true,
+          "bytes": 6662,
+          "sha256": "5f756671d96af37dca7375a1f05afb33fa4fe2b730ec0127f503ba777c39ee5d"
+        }
+      ]
+    },
+    "Tao_png__diamond": {
+      "committedAt": "2026-10-21T06:01:11+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Tao_png__diamond.png",
+          "exists": true,
+          "bytes": 2596208,
+          "sha256": "7795708d9e595a58d90a0192f60f54d03f329e5ce47f4b85f11e73120123c801"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Tao_png__diamond.png",
+          "exists": true,
+          "bytes": 109517,
+          "sha256": "f20eab65de68b919cc84c36a8ef6132ca5986e36e677de8879c76162af9fabb5"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Tao_png__diamond.json",
+          "exists": true,
+          "bytes": 13910,
+          "sha256": "85fe08b089f6fa5220f382a9ccbf6584a0471e4d3c475ecd1477bc9630c84ede"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Tao_png__diamond.md",
+          "exists": true,
+          "bytes": 3328,
+          "sha256": "dffc9f29e40a37d99a0308723234316089131b630920feca05a3e21c05a0fb2e"
+        }
+      ]
+    },
+    "WanJianQiFa_png__heart": {
+      "committedAt": "2026-10-21T06:10:16+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\WanJianQiFa_png__heart.png",
+          "exists": true,
+          "bytes": 2207799,
+          "sha256": "e1b6e25e6f33874c06e696c57d4b34c4158f9ac7b289d7578ca2617c5d8c8342"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\WanJianQiFa_png__heart.png",
+          "exists": true,
+          "bytes": 109775,
+          "sha256": "40cb7891b666b0448b0a040007e21c3064d9534c9f864ebc161ee1aa8fea37a7"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\WanJianQiFa_png__heart.json",
+          "exists": true,
+          "bytes": 16491,
+          "sha256": "bdc2a3b7dd4c441d7e3d740532bd095b9f7106cfa9ed3d16cf4e77b7e93360e8"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\WanJianQiFa_png__heart.md",
+          "exists": true,
+          "bytes": 5127,
+          "sha256": "00f86e5daf4c4aef380c1aa1f65558904619f4c6086833d0382b8aa1da747405"
+        }
+      ]
+    },
+    "Shan_png__heart": {
+      "committedAt": "2026-10-21T06:20:15+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Shan_png__heart.png",
+          "exists": true,
+          "bytes": 2254002,
+          "sha256": "063c5eb30594ca9486102ce85f8359cd8c2b6b8357849a5b021229b1715f520d"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Shan_png__heart.png",
+          "exists": true,
+          "bytes": 107872,
+          "sha256": "f06d0d2ca29981832ee91a8db696d1d00983ae2df4ff7355a7fa6bcbfe63158c"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Shan_png__heart.json",
+          "exists": true,
+          "bytes": 17564,
+          "sha256": "881beb70e3d20c72a06c4358ee32619191f1896fe405830241092e0a858354b7"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Shan_png__heart.md",
+          "exists": true,
+          "bytes": 4628,
+          "sha256": "aaaf7890314430c3075416c4f769f019eee803cd880f2de2f8f83b66cef285bf"
+        }
+      ]
+    },
+    "WuGuFengDeng_png__heart": {
+      "committedAt": "2026-10-21T06:25:24+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\WuGuFengDeng_png__heart.png",
+          "exists": true,
+          "bytes": 2200420,
+          "sha256": "63d101e2bc3aff5ec617f11a6f32a355f53350aa99602c35616ce92f4d078378"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\WuGuFengDeng_png__heart.png",
+          "exists": true,
+          "bytes": 110483,
+          "sha256": "738b7c89dbf229931d5564d113d0fadef34f7d25799afb5ca48c665f69330a80"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\WuGuFengDeng_png__heart.json",
+          "exists": true,
+          "bytes": 14862,
+          "sha256": "eb0cd22335d7e1f3d52bca6297914847e97a019dfdbabc14c641e6b0fd17b30e"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\WuGuFengDeng_png__heart.md",
+          "exists": true,
+          "bytes": 4324,
+          "sha256": "7774b4a93e3741289a9261d88aaf3c51184451593c1ad9a244d2ecbd2895b92f"
+        }
+      ]
+    },
+    "ChiTu_png__heart": {
+      "committedAt": "2026-10-21T06:29:27+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\ChiTu_png__heart.png",
+          "exists": true,
+          "bytes": 2242712,
+          "sha256": "9f76926ad18ce83a9f7aa702d21aa516b8d57590d18c10666666843ad5973134"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\ChiTu_png__heart.png",
+          "exists": true,
+          "bytes": 108177,
+          "sha256": "de5cb5bf0e1d4e58b89bc8bf033466e8ee3bd657a4e18a5e0a1e68159cec405e"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ChiTu_png__heart.json",
+          "exists": true,
+          "bytes": 13405,
+          "sha256": "9f758125388ddb7c5c3874414bd32bb32a1834fe7b9bf0685658f4ac72b01a94"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ChiTu_png__heart.md",
+          "exists": true,
+          "bytes": 5905,
+          "sha256": "4a6ba0ffdc6513bfbb1a993334f28a3739c95388f6638bb05b8295aa971297ce"
+        }
+      ]
+    },
+    "LeBuSiShu_png__heart": {
+      "committedAt": "2026-10-21T06:35:31+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\LeBuSiShu_png__heart.png",
+          "exists": true,
+          "bytes": 2164722,
+          "sha256": "e2d4da662f5ee8fef52a083e7c5ee77e8b6959d5634e83c25ef4f39281103deb"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\LeBuSiShu_png__heart.png",
+          "exists": true,
+          "bytes": 111102,
+          "sha256": "d355a0e540c1567419a8324550fa8a9efa2fcfb765ef0052804f618813eef8a5"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\LeBuSiShu_png__heart.json",
+          "exists": true,
+          "bytes": 13834,
+          "sha256": "ab04250d4f1ea3e9828aa07ac710cd1771eee6fab50dbd8a99cddf98947f044a"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\LeBuSiShu_png__heart.md",
+          "exists": true,
+          "bytes": 3911,
+          "sha256": "7f56aa62d725950389087e85ff6dd4b76805a0de78010d7dc41bf4c957a1a90d"
+        }
+      ]
+    },
+    "WuZhongShengYou_png__heart": {
+      "committedAt": "2026-10-21T06:42:02+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\WuZhongShengYou_png__heart.png",
+          "exists": true,
+          "bytes": 2171563,
+          "sha256": "a2978be0f3823c036b59b2c3f3f9d31381b4656f0cefa9c1b7396da5f6d69f40"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\WuZhongShengYou_png__heart.png",
+          "exists": true,
+          "bytes": 111743,
+          "sha256": "9d7670a49f012660779455dd629beaaf40d4a602f15c16c7bedb3655460dce34"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\WuZhongShengYou_png__heart.json",
+          "exists": true,
+          "bytes": 15030,
+          "sha256": "af1e138814b59faf4145ee80386479f46fb1f8d4941708916bd0f097fcec70a4"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\WuZhongShengYou_png__heart.md",
+          "exists": true,
+          "bytes": 6387,
+          "sha256": "2727702ca82043e7658e4db06982b6acd67a0ed948bc19a8d19f8b6c622f1d59"
+        }
+      ]
+    },
+    "Sha_png__heart": {
+      "committedAt": "2026-10-21T08:13:50+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Sha_png__heart.png",
+          "exists": true,
+          "bytes": 2272303,
+          "sha256": "b15970c2a04215a3b4d6e169828a7d4964af71a30508772141a4ea102625d61d"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Sha_png__heart.png",
+          "exists": true,
+          "bytes": 110383,
+          "sha256": "1200a79daaaa0981f12dfdd2a5ef3d10f96a0b9483626584a5a8ea0b31df2a82"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Sha_png__heart.json",
+          "exists": true,
+          "bytes": 14283,
+          "sha256": "a3807d6b41c4d574789a4652d499fe7058246c680ca820365c0c673e1b5f8047"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Sha_png__heart.md",
+          "exists": true,
+          "bytes": 5241,
+          "sha256": "a801938b67889e9a3a14ac6d566ea4a2c9212fd61090acd8980e2fdf119c8075"
+        }
+      ]
+    },
+    "GuoHeChaiQiao_png__heart": {
+      "committedAt": "2026-10-21T08:29:38+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\GuoHeChaiQiao_png__heart.png",
+          "exists": true,
+          "bytes": 2247571,
+          "sha256": "dab960218b541e08aec908de2f0aea41d7f702a9ba5b7bb421315d89507e8ee7"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\GuoHeChaiQiao_png__heart.png",
+          "exists": true,
+          "bytes": 113233,
+          "sha256": "1187d45e93de3e40018dcc49e845daa9eb140975ca3ddded96111977fad8b212"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\GuoHeChaiQiao_png__heart.json",
+          "exists": true,
+          "bytes": 13429,
+          "sha256": "b1e5633d53183c83e2ea632886cc3ccdd14451a0520c9bfbe76329cb359098a1"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\GuoHeChaiQiao_png__heart.md",
+          "exists": true,
+          "bytes": 3367,
+          "sha256": "17f5c93a4d7dca70fcaaa8bd99cd0f8549295901cd92a462e1f9b11c15dba622"
+        }
+      ]
+    },
+    "TaoYuanJieYi_png__heart": {
+      "committedAt": "2026-10-21T08:37:43+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\TaoYuanJieYi_png__heart.png",
+          "exists": true,
+          "bytes": 2291306,
+          "sha256": "c8eb4ec70073d2a1d06a84a5eb5af4f331f02e476059dd1bb084c2b87a3ea308"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\TaoYuanJieYi_png__heart.png",
+          "exists": true,
+          "bytes": 112554,
+          "sha256": "b659b08afcc348785b4475791281312b41a286430e36c20c011581534d905141"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\TaoYuanJieYi_png__heart.json",
+          "exists": true,
+          "bytes": 10992,
+          "sha256": "9a0141cfcf7fdd68f868493e8ed5182e90c1a9ed81acf17b9f6721acdd6b20c7"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\TaoYuanJieYi_png__heart.md",
+          "exists": true,
+          "bytes": 2123,
+          "sha256": "3e7353acca562007f4df4a6fdb8e3f8db2bb0147d239ddb07ee97af34f5105f8"
+        }
+      ]
+    },
+    "Tao_png__heart": {
+      "committedAt": "2026-10-21T08:40:20+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Tao_png__heart.png",
+          "exists": true,
+          "bytes": 2343683,
+          "sha256": "0f1eb07a30a6b75cb62dcd26f03db8db9c42c445ea99d5bd3f103bf1028a1975"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Tao_png__heart.png",
+          "exists": true,
+          "bytes": 109256,
+          "sha256": "31006e33505c43676c225c20b70f93b6086fba39b054c92d1a1e0cbad57d4416"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Tao_png__heart.json",
+          "exists": true,
+          "bytes": 13349,
+          "sha256": "cbfd7f36d2d4fbf6957dd2eb0325767e2a9c17d39dc8e69f24642f0ac39abf94"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Tao_png__heart.md",
+          "exists": true,
+          "bytes": 2046,
+          "sha256": "a9b0905615d85c6f91813974d18c2aace5ffa286a1727cd60ddb3a0cbf3411b0"
+        }
+      ]
+    },
+    "QiLinGong_png__heart": {
+      "committedAt": "2026-10-21T08:43:28+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\QiLinGong_png__heart.png",
+          "exists": true,
+          "bytes": 2342517,
+          "sha256": "8fc889fff58fa92a4b2ce9ac3315d3cae5606de8c8ca3b84d7451473e1a82e74"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\QiLinGong_png__heart.png",
+          "exists": true,
+          "bytes": 114418,
+          "sha256": "20e6ccd29c98064487a6509737ba6d5e723e8a50969b0908a3c9fd7426037bad"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\QiLinGong_png__heart.json",
+          "exists": true,
+          "bytes": 11346,
+          "sha256": "78588595857b9c04aefef8b8b019f18df9bccbaf3de56baafc74233f5a64cfcc"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\QiLinGong_png__heart.md",
+          "exists": true,
+          "bytes": 2225,
+          "sha256": "aa3bd8a48514b31d82186df6b3e7aee58642154d28403cc2e938c6418cff9457"
+        }
+      ]
+    },
+    "ZhuaHuangFeiDian_png__heart": {
+      "committedAt": "2026-10-21T08:46:27+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\ZhuaHuangFeiDian_png__heart.png",
+          "exists": true,
+          "bytes": 2331389,
+          "sha256": "6ba0988bda78b8540e700bacb7a9238b6d1de4c27aa0c7221ddabc8d2081d87d"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\ZhuaHuangFeiDian_png__heart.png",
+          "exists": true,
+          "bytes": 113208,
+          "sha256": "cb7da003251796ae17b6ed0e08a34c1a11c5fe4f4bc68db7977417c6ef14194b"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ZhuaHuangFeiDian_png__heart.json",
+          "exists": true,
+          "bytes": 11123,
+          "sha256": "4efa620aba3e587be0cddb3f47c49f2a109c682de3ce1b05921dd7069fb9730a"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ZhuaHuangFeiDian_png__heart.md",
+          "exists": true,
+          "bytes": 2272,
+          "sha256": "25e5e2e3e70f248de710d91cbaf12b8e9def429caf6b865c3b6bfa0ed021ea3d"
+        }
+      ]
+    },
+    "JueDou_png__club": {
+      "committedAt": "2026-10-21T08:54:01+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\JueDou_png__club.png",
+          "exists": true,
+          "bytes": 2350835,
+          "sha256": "672e2f0c3e9a50fa6a5dbefdd52b4ec1f5044391ff078a3cabb0e659d0a2e995"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\JueDou_png__club.png",
+          "exists": true,
+          "bytes": 108940,
+          "sha256": "1a839d04953f55fd27d37e7ef95d158e45273f0a7e25f8eebcc8cec4230e61ec"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JueDou_png__club.json",
+          "exists": true,
+          "bytes": 13375,
+          "sha256": "9d8b6d63118cea2735c8eefa3d7e5d4710f4f34329baea67227b24ad01387bb9"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JueDou_png__club.md",
+          "exists": true,
+          "bytes": 3227,
+          "sha256": "abc441be3f75192de80eb9addda70955e6911a79cf861e641e269308c7b9c396"
+        }
+      ]
+    },
+    "Sha_png__club": {
+      "committedAt": "2026-10-21T08:58:04+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Sha_png__club.png",
+          "exists": true,
+          "bytes": 2483134,
+          "sha256": "d86bfb56ed974f5751ecfa96a8bc6b19fd4af9ab795d9a462b3bda6b211977f1"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Sha_png__club.png",
+          "exists": true,
+          "bytes": 109267,
+          "sha256": "ba8e406c3ccef3566a9ef9952b1356f30f23498e5d033538bb1554d4c9796797"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Sha_png__club.json",
+          "exists": true,
+          "bytes": 14906,
+          "sha256": "3b9d507dae4e5c814db9a08701dada63a1492204673b962cb324ffe09082bd48"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\Sha_png__club.md",
+          "exists": true,
+          "bytes": 2221,
+          "sha256": "ef8a834e1938c96557dabe2181669bb574c900b806a905c68dd5bd1a92c46d95"
+        }
+      ]
+    },
+    "WuXieKeJi_png__club": {
+      "committedAt": "2026-10-21T09:01:24+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\WuXieKeJi_png__club.png",
+          "exists": true,
+          "bytes": 2472087,
+          "sha256": "7fd09cf75ccc04f9bad3181b72ffdb94d0ed7a1aa33155198b30e130c807ca18"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\WuXieKeJi_png__club.png",
+          "exists": true,
+          "bytes": 113299,
+          "sha256": "fe787596bad192bd9e8e39f40483b65d6486be048bc999e4d19371a88900e996"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\WuXieKeJi_png__club.json",
+          "exists": true,
+          "bytes": 11458,
+          "sha256": "d3ac68a1693cf67e8d3468c2ed023544bb5c79f555e59d60b6aeb1baceb789bf"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\WuXieKeJi_png__club.md",
+          "exists": true,
+          "bytes": 2189,
+          "sha256": "7d5bb1073c4b902579119b3fdf75c187f14b956b195663045d0c11b686e08c03"
+        }
+      ]
+    },
+    "ZhuGeLianNu_png__club": {
+      "committedAt": "2026-10-21T09:05:00+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\ZhuGeLianNu_png__club.png",
+          "exists": true,
+          "bytes": 2532891,
+          "sha256": "8adaa23fcce5e10e880367371f96f26d22cd7ad8ed5bba3593d661f221de7cc7"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\ZhuGeLianNu_png__club.png",
+          "exists": true,
+          "bytes": 113895,
+          "sha256": "4fadf6cbae9f4259f1a7e94d01aa0cb982629c42475c347b04f30df3fb5736b0"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ZhuGeLianNu_png__club.json",
+          "exists": true,
+          "bytes": 11240,
+          "sha256": "a079d7c5b041c00bd1d1a4986883d9077999949261e462be2c82850a3b9a8fe2"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ZhuGeLianNu_png__club.md",
+          "exists": true,
+          "bytes": 3446,
+          "sha256": "a4cbc151b6022dee50c85b98f31346117f2dabe040fdd1e48c46573df4db6fe8"
+        }
+      ]
+    },
+    "BaGuaZhen_png__club": {
+      "committedAt": "2026-10-21T09:08:22+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\BaGuaZhen_png__club.png",
+          "exists": true,
+          "bytes": 2370755,
+          "sha256": "3577fca426293f2494e80ff24892f41facca34367f79845334b7bb013a58a46d"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\BaGuaZhen_png__club.png",
+          "exists": true,
+          "bytes": 109479,
+          "sha256": "a83625740142d77285f254bbcbc3318708a924d2fde85d9894fe27a0acaeaa2e"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\BaGuaZhen_png__club.json",
+          "exists": true,
+          "bytes": 10993,
+          "sha256": "8936b7eb90fc63cf1eb12db874e92c09a6d6ece7459bfe25cc4cda629a15d133"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\BaGuaZhen_png__club.md",
+          "exists": true,
+          "bytes": 2257,
+          "sha256": "11f5daa02a2aa3a6dacab9a2ca7e45d430a707a1bccc56235e4f02d7f2318c70"
+        }
+      ]
+    },
+    "GuoHeChaiQiao_png__club": {
+      "committedAt": "2026-10-21T09:11:35+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\GuoHeChaiQiao_png__club.png",
+          "exists": true,
+          "bytes": 2482324,
+          "sha256": "078d016d6636a9283056faad783f6c72cb977af3a9415881b09d6430309b9f3f"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\GuoHeChaiQiao_png__club.png",
+          "exists": true,
+          "bytes": 113664,
+          "sha256": "c426f1183447854ca28a49cf774ef815ef8cf038ee739eb015db87b3f05e089b"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\GuoHeChaiQiao_png__club.json",
+          "exists": true,
+          "bytes": 11422,
+          "sha256": "bc5833461b5350b5b1cdbd3c284e55c1ec7a18226c6fd9e2537c0dcfee3325b7"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\GuoHeChaiQiao_png__club.md",
+          "exists": true,
+          "bytes": 2238,
+          "sha256": "3903b1cb084546e943116029a19b3fdeb9ef3846466ada68d1afc2e572ca2b2d"
+        }
+      ]
+    },
+    "DiLu_png__club": {
+      "committedAt": "2026-10-21T09:14:24+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\DiLu_png__club.png",
+          "exists": true,
+          "bytes": 2594091,
+          "sha256": "83b3c8e160d1acd09e210c9b8cbf6ab389f5d7d6943250b157190fc53b20da00"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\DiLu_png__club.png",
+          "exists": true,
+          "bytes": 110062,
+          "sha256": "9b7be981eff680c4b2040345e47bd77eb7f43d0e97900ccf66cda4a1a07f81be"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\DiLu_png__club.json",
+          "exists": true,
+          "bytes": 10833,
+          "sha256": "7734c27e3c2da20dec3937b11ef3ea62ba2d5aac9c8bcc3e82ba247ed8533850"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\DiLu_png__club.md",
+          "exists": true,
+          "bytes": 2186,
+          "sha256": "5fa8adb1181dd6aabeb004c984175b94a07863f01de6ee4abf3c806ada67d9bf"
+        }
+      ]
+    },
+    "LeBuSiShu_png__club": {
+      "committedAt": "2026-10-21T09:17:19+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\LeBuSiShu_png__club.png",
+          "exists": true,
+          "bytes": 2447374,
+          "sha256": "df691cb76e095f1f8ffb4cb468df6f4b6801e06bf1cbf90e0d6aca2260181572"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\LeBuSiShu_png__club.png",
+          "exists": true,
+          "bytes": 113163,
+          "sha256": "830d48888d3a652ab52f8bbeaa7d49e7d716f6f8ffb3eaeafd630fdd4bc29570"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\LeBuSiShu_png__club.json",
+          "exists": true,
+          "bytes": 11161,
+          "sha256": "5e723afac622468595370ea6907ae519b2b82d30bbdfe63df17792e1ad577031"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\LeBuSiShu_png__club.md",
+          "exists": true,
+          "bytes": 2267,
+          "sha256": "6480c75d1711a96849769a6e7c16c33c8b20f4492980b7f740f7df385474ee83"
+        }
+      ]
+    },
+    "NanManRuQin_png__club": {
+      "committedAt": "2026-10-21T09:20:30+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\NanManRuQin_png__club.png",
+          "exists": true,
+          "bytes": 2433748,
+          "sha256": "643c9b1754c7bc8df391967b6cf7a5c75e4fdf7070f78f2118480df71749d65b"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\NanManRuQin_png__club.png",
+          "exists": true,
+          "bytes": 113968,
+          "sha256": "faccd033973a4781f4e53a837377df7971ed9b2b8617757b6ee59cc9f5318cc2"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\NanManRuQin_png__club.json",
+          "exists": true,
+          "bytes": 11268,
+          "sha256": "81a08a020f94f8a9635594b40d30793dd3ed68f70dcc2f53e0bfaeccbe26a9f5"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\NanManRuQin_png__club.md",
+          "exists": true,
+          "bytes": 2227,
+          "sha256": "a808f2aed01a0be2b58efbd8ba390df97f1a7d8e760f580617c17e9da7bc804d"
+        }
+      ]
+    },
+    "JieDaoShaRen_png__club": {
+      "committedAt": "2026-10-21T09:23:19+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\JieDaoShaRen_png__club.png",
+          "exists": true,
+          "bytes": 2495605,
+          "sha256": "fca8f78dd6d147aa22f6863936df981d8d5c89f5b76ae56c3c33300c79ab0a27"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\JieDaoShaRen_png__club.png",
+          "exists": true,
+          "bytes": 108501,
+          "sha256": "d01912e871479d7ae24e85c1b31e282366cc8ae7c89b6514589c77be9d999266"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JieDaoShaRen_png__club.json",
+          "exists": true,
+          "bytes": 11161,
+          "sha256": "419be2b3cf0204e5873e9ab45dd480c6601612705fcbc9c07b11749ed421f2d2"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JieDaoShaRen_png__club.md",
+          "exists": true,
+          "bytes": 2176,
+          "sha256": "655bae84804aae7853c2ac78b6b474c7dac2dfd5949c509ff1379ada5bcbf9b5"
+        }
+      ]
+    },
+    "JueDou_png__spade": {
+      "committedAt": "2026-10-21T09:42:48+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\JueDou_png__spade.png",
+          "exists": true,
+          "bytes": 2226828,
+          "sha256": "39ddd048162f1833efde2392422ef9bf29da182f34e957221fac49b7327e10b7"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\JueDou_png__spade.png",
+          "exists": true,
+          "bytes": 116431,
+          "sha256": "f8891b76eccc14789a40f833fbd814c1275e7fe7109063b1b2224b49c2fd9fdc"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JueDou_png__spade.json",
+          "exists": true,
+          "bytes": 10578,
+          "sha256": "24b354658e1acc7a5054ecb79a08c28e5d6ac295abe9d282ede32bdccb3a8b75"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JueDou_png__spade.md",
+          "exists": true,
+          "bytes": 1619,
+          "sha256": "bd58be576cebfa307e91eb76cd3d8b690afc2f817afc318e5e811443c8e1d226"
+        }
+      ]
+    },
+    "CiXiongShuangGuJian_png__spade": {
+      "committedAt": "2026-10-21T09:45:20+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\CiXiongShuangGuJian_png__spade.png",
+          "exists": true,
+          "bytes": 2479516,
+          "sha256": "6dfc7e8688e275d03f881bb3a24b84b0dd4c17d509c34eb3673048b83785f4af"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\CiXiongShuangGuJian_png__spade.png",
+          "exists": true,
+          "bytes": 118660,
+          "sha256": "1130b33639032e17e14f8ff87240a44839163ee9361bbbc91a22445484585650"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\CiXiongShuangGuJian_png__spade.json",
+          "exists": true,
+          "bytes": 11448,
+          "sha256": "0f9a7fb2c736b985b51408b3276242b68dc2a67cab6932a1e35a28d18a463963"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\CiXiongShuangGuJian_png__spade.md",
+          "exists": true,
+          "bytes": 3405,
+          "sha256": "f784d9c0ddbf258b0beef9779d15e4cad8f8715d940dbda72792e3b961bc4588"
+        }
+      ]
+    },
+    "ShunShouQianYang_png__spade": {
+      "committedAt": "2026-10-21T09:48:05+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\ShunShouQianYang_png__spade.png",
+          "exists": true,
+          "bytes": 2449000,
+          "sha256": "a51caa0b7e28d4888a311dd6d6c02b6c99b69a1f765f8699369f64d951f8b25b"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\ShunShouQianYang_png__spade.png",
+          "exists": true,
+          "bytes": 118386,
+          "sha256": "134c9aa4728fcc4dcb26185da65d0928eb9607cb2d285263d0430bb47c65c1b5"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ShunShouQianYang_png__spade.json",
+          "exists": true,
+          "bytes": 12925,
+          "sha256": "c64c213c88a60ce330012660cfde265bc078ce5f3024079f69ff7cd3c6b5bbe6"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\ShunShouQianYang_png__spade.md",
+          "exists": true,
+          "bytes": 2216,
+          "sha256": "09a18dd1b54ddb1116222abd05f9a519befce3a903bf09bddffd9ec733a42976"
+        }
+      ]
+    },
+    "JueYing_png__spade": {
+      "committedAt": "2026-10-21T09:53:54+00:00",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\JueYing_png__spade.png",
+          "exists": true,
+          "bytes": 2356399,
+          "sha256": "4de8ad5ce4d7239bd4e3360b44dfdb05ac27b02da23ae2a663428b9cdc961364"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\JueYing_png__spade.png",
+          "exists": true,
+          "bytes": 115266,
+          "sha256": "e5dcb6a53d3424ee04942efe5e5d29a8d25f048034a88292bd013f93d22e3120"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JueYing_png__spade.json",
+          "exists": true,
+          "bytes": 10763,
+          "sha256": "8735efa95cf269816d86178154feb3371087d3e4d448e2738e748c88c4b4c723"
+        },
+        {
+          "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\子任务\\JueYing_png__spade.md",
+          "exists": true,
+          "bytes": 2077,
+          "sha256": "9cf13a7feeae33d6a8151eeb3337894b7777df6c46e525fc02d1835583fb1bb7"
+        }
+      ]
+    }
+  },
+  "failures": [
+    {
+      "cardId": "Sha_png__diamond",
+      "at": "2026-10-21T05:38:41+00:00",
+      "message": "v1中央生成为繁体殺，必须简体杀；已保存并review reject，保留候选，另开独立上下文v2定向修正。"
+    },
+    {
+      "cardId": "ZhuGeLianNu_png__diamond",
+      "at": "2026-10-21T05:53:25+00:00",
+      "message": "v1左上留位有明显椭圆暗斑及环状残影，review reject；文字、方块、范围1正确，v2独立上下文定向清除。"
+    },
+    {
+      "cardId": "WanJianQiFa_png__heart",
+      "at": "2026-10-21T06:05:23+00:00",
+      "message": "v1文字正确但左上预留区仍有金色卷曲饰、竖杆、斜线和枝叶；已reject并保留，独立v2清除整组上半部边饰。"
+    },
+    {
+      "cardId": "Shan_png__heart",
+      "at": "2026-10-21T06:15:07+00:00",
+      "message": "v1闪字门顶部疑似多一枚独立金色短笔，已reject；新上下文先核实笔画而非书法肌理，必要时v2定向修正。"
+    }
+  ],
+  "updatedAt": "2026-10-21T09:53:56+00:00",
+  "heartbeatAt": "2026-10-21T09:53:56+00:00",
+  "heartbeatEpoch": 1792576436.0256107,
+  "lastAction": "begin"
+}

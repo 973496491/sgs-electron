@@ -2,7 +2,8 @@
 setlocal
 chcp 65001 >nul
 title Xiaochao Package
-rem No upload flag: Python asks local-only or cloud upload. Enter selects local-only.
+rem Python prompts version, saves project metadata, then prompts update notes.
+rem Enter keeps the current version/notes. Upload choice follows (default: local-only).
 rem Card-theme manifests and PNG release mappings are verified before packaging.
 set "xcProjectRoot=C:\Users\97349\Downloads\electron\electron-next"
 if exist "%xcProjectRoot%\.venv-release\Scripts\python.exe" (

@@ -125,6 +125,7 @@ function fixture() {
   globalThis.drawCard = () => {};
   globalThis._0x537542 = () => {};
   globalThis.drawDeckEdgeUI = () => {};
+  globalThis.deckVisibilityPanel = { reset() {} };
   globalThis._0x3e4c06 = nodes => nodes.map(node => node.dataset.key).join(",");
   globalThis.DI = 0; globalThis.DING = 65280; globalThis.RAND = 65282;
   globalThis.__publicField = (object, key, value) => { object[key] = value; };
@@ -176,6 +177,8 @@ function harness() {
     value: code => JSON.parse(vm.runInContext("JSON.stringify(" + code + ")", context)),
   };
 }
+module.exports = { harness, source, slice, tables };
+if (require.main === module) {
 let failed = 0, passed = 0;
 function test(name, run) {
   try { run(harness()); passed++; process.stdout.write("PASS " + name + "\n"); }
@@ -519,3 +522,4 @@ if (!baseline) {
 }
 process.stdout.write(`${passed} passed, ${failed} failed${baseline ? " (original HEAD baseline)" : ""}\n`);
 process.exitCode = failed ? 1 : 0;
+}

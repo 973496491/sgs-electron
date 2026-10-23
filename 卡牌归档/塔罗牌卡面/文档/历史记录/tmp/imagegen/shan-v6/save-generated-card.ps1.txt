@@ -1,0 +1,70 @@
+param(
+  [Parameter(Mandatory=$true)][string]$GenerationId,
+  [Parameter(Mandatory=$true)][ValidateSet('heart','diamond','club','spade')][string]$Suit,
+  [Parameter(Mandatory=$true)][string]$Label,
+  [string]$OutputSubdirectory = '',
+  [string]$ReferenceDescription = 'v5 spade quality reference + v5 suit target, 1000x700 JPEG'
+)
+$ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.Drawing
+$workspace = 'C:\Users\97349\Downloads\electron'
+$outputRoot = Join-Path $workspace '卡牌毛玻璃\闪_v6_四花色'
+if ($OutputSubdirectory) { $outputRoot = Join-Path $outputRoot $OutputSubdirectory }
+$exportSuffix = if ($OutputSubdirectory) { '-soft' } else { '' }
+$sessionPath = 'C:\Users\97349\.codex\sessions\2026\10\21\rollout-2026-10-21T00-33-48-01a15a29-7116-7a22-91e0-c4330740cfcd.jsonl'
+$record = Get-Content -LiteralPath $sessionPath | ForEach-Object {
+  if ($_.Contains($GenerationId)) {
+    $row = ConvertFrom-Json -InputObject $_
+    if ($row.payload.type -eq 'image_generation_call' -and $row.payload.id -eq $GenerationId -and $row.payload.status -eq 'completed') { $row }
+  }
+} | Select-Object -Last 1
+if ($null -eq $record -or [string]::IsNullOrEmpty($record.payload.result)) { throw 'Completed native image result not found.' }
+$largePath = Join-Path $outputRoot ('大图\' + $Label + '.png')
+$gamePath = Join-Path $outputRoot ('186x260\Shan_' + $Suit + '.png')
+$promptPath = Join-Path $outputRoot ('提示词\' + $Label + '.txt')
+if (Test-Path -LiteralPath $largePath) { throw 'The output already exists.' }
+[System.IO.File]::WriteAllBytes($largePath,[Convert]::FromBase64String($record.payload.result))
+[System.IO.File]::WriteAllText($promptPath,$record.payload.revised_prompt,[System.Text.UTF8Encoding]::new($false))
+$source = [System.Drawing.Image]::FromFile($largePath)
+function Export-Resized([int]$width,[int]$height,[string]$path,[bool]$jpeg) {
+  $bitmap = [System.Drawing.Bitmap]::new($width,$height,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+  $draw = [System.Drawing.Graphics]::FromImage($bitmap)
+  $draw.Clear([System.Drawing.Color]::Black)
+  $draw.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceOver
+  $draw.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality
+  $draw.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+  $draw.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
+  $attributes = [System.Drawing.Imaging.ImageAttributes]::new()
+  $attributes.SetWrapMode([System.Drawing.Drawing2D.WrapMode]::TileFlipXY)
+  $rectangle = [System.Drawing.Rectangle]::new(0,0,$width,$height)
+  $draw.DrawImage($source,$rectangle,0,0,$source.Width,$source.Height,[System.Drawing.GraphicsUnit]::Pixel,$attributes)
+  if ($jpeg) {
+    $codec = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object MimeType -eq 'image/jpeg'
+    $parameters = [System.Drawing.Imaging.EncoderParameters]::new(1)
+    $parameters.Param[0] = [System.Drawing.Imaging.EncoderParameter]::new([System.Drawing.Imaging.Encoder]::Quality,[long]85)
+    $bitmap.Save($path,$codec,$parameters)
+    $parameters.Dispose()
+  } else {
+    $bitmap.Save($path,[System.Drawing.Imaging.ImageFormat]::Png)
+  }
+  $attributes.Dispose()
+  $draw.Dispose()
+  $bitmap.Dispose()
+}
+Export-Resized 186 260 $gamePath $false
+$previewPath = Join-Path $PSScriptRoot ($Suit + $exportSuffix + '-result.jpg')
+Export-Resized 465 650 $previewPath $true
+$metadata = [ordered]@{
+  suit=$Suit; label=$Label; tool='OpenAI Responses native image_generation';
+  generationId=$GenerationId; generatedAt=$record.timestamp;
+  reference=$ReferenceDescription;
+  nativeSize=@($source.Width,$source.Height);
+  largeFile=('大图/' + $Label + '.png'); gameFile=('186x260/Shan_' + $Suit + '.png');
+  promptFile=('提示词/' + $Label + '.txt'); gameSize=@(186,260);
+  postprocess='Native PNG preserved; high quality bicubic opaque 186x260 PNG; JPEG preview only';
+  largeSha256=(Get-FileHash -LiteralPath $largePath -Algorithm SHA256).Hash.ToLowerInvariant();
+  gameSha256=(Get-FileHash -LiteralPath $gamePath -Algorithm SHA256).Hash.ToLowerInvariant()
+}
+$source.Dispose()
+$metadata | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $PSScriptRoot ($Suit + $exportSuffix + '-record.json')) -Encoding utf8
+[PSCustomObject]@{largePath=$largePath;gamePath=$gamePath;previewPath=$previewPath;nativeSize=$metadata.nativeSize;previewBytes=(Get-Item -LiteralPath $previewPath).Length} | ConvertTo-Json -Depth 3

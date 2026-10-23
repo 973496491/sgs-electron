@@ -8,6 +8,9 @@ const pipeline = require('stream').pipeline
 const getInstallCoordinator = require('./release-install').getInstallCoordinator
 
 const MANIFEST_URL = 'https://sgsol-1300866055.cos.ap-guangzhou.myqcloud.com/releases/version.json'
+// The patched host and the userscript bootstrap load this same installed module.
+// Share checks per window and update source so they cannot open duplicate dialogs.
+const windowChecks = new WeakMap()
 
 function failure(code) {
   const error = new Error(code)
@@ -246,8 +249,8 @@ function downloadErrorText(code) {
 }
 
 function createUpdateChecker(options) {
-  const checks = new WeakMap()
   const url = options.manifestUrl || MANIFEST_URL
+  const checkKey = path.resolve(options.versionFile).toLowerCase() + '\n' + url
   if (new URL(url).protocol !== 'https:') throw failure('https-required')
   const log = message => {
     try { if (options.log) options.log('[版本检查] ' + message) } catch (_) {}
@@ -371,8 +374,10 @@ function createUpdateChecker(options) {
   return Object.freeze({
     check(window) {
       if (isClosed(window)) return Promise.resolve({ status: 'cancelled' })
-      if (!checks.has(window)) checks.set(window, Promise.resolve().then(() => run(window)))
-      return checks.get(window)
+      let checks = windowChecks.get(window)
+      if (!checks) { checks = new Map(); windowChecks.set(window, checks) }
+      if (!checks.has(checkKey)) checks.set(checkKey, Promise.resolve().then(() => run(window)))
+      return checks.get(checkKey)
     }
   })
 }

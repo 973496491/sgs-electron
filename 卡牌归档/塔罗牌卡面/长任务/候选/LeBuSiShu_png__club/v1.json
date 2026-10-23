@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "taskId": "LeBuSiShu_png__club",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:LeBuSiShu_png__club:v1]",
+  "status": "reviewed",
+  "savedAt": "2026-10-21T09:16:27.727485+00:00",
+  "generatedAt": "2026-10-21T09:16:25.452Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_071399df6a9c378d016ad882bcede087d093b11ff8b81c0f7a",
+  "prompt": "[TAROT-PROD:LeBuSiShu_png__club:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the club family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"乐不思蜀\". Exactly 2 columns by 2 rows: top \"乐不\", bottom \"思蜀\"; read across each row, whole block centered. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "revisedPrompt": "[TAROT-PROD:LeBuSiShu_png__club:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the club family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"乐不思蜀\". Exactly 2 columns by 2 rows: top \"乐不\", bottom \"思蜀\"; read across each row, whole block centered. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "sourceCard": {
+    "id": "LeBuSiShu_png__club",
+    "resourceKey": "LeBuSiShu_png",
+    "suitValue": 4,
+    "suit": "club",
+    "suitName": "梅花",
+    "originalName": "乐不思蜀",
+    "originalNames": [
+      "乐不思蜀"
+    ],
+    "displayName": "乐不思蜀",
+    "layout": "2x2-left-to-right-row-major",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      71,
+      1066,
+      1242,
+      3071,
+      4064,
+      7046,
+      20117,
+      20459,
+      20999,
+      31133,
+      60459,
+      61090
+    ],
+    "representativeCardId": 71,
+    "representativeNumber": 6,
+    "representativeRank": "6",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 70
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 4,
+        "rank": "4",
+        "cardIds": [
+          20459,
+          60459,
+          61090
+        ]
+      },
+      {
+        "number": 6,
+        "rank": "6",
+        "cardIds": [
+          71,
+          1066,
+          1242,
+          3071,
+          4064,
+          7046,
+          20117,
+          20999
+        ]
+      },
+      {
+        "number": 8,
+        "rank": "8",
+        "cardIds": [
+          31133
+        ]
+      }
+    ],
+    "type": 2,
+    "subType": 5,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "198_1344_186_260",
+    "sharedFrameNames": [
+      "LeBuSiShu_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/LeBuSiShu_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 30
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_071399df6a9c378d016ad882bcede087d093b11ff8b81c0f7a",
+    "timestamp": "2026-10-21T09:16:25.452Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T17-14-41-01a15dbd-c789-71a2-96e3-0684e236dd2b.jsonl",
+    "line": 63
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\LeBuSiShu_png__club\\v1.png",
+    "bytes": 2447374,
+    "sha256": "df691cb76e095f1f8ffb4cb468df6f4b6801e06bf1cbf90e0d6aca2260181572",
+    "rgbaSha256": "050b4222f67be0e9d883a4b6b2dc49f6f2784aa8b3ce3c58aca258905b92a090",
+    "size": [
+      1061,
+      1483
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\LeBuSiShu_png__club\\v1_186x260.png",
+    "bytes": 113163,
+    "sha256": "830d48888d3a652ab52f8bbeaa7d49e7d716f6f8ffb3eaeafd630fdd4bc29570",
+    "rgbaSha256": "022d28a5d507816af6b2dcbaea524258cd2079e394bbbd63d612deb4872043e7",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "nativeMode": "RGB",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 7.975695879469669e-05,
+  "reviews": [
+    {
+      "at": "2026-10-21T09:16:50.559644+00:00",
+      "result": "accepted-offline",
+      "note": "已实际查看唯一186×260交付PNG：简体乐不／思蜀按2列2行、逐行阅读正确，完整字形清晰且主体居中；上中及右上为梅花，右下无徽记与徽记圈；左上x8..46、y8..72为连续自然暗底，无点数、小功能花色、内侧金线悬饰或明显补丁；最外卡框完整，金字和上下装饰间距可读。单卡离线视觉检查通过，待父流程commit及高清导出。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": {
+    "native": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\LeBuSiShu_png__club.png",
+      "bytes": 2447374,
+      "sha256": "df691cb76e095f1f8ffb4cb468df6f4b6801e06bf1cbf90e0d6aca2260181572",
+      "rgbaSha256": "050b4222f67be0e9d883a4b6b2dc49f6f2784aa8b3ce3c58aca258905b92a090",
+      "size": [
+        1061,
+        1483
+      ],
+      "mode": "RGB",
+      "format": "PNG"
+    },
+    "export": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\LeBuSiShu_png__club.png",
+      "bytes": 113163,
+      "sha256": "830d48888d3a652ab52f8bbeaa7d49e7d716f6f8ffb3eaeafd630fdd4bc29570",
+      "rgbaSha256": "022d28a5d507816af6b2dcbaea524258cd2079e394bbbd63d612deb4872043e7",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "format": "PNG"
+    }
+  },
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "awaiting-parent-commit"
+}

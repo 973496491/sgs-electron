@@ -60,7 +60,7 @@ module.exports = function createCardThemeFeature({ window, document, storage, cl
     if (!state) return restoreUi(ui);
     const variants = manifest.faces[state.key];
     const facePath = variants && variants[String(state.flower)];
-    // Phase one only themes the three declared resource/suit pairs. Each layer falls back independently.
+    // Only declared resource/suit pairs use the theme. Each layer falls back independently.
     if (!facePath) return restoreUi(ui);
     const previous = owned.get(ui);
     const layers = [];

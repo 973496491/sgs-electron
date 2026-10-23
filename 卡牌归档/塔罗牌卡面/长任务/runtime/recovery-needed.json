@@ -1,0 +1,11 @@
+{
+  "active": true,
+  "detectedAt": "2026-10-21T10:09:05+00:00",
+  "reason": "heartbeat-timeout",
+  "cardId": "QingGangJian_png__spade",
+  "lastHeartbeatAt": "2026-10-21T09:53:56+00:00",
+  "artifactCandidates": [
+    "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\QingGangJian_png__spade.png"
+  ],
+  "instruction": "先核对原会话是否仍在生成；读取主任务、scope、state 和单卡记录，核对已有产物。确认接管后执行 controller.py recover。不得重复覆盖 done；守护不会调用生成工具或自动重启会话。"
+}

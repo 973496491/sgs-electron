@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "verifiedAt": 1792522702.530533,
+  "checks": [
+    "Python syntax",
+    "UTF-8 Chinese error paths",
+    "active alarm resolved by stop",
+    "watchdog exits and releases lock"
+  ],
+  "isolationDirectory": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\runtime\\verification-final-1792522701"
+}

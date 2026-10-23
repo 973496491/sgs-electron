@@ -1,7 +1,9 @@
-"""Version stamping is limited to the staged release; working files stay unchanged."""
+"""Read/stamp release metadata and explicitly save packaging edits to the project."""
 import json
+import os
 from pathlib import Path
 import re
+import tempfile
 import zipfile
 
 
@@ -39,6 +41,71 @@ def stamp_script(text: str, version: str):
         if count != 1:
             raise ValueError("The userscript version marker is missing or duplicated.")
     return text
+
+
+def update_notes_match(text: str):
+    matches = list(re.finditer(
+        r'(?m)^([ \t]*const _0x378fb5\s*=\s*)("(?:[^"\\\r\n]|\\.)*")(?=\s*\[)', text))
+    if len(matches) != 1 or len(re.findall(r'\bconst\s+_0x378fb5\b', text)) != 1:
+        raise ValueError("The userscript update-notes marker is missing or duplicated.")
+    return matches[0]
+
+
+def read_update_notes(text: str):
+    return json.loads(update_notes_match(text)[2])
+
+
+def stamp_update_notes(text: str, notes: str):
+    match = update_notes_match(text)
+    # JSON strings are JS string literals too; preserve the existing semicolon-to-<br> chain.
+    literal = json.dumps(notes, ensure_ascii=False).replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
+    return text[:match.start(2)] + literal + text[match.end(2):]
+
+
+def write_bytes_atomic(path: Path, content: bytes):
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=path.parent, prefix=path.name + ".", suffix=".tmp", delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(content)
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def save_project_metadata(project: Path, version=None, notes=None):
+    """Validate before writing; restore earlier writes if the version-record commit fails."""
+    script = project / "resources" / "daxiaochao.user.js"
+    original = script.read_bytes()
+    text = original.decode("utf-8")
+    changes = []
+    if version is not None:
+        text = stamp_script(text, version)
+        record = project / "version.json"
+        before = record.read_bytes()
+        current = read_version(record)
+        if current != version:
+            data = json.loads(before.decode("utf-8-sig"))
+            data["version"] = version
+            content = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+            if b"\r\n" in before:
+                content = content.replace("\n", "\r\n")
+            encoding = "utf-8-sig" if before.startswith(b"\xef\xbb\xbf") else "utf-8"
+            changes.append((record, before, content.encode(encoding)))
+    if notes is not None:
+        text = stamp_update_notes(text, notes)
+    if text.encode("utf-8") != original:
+        changes.insert(0, (script, original, text.encode("utf-8")))
+    committed = []
+    try:
+        for path, before, content in changes:
+            write_bytes_atomic(path, content)
+            committed.append((path, before))
+    except BaseException:
+        for path, before in reversed(committed):
+            write_bytes_atomic(path, before)
+        raise
 
 
 def stamp_release(output: Path, version: str):

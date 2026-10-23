@@ -1,0 +1,22 @@
+{
+  "suit": "heart",
+  "label": "红桃",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_0630c09bc8f50c45016ad7987ecd2887d08695ef490c50ac56",
+  "generatedAt": "2026-10-20T16:37:45.259Z",
+  "reference": "v5 spade quality reference + v5 suit target, 1000x700 JPEG",
+  "nativeSize": [
+    1060,
+    1484
+  ],
+  "largeFile": "大图/红桃.png",
+  "gameFile": "186x260/Shan_heart.png",
+  "promptFile": "提示词/红桃.txt",
+  "gameSize": [
+    186,
+    260
+  ],
+  "postprocess": "Native PNG preserved; high quality bicubic opaque 186x260 PNG; JPEG preview only",
+  "largeSha256": "ca657a98a3760c2f06cce0b2b399b7ab6e571272ef5a8f6c1111213eed673d04",
+  "gameSha256": "80bbdab4ffb75471f4596c69ad3ee515801e515cc4d9c38b32b9d4396f60681d"
+}

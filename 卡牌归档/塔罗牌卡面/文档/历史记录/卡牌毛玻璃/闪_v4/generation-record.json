@@ -1,0 +1,47 @@
+{
+  "tool": "OpenAI Responses native image_generation",
+  "generatedAt": "2026-10-20T16:06:00.221Z",
+  "generationId": "ig_00170ba36c3bcdf3016ad79132a32c87d0af1748b99a2e227d",
+  "styleReference": "../闪_v3/1.png",
+  "referenceRole": "style and mood only; not exact reconstruction",
+  "referenceSha256": "c0f607b87f07c5b60e7733a0be9d7b552e60e31cca98ac72f95f9f3523724755",
+  "requestedText": "闪",
+  "layout": "centered single glyph; original lower illustration discarded",
+  "transparency": "none",
+  "nativeMode": "RGB",
+  "nativeAlphaMinMax": [
+    255,
+    255
+  ],
+  "postprocess": "opaque export and Lanczos resize only",
+  "outputs": [
+    {
+      "file": "生成原稿.png",
+      "size": [
+        1061,
+        1482
+      ],
+      "mode": "RGB",
+      "sha256": "8fc4c57511aba86def393346b01d9e392f805830b84edcc6a131d2b4cfb422ae"
+    },
+    {
+      "file": "Shan-centered-v4-large.png",
+      "size": [
+        1061,
+        1482
+      ],
+      "mode": "RGB",
+      "sha256": "ab4ceb8faed5241df73e36fa27269b393d4f065c55b7d573339487d48c6e0c2c"
+    },
+    {
+      "file": "Shan_png.png",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "sha256": "394d4b14d4ecded6fb63ccab6419b1f42fb0e57d823ae7bd8a86f4fa45a9fb8f"
+    }
+  ],
+  "status": "one-card sample; not installed or applied to other cards"
+}

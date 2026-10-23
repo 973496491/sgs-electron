@@ -1,0 +1,26 @@
+from pathlib import Path
+import json
+import shutil
+from PIL import Image
+
+folder = Path(__file__).resolve().parent
+root = folder.parents[2]
+target = root / '卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层'
+for name in ['Shan_heart_base.png', 'heart.png']:
+    assert (target / name).read_bytes() == (folder / 'assembled' / name).read_bytes(), name
+for source_name, final_name in [('red_2.png','red_2_v2.png'),('分层预览.png','分层预览_v2.png')]:
+    output = target / final_name
+    if output.exists():
+        raise SystemExit('Refusing to overwrite an existing revision')
+    shutil.copyfile(folder / 'assembled' / source_name, output)
+record = json.loads((folder / 'rank-shifted-record.json').read_text(encoding='utf-8'))
+adjustment = json.loads((folder / 'rank-adjustment.json').read_text(encoding='utf-8'))
+with (target / 'README.md').open('a', encoding='utf-8') as document:
+    document.write('\n## 点数位置微调 v2（2026-10-21）\n\n')
+    document.write('当前推荐点数层：[red_2_v2.png](red_2_v2.png)；效果：[分层预览_v2.png](分层预览_v2.png)。保留原版方便对照，底图和花色文件逐字节未变。\n\n')
+    document.write('38×34画布、点数层合成坐标(8,8)、花色层合成坐标(8,38)均不变。可见数字在自身层内左移3 px、上移2 px，对应UI左移1.5、上移1单位；数字不再与花色中心完全对齐。按Alpha>8测得可见边界从(9,4,29,32)变为(6,2,26,30)，可见范围仍为20×28，无裁断。\n\n')
+    document.write('使用内置图像工具完成单独点数层编辑，再按原可见范围尺寸与目标偏移校准透明留边；没有重新生成底图或花色，没有进行游戏接入。\n\n')
+    document.write(f"生成ID：`{record['id']}`。完整提示词：\n\n```text\n{record['prompt']}\n```\n\n")
+    document.write('参数记录：\n\n```json\n' + json.dumps(adjustment, ensure_ascii=False, indent=2) + '\n```\n')
+print(json.dumps({'rank': str(target / 'red_2_v2.png'), 'preview': str(target / '分层预览_v2.png'),
+                  'baseAndSuit': 'byte-identical', 'offsetInsideLayer': [-3,-2]}, ensure_ascii=False))

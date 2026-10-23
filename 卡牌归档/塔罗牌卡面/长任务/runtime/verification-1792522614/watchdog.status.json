@@ -1,0 +1,12 @@
+{
+  "pid": 24792,
+  "startedAt": "2026-10-20T18:56:56+00:00",
+  "checkedAt": "2026-10-20T18:56:57+00:00",
+  "mode": "stopped",
+  "timeoutSeconds": 0.3,
+  "intervalSeconds": 0.1,
+  "heartbeatAgeSeconds": 0.05,
+  "taskStatus": "stopped",
+  "currentCardId": "check-2",
+  "revision": 9
+}

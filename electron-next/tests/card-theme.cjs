@@ -103,9 +103,13 @@ function fixture({ saved = 'original', miao = false, reader, loader } = {}) {
 }
 
 (async () => {
-  await check('manifest has exactly three phase-one faces and 13 shared rank slots', () => {
-    assert.equal(Object.values(manifest.faces).flatMap(Object.values).length, 3);
+  await check('manifest retains starter faces and provides all 13 shared ranks and four suits', () => {
+    assert(manifest.faces.Shan_png['1'] && manifest.faces.Shan_png['2'] && manifest.faces.HanBingJian_png['3']);
     assert.deepEqual(Object.keys(manifest.ranks), Array.from({ length: 13 }, (_, i) => String(i + 1)));
+    assert(Object.values(manifest.ranks).every(Boolean));
+    assert.deepEqual(Object.keys(manifest.suits), ['1', '2', '3', '4']); assert(Object.values(manifest.suits).every(Boolean));
+    assert.equal(manifest.ranks['1'], 'ranks/A.png'); assert.equal(manifest.ranks['11'], 'ranks/J.png');
+    assert.equal(manifest.ranks['12'], 'ranks/Q.png'); assert.equal(manifest.ranks['13'], 'ranks/K.png');
     assert(!JSON.stringify(manifest.ranks).includes('red_'));
   });
   await check('installed asset reader rejects traversal and handles missing PNGs', async () => {
@@ -114,7 +118,7 @@ function fixture({ saved = 'original', miao = false, reader, loader } = {}) {
     assert((await read('faces/Shan_heart.png')).dataUrl.startsWith('data:image/png;base64,'));
     for (const name of ['../version.json', 'faces/../../config.json', 'C:/config.json', 'faces/x.png?x', 'ranks\\2.png'])
       assert.equal((await read(name)).code, 'invalid-asset');
-    assert.equal((await read('ranks/13.png')).code, 'missing');
+    assert.equal((await read('ranks/unavailable.png')).code, 'missing');
   });
   await check('IPC registration is idempotent and reads wait for installation', async () => {
     const handlers = new Map(), gate = deferred();
@@ -128,13 +132,13 @@ function fixture({ saved = 'original', miao = false, reader, loader } = {}) {
   const h = fixture(); h.feature.start(); await h.feature.sync();
   await check('real native UpdateCardFace renders simultaneous heart and diamond variants', async () => {
     h.heart = h.view(); h.diamond = h.view('Shan', 2, 2); h.weapon = h.view('HanBingJian', 3, 2);
-    h.sha = h.view('Sha', 1, 2);
+    h.uncovered = h.view('WuXieKeJi', 1, 2);
     await h.feature.setMode('tarot');
     assert.equal(h.heart.bmpFace.texture.id, 'faces/Shan_heart.png');
     assert.equal(h.diamond.bmpFace.texture.id, 'faces/Shan_diamond.png');
     assert.equal(h.weapon.bmpFace.texture.id, 'faces/HanBingJian_spade.png');
-    assert.equal(h.sha.bmpFace.texture.id, 'Sha_png');
-    assert.equal(h.sha.bmpNumber.texture.id, 'red_2');
+    assert.equal(h.uncovered.bmpFace.texture.id, 'WuXieKeJi_png');
+    assert.equal(h.uncovered.bmpNumber.texture.id, 'red_2');
   });
   await check('ordinary native multi-skill checks leave all three tarot faces and layers unchanged', () => {
     for (const ui of [h.heart, h.diamond, h.weapon]) {
@@ -195,23 +199,23 @@ function fixture({ saved = 'original', miao = false, reader, loader } = {}) {
     ui.SetChangeSkill(''); assert.equal(ui.bmpFace.texture.id, 'faces/Shan_heart.png');
     assert.equal(ui.bmpFlower.texture.id, 'suits/heart.png');
   });
-  await check('red and black use the same rank texture; missing suits/ranks retain native layers', () => {
+  await check('red and black share rank textures and all declared suit glyphs load', () => {
     assert.equal(h.heart.bmpNumber.texture, h.weapon.bmpNumber.texture);
     assert.equal(h.heart.bmpFlower.texture.id, 'suits/heart.png');
-    assert.equal(h.diamond.bmpFlower.texture.id, 'diamond');
-    assert.equal(h.weapon.bmpFlower.texture.id, 'spade');
+    assert.equal(h.diamond.bmpFlower.texture.id, 'suits/diamond.png');
+    assert.equal(h.weapon.bmpFlower.texture.id, 'suits/spade.png');
     h.heart.theCard.CardNumber = 12; h.heart.UpdateCardFace();
-    assert.equal(h.heart.bmpNumber.texture.id, 'red_Q');
+    assert.equal(h.heart.bmpNumber.texture.id, 'ranks/Q.png');
     assert.equal(h.heart.bmpFace.texture.id, 'faces/Shan_heart.png');
   });
   await check('UI-only change uses its arguments, keeps the model intact and refresh resets it', () => {
     h.heart.ChangeFlowerAndNumber(2, 2);
     assert.equal(h.heart.bmpFace.texture.id, 'faces/Shan_diamond.png');
-    assert.equal(h.heart.bmpFlower.texture.id, 'diamond');
+    assert.equal(h.heart.bmpFlower.texture.id, 'suits/diamond.png');
     assert.equal(h.heart.theCard.CardFlower, 1); assert.equal(h.heart.theCard.CardNumber, 12);
     h.feature.refresh(); assert.equal(h.heart.bmpFace.texture.id, 'faces/Shan_diamond.png');
     h.heart.UpdateCardFace(); assert.equal(h.heart.bmpFace.texture.id, 'faces/Shan_heart.png');
-    assert.equal(h.heart.bmpNumber.texture.id, 'red_Q');
+    assert.equal(h.heart.bmpNumber.texture.id, 'ranks/Q.png');
   });
   await check('temporary change to an unsupported suit restores the original face', () => {
     h.heart.ChangeFlowerAndNumber(3, 5);
@@ -258,8 +262,8 @@ function fixture({ saved = 'original', miao = false, reader, loader } = {}) {
   });
   await check('clear and object reuse do not retain another card or temporary display', () => {
     h.weapon.ChangeFlowerAndNumber(1, 2); h.weapon.clear();
-    h.weapon.theCard = { ResName: 'Sha', CardFlower: 2, CardNumber: 7 };
-    h.weapon.UpdateCardFace(); assert.equal(h.weapon.bmpFace.texture.id, 'Sha_png');
+    h.weapon.theCard = { ResName: 'WuXieKeJi', CardFlower: 2, CardNumber: 7 };
+    h.weapon.UpdateCardFace(); assert.equal(h.weapon.bmpFace.texture.id, 'WuXieKeJi_png');
     assert.equal(h.weapon.bmpNumber.texture.id, 'red_7');
   });
   await check('original/miao/tarot selection is exclusive and original restores each layer', async () => {
@@ -290,18 +294,37 @@ function fixture({ saved = 'original', miao = false, reader, loader } = {}) {
     assert.equal(ui.bmpFace.texture.id, 'Shan_png'); assert.equal(ui.bmpNumber.texture.id, 'ranks/2.png');
     x.feature.dispose();
   });
+  await check('every declared face variant renders all 13 ranks without changing the model', async () => {
+    const x = fixture(); x.feature.start(); await x.feature.setMode('tarot');
+    for (const [key, variants] of Object.entries(manifest.faces)) for (const [flower, face] of Object.entries(variants)) {
+      for (let number = 1; number <= 13; number++) {
+        const ui = x.view(key.replace(/_png$/, ''), Number(flower), number);
+        assert.equal(ui.bmpFace.texture.id, face); assert.equal(ui.bmpNumber.texture.id, manifest.ranks[number]);
+        assert.equal(ui.bmpFlower.texture.id, manifest.suits[flower]);
+        assert.equal(ui.Card.CardNumber, number); assert.equal(ui.Card.CardFlower, Number(flower));
+      }
+    }
+    x.feature.dispose();
+  });
+  await check('missing rank or suit files still fall back independently after the palette is complete', async () => {
+    const x = fixture({ reader: (file, read) => ['ranks/Q.png', 'suits/diamond.png'].includes(file) ? { ok: false, code: 'missing' } : read(file) });
+    const ui = x.view('Shan', 2, 12); x.feature.start(); await x.feature.setMode('tarot');
+    assert.equal(ui.bmpFace.texture.id, 'faces/Shan_diamond.png');
+    assert.equal(ui.bmpNumber.texture.id, 'red_Q'); assert.equal(ui.bmpFlower.texture.id, 'diamond');
+    x.feature.dispose();
+  });
   await check('late PNG completion after selection change never repaints the new mode', async () => {
-    const gate = deferred();
-    const x = fixture({ loader: async (file, size) => { await gate.promise; return { id: file, width: size[0] }; } });
+    const gate = deferred(), entered = deferred();
+    const x = fixture({ loader: async (file, size) => { entered.resolve(); await gate.promise; return { id: file, width: size[0] }; } });
     const ui = x.view(); x.feature.start(); const pending = x.feature.setMode('tarot');
-    await new Promise(resolve => setTimeout(resolve, 25)); await x.feature.setMode('original');
+    await entered.promise; await x.feature.setMode('original');
     gate.resolve(); await pending; assert.equal(ui.bmpFace.texture.id, 'Shan_png'); x.feature.dispose();
   });
   await check('late PNG completion after disposal releases its texture', async () => {
-    const gate = deferred();
-    const x = fixture({ loader: async file => { await gate.promise; return { id: file }; } });
+    const gate = deferred(), entered = deferred();
+    const x = fixture({ loader: async file => { entered.resolve(); await gate.promise; return { id: file }; } });
     x.view(); x.feature.start(); const pending = x.feature.setMode('tarot');
-    await new Promise(resolve => setTimeout(resolve, 25)); x.feature.dispose(); gate.resolve(); await pending;
+    await entered.promise; x.feature.dispose(); gate.resolve(); await pending;
     assert(x.released.some(entry => entry.texture && entry.texture.destroyed));
   });
   await check('existing miao preference migrates when no new preference exists', async () => {

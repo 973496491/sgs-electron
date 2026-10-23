@@ -1,0 +1,1344 @@
+{
+  "createdAt": "2026-10-21T01:34:35.63182+08:00",
+  "workspace": "C:\\Users\\97349\\Downloads\\electron",
+  "destination": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面",
+  "status": "complete; preserved copies verified before removing old source trees",
+  "cleanupRoots": [
+    "C:\\Users\\97349\\Downloads\\electron\\卡牌毛玻璃",
+    "C:\\Users\\97349\\Downloads\\electron\\tmp\\imagegen\\shan-v6",
+    "C:\\Users\\97349\\Downloads\\electron\\tmp\\imagegen\\heart2-split"
+  ],
+  "stats": {
+    "retainedImages": 15,
+    "archivedTextFiles": 44,
+    "supersededImagesToDelete": 51,
+    "duplicateImagesToDelete": 6,
+    "originalSourceFilesToRemove": 116,
+    "relativeLinksChecked": 56,
+    "supersededImagesDeleted": 51,
+    "duplicateImagesDeleted": 6
+  },
+  "preservedCopies": [
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/大图/红桃.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/大图/红桃.png",
+      "sha256": "201380d8f383ba9ba895531469cd55e6663054652b67d5ba9a14ad6adc7bc3be",
+      "role": "final-suit-large"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/186x260/Shan_heart.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/186x260/Shan_heart.png",
+      "sha256": "ae02a43af57caf2bd5eb212fc40da3b9cb8b604d2833f94cccadac09024a3488",
+      "role": "final-suit-186x260"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/红桃.txt",
+      "target": "卡牌归档/塔罗牌卡面/提示词/四花色/红桃.txt",
+      "sha256": "74e8eb08512985040a52714f89143ebda52ceb85e6d1cf54ec72878882ad2103",
+      "role": "final-suit-prompt"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/大图/方块.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/大图/方块.png",
+      "sha256": "29187f87bc5ccbef0fb1b110edeb39d46f1d2c9c141a8817a3b25e66996c470a",
+      "role": "final-suit-large"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/186x260/Shan_diamond.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/186x260/Shan_diamond.png",
+      "sha256": "15569d6c630ded561946d2691aa17d068073bbbf230e9760731a8d4ef44f82c4",
+      "role": "final-suit-186x260"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/方块.txt",
+      "target": "卡牌归档/塔罗牌卡面/提示词/四花色/方块.txt",
+      "sha256": "7994248f55ae034172ff6a3e54b7b16d25097f3bc7ea83578929fd99fccdf33d",
+      "role": "final-suit-prompt"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/大图/黑桃.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/大图/黑桃.png",
+      "sha256": "91103e95a3ea3898c542c4055fb2ebab8897c0e172378b7244db39f277a40d0d",
+      "role": "final-suit-large"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/186x260/Shan_spade.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/186x260/Shan_spade.png",
+      "sha256": "e92ddab7df2226a3c488be618a6e7ec258bd66874834c0d86cf929ba4d6fea48",
+      "role": "final-suit-186x260"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/黑桃.txt",
+      "target": "卡牌归档/塔罗牌卡面/提示词/四花色/黑桃.txt",
+      "sha256": "d3f5bbbc8b9359e2ab7104c355a97c8bd2c4a107c404ae7d4540f85b83c0fee8",
+      "role": "final-suit-prompt"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/大图/梅花.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/大图/梅花.png",
+      "sha256": "6c2953dfbbdf7c39a5f2c3b9eab76116dedd6135252d73673ef45f2e35c41984",
+      "role": "final-suit-large"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/186x260/Shan_club.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/186x260/Shan_club.png",
+      "sha256": "8f80f52048cbeaa28e7021bb92532620d60157bc2058a735301950b5047a2098",
+      "role": "final-suit-186x260"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/梅花.txt",
+      "target": "卡牌归档/塔罗牌卡面/提示词/四花色/梅花.txt",
+      "sha256": "20956aa5e27bdfb150786aad08a4e08e096d965349c4f0592ce0a5f0e6056318",
+      "role": "final-suit-prompt"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/四花色对比.png",
+      "target": "卡牌归档/塔罗牌卡面/四花色样板/四花色对比.png",
+      "sha256": "d222af8ad27f5be6953d8d0f0b01cacdea73cc468c194ab0aa1425a20ff6e3a1",
+      "role": "final-suit-overview"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/Shan_heart_base.png",
+      "target": "卡牌归档/塔罗牌卡面/红桃2分层/Shan_heart_base.png",
+      "sha256": "75612a0ec5c2c28becc8f8aea48427d33f8a986dce85c9f565a1a5a24593e45a",
+      "role": "final-layer-or-preview"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/red_2_v2.png",
+      "target": "卡牌归档/塔罗牌卡面/红桃2分层/red_2.png",
+      "sha256": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058",
+      "role": "final-layer-or-preview"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/heart.png",
+      "target": "卡牌归档/塔罗牌卡面/红桃2分层/heart.png",
+      "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "role": "final-layer-or-preview"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/分层预览_v2.png",
+      "target": "卡牌归档/塔罗牌卡面/红桃2分层/分层预览.png",
+      "sha256": "c0d48a5ad5e41de9553e8c250e965e9317bed75915bab9d71c04a7d49703c356",
+      "role": "final-layer-or-preview"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v1/原始闪.png",
+      "target": "卡牌归档/塔罗牌卡面/参考/原始闪.png",
+      "sha256": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a",
+      "role": "original-reference-not-generated"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v3/1.png",
+      "target": "卡牌归档/塔罗牌卡面/参考/用户风格参考.png",
+      "sha256": "c0f607b87f07c5b60e7733a0be9d7b552e60e31cca98ac72f95f9f3523724755",
+      "role": "user-reference-not-generated"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v1/generation-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v1/generation-record.json",
+      "sha256": "00677f40d023916147201ed33e319c045e3c5f21482b5c3e611103adef181243",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v1/prompt.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v1/prompt.txt",
+      "sha256": "9eb97baea602b7abf62b12e2240aa36e2c8f431526a2ecabdf5c884e4203bc96",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v2/generation-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/generation-record.json",
+      "sha256": "21aedef7dcf63f79b36a30a32b5a4f75b239c8ebcf3fcb47118bd5e9b1c41f77",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v2/prompt.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/prompt.txt",
+      "sha256": "fe2674ca3430a2c474701c967d6df0ef7a0d56253a781181b1bce6a182d31328",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v2/README.md",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/README.md",
+      "sha256": "1a40b272069e1a82c797a939014a781c922c5aea4998dfe8d33591c88f0b1d94",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v4/generation-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/generation-record.json",
+      "sha256": "324df23b5e7b1a3ab83745058f22dbcf621576526bb23976ca208c7bd1a6042f",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v4/prompt.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/prompt.txt",
+      "sha256": "be2097af79be63c7daae78578ae23cb062523fa6a4f7d87eb81c97d3f26e3798",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v4/README.md",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/README.md",
+      "sha256": "2fb4be6f9cc379f4c822ff80f415022a62c7cbc121fd737c105248f7c9cd49cc",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v5_四花色/generation-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/generation-record.json",
+      "sha256": "eb71b78482f840b7909c0c12ef62e94c7b90b3adbd60c138bd1e2e5d586a5c8d",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v5_四花色/preview.html",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/preview.html.txt",
+      "sha256": "3ab9430fd7a055f585f733888573048027c52590d45057801a976727aac2bc9c",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v5_四花色/README.md",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/README.md",
+      "sha256": "64bf42ab52351a1f6252c1051684501e7e753b526e5c24021178bcac2c8d2fb4",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v5_四花色/提示词/方块.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/方块.txt",
+      "sha256": "a7cceca589c73cac506d66968440f8fc46aff8cbced42e6573c5071edd0e3cbd",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v5_四花色/提示词/梅花.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/梅花.txt",
+      "sha256": "6c44d29045cf629ae4e662d782cd7297958c6ade806ce655ecf8ac3bca9371d6",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v5_四花色/提示词/红桃.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/红桃.txt",
+      "sha256": "1d65957e88ec9420203fa223193dfac8dc3e07599f23efc3433c2fea5a82bfdf",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v5_四花色/提示词/黑桃.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/黑桃.txt",
+      "sha256": "8f81ba661cd046ffbbc68bc2f9afb37c2e4c05e66959c6ab807d0117acd21bac",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/README.md",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/README.md",
+      "sha256": "d36fa37e8d198960137ed2473d4e085d18390a357f6d1d86b75fcf45c1a64f55",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/提示词/红桃.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/提示词/红桃.txt",
+      "sha256": "f5bcb9e2d69f67c1796df947ba5d9b91ae584e1b54c0defff18d03f7a9366c2e",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/generation-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/generation-record.json",
+      "sha256": "8e5c6ef3329b4452490dd3f13da0ef1409aeb7a15facfab459bb3e95218a602d",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/preview.html",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/preview.html.txt",
+      "sha256": "bfb1c3f09a74548de21ff29d8deef267fab5e99e35436cce1711f305d3543fca",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/README.md",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/README.md",
+      "sha256": "cb103d563fc1f1263c1996d52f552ca4a425ed1e0b95bcca5e2d0c91a51393cb",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/方块.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/方块.txt",
+      "sha256": "7994248f55ae034172ff6a3e54b7b16d25097f3bc7ea83578929fd99fccdf33d",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/梅花.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/梅花.txt",
+      "sha256": "20956aa5e27bdfb150786aad08a4e08e096d965349c4f0592ce0a5f0e6056318",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/红桃.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/红桃.txt",
+      "sha256": "74e8eb08512985040a52714f89143ebda52ceb85e6d1cf54ec72878882ad2103",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/黑桃.txt",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/黑桃.txt",
+      "sha256": "d3f5bbbc8b9359e2ab7104c355a97c8bd2c4a107c404ae7d4540f85b83c0fee8",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/README.md",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/README.md",
+      "sha256": "663a0d62c611f373487dad726ae48972dee53bcf0552620f6975bb501da01a01",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/shan-v6/club-soft-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/club-soft-record.json",
+      "sha256": "6c8fb9b72981d6a826afbea91a3244b950d2cb27b415ffd224eb6562fd896bec",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/shan-v6/diamond-soft-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/diamond-soft-record.json",
+      "sha256": "1de7ddad1a91682aec7f45a9b9d2bc8fbfc63018e3183aac69941a418145881b",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/shan-v6/finish-soft-set.ps1",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/finish-soft-set.ps1.txt",
+      "sha256": "c86c7e702440eb022d69b20e1540a9d6025791cfe64f2b8b8762baa9e42379fd",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/shan-v6/heart-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/heart-record.json",
+      "sha256": "3f39eeabca106ccbe130aae652c7818c9aba4098e166cb09c28d4875b9eb903d",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/shan-v6/heart-soft-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/heart-soft-record.json",
+      "sha256": "44410eea094a5b4e16ec3df320afdd791a5fc381c853a6d075a850e67482728e",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/shan-v6/preview-script.js",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/preview-script.js.txt",
+      "sha256": "7852317994dd4566a4f3d81637b63f58896d72b73233c2b23b8d657ab5079010",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/shan-v6/save-generated-card.ps1",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/save-generated-card.ps1.txt",
+      "sha256": "435ea9944bb96ea441861f2f2194cff385238bd7ead556a1d997f7018ae28bb2",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/shan-v6/spade-soft-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/spade-soft-record.json",
+      "sha256": "0265e58f0a8bcd1b465c0043ef3b4f03f4dcb6a37c48b8da2862f878a1c7b819",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/adjust-rank.py",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/adjust-rank.py.txt",
+      "sha256": "f0e1d822e92de1ec887b160f9c5c1aad5ee61a29c8222e9ba1821fecb898fdd7",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/base-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/base-record.json",
+      "sha256": "367bbbfd67803ac10f4f0c23e6d56da86bfd32fad5424401b255efe7e28ed52f",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/compose.py",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/compose.py.txt",
+      "sha256": "e940403651f1bcf4a88baab7acf3049ad3099cf9edec93e1822473ee68530899",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/deliver-rank-v2.py",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/deliver-rank-v2.py.txt",
+      "sha256": "56cd01e73085dd4b75b8a65088b494623c1047fbdb11eb719195c6c63a739ea2",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/deliver.py",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/deliver.py.txt",
+      "sha256": "22f47e68972b39b26ae1d6ea452e60f5f5db18ea57d9ea876e21812e0cf3e9f0",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/prepare.py",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/prepare.py.txt",
+      "sha256": "1ac5e77131b66c4c793688d730318f54b0ee7574acabb5b7be3827dd2f2fe0e0",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/rank-adjustment.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-adjustment.json",
+      "sha256": "c0800cb5c5054a224045b18f6191cbc84852449c39cbcc55edc3c280a14ffdcf",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/rank-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-record.json",
+      "sha256": "c39c0c438a20d9edaa5e4fc878cb7d8d6284c9d645d45ae1ed9f5aa7b7586fa0",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/rank-shifted-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-shifted-record.json",
+      "sha256": "c31ce3a862b20a9f420550bc37806c339a784c8dd8f70e03f08246e7f8391339",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/save-native.py",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/save-native.py.txt",
+      "sha256": "ff3f8df10de3c2883f7478edf0a6a98863b839e9ca241603c54491ec6bf24a32",
+      "role": "historical-text-snapshot"
+    },
+    {
+      "source": "tmp/imagegen/heart2-split/suit-record.json",
+      "target": "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/suit-record.json",
+      "sha256": "ec83c821150b1a7ac9718f5d722ba2447eee26236acb0e69e0613f5a598f3582",
+      "role": "historical-text-snapshot"
+    }
+  ],
+  "originalInventory": [
+    {
+      "path": "卡牌毛玻璃/闪_v1/generation-record.json",
+      "bytes": 5268,
+      "sha256": "00677f40d023916147201ed33e319c045e3c5f21482b5c3e611103adef181243",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v1/generation-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v1/prompt.txt",
+      "bytes": 1711,
+      "sha256": "9eb97baea602b7abf62b12e2240aa36e2c8f431526a2ecabdf5c884e4203bc96",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v1/prompt.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v1/Shan-frosted-v1-large.png",
+      "bytes": 3298952,
+      "sha256": "436853aba01c94c2d70986ee0fe1fce64537e9562d859f77a1de403f406850fb",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v1/Shan_png.png",
+      "bytes": 115107,
+      "sha256": "2e87a872a0b1ddcc225f5ede8fe2399a6dda873e914d518277723b15fefc22fa",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v1/原始闪.png",
+      "bytes": 91818,
+      "sha256": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/参考/原始闪.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v1/生成原稿/Shan-generated-1.png",
+      "bytes": 3443878,
+      "sha256": "013334bb8b29af61cece761c620d2ed2893ff922765fd54b151037f3ff2dec60",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v1/生成原稿/Shan-generated-2.png",
+      "bytes": 3202913,
+      "sha256": "f03da6d63b3fb3c0903bd313d45350725f11d03b9f1e0840b1886205f064b04c",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v2/generation-record.json",
+      "bytes": 1273,
+      "sha256": "21aedef7dcf63f79b36a30a32b5a4f75b239c8ebcf3fcb47118bd5e9b1c41f77",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/generation-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v2/prompt.txt",
+      "bytes": 1384,
+      "sha256": "fe2674ca3430a2c474701c967d6df0ef7a0d56253a781181b1bce6a182d31328",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/prompt.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v2/README.md",
+      "bytes": 645,
+      "sha256": "1a40b272069e1a82c797a939014a781c922c5aea4998dfe8d33591c88f0b1d94",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/README.md"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v2/Shan-border-blur-v2-large.png",
+      "bytes": 2449305,
+      "sha256": "e5397c6b5a076cdac66b452aad22d39356911ef5a7f029d7e8ebc7023399bc8d",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v2/Shan_png.png",
+      "bytes": 97432,
+      "sha256": "aa4b46e90be00fcea24648f527335d3f93a9b9a4fb0064f3eef6866e3117168c",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v2/生成原稿.png",
+      "bytes": 2610187,
+      "sha256": "f920ce3000cb620c96cc76ff08c5974a2f7d848fa558138a7b84ee51b8deec0d",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v3/1.png",
+      "bytes": 905777,
+      "sha256": "c0f607b87f07c5b60e7733a0be9d7b552e60e31cca98ac72f95f9f3523724755",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/参考/用户风格参考.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v4/generation-record.json",
+      "bytes": 1381,
+      "sha256": "324df23b5e7b1a3ab83745058f22dbcf621576526bb23976ca208c7bd1a6042f",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/generation-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v4/prompt.txt",
+      "bytes": 2050,
+      "sha256": "be2097af79be63c7daae78578ae23cb062523fa6a4f7d87eb81c97d3f26e3798",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/prompt.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v4/README.md",
+      "bytes": 676,
+      "sha256": "2fb4be6f9cc379f4c822ff80f415022a62c7cbc121fd737c105248f7c9cd49cc",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/README.md"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v4/Shan-centered-v4-large.png",
+      "bytes": 2880707,
+      "sha256": "ab4ceb8faed5241df73e36fa27269b393d4f065c55b7d573339487d48c6e0c2c",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v4/Shan_png.png",
+      "bytes": 124384,
+      "sha256": "394d4b14d4ecded6fb63ccab6419b1f42fb0e57d823ae7bd8a86f4fa45a9fb8f",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v4/v3风格参考.png",
+      "bytes": 905777,
+      "sha256": "c0f607b87f07c5b60e7733a0be9d7b552e60e31cca98ac72f95f9f3523724755",
+      "preservedAs": [],
+      "action": "duplicate-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v4/生成原稿.png",
+      "bytes": 2955395,
+      "sha256": "8fc4c57511aba86def393346b01d9e392f805830b84edcc6a131d2b4cfb422ae",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/186x260/Shan_club.png",
+      "bytes": 124864,
+      "sha256": "c7ef6189ff310eb8a77b76eaa7e6ea479fd802eadbf4a4c8b23fa44a557b0c23",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/186x260/Shan_diamond.png",
+      "bytes": 125236,
+      "sha256": "a5a98133d26c309b4dfd8d538d388349c86c57a9ff31c7f46f43366e6d642429",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/186x260/Shan_heart.png",
+      "bytes": 130352,
+      "sha256": "350a0781afed24f0910a982cf41f7b567250061ca6faa146f7efadfad006872c",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/186x260/Shan_spade.png",
+      "bytes": 128434,
+      "sha256": "fafac26e611d749622f960681c3a4f503e64a49cb8e578ee5e34c502fa7748ae",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/generation-record.json",
+      "bytes": 3809,
+      "sha256": "eb71b78482f840b7909c0c12ef62e94c7b90b3adbd60c138bd1e2e5d586a5c8d",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/generation-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/preview.html",
+      "bytes": 1617,
+      "sha256": "3ab9430fd7a055f585f733888573048027c52590d45057801a976727aac2bc9c",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/preview.html.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/README.md",
+      "bytes": 822,
+      "sha256": "64bf42ab52351a1f6252c1051684501e7e753b526e5c24021178bcac2c8d2fb4",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/README.md"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/v4参考.png",
+      "bytes": 2880707,
+      "sha256": "ab4ceb8faed5241df73e36fa27269b393d4f065c55b7d573339487d48c6e0c2c",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/四花色对比.png",
+      "bytes": 1668082,
+      "sha256": "b61f8a1cdad8faed020c858edc46cbece5520b8ede991eab95c82eec98f05c72",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/大图/方块.png",
+      "bytes": 2706131,
+      "sha256": "af8491a504bec8b0cbe1d981063291b5a86d6dd296cf7405371d817ddf618164",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/大图/梅花.png",
+      "bytes": 2902971,
+      "sha256": "4c1a2481046726c7149300916965640d296471055fd963e17951104d2c6bd668",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/大图/红桃.png",
+      "bytes": 2966753,
+      "sha256": "3a895a2945d71c9b11e395b7b49b71542f9456dfddbe598670ac410729a1026e",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/大图/黑桃.png",
+      "bytes": 3056491,
+      "sha256": "21e75986ce2c51487d5f3edc9c435ddbd342c60d49a67360422b8bf5d3574338",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/提示词/方块.txt",
+      "bytes": 1419,
+      "sha256": "a7cceca589c73cac506d66968440f8fc46aff8cbced42e6573c5071edd0e3cbd",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/方块.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/提示词/梅花.txt",
+      "bytes": 1516,
+      "sha256": "6c44d29045cf629ae4e662d782cd7297958c6ade806ce655ecf8ac3bca9371d6",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/梅花.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/提示词/红桃.txt",
+      "bytes": 1724,
+      "sha256": "1d65957e88ec9420203fa223193dfac8dc3e07599f23efc3433c2fea5a82bfdf",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/红桃.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v5_四花色/提示词/黑桃.txt",
+      "bytes": 1748,
+      "sha256": "8f81ba661cd046ffbbc68bc2f9afb37c2e4c05e66959c6ab807d0117acd21bac",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/黑桃.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/186x260/Shan_heart.png",
+      "bytes": 137842,
+      "sha256": "80bbdab4ffb75471f4596c69ad3ee515801e515cc4d9c38b32b9d4396f60681d",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/186x260/Shan_spade.png",
+      "bytes": 128434,
+      "sha256": "fafac26e611d749622f960681c3a4f503e64a49cb8e578ee5e34c502fa7748ae",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/README.md",
+      "bytes": 383,
+      "sha256": "d36fa37e8d198960137ed2473d4e085d18390a357f6d1d86b75fcf45c1a64f55",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/README.md"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/大图/红桃.png",
+      "bytes": 2972384,
+      "sha256": "ca657a98a3760c2f06cce0b2b399b7ab6e571272ef5a8f6c1111213eed673d04",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/大图/黑桃.png",
+      "bytes": 3056491,
+      "sha256": "21e75986ce2c51487d5f3edc9c435ddbd342c60d49a67360422b8bf5d3574338",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/提示词/红桃.txt",
+      "bytes": 1567,
+      "sha256": "f5bcb9e2d69f67c1796df947ba5d9b91ae584e1b54c0defff18d03f7a9366c2e",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/提示词/红桃.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/186x260/Shan_club.png",
+      "bytes": 115958,
+      "sha256": "8f80f52048cbeaa28e7021bb92532620d60157bc2058a735301950b5047a2098",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/186x260/Shan_club.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/186x260/Shan_diamond.png",
+      "bytes": 114923,
+      "sha256": "15569d6c630ded561946d2691aa17d068073bbbf230e9760731a8d4ef44f82c4",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/186x260/Shan_diamond.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/186x260/Shan_heart.png",
+      "bytes": 122136,
+      "sha256": "ae02a43af57caf2bd5eb212fc40da3b9cb8b604d2833f94cccadac09024a3488",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/186x260/Shan_heart.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/186x260/Shan_spade.png",
+      "bytes": 118411,
+      "sha256": "e92ddab7df2226a3c488be618a6e7ec258bd66874834c0d86cf929ba4d6fea48",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/186x260/Shan_spade.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/generation-record.json",
+      "bytes": 6119,
+      "sha256": "8e5c6ef3329b4452490dd3f13da0ef1409aeb7a15facfab459bb3e95218a602d",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/generation-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/preview.html",
+      "bytes": 4712,
+      "sha256": "bfb1c3f09a74548de21ff29d8deef267fab5e99e35436cce1711f305d3543fca",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/preview.html.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/README.md",
+      "bytes": 4286,
+      "sha256": "cb103d563fc1f1263c1996d52f552ca4a425ed1e0b95bcca5e2d0c91a51393cb",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/README.md"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/叠牌对比.png",
+      "bytes": 618295,
+      "sha256": "961797614ef18185bd81cfc16bfaa71de1aa445f8507ddc85cc86da2b21122de",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/四花色对比.png",
+      "bytes": 491909,
+      "sha256": "d222af8ad27f5be6953d8d0f0b01cacdea73cc468c194ab0aa1425a20ff6e3a1",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/四花色对比.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/大图/方块.png",
+      "bytes": 2577016,
+      "sha256": "29187f87bc5ccbef0fb1b110edeb39d46f1d2c9c141a8817a3b25e66996c470a",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/大图/方块.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/大图/梅花.png",
+      "bytes": 2850691,
+      "sha256": "6c2953dfbbdf7c39a5f2c3b9eab76116dedd6135252d73673ef45f2e35c41984",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/大图/梅花.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/大图/红桃.png",
+      "bytes": 2806353,
+      "sha256": "201380d8f383ba9ba895531469cd55e6663054652b67d5ba9a14ad6adc7bc3be",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/大图/红桃.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/大图/黑桃.png",
+      "bytes": 2831968,
+      "sha256": "91103e95a3ea3898c542c4055fb2ebab8897c0e172378b7244db39f277a40d0d",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/四花色样板/大图/黑桃.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/方块.txt",
+      "bytes": 1935,
+      "sha256": "7994248f55ae034172ff6a3e54b7b16d25097f3bc7ea83578929fd99fccdf33d",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/提示词/四花色/方块.txt",
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/方块.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/梅花.txt",
+      "bytes": 1997,
+      "sha256": "20956aa5e27bdfb150786aad08a4e08e096d965349c4f0592ce0a5f0e6056318",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/提示词/四花色/梅花.txt",
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/梅花.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/红桃.txt",
+      "bytes": 1710,
+      "sha256": "74e8eb08512985040a52714f89143ebda52ceb85e6d1cf54ec72878882ad2103",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/提示词/四花色/红桃.txt",
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/红桃.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/黑桃.txt",
+      "bytes": 1815,
+      "sha256": "d3f5bbbc8b9359e2ab7104c355a97c8bd2c4a107c404ae7d4540f85b83c0fee8",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/提示词/四花色/黑桃.txt",
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/黑桃.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/heart.png",
+      "bytes": 2235,
+      "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/红桃2分层/heart.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/README.md",
+      "bytes": 9819,
+      "sha256": "663a0d62c611f373487dad726ae48972dee53bcf0552620f6975bb501da01a01",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/README.md"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/red_2.png",
+      "bytes": 1817,
+      "sha256": "1c474cd39faa39f08646ed04f86c4db7543aa03fda57416abccbe2335f06dbcf",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/red_2_v2.png",
+      "bytes": 1685,
+      "sha256": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/红桃2分层/red_2.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/Shan_heart_base.png",
+      "bytes": 105398,
+      "sha256": "75612a0ec5c2c28becc8f8aea48427d33f8a986dce85c9f565a1a5a24593e45a",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/红桃2分层/Shan_heart_base.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/分层预览.png",
+      "bytes": 601146,
+      "sha256": "6ae2f277b508c59af44964b890001b3a01258eb25da7bc6a13109dd757dc4c8e",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/分层预览_v2.png",
+      "bytes": 605124,
+      "sha256": "c0d48a5ad5e41de9553e8c250e965e9317bed75915bab9d71c04a7d49703c356",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/红桃2分层/分层预览.png"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_点数预览.png",
+      "bytes": 2496539,
+      "sha256": "f5572d207390c5364ce2d167ff080805716c6a4d22c05c133f19ad209c504036",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/club-reference.jpg",
+      "bytes": 279142,
+      "sha256": "31bbbdcdf3a95b31f8be4dfeb71d7e376ae4bac198d60770f7d01b2614d6776d",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/club-soft-record.json",
+      "bytes": 793,
+      "sha256": "6c8fb9b72981d6a826afbea91a3244b950d2cb27b415ffd224eb6562fd896bec",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/club-soft-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/club-soft-reference.jpg",
+      "bytes": 221964,
+      "sha256": "d51391ed4d8af280ea7c7989b307e7dbcbc3184b991ab931ffefd050b7a7dcb6",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/club-soft-result.jpg",
+      "bytes": 104547,
+      "sha256": "19b9de3ac749137b674b70fa998f12d5724df8595ecd225af498eb455eb71413",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/diamond-reference.jpg",
+      "bytes": 277971,
+      "sha256": "1c607a999fd5ab4a5d6d49037c955657035bf3d53426b88f0d4e6809e427eb62",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/diamond-soft-record.json",
+      "bytes": 802,
+      "sha256": "1de7ddad1a91682aec7f45a9b9d2bc8fbfc63018e3183aac69941a418145881b",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/diamond-soft-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/diamond-soft-reference.jpg",
+      "bytes": 221102,
+      "sha256": "a9000525461e90ffc398b3def99fef437ea0d86ea7845797fdda79d29f1e4ea4",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/diamond-soft-result.jpg",
+      "bytes": 101004,
+      "sha256": "65f190de9ec822bdce4eef806d7be07edb2850f8e129f4478a135575a09d2ce9",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/finish-soft-set.ps1",
+      "bytes": 4890,
+      "sha256": "c86c7e702440eb022d69b20e1540a9d6025791cfe64f2b8b8762baa9e42379fd",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/finish-soft-set.ps1.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/heart-record.json",
+      "bytes": 782,
+      "sha256": "3f39eeabca106ccbe130aae652c7818c9aba4098e166cb09c28d4875b9eb903d",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/heart-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/heart-reference.jpg",
+      "bytes": 289625,
+      "sha256": "9a7b1e496a5e53b037bb2e0ddd59d34576d7a202dadc3072911142c20b7f35eb",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/heart-result.jpg",
+      "bytes": 136930,
+      "sha256": "202633cbf0540eedd52de69854585263fb476a34aa75b2d39909088a0efe8a66",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/heart-soft-record.json",
+      "bytes": 806,
+      "sha256": "44410eea094a5b4e16ec3df320afdd791a5fc381c853a6d075a850e67482728e",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/heart-soft-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/heart-soft-result.jpg",
+      "bytes": 102620,
+      "sha256": "fddca348691a78bec9fe6678f88ac53ee3fa3097687ab5318f76b152e5e7e849",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/preview-script.js",
+      "bytes": 1417,
+      "sha256": "7852317994dd4566a4f3d81637b63f58896d72b73233c2b23b8d657ab5079010",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/preview-script.js.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/save-generated-card.ps1",
+      "bytes": 4505,
+      "sha256": "435ea9944bb96ea441861f2f2194cff385238bd7ead556a1d997f7018ae28bb2",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/save-generated-card.ps1.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/soft-stack-review.jpg",
+      "bytes": 170366,
+      "sha256": "dcb3fe3ab99067bcee22f47248a690b62dc9d736c240f57a4f52191ca44c4b79",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/spade-soft-record.json",
+      "bytes": 808,
+      "sha256": "0265e58f0a8bcd1b465c0043ef3b4f03f4dcb6a37c48b8da2862f878a1c7b819",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/spade-soft-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/spade-soft-reference.jpg",
+      "bytes": 229636,
+      "sha256": "051b8a6357659a88e4a93e90318fbe79c9719168f0148b1c9c19bde49db5f843",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/spade-soft-result.jpg",
+      "bytes": 105355,
+      "sha256": "67ecc4678e92a235a216dcdfe426992cc79e36938952f72a8d6871d94b9bbb56",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/shan-v6/v5-overview.jpg",
+      "bytes": 239957,
+      "sha256": "2a5bb5c125fd4fbd1e905eba8d3203dd908778ebb6332da59b84993c9776e0ee",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/adjust-rank.py",
+      "bytes": 1464,
+      "sha256": "f0e1d822e92de1ec887b160f9c5c1aad5ee61a29c8222e9ba1821fecb898fdd7",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/adjust-rank.py.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/assembled/heart.png",
+      "bytes": 2235,
+      "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "preservedAs": [],
+      "action": "duplicate-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/assembled/red_2.png",
+      "bytes": 1685,
+      "sha256": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058",
+      "preservedAs": [],
+      "action": "duplicate-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/assembled/Shan_heart_base.png",
+      "bytes": 105398,
+      "sha256": "75612a0ec5c2c28becc8f8aea48427d33f8a986dce85c9f565a1a5a24593e45a",
+      "preservedAs": [],
+      "action": "duplicate-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/assembled/分层预览.png",
+      "bytes": 605124,
+      "sha256": "c0d48a5ad5e41de9553e8c250e965e9317bed75915bab9d71c04a7d49703c356",
+      "preservedAs": [],
+      "action": "duplicate-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/base-native.png",
+      "bytes": 2283825,
+      "sha256": "21b08c2dc94a827b1f1572e7dd309ec8b79707ce1b87533d361331ff1d323a61",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/base-record.json",
+      "bytes": 1799,
+      "sha256": "367bbbfd67803ac10f4f0c23e6d56da86bfd32fad5424401b255efe7e28ed52f",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/base-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/compose.py",
+      "bytes": 3911,
+      "sha256": "e940403651f1bcf4a88baab7acf3049ad3099cf9edec93e1822473ee68530899",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/compose.py.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/composite-draft.png",
+      "bytes": 107013,
+      "sha256": "20a8c4dbf99a788b441613cd2e1efc60fb3b6c65f3d411b0d783635f62cfb94d",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/deliver-rank-v2.py",
+      "bytes": 2156,
+      "sha256": "56cd01e73085dd4b75b8a65088b494623c1047fbdb11eb719195c6c63a739ea2",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/deliver-rank-v2.py.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/deliver.py",
+      "bytes": 3849,
+      "sha256": "22f47e68972b39b26ae1d6ea452e60f5f5db18ea57d9ea876e21812e0cf3e9f0",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/deliver.py.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/heart2-reference.jpg",
+      "bytes": 148346,
+      "sha256": "3ee2f9c1578a29ad8bd282eda8b7600b77a7960efd439af45d1b495d337d31d1",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/prepare.py",
+      "bytes": 962,
+      "sha256": "1ac5e77131b66c4c793688d730318f54b0ee7574acabb5b7be3827dd2f2fe0e0",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/prepare.py.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/rank-adjustment.json",
+      "bytes": 530,
+      "sha256": "c0800cb5c5054a224045b18f6191cbc84852449c39cbcc55edc3c280a14ffdcf",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-adjustment.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/rank-native.png",
+      "bytes": 769686,
+      "sha256": "c744f00f9bfc1bd36d1d26c578bafa4494de3f8c8f3a461ae0b1f1b0257caec5",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/rank-record.json",
+      "bytes": 1551,
+      "sha256": "c39c0c438a20d9edaa5e4fc878cb7d8d6284c9d645d45ae1ed9f5aa7b7586fa0",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/rank-reference.jpg",
+      "bytes": 12593,
+      "sha256": "00a6e87019ad97ce9b5f283fb0c7d77c55a7a639a5ab0e81641fa4325ef14e4e",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/rank-shift-reference.png",
+      "bytes": 152444,
+      "sha256": "ee4e75836080e56f375156171ddadbbd406d4ec6fe1a9e569e9bad6079b005b2",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/rank-shifted-native.png",
+      "bytes": 778708,
+      "sha256": "a1402ea061a9457a7d6a2b9cd411ac5b56b5c97306320e536181371e7eed58e7",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/rank-shifted-record.json",
+      "bytes": 1256,
+      "sha256": "c31ce3a862b20a9f420550bc37806c339a784c8dd8f70e03f08246e7f8391339",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-shifted-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/rank-v2-native.png",
+      "bytes": 1685,
+      "sha256": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058",
+      "preservedAs": [],
+      "action": "duplicate-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/review.jpg",
+      "bytes": 132269,
+      "sha256": "8f217e5dad1ec5bef27f7ed06c74f47cf10f8028493f70e8ce8d49b3bcf0a229",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/save-native.py",
+      "bytes": 1447,
+      "sha256": "ff3f8df10de3c2883f7478edf0a6a98863b839e9ca241603c54491ec6bf24a32",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/save-native.py.txt"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/suit-native.png",
+      "bytes": 1029975,
+      "sha256": "e4b5438f7d0dc152dfcfe036a54162e2da944652a76f6399999391cd445b591d",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/suit-record.json",
+      "bytes": 1462,
+      "sha256": "ec83c821150b1a7ac9718f5d722ba2447eee26236acb0e69e0613f5a598f3582",
+      "preservedAs": [
+        "卡牌归档/塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/suit-record.json"
+      ],
+      "action": "source-copy-removed-after-preservation"
+    },
+    {
+      "path": "tmp/imagegen/heart2-split/suit-reference.jpg",
+      "bytes": 13936,
+      "sha256": "313c0d8acdeb6c0cb24bfd256a72aea27951100a60213cb01fa0676ac85c5e47",
+      "preservedAs": [],
+      "action": "superseded-image-removed"
+    }
+  ],
+  "notes": "The original game resources and canonical project docs are outside cleanup scope. Historical text snapshots retain original paths as provenance.",
+  "cleanupCompletedAt": "2026-10-20T17:37:15.2860356+00:00",
+  "subsequentArchiveMove": {
+    "date": "2026-10-21",
+    "newRoot": "卡牌归档/塔罗牌卡面",
+    "originalReport": "../../资料/上一轮整理脚本/整理记录_归档前.json"
+  }
+}

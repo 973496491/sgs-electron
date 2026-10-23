@@ -1,0 +1,15 @@
+{
+  "id": "ig_051fea5d232504cf016ad7a385f62c87d0a9a01c99583b917b",
+  "timestamp": "2026-10-20T17:24:29.014Z",
+  "size": [
+    1326,
+    1186
+  ],
+  "mode": "RGBA",
+  "alphaRange": [
+    0,
+    255
+  ],
+  "prompt": "Precise sprite-layout edit of the MOST RECENT transparent champagne-gold numeral 2. Keep the entire transparent canvas unchanged in its 19:17 landscape aspect ratio. Move only the existing numeral LEFT by 7.895% of canvas width and UP by 5.882% of canvas height (equivalent to left 3 pixels and up 2 pixels on a 38x34 sprite). Preserve the numeral's EXACT size, glyph shape, material, bevel, color, highlights, opacity and antialiased edges. This is a small translation inside the existing layer, NOT a redraw, resize, recentering or crop-to-content. The moved glyph should have slightly less empty space above and on the left, more empty space to its right and below. Keep every part of the numeral inside the canvas. Do not center it again. Output ONLY this one updated transparent PNG sprite, actual alpha transparency, no visible background, no checkerboard, no new decoration, no card, no additional symbols.",
+  "nativeFile": "C:\\Users\\97349\\Downloads\\electron\\tmp\\imagegen\\heart2-split\\rank-shifted-native.png"
+}

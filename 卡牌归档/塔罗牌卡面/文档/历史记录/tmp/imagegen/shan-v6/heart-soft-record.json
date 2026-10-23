@@ -1,0 +1,22 @@
+{
+  "suit": "heart",
+  "label": "红桃",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_0b73c3c4f4b34872016ad79a6986a487d0bcc15331ce4db42c",
+  "generatedAt": "2026-10-20T16:45:26.126Z",
+  "reference": "v6 red heart edit target, reduced 465x650 JPEG; subdued ornament for stacked cards",
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "largeFile": "大图/红桃.png",
+  "gameFile": "186x260/Shan_heart.png",
+  "promptFile": "提示词/红桃.txt",
+  "gameSize": [
+    186,
+    260
+  ],
+  "postprocess": "Native PNG preserved; high quality bicubic opaque 186x260 PNG; JPEG preview only",
+  "largeSha256": "201380d8f383ba9ba895531469cd55e6663054652b67d5ba9a14ad6adc7bc3be",
+  "gameSha256": "ae02a43af57caf2bd5eb212fc40da3b9cb8b604d2833f94cccadac09024a3488"
+}

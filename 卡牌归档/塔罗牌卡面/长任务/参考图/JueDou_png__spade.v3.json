@@ -1,0 +1,234 @@
+{
+  "taskId": "JueDou_png__spade",
+  "attempt": 3,
+  "tag": "[TAROT-PROD:JueDou_png__spade:v3]",
+  "preparedAt": "2026-10-21T09:34:47.559296+00:00",
+  "referenceSource": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\参考图\\JueDou_png__spade.guide-v3.jpg",
+  "reference": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\参考图\\JueDou_png__spade.v3.jpg",
+    "bytes": 99730,
+    "sha256": "2f862764eeecea7f3f8b465b7be318645746acd226f3367323ffab82931ecb89",
+    "rgbaSha256": "8eee8b462ad85e3513f5bb5c6d6ed0a0415d4c4e0fa490e7438745532b069ee4",
+    "size": [
+      465,
+      650
+    ],
+    "mode": "RGB",
+    "format": "JPEG"
+  },
+  "prompt": "[TAROT-PROD:JueDou_png__spade:v3]\nEdit ONLY the magenta-masked area of this displayed card. Remove the magenta completely and fill the entire masked region with uninterrupted, softly mottled very dark charcoal-blue ground, seamlessly matching adjacent dark background. This upper-left area is intentionally EMPTY and asymmetric: absolutely no gold lines, arches, chains, diamonds, leaves, symbols or numbers there. Do not mirror or reconstruct the ornate right side. Do not add a panel border or visible patch edge. Preserve all unmasked card artwork, the central 决斗 title, spade emblem, outermost card perimeter and lower flowers. Output ONE repaired complete card only, with no guide marks or tracking text.",
+  "taskSnapshot": {
+    "id": "JueDou_png__spade",
+    "resourceKey": "JueDou_png",
+    "suitValue": 3,
+    "suit": "spade",
+    "suitName": "黑桃",
+    "originalName": "决斗",
+    "originalNames": [
+      "决斗"
+    ],
+    "displayName": "决斗",
+    "layout": "horizontal",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      79,
+      1001,
+      1200,
+      2027,
+      3079,
+      6000,
+      6200,
+      6300,
+      7102,
+      11079,
+      12105,
+      20101,
+      20433,
+      21003,
+      31124,
+      60433,
+      60983,
+      60987,
+      60990,
+      61064,
+      61269,
+      61273
+    ],
+    "representativeCardId": 79,
+    "representativeNumber": 1,
+    "representativeRank": "A",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 78
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 1,
+        "rank": "A",
+        "cardIds": [
+          79,
+          1001,
+          1200,
+          2027,
+          3079,
+          6000,
+          6200,
+          6300,
+          7102,
+          11079,
+          12105,
+          20101,
+          21003,
+          61269,
+          61273
+        ]
+      },
+      {
+        "number": 3,
+        "rank": "3",
+        "cardIds": [
+          60990
+        ]
+      },
+      {
+        "number": 5,
+        "rank": "5",
+        "cardIds": [
+          60987
+        ]
+      },
+      {
+        "number": 8,
+        "rank": "8",
+        "cardIds": [
+          31124
+        ]
+      },
+      {
+        "number": 10,
+        "rank": "10",
+        "cardIds": [
+          60983
+        ]
+      },
+      {
+        "number": 12,
+        "rank": "Q",
+        "cardIds": [
+          20433,
+          60433,
+          61064
+        ]
+      }
+    ],
+    "type": 2,
+    "subType": 0,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "1362_1076_186_260",
+    "sharedFrameNames": [
+      "JueDou_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/JueDou_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 33
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "correction": null,
+  "promptOrigin": "Targeted local edit, frozen before first native call of v3"
+}

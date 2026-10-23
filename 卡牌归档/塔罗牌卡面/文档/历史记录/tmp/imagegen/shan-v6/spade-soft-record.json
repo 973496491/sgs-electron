@@ -1,0 +1,22 @@
+{
+  "suit": "spade",
+  "label": "黑桃",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_0e1348c91d89c240016ad79bd8723087d0ac83468da4351a0b",
+  "generatedAt": "2026-10-20T16:52:57.13Z",
+  "reference": "Soft heart brightness reference + original v5 spade preservation target, 930x650 JPEG",
+  "nativeSize": [
+    1061,
+    1482
+  ],
+  "largeFile": "大图/黑桃.png",
+  "gameFile": "186x260/Shan_spade.png",
+  "promptFile": "提示词/黑桃.txt",
+  "gameSize": [
+    186,
+    260
+  ],
+  "postprocess": "Native PNG preserved; high quality bicubic opaque 186x260 PNG; JPEG preview only",
+  "largeSha256": "91103e95a3ea3898c542c4055fb2ebab8897c0e172378b7244db39f277a40d0d",
+  "gameSha256": "e92ddab7df2226a3c488be618a6e7ec258bd66874834c0d86cf929ba4d6fea48"
+}

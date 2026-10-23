@@ -2,6 +2,7 @@
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
+const vm = require("node:vm");
 const assert = require("node:assert/strict");
 const { spawnSync } = require("node:child_process");
 const project = path.resolve(__dirname, "..");
@@ -218,6 +219,32 @@ try {
     install(output, 1);
     assertInstalled();
     mapping.remove.pop();
+  });
+  check("desktop CMD saves version and notes to the project and delivers the same script in the ZIP", () => {
+    saveMapping();
+    const script = path.join(fixtureProject, "resources/daxiaochao.user.js");
+    const before = fs.readFileSync(path.join(project, "resources/daxiaochao.user.js"), "utf8");
+    write(script, before);
+    const notes = "修复桌面打包；保留中文与更新内容";
+    const output = unpack(pack("metadata", 0, ["--version", "2.3.4", "--notes", notes]));
+    const updated = fs.readFileSync(script, "utf8");
+    assert.equal(JSON.parse(fs.readFileSync(path.join(fixtureProject, "version.json"), "utf8")).version, "2.3.4");
+    assert(updated.includes("// @version      2.3.4"));
+    assert(updated.includes('const XIAOCHAO_VERSION = "2.3.4";'));
+    new vm.Script(updated, { filename: script });
+    const start = updated.indexOf("  const _0x378fb5 =");
+    const end = updated.indexOf("  function Init()", start);
+    assert(start >= 0 && end > start);
+    const value = vm.runInNewContext(updated.slice(start, end) + "\n_0x378fb5", {
+      _0x41a3d0: index => ({ 555: "replace", 526: "<br>" })[index],
+    });
+    assert.equal(value, "修复桌面打包<br>保留中文与更新内容");
+    const mask = text => text.replace(/^(\/\/[ \t]*@version[ \t]+)[^\r\n]+/m, "$1<version>")
+      .replace(/(const XIAOCHAO_VERSION = ")[^"\r\n]+(";)/, "$1<version>$2")
+      .replace(/(const _0x378fb5\s*=\s*)"(?:[^"\\\r\n]|\\.)*"/, '$1"<notes>"');
+    assert.equal(mask(updated), mask(before));
+    install(output);
+    assertInstalled();
   });
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(project, "release-files.json"), "utf8")), original);
   process.stdout.write(`${passed} release checks passed (Python packer + Windows PowerShell 5.1 installer).\n`);

@@ -1,0 +1,527 @@
+{
+  "revision": "accepted-20261021-175929",
+  "sourceRevision": 197,
+  "checkedAt": "2026-10-21T10:02:21+00:00",
+  "validatedTasks": 36,
+  "committedTasks": 36,
+  "pngCount": 53,
+  "faceVariants": 36,
+  "cardTypes": 26,
+  "releaseFiles": 66,
+  "acceptedUiLayers": 17,
+  "additions": [],
+  "items": [
+    {
+      "relative": "manifest.json",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\manifest.json",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\manifest.json",
+      "sha256": "cb4d2e13f18dd2afb8dab6ed247a70e17b1eb929d744bf9acb3117e6ca579207",
+      "beforeSha256": "cb4d2e13f18dd2afb8dab6ed247a70e17b1eb929d744bf9acb3117e6ca579207"
+    },
+    {
+      "relative": "faces/Shan_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\Shan_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\Shan_heart.png",
+      "sha256": "f06d0d2ca29981832ee91a8db696d1d00983ae2df4ff7355a7fa6bcbfe63158c",
+      "beforeSha256": "f06d0d2ca29981832ee91a8db696d1d00983ae2df4ff7355a7fa6bcbfe63158c"
+    },
+    {
+      "relative": "faces/Shan_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\Shan_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\Shan_diamond.png",
+      "sha256": "296aef3ae991dc3fb8644846e0435119bcd2504e92f322f62f52aae2fa25a406",
+      "beforeSha256": "296aef3ae991dc3fb8644846e0435119bcd2504e92f322f62f52aae2fa25a406"
+    },
+    {
+      "relative": "faces/HanBingJian_spade.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\HanBingJian_spade.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\HanBingJian_spade.png",
+      "sha256": "1a2450f30f09e49d518d82eaf064ac6361373576d3be8712aacdcde26fa34fa8",
+      "beforeSha256": "1a2450f30f09e49d518d82eaf064ac6361373576d3be8712aacdcde26fa34fa8"
+    },
+    {
+      "relative": "faces/JueDou_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\JueDou_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\JueDou_diamond.png",
+      "sha256": "44a3b32b8c0e29863499588d3cdf54235219e2ebcf2b78f256cd2de9a74bc028",
+      "beforeSha256": "44a3b32b8c0e29863499588d3cdf54235219e2ebcf2b78f256cd2de9a74bc028"
+    },
+    {
+      "relative": "faces/JueDou_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\JueDou_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\JueDou_club.png",
+      "sha256": "1a839d04953f55fd27d37e7ef95d158e45273f0a7e25f8eebcc8cec4230e61ec",
+      "beforeSha256": "1a839d04953f55fd27d37e7ef95d158e45273f0a7e25f8eebcc8cec4230e61ec"
+    },
+    {
+      "relative": "faces/JueDou_spade.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\JueDou_spade.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\JueDou_spade.png",
+      "sha256": "f8891b76eccc14789a40f833fbd814c1275e7fe7109063b1b2224b49c2fd9fdc",
+      "beforeSha256": "f8891b76eccc14789a40f833fbd814c1275e7fe7109063b1b2224b49c2fd9fdc"
+    },
+    {
+      "relative": "faces/ShunShouQianYang_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\ShunShouQianYang_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\ShunShouQianYang_diamond.png",
+      "sha256": "b08ca658adcd255723c3195b8c171a455042db5610c4c2e75bedc83876b60052",
+      "beforeSha256": "b08ca658adcd255723c3195b8c171a455042db5610c4c2e75bedc83876b60052"
+    },
+    {
+      "relative": "faces/ShunShouQianYang_spade.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\ShunShouQianYang_spade.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\ShunShouQianYang_spade.png",
+      "sha256": "134c9aa4728fcc4dcb26185da65d0928eb9607cb2d285263d0430bb47c65c1b5",
+      "beforeSha256": "134c9aa4728fcc4dcb26185da65d0928eb9607cb2d285263d0430bb47c65c1b5"
+    },
+    {
+      "relative": "faces/GuanShiFu_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\GuanShiFu_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\GuanShiFu_diamond.png",
+      "sha256": "f176446d28c3e9cfb34645aba5c7de081571489642b88073eac27327bc151be3",
+      "beforeSha256": "f176446d28c3e9cfb34645aba5c7de081571489642b88073eac27327bc151be3"
+    },
+    {
+      "relative": "faces/Sha_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\Sha_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\Sha_diamond.png",
+      "sha256": "6c68cc759ad7c6857c43672b66667dfdb05f9bf290ca9116822c0dcd6b142fa2",
+      "beforeSha256": "6c68cc759ad7c6857c43672b66667dfdb05f9bf290ca9116822c0dcd6b142fa2"
+    },
+    {
+      "relative": "faces/Sha_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\Sha_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\Sha_heart.png",
+      "sha256": "1200a79daaaa0981f12dfdd2a5ef3d10f96a0b9483626584a5a8ea0b31df2a82",
+      "beforeSha256": "1200a79daaaa0981f12dfdd2a5ef3d10f96a0b9483626584a5a8ea0b31df2a82"
+    },
+    {
+      "relative": "faces/Sha_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\Sha_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\Sha_club.png",
+      "sha256": "ba8e406c3ccef3566a9ef9952b1356f30f23498e5d033538bb1554d4c9796797",
+      "beforeSha256": "ba8e406c3ccef3566a9ef9952b1356f30f23498e5d033538bb1554d4c9796797"
+    },
+    {
+      "relative": "faces/FangTianHuaJi_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\FangTianHuaJi_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\FangTianHuaJi_diamond.png",
+      "sha256": "fadeb2e639844bbb7e1d470497481927d6c85306e0d3cec58fc7510b44c9e775",
+      "beforeSha256": "fadeb2e639844bbb7e1d470497481927d6c85306e0d3cec58fc7510b44c9e775"
+    },
+    {
+      "relative": "faces/ZiXing_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\ZiXing_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\ZiXing_diamond.png",
+      "sha256": "6980b83edd715c63735abd886601d38758613859d983a771d42237c370b16ee0",
+      "beforeSha256": "6980b83edd715c63735abd886601d38758613859d983a771d42237c370b16ee0"
+    },
+    {
+      "relative": "faces/ZhuGeLianNu_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\ZhuGeLianNu_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\ZhuGeLianNu_diamond.png",
+      "sha256": "54bd71d7a4885f0d3e4116e8d039400c72564f18259d256c46f789566942651f",
+      "beforeSha256": "54bd71d7a4885f0d3e4116e8d039400c72564f18259d256c46f789566942651f"
+    },
+    {
+      "relative": "faces/ZhuGeLianNu_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\ZhuGeLianNu_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\ZhuGeLianNu_club.png",
+      "sha256": "4fadf6cbae9f4259f1a7e94d01aa0cb982629c42475c347b04f30df3fb5736b0",
+      "beforeSha256": "4fadf6cbae9f4259f1a7e94d01aa0cb982629c42475c347b04f30df3fb5736b0"
+    },
+    {
+      "relative": "faces/Tao_diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\Tao_diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\Tao_diamond.png",
+      "sha256": "f20eab65de68b919cc84c36a8ef6132ca5986e36e677de8879c76162af9fabb5",
+      "beforeSha256": "f20eab65de68b919cc84c36a8ef6132ca5986e36e677de8879c76162af9fabb5"
+    },
+    {
+      "relative": "faces/Tao_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\Tao_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\Tao_heart.png",
+      "sha256": "31006e33505c43676c225c20b70f93b6086fba39b054c92d1a1e0cbad57d4416",
+      "beforeSha256": "31006e33505c43676c225c20b70f93b6086fba39b054c92d1a1e0cbad57d4416"
+    },
+    {
+      "relative": "faces/WanJianQiFa_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\WanJianQiFa_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\WanJianQiFa_heart.png",
+      "sha256": "40cb7891b666b0448b0a040007e21c3064d9534c9f864ebc161ee1aa8fea37a7",
+      "beforeSha256": "40cb7891b666b0448b0a040007e21c3064d9534c9f864ebc161ee1aa8fea37a7"
+    },
+    {
+      "relative": "faces/WuGuFengDeng_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\WuGuFengDeng_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\WuGuFengDeng_heart.png",
+      "sha256": "738b7c89dbf229931d5564d113d0fadef34f7d25799afb5ca48c665f69330a80",
+      "beforeSha256": "738b7c89dbf229931d5564d113d0fadef34f7d25799afb5ca48c665f69330a80"
+    },
+    {
+      "relative": "faces/ChiTu_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\ChiTu_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\ChiTu_heart.png",
+      "sha256": "de5cb5bf0e1d4e58b89bc8bf033466e8ee3bd657a4e18a5e0a1e68159cec405e",
+      "beforeSha256": "de5cb5bf0e1d4e58b89bc8bf033466e8ee3bd657a4e18a5e0a1e68159cec405e"
+    },
+    {
+      "relative": "faces/LeBuSiShu_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\LeBuSiShu_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\LeBuSiShu_heart.png",
+      "sha256": "d355a0e540c1567419a8324550fa8a9efa2fcfb765ef0052804f618813eef8a5",
+      "beforeSha256": "d355a0e540c1567419a8324550fa8a9efa2fcfb765ef0052804f618813eef8a5"
+    },
+    {
+      "relative": "faces/LeBuSiShu_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\LeBuSiShu_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\LeBuSiShu_club.png",
+      "sha256": "830d48888d3a652ab52f8bbeaa7d49e7d716f6f8ffb3eaeafd630fdd4bc29570",
+      "beforeSha256": "830d48888d3a652ab52f8bbeaa7d49e7d716f6f8ffb3eaeafd630fdd4bc29570"
+    },
+    {
+      "relative": "faces/WuZhongShengYou_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\WuZhongShengYou_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\WuZhongShengYou_heart.png",
+      "sha256": "9d7670a49f012660779455dd629beaaf40d4a602f15c16c7bedb3655460dce34",
+      "beforeSha256": "9d7670a49f012660779455dd629beaaf40d4a602f15c16c7bedb3655460dce34"
+    },
+    {
+      "relative": "faces/GuoHeChaiQiao_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\GuoHeChaiQiao_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\GuoHeChaiQiao_heart.png",
+      "sha256": "1187d45e93de3e40018dcc49e845daa9eb140975ca3ddded96111977fad8b212",
+      "beforeSha256": "1187d45e93de3e40018dcc49e845daa9eb140975ca3ddded96111977fad8b212"
+    },
+    {
+      "relative": "faces/GuoHeChaiQiao_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\GuoHeChaiQiao_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\GuoHeChaiQiao_club.png",
+      "sha256": "c426f1183447854ca28a49cf774ef815ef8cf038ee739eb015db87b3f05e089b",
+      "beforeSha256": "c426f1183447854ca28a49cf774ef815ef8cf038ee739eb015db87b3f05e089b"
+    },
+    {
+      "relative": "faces/TaoYuanJieYi_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\TaoYuanJieYi_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\TaoYuanJieYi_heart.png",
+      "sha256": "b659b08afcc348785b4475791281312b41a286430e36c20c011581534d905141",
+      "beforeSha256": "b659b08afcc348785b4475791281312b41a286430e36c20c011581534d905141"
+    },
+    {
+      "relative": "faces/QiLinGong_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\QiLinGong_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\QiLinGong_heart.png",
+      "sha256": "20e6ccd29c98064487a6509737ba6d5e723e8a50969b0908a3c9fd7426037bad",
+      "beforeSha256": "20e6ccd29c98064487a6509737ba6d5e723e8a50969b0908a3c9fd7426037bad"
+    },
+    {
+      "relative": "faces/ZhuaHuangFeiDian_heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\ZhuaHuangFeiDian_heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\ZhuaHuangFeiDian_heart.png",
+      "sha256": "cb7da003251796ae17b6ed0e08a34c1a11c5fe4f4bc68db7977417c6ef14194b",
+      "beforeSha256": "cb7da003251796ae17b6ed0e08a34c1a11c5fe4f4bc68db7977417c6ef14194b"
+    },
+    {
+      "relative": "faces/WuXieKeJi_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\WuXieKeJi_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\WuXieKeJi_club.png",
+      "sha256": "fe787596bad192bd9e8e39f40483b65d6486be048bc999e4d19371a88900e996",
+      "beforeSha256": "fe787596bad192bd9e8e39f40483b65d6486be048bc999e4d19371a88900e996"
+    },
+    {
+      "relative": "faces/BaGuaZhen_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\BaGuaZhen_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\BaGuaZhen_club.png",
+      "sha256": "a83625740142d77285f254bbcbc3318708a924d2fde85d9894fe27a0acaeaa2e",
+      "beforeSha256": "a83625740142d77285f254bbcbc3318708a924d2fde85d9894fe27a0acaeaa2e"
+    },
+    {
+      "relative": "faces/DiLu_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\DiLu_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\DiLu_club.png",
+      "sha256": "9b7be981eff680c4b2040345e47bd77eb7f43d0e97900ccf66cda4a1a07f81be",
+      "beforeSha256": "9b7be981eff680c4b2040345e47bd77eb7f43d0e97900ccf66cda4a1a07f81be"
+    },
+    {
+      "relative": "faces/NanManRuQin_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\NanManRuQin_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\NanManRuQin_club.png",
+      "sha256": "faccd033973a4781f4e53a837377df7971ed9b2b8617757b6ee59cc9f5318cc2",
+      "beforeSha256": "faccd033973a4781f4e53a837377df7971ed9b2b8617757b6ee59cc9f5318cc2"
+    },
+    {
+      "relative": "faces/JieDaoShaRen_club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\JieDaoShaRen_club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\JieDaoShaRen_club.png",
+      "sha256": "d01912e871479d7ae24e85c1b31e282366cc8ae7c89b6514589c77be9d999266",
+      "beforeSha256": "d01912e871479d7ae24e85c1b31e282366cc8ae7c89b6514589c77be9d999266"
+    },
+    {
+      "relative": "faces/CiXiongShuangGuJian_spade.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\CiXiongShuangGuJian_spade.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\CiXiongShuangGuJian_spade.png",
+      "sha256": "1130b33639032e17e14f8ff87240a44839163ee9361bbbc91a22445484585650",
+      "beforeSha256": "1130b33639032e17e14f8ff87240a44839163ee9361bbbc91a22445484585650"
+    },
+    {
+      "relative": "faces/JueYing_spade.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\faces\\JueYing_spade.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\faces\\JueYing_spade.png",
+      "sha256": "e5dcb6a53d3424ee04942efe5e5d29a8d25f048034a88292bd013f93d22e3120",
+      "beforeSha256": "e5dcb6a53d3424ee04942efe5e5d29a8d25f048034a88292bd013f93d22e3120"
+    },
+    {
+      "relative": "ranks/A.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\A.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\A.png",
+      "sha256": "1a670f7df3b9d761badc3e434b759e6810536e58f7766fc9dfa357fbf9e37ddb",
+      "beforeSha256": "1a670f7df3b9d761badc3e434b759e6810536e58f7766fc9dfa357fbf9e37ddb"
+    },
+    {
+      "relative": "ranks/2.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\2.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\2.png",
+      "sha256": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058",
+      "beforeSha256": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058"
+    },
+    {
+      "relative": "ranks/3.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\3.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\3.png",
+      "sha256": "4a7fbe221afa24790acc6e02d631f75d35d7494fb38b0a8483a7a46af3ad775a",
+      "beforeSha256": "4a7fbe221afa24790acc6e02d631f75d35d7494fb38b0a8483a7a46af3ad775a"
+    },
+    {
+      "relative": "ranks/4.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\4.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\4.png",
+      "sha256": "64ef5027fa27ab85a432ffe1ea01ed64dd5b4d805db2bc60a9fdc47dcd548c69",
+      "beforeSha256": "64ef5027fa27ab85a432ffe1ea01ed64dd5b4d805db2bc60a9fdc47dcd548c69"
+    },
+    {
+      "relative": "ranks/5.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\5.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\5.png",
+      "sha256": "cf722b330eb391759234cfd8ed9aaa998d30c84801c22da5ada101ec894e02d7",
+      "beforeSha256": "cf722b330eb391759234cfd8ed9aaa998d30c84801c22da5ada101ec894e02d7"
+    },
+    {
+      "relative": "ranks/6.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\6.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\6.png",
+      "sha256": "21311db6cdf4b8bf6b574b4398549cb940edd899b73a5a05b3085297ab5f8b4d",
+      "beforeSha256": "21311db6cdf4b8bf6b574b4398549cb940edd899b73a5a05b3085297ab5f8b4d"
+    },
+    {
+      "relative": "ranks/7.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\7.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\7.png",
+      "sha256": "2f33009cd7217d7290c9725ba4232ccbba60e0859efbf6a607d7c36b21cf4465",
+      "beforeSha256": "2f33009cd7217d7290c9725ba4232ccbba60e0859efbf6a607d7c36b21cf4465"
+    },
+    {
+      "relative": "ranks/8.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\8.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\8.png",
+      "sha256": "93fd103953280a6a91a9ead289b822a22ff6e3a69aa470394933af228cd48698",
+      "beforeSha256": "93fd103953280a6a91a9ead289b822a22ff6e3a69aa470394933af228cd48698"
+    },
+    {
+      "relative": "ranks/9.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\9.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\9.png",
+      "sha256": "aeb56316eb75da3616bc817261ad114896bc28ea9dac4018318869cf3b8ff18b",
+      "beforeSha256": "aeb56316eb75da3616bc817261ad114896bc28ea9dac4018318869cf3b8ff18b"
+    },
+    {
+      "relative": "ranks/10.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\10.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\10.png",
+      "sha256": "913a085169bba6d23ef8ce77ca8ca45e2281bbfdf765607c0494fe5f3a85e7f7",
+      "beforeSha256": "913a085169bba6d23ef8ce77ca8ca45e2281bbfdf765607c0494fe5f3a85e7f7"
+    },
+    {
+      "relative": "ranks/J.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\J.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\J.png",
+      "sha256": "ed111a844dc0365121fd9a8039f93944c8a82b763414782791c1584bce35f881",
+      "beforeSha256": "ed111a844dc0365121fd9a8039f93944c8a82b763414782791c1584bce35f881"
+    },
+    {
+      "relative": "ranks/Q.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\Q.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\Q.png",
+      "sha256": "ada3e196abd1b1ff60a9f88e78d251f58c8415f263004e37732e32116b31851a",
+      "beforeSha256": "ada3e196abd1b1ff60a9f88e78d251f58c8415f263004e37732e32116b31851a"
+    },
+    {
+      "relative": "ranks/K.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\ranks\\K.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\ranks\\K.png",
+      "sha256": "318c9e5fba71a6fc87c51aa972f63c5696b31ecec64bd08b866c4eed74f34041",
+      "beforeSha256": "318c9e5fba71a6fc87c51aa972f63c5696b31ecec64bd08b866c4eed74f34041"
+    },
+    {
+      "relative": "suits/heart.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\suits\\heart.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\suits\\heart.png",
+      "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "beforeSha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef"
+    },
+    {
+      "relative": "suits/diamond.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\suits\\diamond.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\suits\\diamond.png",
+      "sha256": "346a83698acc29318c709335796c5a33229f624edc2ffa69e61f5f4077819d08",
+      "beforeSha256": "346a83698acc29318c709335796c5a33229f624edc2ffa69e61f5f4077819d08"
+    },
+    {
+      "relative": "suits/spade.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\suits\\spade.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\suits\\spade.png",
+      "sha256": "8abc2f092a5c6395adb8220b8842825aef25efe65c10100cb1e6f2163d0051e3",
+      "beforeSha256": "8abc2f092a5c6395adb8220b8842825aef25efe65c10100cb1e6f2163d0051e3"
+    },
+    {
+      "relative": "suits/club.png",
+      "source": "C:\\Users\\97349\\Downloads\\electron\\electron-next\\resources\\card-themes\\tarot\\suits\\club.png",
+      "target": "C:\\Users\\97349\\AppData\\Roaming\\SGSOL\\card-themes\\tarot\\suits\\club.png",
+      "sha256": "7f680748273570d316775d46a11b38a9c571e00c8b2f82006ca2b55f155e1788",
+      "beforeSha256": "7f680748273570d316775d46a11b38a9c571e00c8b2f82006ca2b55f155e1788"
+    }
+  ],
+  "originalInstalledManifest": {
+    "schemaVersion": 1,
+    "id": "tarot",
+    "revision": "accepted-20261021-175929",
+    "faces": {
+      "Shan_png": {
+        "1": "faces/Shan_heart.png",
+        "2": "faces/Shan_diamond.png"
+      },
+      "HanBingJian_png": {
+        "3": "faces/HanBingJian_spade.png"
+      },
+      "JueDou_png": {
+        "2": "faces/JueDou_diamond.png",
+        "4": "faces/JueDou_club.png",
+        "3": "faces/JueDou_spade.png"
+      },
+      "ShunShouQianYang_png": {
+        "2": "faces/ShunShouQianYang_diamond.png",
+        "3": "faces/ShunShouQianYang_spade.png"
+      },
+      "GuanShiFu_png": {
+        "2": "faces/GuanShiFu_diamond.png"
+      },
+      "Sha_png": {
+        "2": "faces/Sha_diamond.png",
+        "1": "faces/Sha_heart.png",
+        "4": "faces/Sha_club.png"
+      },
+      "FangTianHuaJi_png": {
+        "2": "faces/FangTianHuaJi_diamond.png"
+      },
+      "ZiXing_png": {
+        "2": "faces/ZiXing_diamond.png"
+      },
+      "ZhuGeLianNu_png": {
+        "2": "faces/ZhuGeLianNu_diamond.png",
+        "4": "faces/ZhuGeLianNu_club.png"
+      },
+      "Tao_png": {
+        "2": "faces/Tao_diamond.png",
+        "1": "faces/Tao_heart.png"
+      },
+      "WanJianQiFa_png": {
+        "1": "faces/WanJianQiFa_heart.png"
+      },
+      "WuGuFengDeng_png": {
+        "1": "faces/WuGuFengDeng_heart.png"
+      },
+      "ChiTu_png": {
+        "1": "faces/ChiTu_heart.png"
+      },
+      "LeBuSiShu_png": {
+        "1": "faces/LeBuSiShu_heart.png",
+        "4": "faces/LeBuSiShu_club.png"
+      },
+      "WuZhongShengYou_png": {
+        "1": "faces/WuZhongShengYou_heart.png"
+      },
+      "GuoHeChaiQiao_png": {
+        "1": "faces/GuoHeChaiQiao_heart.png",
+        "4": "faces/GuoHeChaiQiao_club.png"
+      },
+      "TaoYuanJieYi_png": {
+        "1": "faces/TaoYuanJieYi_heart.png"
+      },
+      "QiLinGong_png": {
+        "1": "faces/QiLinGong_heart.png"
+      },
+      "ZhuaHuangFeiDian_png": {
+        "1": "faces/ZhuaHuangFeiDian_heart.png"
+      },
+      "WuXieKeJi_png": {
+        "4": "faces/WuXieKeJi_club.png"
+      },
+      "BaGuaZhen_png": {
+        "4": "faces/BaGuaZhen_club.png"
+      },
+      "DiLu_png": {
+        "4": "faces/DiLu_club.png"
+      },
+      "NanManRuQin_png": {
+        "4": "faces/NanManRuQin_club.png"
+      },
+      "JieDaoShaRen_png": {
+        "4": "faces/JieDaoShaRen_club.png"
+      },
+      "CiXiongShuangGuJian_png": {
+        "3": "faces/CiXiongShuangGuJian_spade.png"
+      },
+      "JueYing_png": {
+        "3": "faces/JueYing_spade.png"
+      }
+    },
+    "ranks": {
+      "1": "ranks/A.png",
+      "2": "ranks/2.png",
+      "3": "ranks/3.png",
+      "4": "ranks/4.png",
+      "5": "ranks/5.png",
+      "6": "ranks/6.png",
+      "7": "ranks/7.png",
+      "8": "ranks/8.png",
+      "9": "ranks/9.png",
+      "10": "ranks/10.png",
+      "11": "ranks/J.png",
+      "12": "ranks/Q.png",
+      "13": "ranks/K.png"
+    },
+    "suits": {
+      "1": "suits/heart.png",
+      "2": "suits/diamond.png",
+      "3": "suits/spade.png",
+      "4": "suits/club.png"
+    },
+    "faceSize": [
+      93,
+      130
+    ],
+    "symbolSize": [
+      19,
+      17
+    ]
+  },
+  "originalInstalledManifestSha256": "cb4d2e13f18dd2afb8dab6ed247a70e17b1eb929d744bf9acb3117e6ca579207",
+  "sourceErrors": [],
+  "excludedCurrentTask": {
+    "cardId": "QingGangJian_png__spade",
+    "beganAt": "2026-10-21T09:53:56+00:00",
+    "stage": "generating",
+    "artifactCandidates": [
+      "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\QingGangJian_png__spade.png"
+    ]
+  }
+}

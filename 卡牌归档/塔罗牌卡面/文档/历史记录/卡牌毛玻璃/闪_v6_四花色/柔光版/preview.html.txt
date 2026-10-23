@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>闪 · 四花色柔光版</title>
+<style>
+  :root{color-scheme:dark;font:15px/1.65 system-ui,"Microsoft YaHei",sans-serif;background:#13161c;color:#d8d8dd}
+  body{max-width:1200px;margin:32px auto;padding:0 22px 50px}h1{font-size:24px;font-weight:600;margin:0 0 6px}h2{font-size:17px;font-weight:500;margin:25px 0 10px}p{margin:5px 0 18px;color:#9fa4af}a{color:#c7b18b}button,input,select{font:inherit;accent-color:#bda57e}select{padding:3px 8px;background:#242831;border:1px solid #444954;border-radius:5px}label{display:flex;align-items:center;gap:9px}output{min-width:36px;font-variant-numeric:tabular-nums}.controls{display:flex;flex-wrap:wrap;gap:16px 28px;padding:16px 0;border-block:1px solid #30343d}.singles{display:flex;flex-wrap:wrap;gap:22px}.singles figure{margin:0}.singles img{width:186px;height:260px;display:block}.singles figcaption{text-align:center;padding-top:6px}.scroll{overflow:auto;padding:8px 0 12px}.hand{position:relative;isolation:isolate}.hand img{position:absolute;width:186px;height:260px;display:block}.note{font-size:13px}details{margin-top:20px}summary{cursor:pointer}input[type=range]{width:160px}
+</style>
+<h1>闪 · 四花色柔光版</h1>
+<p>以实际 186×260 尺寸查看卡面；下方可调整叠放方式，对照边框和花纹是否抢眼。</p>
+<section class="singles" aria-label="四花色独立预览">
+  <figure><a href="大图/红桃.png"><img src="186x260/Shan_heart.png" alt="红桃闪"></a><figcaption>红桃</figcaption></figure>
+  <figure><a href="大图/方块.png"><img src="186x260/Shan_diamond.png" alt="方块闪"></a><figcaption>方块</figcaption></figure>
+  <figure><a href="大图/黑桃.png"><img src="186x260/Shan_spade.png" alt="黑桃闪"></a><figcaption>黑桃</figcaption></figure>
+  <figure><a href="大图/梅花.png"><img src="186x260/Shan_club.png" alt="梅花闪"></a><figcaption>梅花</figcaption></figure>
+</section>
+<h2>叠牌预览</h2>
+<div class="controls">
+  <label>每张露出 <input id="step" type="range" min="24" max="186" value="76"><output id="stepValue">76 px</output></label>
+  <label>张数 <input id="count" type="range" min="4" max="12" value="8"><output id="countValue">8</output></label>
+  <label>方向 <select id="direction"><option value="horizontal">横向手牌</option><option value="vertical">纵向叠放</option></select></label>
+</div>
+<h2>柔光版</h2>
+<div class="scroll"><div id="softHand" class="hand" aria-label="柔光版叠牌"></div></div>
+<details open><summary>对照 v5 原版</summary><div class="scroll"><div id="originalHand" class="hand" aria-label="v5 原版叠牌"></div></div></details>
+<p class="note">点击单张卡面可查看原始大图。页面不对卡面添加滤镜或额外光效；这是设计预览，未替换游戏素材。</p>
+<p><a href="叠牌对比.png">静态叠牌对比</a> · <a href="四花色对比.png">四花色对比</a> · <a href="README.md">素材说明</a> · <a href="提示词/红桃.txt">红桃提示词</a> · <a href="提示词/方块.txt">方块提示词</a> · <a href="提示词/黑桃.txt">黑桃提示词</a> · <a href="提示词/梅花.txt">梅花提示词</a></p>
+<script>
+  const suits = ['heart','diamond','spade','club'];
+  const labels = ['红桃','方块','黑桃','梅花'];
+  const step = document.getElementById('step');
+  const count = document.getElementById('count');
+  const direction = document.getElementById('direction');
+  function renderHand(id, base) {
+    const hand = document.getElementById(id);
+    const gap = Number(step.value), total = Number(count.value);
+    const vertical = direction.value === 'vertical';
+    hand.replaceChildren();
+    hand.style.width = `${186 + (vertical ? 0 : (total-1)*gap)}px`;
+    hand.style.height = `${260 + (vertical ? (total-1)*gap : 0)}px`;
+    for (let index=0; index<total; index++) {
+      const card = document.createElement('img');
+      card.src = `${base}/Shan_${suits[index%4]}.png`;
+      card.alt = `${labels[index%4]}闪`;
+      card.draggable = false;
+      card.style.left = `${vertical ? 0 : index*gap}px`;
+      card.style.top = `${vertical ? index*gap : 0}px`;
+      card.style.zIndex = String(index);
+      hand.append(card);
+    }
+  }
+  function render() {
+    document.getElementById('stepValue').textContent = `${step.value} px`;
+    document.getElementById('countValue').textContent = count.value;
+    renderHand('softHand','186x260');
+    renderHand('originalHand','../../闪_v5_四花色/186x260');
+  }
+  for (const control of [step,count,direction]) control.addEventListener('input',render);
+  render();
+</script>
+</html>

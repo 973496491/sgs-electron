@@ -1,0 +1,75 @@
+from pathlib import Path
+import json
+import sys
+from PIL import Image, ImageDraw, ImageFont
+
+folder = Path(__file__).resolve().parent
+base_name = sys.argv[1] if len(sys.argv) > 1 else 'base'
+rank_name = sys.argv[2] if len(sys.argv) > 2 else 'rank'
+out = folder / 'assembled'
+out.mkdir(exist_ok=True)
+resample = Image.Resampling.LANCZOS
+base = Image.open(folder / (base_name + '-native.png')).convert('RGBA').resize((186, 260), resample)
+rank = Image.open(folder / (rank_name + '-native.png')).convert('RGBA').resize((38, 34), resample)
+suit = Image.open(folder / 'suit-native.png').convert('RGBA').resize((38, 34), resample)
+for name, sprite in [('red_2', rank), ('heart', suit)]:
+    alpha = sprite.getchannel('A')
+    assert alpha.getextrema() == (0, 255), (name, alpha.getextrema())
+    assert all(alpha.getpixel(point) == 0 for point in [(0,0),(37,0),(0,33),(37,33)])
+    sprite.save(out / (name + '.png'))
+base.save(out / 'Shan_heart_base.png')
+composite = base.copy()
+composite.alpha_composite(rank, (8, 8))
+composite.alpha_composite(suit, (8, 38))
+composite.save(folder / 'composite-draft.png')
+
+sheet = Image.new('RGB', (1020, 680), '#171a20')
+draw = ImageDraw.Draw(sheet)
+font_path = 'C:/Windows/Fonts/msyh.ttc'
+font = ImageFont.truetype(font_path, 18)
+small = ImageFont.truetype(font_path, 14)
+title = ImageFont.truetype(font_path, 25)
+draw.text((24, 18), '红桃 2 · 按原生 UI 拆分', font=title, fill='#e9dfce')
+draw.text((24, 58), '底图层', font=font, fill='#d7c5a7')
+draw.text((356, 58), '独立透明图层', font=font, fill='#d7c5a7')
+draw.text((620, 58), '按坐标合成', font=font, fill='#d7c5a7')
+sheet.paste(base.resize((279, 390), resample), (24, 93))
+sheet.paste(composite.resize((372, 520), resample), (620, 93))
+draw.text((24, 491), '底图：186 × 260 px', font=small, fill='#aeb4bf')
+
+def show_sprite(sprite, x, y):
+    backdrop = Image.new('RGB', (152, 136), '#333943')
+    checks = ImageDraw.Draw(backdrop)
+    for row in range(0, 136, 12):
+        for col in range(0, 152, 12):
+            if (row//12 + col//12) % 2:
+                checks.rectangle((col, row, col+11, row+11), fill='#454b55')
+    expanded = sprite.resize((152, 136), resample)
+    backdrop.paste(expanded, (0, 0), expanded)
+    sheet.paste(backdrop, (x, y))
+
+show_sprite(rank, 356, 93)
+draw.text((356, 239), '点数 2：38 × 34 px', font=small, fill='#d8dbe2')
+draw.text((356, 262), '合成位置：(8, 8)', font=small, fill='#aeb4bf')
+if rank_name == 'rank-v2':
+    draw.text((356, 285), '图层内：左移3，上移2 px', font=small, fill='#d7c5a7')
+show_sprite(suit, 356, 315)
+draw.text((356, 461), '红桃：38 × 34 px', font=small, fill='#d8dbe2')
+draw.text((356, 484), '合成位置：(8, 38)', font=small, fill='#aeb4bf')
+
+draw.text((24, 522), '93 × 130 UI 实际尺寸', font=small, fill='#aeb4bf')
+native = base.resize((93, 130), resample)
+native.alpha_composite(rank.resize((19, 17), resample), (4, 4))
+native.alpha_composite(suit.resize((19, 17), resample), (4, 19))
+sheet.paste(native, (24, 546))
+draw.text((142, 548), 'UI：点数 (4,4)，花色 (4,19)', font=small, fill='#aeb4bf')
+draw.text((142, 575), '各 19 × 17；文件按 2 倍像素导出', font=small, fill='#aeb4bf')
+draw.text((142, 602), '棋盘格仅用于展示透明度', font=small, fill='#aeb4bf')
+draw.text((142, 629), '底图中的大红桃与右上红桃保留为装饰', font=small, fill='#aeb4bf')
+sheet.save(out / '分层预览.png')
+sheet.save(folder / 'review.jpg', quality=86)
+print(json.dumps({'base': base.size, 'rank': rank.size, 'suit': suit.size,
+                  'rankAlpha': rank.getchannel('A').getextrema(),
+                  'suitAlpha': suit.getchannel('A').getextrema(),
+                  'rankBounds': rank.getchannel('A').point(lambda v: 255 if v > 8 else 0).getbbox(),
+                  'suitBounds': suit.getchannel('A').point(lambda v: 255 if v > 8 else 0).getbbox()}, ensure_ascii=False))

@@ -1,0 +1,23 @@
+{
+  "newFile": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\文字排布样板\\02_寒冰剑_黑桃2_攻击范围2.png",
+  "newSha256": "78a81c1eb0590a4ef75c68f4ff0823904972eade373c06d379986ea9c2e66863",
+  "historicalPrompt": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\提示词\\历史\\02_寒冰箭_已废弃.txt",
+  "paths": [
+    {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\文字排布样板\\02_寒冰箭_黑桃2.png",
+      "sha256": "f064a6e69a1a7fb3a0dc6e250f2fd3625c52faa5da26c3ce6b50cf888f58b6a1"
+    },
+    {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\资料\\文字排布制作\\hanbing-review.jpg",
+      "sha256": "449e09fd98e2fbd251b92a98d442c73a07b1eac5a0711021f62167f355c57ad1"
+    },
+    {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\资料\\文字排布制作\\hanbing-ui-check.png",
+      "sha256": "9b4b80e29fb92230cc05adfeb302fe4998fe46263529c244b8413e19eaaaafa4"
+    },
+    {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\提示词\\文字排布\\02_寒冰箭_黑桃2.txt",
+      "sha256": "f469885f9898195597e568f53c8c445c03fbd14390de0303fc8c604c99e01c7b"
+    }
+  ]
+}

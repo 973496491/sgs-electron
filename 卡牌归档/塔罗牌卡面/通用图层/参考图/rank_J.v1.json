@@ -1,0 +1,20 @@
+{
+  "taskId": "rank_J",
+  "attempt": 1,
+  "tag": "[TAROT-UI:rank_J:v1]",
+  "preparedAt": "2026-10-21T07:52:23.984061+00:00",
+  "referenceSource": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\来源原图\\rank_2_accepted_native.png",
+  "reference": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\参考图\\rank_J.v1.jpg",
+    "bytes": 6094,
+    "sha256": "2521810bad4194ecabbe1fa28b74266c78df0d65a20299a31bea3e7b1706a2e8",
+    "rgbaSha256": "bbe9f426e8a274ea7b786867faf6e76534304b4a3f7a66e44556002dbdade386",
+    "size": [
+      228,
+      204
+    ],
+    "mode": "RGB",
+    "format": "JPEG"
+  },
+  "prompt": "[TAROT-UI:rank_J:v1]\nUse case: stylized-concept. Output exactly ONE standalone functional game UI sprite as a PNG with genuinely transparent alpha background.\nThe one small reference image is a MATERIAL AND STYLE reference only; its dark preview matte must NOT appear in the output.\nTransparent outside the contour and inside all holes. Clean antialiased alpha, no baked checkerboard, no white/gray/black background, no card fragment or rectangular panel.\nLandscape canvas aspect 19:17. Leave generous clear padding, keep the complete subject inside the canvas. Legible when downscaled to 19x17 UI units.\nText (verbatim): \"J\". This exact rank is the ONLY visible content. Replace the reference numeral 2 with J.\nMatch the approved numeral 2: upright classical serif, warm ivory/champagne-gold solid face, fine satin texture, restrained bevel, subtle brown edge. Similar stroke weight and serif proportions. No script, no italic, no blackletter or ornamental flourishes.\nFull glyph approximately 82% of canvas height. Keep natural width; visual center around x=42% of canvas, baseline around y=88%; a little less padding above and left than below and right.\nFor rank 10, show two clear digits 1 followed by 0, naturally spaced as one rank, complete and proportionate, with neither compression nor clipping.\nNo outer ring, medallion, plaque, rays, stars, glow, cast shadow, leaves, text other than the requested rank, extra symbols, watermark, contact sheet or mockup.\nThe first bracketed tag is metadata only; never draw it."
+}

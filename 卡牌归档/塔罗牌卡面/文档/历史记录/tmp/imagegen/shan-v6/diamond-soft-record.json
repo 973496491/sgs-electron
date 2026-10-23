@@ -1,0 +1,22 @@
+{
+  "suit": "diamond",
+  "label": "方块",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_0b1c6ba21fc1251d016ad79af856a887d09edb5cff00cf033d",
+  "generatedAt": "2026-10-20T16:47:43.147Z",
+  "reference": "Soft heart brightness reference + original v5 diamond target, 930x650 JPEG",
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "largeFile": "大图/方块.png",
+  "gameFile": "186x260/Shan_diamond.png",
+  "promptFile": "提示词/方块.txt",
+  "gameSize": [
+    186,
+    260
+  ],
+  "postprocess": "Native PNG preserved; high quality bicubic opaque 186x260 PNG; JPEG preview only",
+  "largeSha256": "29187f87bc5ccbef0fb1b110edeb39d46f1d2c9c141a8817a3b25e66996c470a",
+  "gameSha256": "15569d6c630ded561946d2691aa17d068073bbbf230e9760731a8d4ef44f82c4"
+}

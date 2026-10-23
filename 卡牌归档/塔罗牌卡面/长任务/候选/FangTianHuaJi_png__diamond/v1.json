@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "taskId": "FangTianHuaJi_png__diamond",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:FangTianHuaJi_png__diamond:v1]",
+  "status": "reviewed",
+  "savedAt": "2026-10-21T05:44:03.104638+00:00",
+  "generatedAt": "2026-10-21T05:43:52.916Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_0111c900a2de5754016ad850e532c487d0b23dde8c87eba8ab",
+  "prompt": "[TAROT-PROD:FangTianHuaJi_png__diamond:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为方块，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：方天画戟。严格2列×2行，上行“方天”、下行“画戟”，从左到右再从上到下阅读；整组居中，总宽约卡宽60%，不改成传统竖排。\n右下角框内放一个清晰的“4”徽记，黑曜石/珐琅暗底、细香槟金边，与上中主花色同材质。徽记次于主标题，底部枝叶局部让位，数字/汉字无遮挡；只写该字符，不加“攻击范围”文案。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“方天画戟”与右下“4”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。",
+  "revisedPrompt": "[TAROT-PROD:FangTianHuaJi_png__diamond:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为方块，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：方天画戟。严格2列×2行，上行“方天”、下行“画戟”，从左到右再从上到下阅读；整组居中，总宽约卡宽60%，不改成传统竖排。\n右下角框内放一个清晰的“4”徽记，黑曜石/珐琅暗底、细香槟金边，与上中主花色同材质。徽记次于主标题，底部枝叶局部让位，数字/汉字无遮挡；只写该字符，不加“攻击范围”文案。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“方天画戟”与右下“4”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。",
+  "sourceCard": {
+    "id": "FangTianHuaJi_png__diamond",
+    "resourceKey": "FangTianHuaJi_png",
+    "suitValue": 2,
+    "suit": "diamond",
+    "suitName": "方块",
+    "originalName": "方天画戟",
+    "originalNames": [
+      "方天画戟"
+    ],
+    "displayName": "方天画戟",
+    "layout": "2x2-left-to-right-row-major",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      12,
+      1133,
+      3012,
+      11012,
+      20211,
+      20546,
+      20547,
+      20548,
+      20549,
+      20550,
+      31146,
+      60211,
+      60999
+    ],
+    "representativeCardId": 12,
+    "representativeNumber": 12,
+    "representativeRank": "Q",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 11
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 12,
+        "rank": "Q",
+        "cardIds": [
+          12,
+          1133,
+          3012,
+          11012,
+          20211,
+          20546,
+          20547,
+          20548,
+          20549,
+          20550,
+          31146,
+          60211,
+          60999
+        ]
+      }
+    ],
+    "type": 3,
+    "subType": 1,
+    "elementalName": null,
+    "weaponRange": 4,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": "representative.attRange / short field h",
+    "weaponRangeVariants": [
+      {
+        "range": 4,
+        "cardIds": [
+          12,
+          1133,
+          3012,
+          11012,
+          20211,
+          20546,
+          20547,
+          20548,
+          20549,
+          20550,
+          31146,
+          60211,
+          60999
+        ]
+      }
+    ],
+    "rangeMismatchCardIds": [],
+    "badge": "4",
+    "badgePlacement": "lower-right",
+    "sharedFrameGroupId": "974_540_186_260",
+    "sharedFrameNames": [
+      "FangTianHuaJi_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/FangTianHuaJi_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 7
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_0111c900a2de5754016ad850e532c487d0b23dde8c87eba8ab",
+    "timestamp": "2026-10-21T05:43:52.916Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T13-42-09-01a15cfb-3421-7e20-9a17-2f94367bf8b0.jsonl",
+    "line": 52
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\FangTianHuaJi_png__diamond\\v1.png",
+    "bytes": 2195375,
+    "sha256": "42a33005eeff7c69fec0051764fd95ed17caedec87795d5b89fa425ff992a92f",
+    "rgbaSha256": "67593fe49261a76917efc833b215659b938d04c1f3b4a3de11567eabeadcf419",
+    "size": [
+      1061,
+      1483
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\FangTianHuaJi_png__diamond\\v1_186x260.png",
+    "bytes": 106873,
+    "sha256": "fadeb2e639844bbb7e1d470497481927d6c85306e0d3cec58fc7510b44c9e775",
+    "rgbaSha256": "40d3a630cc3f155b4259e4c0edb0b2fd5d47959be30c1c4edf255ca3e01ec5bb",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "nativeMode": "RGB",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 7.975695879469669e-05,
+  "reviews": [
+    {
+      "at": "2026-10-21T05:44:48.269670+00:00",
+      "result": "accepted-offline",
+      "note": "已实际查看465×650 JPEG及93×130 UI检查图：标题准确为简体方天画戟，2列2行上方天、下画戟，按从左到右再从上到下阅读；四字完整可辨且居中，与上下装饰分隔。上中主花色和右上装饰花色均为方块；右下黑曜石暗底细金边菱形徽记仅写4，位于框内，无枝叶穿字。左上186×260基准x8..46、y8..72自然暗底留白，无点数、功能花色或整组内侧悬饰，仅最外卡框保留。卡框四边完整，枝叶与底纹沿用参考红黑金色柔光层级，未新增文字或刺眼外发光。186×260 RGBA与原始PNG、完整提示词、生成ID及SHA已保存；仅离线素材验收通过，等待父流程提交，不代表游戏内效果。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": {
+    "native": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\FangTianHuaJi_png__diamond.png",
+      "bytes": 2195375,
+      "sha256": "42a33005eeff7c69fec0051764fd95ed17caedec87795d5b89fa425ff992a92f",
+      "rgbaSha256": "67593fe49261a76917efc833b215659b938d04c1f3b4a3de11567eabeadcf419",
+      "size": [
+        1061,
+        1483
+      ],
+      "mode": "RGB",
+      "format": "PNG"
+    },
+    "export": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\FangTianHuaJi_png__diamond.png",
+      "bytes": 106873,
+      "sha256": "fadeb2e639844bbb7e1d470497481927d6c85306e0d3cec58fc7510b44c9e775",
+      "rgbaSha256": "40d3a630cc3f155b4259e4c0edb0b2fd5d47959be30c1c4edf255ca3e01ec5bb",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "format": "PNG"
+    }
+  },
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "awaiting-parent-commit"
+}

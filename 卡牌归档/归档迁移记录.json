@@ -1,0 +1,2148 @@
+{
+  "createdAt": "2026-10-20T17:45:28.951301+00:00",
+  "workspace": "C:\\Users\\97349\\Downloads\\electron",
+  "archive": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档",
+  "status": "complete",
+  "moves": [
+    {
+      "source": "C:\\Users\\97349\\Downloads\\electron\\cards.png",
+      "target": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\cards.png"
+    },
+    {
+      "source": "C:\\Users\\97349\\Downloads\\electron\\卡牌拆分",
+      "target": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\卡牌拆分"
+    },
+    {
+      "source": "C:\\Users\\97349\\Downloads\\electron\\塔罗牌卡面",
+      "target": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面"
+    },
+    {
+      "source": "C:\\Users\\97349\\Downloads\\electron\\tmp\\card-face-inspection",
+      "target": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\资料\\点数花色调查"
+    },
+    {
+      "source": "C:\\Users\\97349\\Downloads\\electron\\tmp\\tarot-asset-cleanup",
+      "target": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\资料\\上一轮整理脚本"
+    }
+  ],
+  "files": [
+    {
+      "source": "cards.png",
+      "target": "cards.png",
+      "sha256Before": "14e786fd774fc5a9e1de952ad6a042ec5b87220bf434bc2d8410584eae01c3df",
+      "bytesBefore": 9160999,
+      "sha256After": "14e786fd774fc5a9e1de952ad6a042ec5b87220bf434bc2d8410584eae01c3df",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/atlas_tool.py",
+      "target": "卡牌拆分/atlas_tool.py",
+      "sha256Before": "0bab9ea8078b62f40c9b4e1682cf3abce07140d20590e41c116376226f6876b4",
+      "bytesBefore": 12822,
+      "sha256After": "0bab9ea8078b62f40c9b4e1682cf3abce07140d20590e41c116376226f6876b4",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/card-index.csv",
+      "target": "卡牌拆分/card-index.csv",
+      "sha256Before": "cbe83345be3ea6015a6768c1aa4599783b490fbd73fb225898c6e12c06b86a60",
+      "bytesBefore": 20437,
+      "sha256After": "cbe83345be3ea6015a6768c1aa4599783b490fbd73fb225898c6e12c06b86a60",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/AoZhanShaShan_png.png",
+      "target": "卡牌拆分/cards/AoZhanShaShan_png.png",
+      "sha256Before": "e28dbe0325e2a33f106b99655bb48cfddfdb5a718ea801829a3f91b141da91be",
+      "bytesBefore": 92863,
+      "sha256After": "e28dbe0325e2a33f106b99655bb48cfddfdb5a718ea801829a3f91b141da91be",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/BaGuaZhen_png.png",
+      "target": "卡牌拆分/cards/BaGuaZhen_png.png",
+      "sha256Before": "bbfb2396aaf662985dcf9d38870e03e3fdea0ef897838abe24b600c3480576fa",
+      "bytesBefore": 81347,
+      "sha256After": "bbfb2396aaf662985dcf9d38870e03e3fdea0ef897838abe24b600c3480576fa",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/BaiBiDao_png.png",
+      "target": "卡牌拆分/cards/BaiBiDao_png.png",
+      "sha256Before": "8cb8ca634eea7ad873b752f5e12a1dbd47c5f09514a39ca814ee7977da2ebe29",
+      "bytesBefore": 75307,
+      "sha256After": "8cb8ca634eea7ad873b752f5e12a1dbd47c5f09514a39ca814ee7977da2ebe29",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/BaiYinShiZi_png.png",
+      "target": "卡牌拆分/cards/BaiYinShiZi_png.png",
+      "sha256Before": "ea3153dbbe90ac340a13fc51988a74e2249f9666559f945fb1657a91a45bea03",
+      "bytesBefore": 82824,
+      "sha256After": "ea3153dbbe90ac340a13fc51988a74e2249f9666559f945fb1657a91a45bea03",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/BaZhiJing_png.png",
+      "target": "卡牌拆分/cards/BaZhiJing_png.png",
+      "sha256Before": "9c6f257852dc9fefdd3fc6b7f302d110aa91504b0d278af4f08c01d71a3c9d66",
+      "bytesBefore": 74883,
+      "sha256After": "9c6f257852dc9fefdd3fc6b7f302d110aa91504b0d278af4f08c01d71a3c9d66",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/BingLiangCunDuan_png.png",
+      "target": "卡牌拆分/cards/BingLiangCunDuan_png.png",
+      "sha256Before": "272b98d73676e87bfb55bceb8dc7de94ff8ab95b9b1d075707db31238da233c2",
+      "bytesBefore": 84892,
+      "sha256After": "272b98d73676e87bfb55bceb8dc7de94ff8ab95b9b1d075707db31238da233c2",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/BingSha_png.png",
+      "target": "卡牌拆分/cards/BingSha_png.png",
+      "sha256Before": "8150d58b40dcccb922278b8809ee8d3c30615d27c5689bf623739a4aadb2fdec",
+      "bytesBefore": 87620,
+      "sha256After": "8150d58b40dcccb922278b8809ee8d3c30615d27c5689bf623739a4aadb2fdec",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/BinTieShuangJi_png.png",
+      "target": "卡牌拆分/cards/BinTieShuangJi_png.png",
+      "sha256Before": "8ae65ad57fbeb8c6266714043a97af4b71eaeb23768cb70a15549431380f7479",
+      "bytesBefore": 88167,
+      "sha256After": "8ae65ad57fbeb8c6266714043a97af4b71eaeb23768cb70a15549431380f7479",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/CadjArmor_png.png",
+      "target": "卡牌拆分/cards/CadjArmor_png.png",
+      "sha256Before": "2161741c2e9ea8b40aad465c5aa8cad925c89a21ff6d1c7c966dd7bfce62adbd",
+      "bytesBefore": 90036,
+      "sha256After": "2161741c2e9ea8b40aad465c5aa8cad925c89a21ff6d1c7c966dd7bfce62adbd",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/CadjJiaMa_png.png",
+      "target": "卡牌拆分/cards/CadjJiaMa_png.png",
+      "sha256Before": "a844b9f5e34e05032d93c6be70039e785bdbe50ce43217969683e569033c6ec3",
+      "bytesBefore": 91897,
+      "sha256After": "a844b9f5e34e05032d93c6be70039e785bdbe50ce43217969683e569033c6ec3",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/CadjJianMa_png.png",
+      "target": "卡牌拆分/cards/CadjJianMa_png.png",
+      "sha256Before": "e013f9c924b22b4419bbc51e2a8694ff15e8374ffe8dbfbe967feeaad70f8f59",
+      "bytesBefore": 91515,
+      "sha256After": "e013f9c924b22b4419bbc51e2a8694ff15e8374ffe8dbfbe967feeaad70f8f59",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/CadjTreasure_png.png",
+      "target": "卡牌拆分/cards/CadjTreasure_png.png",
+      "sha256Before": "4bc14ffbca3045cb721bd55b16f3b4261dff9eea3e8693118a17fe244f53bc07",
+      "bytesBefore": 90129,
+      "sha256After": "4bc14ffbca3045cb721bd55b16f3b4261dff9eea3e8693118a17fe244f53bc07",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/CadjWeapon_png.png",
+      "target": "卡牌拆分/cards/CadjWeapon_png.png",
+      "sha256Before": "119f6052a1e7679753579fa1daae9c14c4459dc0e98c3cc63e75b922fcd367b6",
+      "bytesBefore": 93206,
+      "sha256After": "119f6052a1e7679753579fa1daae9c14c4459dc0e98c3cc63e75b922fcd367b6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ChiLing_png.png",
+      "target": "卡牌拆分/cards/ChiLing_png.png",
+      "sha256Before": "a714f68eea8a18a9d3a1d10ed11b49d0ff4f3a1f49d473b5f8266c17bc438ea6",
+      "bytesBefore": 82656,
+      "sha256After": "a714f68eea8a18a9d3a1d10ed11b49d0ff4f3a1f49d473b5f8266c17bc438ea6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ChiTu_png.png",
+      "target": "卡牌拆分/cards/ChiTu_png.png",
+      "sha256Before": "ea49b2399167ab80e8d88e767ea676cd136d5d6681523f98b747a974877c257c",
+      "bytesBefore": 80510,
+      "sha256After": "ea49b2399167ab80e8d88e767ea676cd136d5d6681523f98b747a974877c257c",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ChiXueRen_0_png.png",
+      "target": "卡牌拆分/cards/ChiXueRen_0_png.png",
+      "sha256Before": "e5bed2c0d815fd456ceea8fc2a7d58a56d61449cecb9a674cbe08da74955a493",
+      "bytesBefore": 90218,
+      "sha256After": "e5bed2c0d815fd456ceea8fc2a7d58a56d61449cecb9a674cbe08da74955a493",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ChiXueRen_4_png.png",
+      "target": "卡牌拆分/cards/ChiXueRen_4_png.png",
+      "sha256Before": "26953beefedbc94836d99745b40d5744577c25881b1ef20d07e8621df9e2ee1f",
+      "bytesBefore": 89874,
+      "sha256After": "26953beefedbc94836d99745b40d5744577c25881b1ef20d07e8621df9e2ee1f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ChuQiBuYi_png.png",
+      "target": "卡牌拆分/cards/ChuQiBuYi_png.png",
+      "sha256Before": "38cb3236a4f0d88e4797bb6492c8092ea27cafc62b78106941612ed7562aa4a0",
+      "bytesBefore": 81505,
+      "sha256After": "38cb3236a4f0d88e4797bb6492c8092ea27cafc62b78106941612ed7562aa4a0",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/CiXiongShuangGuJian_png.png",
+      "target": "卡牌拆分/cards/CiXiongShuangGuJian_png.png",
+      "sha256Before": "7f0acf021c6385e5e2396dce4e4fc2fd93aa14c49df4b8a6ed0cb33e162d839c",
+      "bytesBefore": 82254,
+      "sha256After": "7f0acf021c6385e5e2396dce4e4fc2fd93aa14c49df4b8a6ed0cb33e162d839c",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/DangTongFaYi_png.png",
+      "target": "卡牌拆分/cards/DangTongFaYi_png.png",
+      "sha256Before": "089642ffd8121e89a26e0cb81844742d1527334d1a1b55fe276fe8340a19f747",
+      "bytesBefore": 85397,
+      "sha256After": "089642ffd8121e89a26e0cb81844742d1527334d1a1b55fe276fe8340a19f747",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/DaWan_png.png",
+      "target": "卡牌拆分/cards/DaWan_png.png",
+      "sha256Before": "c12c1f99c249c4d9744a448202541c3100c34c0d0f483feba957aab323e9045e",
+      "bytesBefore": 84433,
+      "sha256After": "c12c1f99c249c4d9744a448202541c3100c34c0d0f483feba957aab323e9045e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/DiLu_png.png",
+      "target": "卡牌拆分/cards/DiLu_png.png",
+      "sha256Before": "6f7d678993a6fefcb9ba0de286641d9bb9625ddad6f555c3138b63f33239560a",
+      "bytesBefore": 78188,
+      "sha256After": "6f7d678993a6fefcb9ba0de286641d9bb9625ddad6f555c3138b63f33239560a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/DJJ_Zhao_png.png",
+      "target": "卡牌拆分/cards/DJJ_Zhao_png.png",
+      "sha256Before": "da36fb294df51de1cf15bfa07b124867b3ffe04e28f71c664c46b2e5d1b9f375",
+      "bytesBefore": 32956,
+      "sha256After": "da36fb294df51de1cf15bfa07b124867b3ffe04e28f71c664c46b2e5d1b9f375",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/DongZhuXianJi_png.png",
+      "target": "卡牌拆分/cards/DongZhuXianJi_png.png",
+      "sha256Before": "e2cfe15ba16c515dbc0a1de0e14b0e81a3c6657a9f085d68d668b44d1f5aba3f",
+      "bytesBefore": 79653,
+      "sha256After": "e2cfe15ba16c515dbc0a1de0e14b0e81a3c6657a9f085d68d668b44d1f5aba3f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/FangTianHuaJi_png.png",
+      "target": "卡牌拆分/cards/FangTianHuaJi_png.png",
+      "sha256Before": "f13a0b2853f92843fdb57c88b74423532c837ef6625f1f621d01e86ee77ad319",
+      "bytesBefore": 82263,
+      "sha256After": "f13a0b2853f92843fdb57c88b74423532c837ef6625f1f621d01e86ee77ad319",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/FeiLunZhanYu_png.png",
+      "target": "卡牌拆分/cards/FeiLunZhanYu_png.png",
+      "sha256Before": "a40a78844694e4be51472d45463ba6d1aa1a6fb2dab017540880b0f9ca0ff3fa",
+      "bytesBefore": 80283,
+      "sha256After": "a40a78844694e4be51472d45463ba6d1aa1a6fb2dab017540880b0f9ca0ff3fa",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GouXiang_png.png",
+      "target": "卡牌拆分/cards/GouXiang_png.png",
+      "sha256Before": "74021e1585d3cf11b1c49aca646cd539f095f3f7520a8fc9076640fd256ac3c7",
+      "bytesBefore": 65399,
+      "sha256After": "74021e1585d3cf11b1c49aca646cd539f095f3f7520a8fc9076640fd256ac3c7",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GuanShiFu_png.png",
+      "target": "卡牌拆分/cards/GuanShiFu_png.png",
+      "sha256Before": "14bae88d63ee8dfbb5223fcc32b7fe1fcac4f4c850626a9541da6319a1312806",
+      "bytesBefore": 81381,
+      "sha256After": "14bae88d63ee8dfbb5223fcc32b7fe1fcac4f4c850626a9541da6319a1312806",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GuDingDao_png.png",
+      "target": "卡牌拆分/cards/GuDingDao_png.png",
+      "sha256Before": "e8e09e898e82ca377b147d7c8bb4b26807e158d8a4783cc92cf5cb88646b1851",
+      "bytesBefore": 77288,
+      "sha256After": "e8e09e898e82ca377b147d7c8bb4b26807e158d8a4783cc92cf5cb88646b1851",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GuiLongZhanYueDao_png.png",
+      "target": "卡牌拆分/cards/GuiLongZhanYueDao_png.png",
+      "sha256Before": "532682f6ebd27c4711b12fd848c6ecc76c9a782e353933d8158af92610412899",
+      "bytesBefore": 76979,
+      "sha256After": "532682f6ebd27c4711b12fd848c6ecc76c9a782e353933d8158af92610412899",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GuoHeChaiQiao_png.png",
+      "target": "卡牌拆分/cards/GuoHeChaiQiao_png.png",
+      "sha256Before": "dcc058cf7e2479cc19c61ba45bf79eeb843dff9b699f503b549fa2451cb73d3f",
+      "bytesBefore": 87702,
+      "sha256After": "dcc058cf7e2479cc19c61ba45bf79eeb843dff9b699f503b549fa2451cb73d3f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GuoZhanXianQu_png.png",
+      "target": "卡牌拆分/cards/GuoZhanXianQu_png.png",
+      "sha256Before": "74a4a3ca5cf0965381f1119f72802d209b17732b1f8f557bf444f095350d2917",
+      "bytesBefore": 78829,
+      "sha256After": "74a4a3ca5cf0965381f1119f72802d209b17732b1f8f557bf444f095350d2917",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GuoZhanYiBoYunTian_png.png",
+      "target": "卡牌拆分/cards/GuoZhanYiBoYunTian_png.png",
+      "sha256Before": "8ec2779789911945f88ae08ddbf7dd32c4a8c2c4fcab39e4a0f978460ed01122",
+      "bytesBefore": 76387,
+      "sha256After": "8ec2779789911945f88ae08ddbf7dd32c4a8c2c4fcab39e4a0f978460ed01122",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GuoZhanYinYangYu_png.png",
+      "target": "卡牌拆分/cards/GuoZhanYinYangYu_png.png",
+      "sha256Before": "3dbd3ea19015a85738ab0ea398848f789f08d424598052204f900040ceb0ebd8",
+      "bytesBefore": 76814,
+      "sha256After": "3dbd3ea19015a85738ab0ea398848f789f08d424598052204f900040ceb0ebd8",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/GuoZhanZhuLianBiHe_png.png",
+      "target": "卡牌拆分/cards/GuoZhanZhuLianBiHe_png.png",
+      "sha256Before": "52a2b2980a11b74ce94d33e8501b43e97b638be2f907448a47051d8b48f8c965",
+      "bytesBefore": 82330,
+      "sha256After": "52a2b2980a11b74ce94d33e8501b43e97b638be2f907448a47051d8b48f8c965",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/HanBingJian_png.png",
+      "target": "卡牌拆分/cards/HanBingJian_png.png",
+      "sha256Before": "215f384d3d5d91494debc218028361e64c3b67329b2952eafe0cb78fa5f2abeb",
+      "bytesBefore": 80934,
+      "sha256After": "215f384d3d5d91494debc218028361e64c3b67329b2952eafe0cb78fa5f2abeb",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/HuaLiu_png.png",
+      "target": "卡牌拆分/cards/HuaLiu_png.png",
+      "sha256Before": "6cc0b57a85f11ad73d7247151d5a584f0bfc812552fa6719f6bd7c58823288bc",
+      "bytesBefore": 83964,
+      "sha256After": "6cc0b57a85f11ad73d7247151d5a584f0bfc812552fa6719f6bd7c58823288bc",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/HunTianYi_png.png",
+      "target": "卡牌拆分/cards/HunTianYi_png.png",
+      "sha256Before": "a7d72e5048e29a5a1b7634da3cd929c43b62a5453a8b0bda5afc2a7979a37cb6",
+      "bytesBefore": 85714,
+      "sha256After": "a7d72e5048e29a5a1b7634da3cd929c43b62a5453a8b0bda5afc2a7979a37cb6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/HuoGong_png.png",
+      "target": "卡牌拆分/cards/HuoGong_png.png",
+      "sha256Before": "7c3e3088bed961e3dc2ca247aa64475ffa385932d1c3dd26ef049062c0686932",
+      "bytesBefore": 86093,
+      "sha256After": "7c3e3088bed961e3dc2ca247aa64475ffa385932d1c3dd26ef049062c0686932",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/HuoSha_png.png",
+      "target": "卡牌拆分/cards/HuoSha_png.png",
+      "sha256Before": "0a0d1a0a42eac7136b6c87f9ea9c6deb04ec0547f691429c1e45f643f0a24653",
+      "bytesBefore": 87475,
+      "sha256After": "0a0d1a0a42eac7136b6c87f9ea9c6deb04ec0547f691429c1e45f643f0a24653",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/HuXinJing_png.png",
+      "target": "卡牌拆分/cards/HuXinJing_png.png",
+      "sha256Before": "5770438169ce2d7bddb1e75cbc3660bc1e7bda707dac7b0cc998df8c191cc09d",
+      "bytesBefore": 79533,
+      "sha256After": "5770438169ce2d7bddb1e75cbc3660bc1e7bda707dac7b0cc998df8c191cc09d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/JieDaoShaRen_png.png",
+      "target": "卡牌拆分/cards/JieDaoShaRen_png.png",
+      "sha256Before": "fbeac47f15d652d7fd0c00d953d2ae27cf2a7910dd951cd903fa829dd836b34b",
+      "bytesBefore": 94307,
+      "sha256After": "fbeac47f15d652d7fd0c00d953d2ae27cf2a7910dd951cd903fa829dd836b34b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/JinHuanXianLinJia_png.png",
+      "target": "卡牌拆分/cards/JinHuanXianLinJia_png.png",
+      "sha256Before": "18a9527086db869956e0d061b0d297825d5c14e9f4149cbfcea49e81ad0dcdb7",
+      "bytesBefore": 79755,
+      "sha256After": "18a9527086db869956e0d061b0d297825d5c14e9f4149cbfcea49e81ad0dcdb7",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/JinShu_png.png",
+      "target": "卡牌拆分/cards/JinShu_png.png",
+      "sha256Before": "ac9e1a98c633a1bad794265e64b53a4418eadf5c84bc87ef9b18c27ddd853f16",
+      "bytesBefore": 78135,
+      "sha256After": "ac9e1a98c633a1bad794265e64b53a4418eadf5c84bc87ef9b18c27ddd853f16",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/Jiu_png.png",
+      "target": "卡牌拆分/cards/Jiu_png.png",
+      "sha256Before": "1e7c29e2ed72249d8e3829986e947cc3a685f5f027d4fbf7c93081eecf502683",
+      "bytesBefore": 87449,
+      "sha256After": "1e7c29e2ed72249d8e3829986e947cc3a685f5f027d4fbf7c93081eecf502683",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/JiuJieBian_png.png",
+      "target": "卡牌拆分/cards/JiuJieBian_png.png",
+      "sha256Before": "72f6b632e10dd882c4567cccdbb2147ab7377c080e1552a5d87824ba0811069b",
+      "bytesBefore": 84187,
+      "sha256After": "72f6b632e10dd882c4567cccdbb2147ab7377c080e1552a5d87824ba0811069b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/JueChenJinGe_png.png",
+      "target": "卡牌拆分/cards/JueChenJinGe_png.png",
+      "sha256Before": "31230643ee4ff3bfd7bb216145306aa087bf91021aa8a7daf849e78e9f38bd65",
+      "bytesBefore": 86879,
+      "sha256After": "31230643ee4ff3bfd7bb216145306aa087bf91021aa8a7daf849e78e9f38bd65",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/JueDou_png.png",
+      "target": "卡牌拆分/cards/JueDou_png.png",
+      "sha256Before": "f493f0b21922c8707dd649884d76510d0f40501b7d3fcee343d7ae34f21f6bcd",
+      "bytesBefore": 87767,
+      "sha256After": "f493f0b21922c8707dd649884d76510d0f40501b7d3fcee343d7ae34f21f6bcd",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/JueYing_png.png",
+      "target": "卡牌拆分/cards/JueYing_png.png",
+      "sha256Before": "bd8ad2eb1395548ff89867be73995f00b7bca9d84114fd98b32f0949fb54c62e",
+      "bytesBefore": 81246,
+      "sha256After": "bd8ad2eb1395548ff89867be73995f00b7bca9d84114fd98b32f0949fb54c62e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/LangGuZhiJi_png.png",
+      "target": "卡牌拆分/cards/LangGuZhiJi_png.png",
+      "sha256Before": "9f04cedeafd81c7dcc894a35eed259b4e29e896ca2e300227015a51dcab39307",
+      "bytesBefore": 87898,
+      "sha256After": "9f04cedeafd81c7dcc894a35eed259b4e29e896ca2e300227015a51dcab39307",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/LeBuSiShu_png.png",
+      "target": "卡牌拆分/cards/LeBuSiShu_png.png",
+      "sha256Before": "6cc33edf836239081cb864fade193dcb5784f8fdeb8eaf2524c2666d3566ae51",
+      "bytesBefore": 94585,
+      "sha256After": "6cc33edf836239081cb864fade193dcb5784f8fdeb8eaf2524c2666d3566ae51",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/LeiQie_png.png",
+      "target": "卡牌拆分/cards/LeiQie_png.png",
+      "sha256Before": "7bc63c079390a4db8a6fb6153b3f6e76b62e8d67ca977f261c1f0f4af89d26ec",
+      "bytesBefore": 66281,
+      "sha256After": "7bc63c079390a4db8a6fb6153b3f6e76b62e8d67ca977f261c1f0f4af89d26ec",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/LeiSha_png.png",
+      "target": "卡牌拆分/cards/LeiSha_png.png",
+      "sha256Before": "bc92053c7194869ca4bf86a4e26853b79e54decc240a31383a2a535043165faa",
+      "bytesBefore": 87343,
+      "sha256After": "bc92053c7194869ca4bf86a4e26853b79e54decc240a31383a2a535043165faa",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/LianNu_png.png",
+      "target": "卡牌拆分/cards/LianNu_png.png",
+      "sha256Before": "fb0eddcfcf9df2031e9aa99f33b0490128ffbd4635e04ed9d23936b283c3e3b6",
+      "bytesBefore": 71433,
+      "sha256After": "fb0eddcfcf9df2031e9aa99f33b0490128ffbd4635e04ed9d23936b283c3e3b6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/LiaoYuanZhiHuo_png.png",
+      "target": "卡牌拆分/cards/LiaoYuanZhiHuo_png.png",
+      "sha256Before": "fc674b9ce9f7b2a79de6deab408ada8f4f5e35c098ae14611a378c29359174cc",
+      "bytesBefore": 91874,
+      "sha256After": "fc674b9ce9f7b2a79de6deab408ada8f4f5e35c098ae14611a378c29359174cc",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/LiuXingChui_png.png",
+      "target": "卡牌拆分/cards/LiuXingChui_png.png",
+      "sha256Before": "051fe0d6439cb743a34fa52059e6e2b0285d0a39fb0014901de99b873bb01f78",
+      "bytesBefore": 86885,
+      "sha256After": "051fe0d6439cb743a34fa52059e6e2b0285d0a39fb0014901de99b873bb01f78",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/MuNiuLiuMa_png.png",
+      "target": "卡牌拆分/cards/MuNiuLiuMa_png.png",
+      "sha256Before": "6c1f45b9e419d81622e95fedf384917418de391d81be84dcdad1c65faa2921c9",
+      "bytesBefore": 86352,
+      "sha256After": "6c1f45b9e419d81622e95fedf384917418de391d81be84dcdad1c65faa2921c9",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/NanManRuQin_png.png",
+      "target": "卡牌拆分/cards/NanManRuQin_png.png",
+      "sha256Before": "5c82bd201aa1d9dc2254202497a76e3d2c584dc58f0d7755ced7fafb0e8e8319",
+      "bytesBefore": 84133,
+      "sha256After": "5c82bd201aa1d9dc2254202497a76e3d2c584dc58f0d7755ced7fafb0e8e8319",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/PiLiChe_png.png",
+      "target": "卡牌拆分/cards/PiLiChe_png.png",
+      "sha256Before": "fcf5a972d22386b02f72495647c2cc79761c6f491fcde0669ec1e0973be67294",
+      "bytesBefore": 86367,
+      "sha256After": "fcf5a972d22386b02f72495647c2cc79761c6f491fcde0669ec1e0973be67294",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/PingAnYuShou_png.png",
+      "target": "卡牌拆分/cards/PingAnYuShou_png.png",
+      "sha256Before": "3f5a2bd51ae8a3b4c684bdb5c5af5aa209290e1749d0f16d95ad7efb39aad996",
+      "bytesBefore": 71661,
+      "sha256After": "3f5a2bd51ae8a3b4c684bdb5c5af5aa209290e1749d0f16d95ad7efb39aad996",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/QiLinGong_png.png",
+      "target": "卡牌拆分/cards/QiLinGong_png.png",
+      "sha256Before": "6be95fb75c2803d930d4feaaf4358acfd992015a9363b48a549a6ca005abd650",
+      "bytesBefore": 81183,
+      "sha256After": "6be95fb75c2803d930d4feaaf4358acfd992015a9363b48a549a6ca005abd650",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/QingGangJian_png.png",
+      "target": "卡牌拆分/cards/QingGangJian_png.png",
+      "sha256Before": "4b3519b8018c600933d9c2bba7fc1f4dfa74c44d55a4ff4a039955b83a1386fd",
+      "bytesBefore": 78664,
+      "sha256After": "4b3519b8018c600933d9c2bba7fc1f4dfa74c44d55a4ff4a039955b83a1386fd",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/QingLongYanYueDao_png.png",
+      "target": "卡牌拆分/cards/QingLongYanYueDao_png.png",
+      "sha256Before": "77151d2d6c805e5dae391f10cf096e1e5bb6798cdea0c41ea4ccd20f15c4feec",
+      "bytesBefore": 80953,
+      "sha256After": "77151d2d6c805e5dae391f10cf096e1e5bb6798cdea0c41ea4ccd20f15c4feec",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/QiongShu_png.png",
+      "target": "卡牌拆分/cards/QiongShu_png.png",
+      "sha256Before": "df855b7683df93072c8ca6be6030fa8cd7b912d66fc1b77c58e30c8cc55e499f",
+      "bytesBefore": 78620,
+      "sha256After": "df855b7683df93072c8ca6be6030fa8cd7b912d66fc1b77c58e30c8cc55e499f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/RenWangDun_png.png",
+      "target": "卡牌拆分/cards/RenWangDun_png.png",
+      "sha256Before": "5707e82813e4b5d8b5f8b6bded13ea3d6de111db164bcd74df962af91b1b3430",
+      "bytesBefore": 84362,
+      "sha256After": "5707e82813e4b5d8b5f8b6bded13ea3d6de111db164bcd74df962af91b1b3430",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/SanJianLiangRenDao_png.png",
+      "target": "卡牌拆分/cards/SanJianLiangRenDao_png.png",
+      "sha256Before": "a6c37a191838efdd9048bbbe7d4ce94282af259b2d9a6abde0df410fab950cba",
+      "bytesBefore": 81551,
+      "sha256After": "a6c37a191838efdd9048bbbe7d4ce94282af259b2d9a6abde0df410fab950cba",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/SanLve_png.png",
+      "target": "卡牌拆分/cards/SanLve_png.png",
+      "sha256Before": "3cb665bd3801085e12adda5d40c23755975c4f4e24af99ac7a99fc7607e319a4",
+      "bytesBefore": 74574,
+      "sha256After": "3cb665bd3801085e12adda5d40c23755975c4f4e24af99ac7a99fc7607e319a4",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/Sha_png.png",
+      "target": "卡牌拆分/cards/Sha_png.png",
+      "sha256Before": "8b972b006262c571e2fb9999bc994bf3200b0af902a41d19a411729ea36db6f6",
+      "bytesBefore": 85908,
+      "sha256After": "8b972b006262c571e2fb9999bc994bf3200b0af902a41d19a411729ea36db6f6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/Shan_png.png",
+      "target": "卡牌拆分/cards/Shan_png.png",
+      "sha256Before": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a",
+      "bytesBefore": 91818,
+      "sha256After": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ShanDian_png.png",
+      "target": "卡牌拆分/cards/ShanDian_png.png",
+      "sha256Before": "38672615c5bd55b15fd59d63a17b13e2ed4808558c56154c1ad8acfa1c65c994",
+      "bytesBefore": 71351,
+      "sha256After": "38672615c5bd55b15fd59d63a17b13e2ed4808558c56154c1ad8acfa1c65c994",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ShanShan_png.png",
+      "target": "卡牌拆分/cards/ShanShan_png.png",
+      "sha256Before": "6b4ae7b6bf6895accf5dd9bef39c3b5bcc3630044a7d84e11d3a7ca5565490d5",
+      "bytesBefore": 101240,
+      "sha256After": "6b4ae7b6bf6895accf5dd9bef39c3b5bcc3630044a7d84e11d3a7ca5565490d5",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ShiQuanJian_png.png",
+      "target": "卡牌拆分/cards/ShiQuanJian_png.png",
+      "sha256Before": "61cd774ab40b4ad50929a5ca61b84d4b319fe6a93c417de26c7b51af6b7f32b0",
+      "bytesBefore": 84237,
+      "sha256After": "61cd774ab40b4ad50929a5ca61b84d4b319fe6a93c417de26c7b51af6b7f32b0",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ShuiYanQiJun2_png.png",
+      "target": "卡牌拆分/cards/ShuiYanQiJun2_png.png",
+      "sha256Before": "d10b875b0be4fe07e469d25158087e37beca6631b51cfe2c98e586bc6bd0c135",
+      "bytesBefore": 90129,
+      "sha256After": "d10b875b0be4fe07e469d25158087e37beca6631b51cfe2c98e586bc6bd0c135",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ShuiYanQiJun_png.png",
+      "target": "卡牌拆分/cards/ShuiYanQiJun_png.png",
+      "sha256Before": "d10b875b0be4fe07e469d25158087e37beca6631b51cfe2c98e586bc6bd0c135",
+      "bytesBefore": 90129,
+      "sha256After": "d10b875b0be4fe07e469d25158087e37beca6631b51cfe2c98e586bc6bd0c135",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ShunShouQianYang_png.png",
+      "target": "卡牌拆分/cards/ShunShouQianYang_png.png",
+      "sha256Before": "f484a7f18b6da0022d72d441d4d6bc5aa32eacf4bb824a0091e7946cbfbb1d05",
+      "bytesBefore": 90470,
+      "sha256After": "f484a7f18b6da0022d72d441d4d6bc5aa32eacf4bb824a0091e7946cbfbb1d05",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/SiChengLiangYu_png.png",
+      "target": "卡牌拆分/cards/SiChengLiangYu_png.png",
+      "sha256Before": "52a29ac97c1ff473bb9c80a9f735eaa26ae5bd6b7af3e87b25e37102a791d506",
+      "bytesBefore": 84735,
+      "sha256After": "52a29ac97c1ff473bb9c80a9f735eaa26ae5bd6b7af3e87b25e37102a791d506",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/SiZhaoJian_png.png",
+      "target": "卡牌拆分/cards/SiZhaoJian_png.png",
+      "sha256Before": "535a98a36ef6afadd90237f2ed56a4922a7ea259da56bd4901c6a10e3f8d092b",
+      "bytesBefore": 76593,
+      "sha256After": "535a98a36ef6afadd90237f2ed56a4922a7ea259da56bd4901c6a10e3f8d092b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/SuiJiYingBian_png.png",
+      "target": "卡牌拆分/cards/SuiJiYingBian_png.png",
+      "sha256Before": "78dec0f5497026899e44d2579ced645752af3390d8c048f07eea3baf0e9e7866",
+      "bytesBefore": 88345,
+      "sha256After": "78dec0f5497026899e44d2579ced645752af3390d8c048f07eea3baf0e9e7866",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TaiGongYinFu_png.png",
+      "target": "卡牌拆分/cards/TaiGongYinFu_png.png",
+      "sha256Before": "d1e6c81ffa7a2c0c1956a000181ab19fa5db69826ba03b0b20aa0c63b2d8660e",
+      "bytesBefore": 89389,
+      "sha256After": "d1e6c81ffa7a2c0c1956a000181ab19fa5db69826ba03b0b20aa0c63b2d8660e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/Tao_png.png",
+      "target": "卡牌拆分/cards/Tao_png.png",
+      "sha256Before": "eed59fd936e683c1abb9f91e318b6a9dc3e15eb4df398ce779f81327bb8e4ed9",
+      "bytesBefore": 87121,
+      "sha256After": "eed59fd936e683c1abb9f91e318b6a9dc3e15eb4df398ce779f81327bb8e4ed9",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TaoYuanJieYi_png.png",
+      "target": "卡牌拆分/cards/TaoYuanJieYi_png.png",
+      "sha256Before": "4673d5e9f33652fadd2f0de166b527f4ad8281425f88e545c60317965bb6bc30",
+      "bytesBefore": 91145,
+      "sha256After": "4673d5e9f33652fadd2f0de166b527f4ad8281425f88e545c60317965bb6bc30",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TengJia2_png.png",
+      "target": "卡牌拆分/cards/TengJia2_png.png",
+      "sha256Before": "fc8634fd6c7628dd51d29341897343971d1e947f53ad4b708c6b2144df4f06d1",
+      "bytesBefore": 75189,
+      "sha256After": "fc8634fd6c7628dd51d29341897343971d1e947f53ad4b708c6b2144df4f06d1",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TengJia_png.png",
+      "target": "卡牌拆分/cards/TengJia_png.png",
+      "sha256Before": "fc8634fd6c7628dd51d29341897343971d1e947f53ad4b708c6b2144df4f06d1",
+      "bytesBefore": 75189,
+      "sha256After": "fc8634fd6c7628dd51d29341897343971d1e947f53ad4b708c6b2144df4f06d1",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TianJiTu_png.png",
+      "target": "卡牌拆分/cards/TianJiTu_png.png",
+      "sha256Before": "d31e895159ced6aa87afa47b03bb4998bee9da51f74e34836c4735427f2cf73a",
+      "bytesBefore": 83801,
+      "sha256After": "d31e895159ced6aa87afa47b03bb4998bee9da51f74e34836c4735427f2cf73a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TiaoJiYanMei_png.png",
+      "target": "卡牌拆分/cards/TiaoJiYanMei_png.png",
+      "sha256Before": "c997c3204e93ed150290aa561dafb022cb749036e80edb36190b81fb322b0865",
+      "bytesBefore": 80463,
+      "sha256After": "c997c3204e93ed150290aa561dafb022cb749036e80edb36190b81fb322b0865",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TieSuoLianHuan_png.png",
+      "target": "卡牌拆分/cards/TieSuoLianHuan_png.png",
+      "sha256Before": "c2d2cff7c47502b3907439dae37ed02e46de172ea9671377da9c9be03442f1e6",
+      "bytesBefore": 97794,
+      "sha256After": "c2d2cff7c47502b3907439dae37ed02e46de172ea9671377da9c9be03442f1e6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TongQue_png.png",
+      "target": "卡牌拆分/cards/TongQue_png.png",
+      "sha256Before": "bab4d9e7baca25ddfcdfb0c04f02e226e1c50098cae6bccd82b790399f2ddfec",
+      "bytesBefore": 82000,
+      "sha256After": "bab4d9e7baca25ddfcdfb0c04f02e226e1c50098cae6bccd82b790399f2ddfec",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/TongZiQieAnGang_png.png",
+      "target": "卡牌拆分/cards/TongZiQieAnGang_png.png",
+      "sha256Before": "62a681dab5099c015e5ce91216f10c8bd855880fb4aebea68645e5e4f34cf59f",
+      "bytesBefore": 75313,
+      "sha256After": "62a681dab5099c015e5ce91216f10c8bd855880fb4aebea68645e5e4f34cf59f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/WanJianQiFa_png.png",
+      "target": "卡牌拆分/cards/WanJianQiFa_png.png",
+      "sha256Before": "65c206bde70157c9983039df3d534345b800490fb662f71ab64b0ebaf9050273",
+      "bytesBefore": 94704,
+      "sha256After": "65c206bde70157c9983039df3d534345b800490fb662f71ab64b0ebaf9050273",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/WuGuFengDeng_png.png",
+      "target": "卡牌拆分/cards/WuGuFengDeng_png.png",
+      "sha256Before": "a2e3cf7ffd1d88a515a8da7b389d20e1fa443f1b610c72c9b0745033e1d2903b",
+      "bytesBefore": 83850,
+      "sha256After": "a2e3cf7ffd1d88a515a8da7b389d20e1fa443f1b610c72c9b0745033e1d2903b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/WuLiuJian_png.png",
+      "target": "卡牌拆分/cards/WuLiuJian_png.png",
+      "sha256Before": "60b367574d9e7cebcc5b8ec8ec9081262f0d3b88be9c7fc5088e7cc3052349bf",
+      "bytesBefore": 82312,
+      "sha256After": "60b367574d9e7cebcc5b8ec8ec9081262f0d3b88be9c7fc5088e7cc3052349bf",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/WuXieKeJi_png.png",
+      "target": "卡牌拆分/cards/WuXieKeJi_png.png",
+      "sha256Before": "25e017db3445cf30e0654cfe65bccc8d59d60901a4f4c416a1c6dc1b3d86c407",
+      "bytesBefore": 92045,
+      "sha256After": "25e017db3445cf30e0654cfe65bccc8d59d60901a4f4c416a1c6dc1b3d86c407",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/WuXieKeJiGuo_png.png",
+      "target": "卡牌拆分/cards/WuXieKeJiGuo_png.png",
+      "sha256Before": "c2aa4d1f9948591b1ea14e660784e26d8adda36f90e9338d758c856bdaaa9bfa",
+      "bytesBefore": 95713,
+      "sha256After": "c2aa4d1f9948591b1ea14e660784e26d8adda36f90e9338d758c856bdaaa9bfa",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/WuZhongShengYou_png.png",
+      "target": "卡牌拆分/cards/WuZhongShengYou_png.png",
+      "sha256Before": "1f7eb291a846a9b9cadfb70848e897deaa75965f2ad99c31b60514f890a45d1e",
+      "bytesBefore": 89608,
+      "sha256After": "1f7eb291a846a9b9cadfb70848e897deaa75965f2ad99c31b60514f890a45d1e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/XiShu_png.png",
+      "target": "卡牌拆分/cards/XiShu_png.png",
+      "sha256Before": "2aadbac146d17ae30b6b45c63c487c42c9a5efa0143aa52dfbda57ddfc7e5b79",
+      "bytesBefore": 78469,
+      "sha256After": "2aadbac146d17ae30b6b45c63c487c42c9a5efa0143aa52dfbda57ddfc7e5b79",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/YaoDaoCunZheng_png.png",
+      "target": "卡牌拆分/cards/YaoDaoCunZheng_png.png",
+      "sha256Before": "d0de6dee849d7b82a92ff71ae3be4d82b78f30b638c9f47858d0b7e54a681b3f",
+      "bytesBefore": 83775,
+      "sha256After": "d0de6dee849d7b82a92ff71ae3be4d82b78f30b638c9f47858d0b7e54a681b3f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/YiTianShiNi_png.png",
+      "target": "卡牌拆分/cards/YiTianShiNi_png.png",
+      "sha256Before": "fa50c3f40d9cce52de2a2c15c6044ba009dd59cae0c1b64d481b41abef29f688",
+      "bytesBefore": 77370,
+      "sha256After": "fa50c3f40d9cce52de2a2c15c6044ba009dd59cae0c1b64d481b41abef29f688",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/YiYiDaiLao_png.png",
+      "target": "卡牌拆分/cards/YiYiDaiLao_png.png",
+      "sha256Before": "8f84789159351d6e9d465fe0e057f79f54d39620db5bf534c822d18edd1f8d3b",
+      "bytesBefore": 99898,
+      "sha256After": "8f84789159351d6e9d465fe0e057f79f54d39620db5bf534c822d18edd1f8d3b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/YouBi_png.png",
+      "target": "卡牌拆分/cards/YouBi_png.png",
+      "sha256Before": "14abb3ca0752c211817ab60a044e20aa719aed6a0453ab86c770c21fb0369483",
+      "bytesBefore": 69792,
+      "sha256After": "14abb3ca0752c211817ab60a044e20aa719aed6a0453ab86c770c21fb0369483",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/YuanJiaoJinGong_png.png",
+      "target": "卡牌拆分/cards/YuanJiaoJinGong_png.png",
+      "sha256Before": "49996d77be8ccc90507e82ec0bece0ba809719c075276d87dd18ba585a8d1a12",
+      "bytesBefore": 100960,
+      "sha256After": "49996d77be8ccc90507e82ec0bece0ba809719c075276d87dd18ba585a8d1a12",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/YuXi_png.png",
+      "target": "卡牌拆分/cards/YuXi_png.png",
+      "sha256Before": "e2b68c1498aad208bf3f965e9f912e1214b60001854fc9fbd257b625b44fbc7c",
+      "bytesBefore": 74929,
+      "sha256After": "e2b68c1498aad208bf3f965e9f912e1214b60001854fc9fbd257b625b44fbc7c",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZengJuZu_png.png",
+      "target": "卡牌拆分/cards/ZengJuZu_png.png",
+      "sha256Before": "d514330514d3c799475cf2fa67293bac64ccd62ef9c875897f86e6e039a2b24e",
+      "bytesBefore": 78764,
+      "sha256After": "d514330514d3c799475cf2fa67293bac64ccd62ef9c875897f86e6e039a2b24e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZhangBaSheMao_png.png",
+      "target": "卡牌拆分/cards/ZhangBaSheMao_png.png",
+      "sha256Before": "da54df3c6c5a8468df36f279602d315832fcbd2402b0e407ffd66e9395f80f0e",
+      "bytesBefore": 81110,
+      "sha256After": "da54df3c6c5a8468df36f279602d315832fcbd2402b0e407ffd66e9395f80f0e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZhiJiZhiBi_png.png",
+      "target": "卡牌拆分/cards/ZhiJiZhiBi_png.png",
+      "sha256Before": "c38325c6a5da3729084e833b9798e82fc0b40f47656f9d59b61f05c22e1fb1f8",
+      "bytesBefore": 89306,
+      "sha256After": "c38325c6a5da3729084e833b9798e82fc0b40f47656f9d59b61f05c22e1fb1f8",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZhuaHuangFeiDian_png.png",
+      "target": "卡牌拆分/cards/ZhuaHuangFeiDian_png.png",
+      "sha256Before": "37973e9ce41d5f2b957d3ac44718f11441a4f00eeccf1dd6d4c7b0dc19905c24",
+      "bytesBefore": 83932,
+      "sha256After": "37973e9ce41d5f2b957d3ac44718f11441a4f00eeccf1dd6d4c7b0dc19905c24",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZhuGeLianNu3v3_png.png",
+      "target": "卡牌拆分/cards/ZhuGeLianNu3v3_png.png",
+      "sha256Before": "8ca549261fd3b1567694099ea09acdc6f79f3b1ce27e840f849d6bfca88c1448",
+      "bytesBefore": 77539,
+      "sha256After": "8ca549261fd3b1567694099ea09acdc6f79f3b1ce27e840f849d6bfca88c1448",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZhuGeLianNu_png.png",
+      "target": "卡牌拆分/cards/ZhuGeLianNu_png.png",
+      "sha256Before": "c30c2f7e37f9086e8d6e3d15afe91e87d4a62f8f434abf70c9a782d6e5c0dc9b",
+      "bytesBefore": 82947,
+      "sha256After": "c30c2f7e37f9086e8d6e3d15afe91e87d4a62f8f434abf70c9a782d6e5c0dc9b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZhuJinQiYuan_png.png",
+      "target": "卡牌拆分/cards/ZhuJinQiYuan_png.png",
+      "sha256Before": "f939804f9d1c6e9dae359bdda1bec03eda68f8e4632eb83233c14d1650276a80",
+      "bytesBefore": 87983,
+      "sha256After": "f939804f9d1c6e9dae359bdda1bec03eda68f8e4632eb83233c14d1650276a80",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZhuQueYuShan_png.png",
+      "target": "卡牌拆分/cards/ZhuQueYuShan_png.png",
+      "sha256Before": "394486c075f0a87552d1a532b49486a39838b0ed89caf85ac95b1c773d783b02",
+      "bytesBefore": 82653,
+      "sha256After": "394486c075f0a87552d1a532b49486a39838b0ed89caf85ac95b1c773d783b02",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZiXing_png.png",
+      "target": "卡牌拆分/cards/ZiXing_png.png",
+      "sha256Before": "d353a538e091ca67e398f079dd24ecf028ec9635735959a320616548dc1852dc",
+      "bytesBefore": 78705,
+      "sha256After": "d353a538e091ca67e398f079dd24ecf028ec9635735959a320616548dc1852dc",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/cards/ZuoBang_png.png",
+      "target": "卡牌拆分/cards/ZuoBang_png.png",
+      "sha256Before": "1a2579a609dbf8bdb8a96b31af9e8786a2e9e4aec79cfed027cd81eb663be45d",
+      "bytesBefore": 68161,
+      "sha256After": "1a2579a609dbf8bdb8a96b31af9e8786a2e9e4aec79cfed027cd81eb663be45d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/manifest.json",
+      "target": "卡牌拆分/manifest.json",
+      "sha256Before": "a68c6fb929a1d4caeaa7313b83203e39ba0643e0b7374292faafb73c8fb10ce8",
+      "bytesBefore": 126589,
+      "sha256After": "a68c6fb929a1d4caeaa7313b83203e39ba0643e0b7374292faafb73c8fb10ce8",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/merge.cmd",
+      "target": "卡牌拆分/merge.cmd",
+      "sha256Before": "eedcd1344aabc1c01179acfc645d488d167712160665e9abb7be8033aaf127c2",
+      "bytesBefore": 458,
+      "sha256After": "c4ae6cab0f940e55ba0710a143d65a0ef63561d4ea2d771c82c8b9ec5eb6bab8",
+      "contentChangedForRelocation": true
+    },
+    {
+      "source": "卡牌拆分/merged/20261020-232525-909789/cards.atlas",
+      "target": "卡牌拆分/merged/20261020-232525-909789/cards.atlas",
+      "sha256Before": "f4ee16929bce2f4beb04020f87f8e4bdc267942a166bcda63913ace3d3630f15",
+      "bytesBefore": 32192,
+      "sha256After": "f4ee16929bce2f4beb04020f87f8e4bdc267942a166bcda63913ace3d3630f15",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/merged/20261020-232525-909789/cards.png",
+      "target": "卡牌拆分/merged/20261020-232525-909789/cards.png",
+      "sha256Before": "24a5240cafb0d6a48a1e9e0ade322d48ed2a1a019ccdb7629bc85973f2167840",
+      "bytesBefore": 9274310,
+      "sha256After": "24a5240cafb0d6a48a1e9e0ade322d48ed2a1a019ccdb7629bc85973f2167840",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/merged/20261020-232525-909789/merge-report.json",
+      "target": "卡牌拆分/merged/20261020-232525-909789/merge-report.json",
+      "sha256Before": "19115c5ead32e7936ee0c4e5f6adcd9cbad4c8ea19c89a40de665e31fe44df49",
+      "bytesBefore": 368,
+      "sha256After": "19115c5ead32e7936ee0c4e5f6adcd9cbad4c8ea19c89a40de665e31fe44df49",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/preview.html",
+      "target": "卡牌拆分/preview.html",
+      "sha256Before": "33da9604065162c82c148df9b6f59228794b8a6016ff682f64038d3531224185",
+      "bytesBefore": 22386,
+      "sha256After": "33da9604065162c82c148df9b6f59228794b8a6016ff682f64038d3531224185",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/README.md",
+      "target": "卡牌拆分/README.md",
+      "sha256Before": "9b39b3b5fd69e9fa8876994930b485b8b35a3c3c4ac633275fddbce71aed6692",
+      "bytesBefore": 2644,
+      "sha256After": "1a5d294b0896f93793366a78e7a897e314e6b7c4dd17ccba8b58a178eff99dfb",
+      "contentChangedForRelocation": true
+    },
+    {
+      "source": "卡牌拆分/requirements.txt",
+      "target": "卡牌拆分/requirements.txt",
+      "sha256Before": "ae3337e5ae362bf1fad83355272ff595b58aae13d7a7ac67617f6f3161fa0c07",
+      "bytesBefore": 15,
+      "sha256After": "ae3337e5ae362bf1fad83355272ff595b58aae13d7a7ac67617f6f3161fa0c07",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/roundtrip-verification.json",
+      "target": "卡牌拆分/roundtrip-verification.json",
+      "sha256Before": "6ab968f93005d5bb8b15415956e74f78283adfb23a4b5c855da7d3bd18fe2841",
+      "bytesBefore": 129,
+      "sha256After": "6ab968f93005d5bb8b15415956e74f78283adfb23a4b5c855da7d3bd18fe2841",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/source/cards.atlas",
+      "target": "卡牌拆分/source/cards.atlas",
+      "sha256Before": "f4ee16929bce2f4beb04020f87f8e4bdc267942a166bcda63913ace3d3630f15",
+      "bytesBefore": 32192,
+      "sha256After": "f4ee16929bce2f4beb04020f87f8e4bdc267942a166bcda63913ace3d3630f15",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/source/cards.png",
+      "target": "卡牌拆分/source/cards.png",
+      "sha256Before": "14e786fd774fc5a9e1de952ad6a042ec5b87220bf434bc2d8410584eae01c3df",
+      "bytesBefore": 9160999,
+      "sha256After": "14e786fd774fc5a9e1de952ad6a042ec5b87220bf434bc2d8410584eae01c3df",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/source/default.res.json",
+      "target": "卡牌拆分/source/default.res.json",
+      "sha256Before": "4b1bfb095720d4de8ce3e9a32fd73b58798ee2dc174864f0a75a1c21338fc452",
+      "bytesBefore": 136065,
+      "sha256After": "4b1bfb095720d4de8ce3e9a32fd73b58798ee2dc174864f0a75a1c21338fc452",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/source/downloads.json",
+      "target": "卡牌拆分/source/downloads.json",
+      "sha256Before": "edbcc92e6e26cc534483c466a32e3a0f10a32437efd68b017bd380f02ea5508e",
+      "bytesBefore": 2816,
+      "sha256After": "edbcc92e6e26cc534483c466a32e3a0f10a32437efd68b017bd380f02ea5508e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/source/junzheng-check/source.json",
+      "target": "卡牌拆分/source/junzheng-check/source.json",
+      "sha256Before": "6b88acd0d4a97c8ef891b9eafa389892a1f98fe239cbd77b30055a89435fe969",
+      "bytesBefore": 266,
+      "sha256After": "6b88acd0d4a97c8ef891b9eafa389892a1f98fe239cbd77b30055a89435fe969",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/source/junzheng-check/sys_playcard.json",
+      "target": "卡牌拆分/source/junzheng-check/sys_playcard.json",
+      "sha256Before": "5f4511709f238e7f8eb9ea53bdc944509ea0253d7adf9cb39e619c27cdd5ef40",
+      "bytesBefore": 1525918,
+      "sha256After": "5f4511709f238e7f8eb9ea53bdc944509ea0253d7adf9cb39e619c27cdd5ef40",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/source/junzheng-check/sys_playcard.sgs",
+      "target": "卡牌拆分/source/junzheng-check/sys_playcard.sgs",
+      "sha256Before": "a39a8c6ce7b7def7cf65e7ae25514d464064c99f2d782ea330d7c742462a94d3",
+      "bytesBefore": 86023,
+      "sha256After": "a39a8c6ce7b7def7cf65e7ae25514d464064c99f2d782ea330d7c742462a94d3",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/source/official-cards.png",
+      "target": "卡牌拆分/source/official-cards.png",
+      "sha256Before": "14e786fd774fc5a9e1de952ad6a042ec5b87220bf434bc2d8410584eae01c3df",
+      "bytesBefore": 9160999,
+      "sha256After": "14e786fd774fc5a9e1de952ad6a042ec5b87220bf434bc2d8410584eae01c3df",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/tool-verification.json",
+      "target": "卡牌拆分/tool-verification.json",
+      "sha256Before": "72e789b94daeaa702c3385954057b09ba53b790ad1b255524fc1bfdd937b6e63",
+      "bytesBefore": 1083,
+      "sha256After": "72e789b94daeaa702c3385954057b09ba53b790ad1b255524fc1bfdd937b6e63",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/161张牌对应表.csv",
+      "target": "卡牌拆分/军争卡牌/161张牌对应表.csv",
+      "sha256Before": "fbfd3b274dea91eec1fd5b8ee994601c63f48ecdc3ecb60984b9275578b9ecf2",
+      "bytesBefore": 9261,
+      "sha256After": "fbfd3b274dea91eec1fd5b8ee994601c63f48ecdc3ecb60984b9275578b9ecf2",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/BaGuaZhen_png.png",
+      "target": "卡牌拆分/军争卡牌/BaGuaZhen_png.png",
+      "sha256Before": "bbfb2396aaf662985dcf9d38870e03e3fdea0ef897838abe24b600c3480576fa",
+      "bytesBefore": 81347,
+      "sha256After": "bbfb2396aaf662985dcf9d38870e03e3fdea0ef897838abe24b600c3480576fa",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/BaiYinShiZi_png.png",
+      "target": "卡牌拆分/军争卡牌/BaiYinShiZi_png.png",
+      "sha256Before": "ea3153dbbe90ac340a13fc51988a74e2249f9666559f945fb1657a91a45bea03",
+      "bytesBefore": 82824,
+      "sha256After": "ea3153dbbe90ac340a13fc51988a74e2249f9666559f945fb1657a91a45bea03",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/BingLiangCunDuan_png.png",
+      "target": "卡牌拆分/军争卡牌/BingLiangCunDuan_png.png",
+      "sha256Before": "272b98d73676e87bfb55bceb8dc7de94ff8ab95b9b1d075707db31238da233c2",
+      "bytesBefore": 84892,
+      "sha256After": "272b98d73676e87bfb55bceb8dc7de94ff8ab95b9b1d075707db31238da233c2",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/ChiTu_png.png",
+      "target": "卡牌拆分/军争卡牌/ChiTu_png.png",
+      "sha256Before": "ea49b2399167ab80e8d88e767ea676cd136d5d6681523f98b747a974877c257c",
+      "bytesBefore": 80510,
+      "sha256After": "ea49b2399167ab80e8d88e767ea676cd136d5d6681523f98b747a974877c257c",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/CiXiongShuangGuJian_png.png",
+      "target": "卡牌拆分/军争卡牌/CiXiongShuangGuJian_png.png",
+      "sha256Before": "7f0acf021c6385e5e2396dce4e4fc2fd93aa14c49df4b8a6ed0cb33e162d839c",
+      "bytesBefore": 82254,
+      "sha256After": "7f0acf021c6385e5e2396dce4e4fc2fd93aa14c49df4b8a6ed0cb33e162d839c",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/DaWan_png.png",
+      "target": "卡牌拆分/军争卡牌/DaWan_png.png",
+      "sha256Before": "c12c1f99c249c4d9744a448202541c3100c34c0d0f483feba957aab323e9045e",
+      "bytesBefore": 84433,
+      "sha256After": "c12c1f99c249c4d9744a448202541c3100c34c0d0f483feba957aab323e9045e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/DiLu_png.png",
+      "target": "卡牌拆分/军争卡牌/DiLu_png.png",
+      "sha256Before": "6f7d678993a6fefcb9ba0de286641d9bb9625ddad6f555c3138b63f33239560a",
+      "bytesBefore": 78188,
+      "sha256After": "6f7d678993a6fefcb9ba0de286641d9bb9625ddad6f555c3138b63f33239560a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/FangTianHuaJi_png.png",
+      "target": "卡牌拆分/军争卡牌/FangTianHuaJi_png.png",
+      "sha256Before": "f13a0b2853f92843fdb57c88b74423532c837ef6625f1f621d01e86ee77ad319",
+      "bytesBefore": 82263,
+      "sha256After": "f13a0b2853f92843fdb57c88b74423532c837ef6625f1f621d01e86ee77ad319",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/GuanShiFu_png.png",
+      "target": "卡牌拆分/军争卡牌/GuanShiFu_png.png",
+      "sha256Before": "14bae88d63ee8dfbb5223fcc32b7fe1fcac4f4c850626a9541da6319a1312806",
+      "bytesBefore": 81381,
+      "sha256After": "14bae88d63ee8dfbb5223fcc32b7fe1fcac4f4c850626a9541da6319a1312806",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/GuDingDao_png.png",
+      "target": "卡牌拆分/军争卡牌/GuDingDao_png.png",
+      "sha256Before": "e8e09e898e82ca377b147d7c8bb4b26807e158d8a4783cc92cf5cb88646b1851",
+      "bytesBefore": 77288,
+      "sha256After": "e8e09e898e82ca377b147d7c8bb4b26807e158d8a4783cc92cf5cb88646b1851",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/GuoHeChaiQiao_png.png",
+      "target": "卡牌拆分/军争卡牌/GuoHeChaiQiao_png.png",
+      "sha256Before": "dcc058cf7e2479cc19c61ba45bf79eeb843dff9b699f503b549fa2451cb73d3f",
+      "bytesBefore": 87702,
+      "sha256After": "dcc058cf7e2479cc19c61ba45bf79eeb843dff9b699f503b549fa2451cb73d3f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/HanBingJian_png.png",
+      "target": "卡牌拆分/军争卡牌/HanBingJian_png.png",
+      "sha256Before": "215f384d3d5d91494debc218028361e64c3b67329b2952eafe0cb78fa5f2abeb",
+      "bytesBefore": 80934,
+      "sha256After": "215f384d3d5d91494debc218028361e64c3b67329b2952eafe0cb78fa5f2abeb",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/HuaLiu_png.png",
+      "target": "卡牌拆分/军争卡牌/HuaLiu_png.png",
+      "sha256Before": "6cc0b57a85f11ad73d7247151d5a584f0bfc812552fa6719f6bd7c58823288bc",
+      "bytesBefore": 83964,
+      "sha256After": "6cc0b57a85f11ad73d7247151d5a584f0bfc812552fa6719f6bd7c58823288bc",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/HuoGong_png.png",
+      "target": "卡牌拆分/军争卡牌/HuoGong_png.png",
+      "sha256Before": "7c3e3088bed961e3dc2ca247aa64475ffa385932d1c3dd26ef049062c0686932",
+      "bytesBefore": 86093,
+      "sha256After": "7c3e3088bed961e3dc2ca247aa64475ffa385932d1c3dd26ef049062c0686932",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/HuoSha_png.png",
+      "target": "卡牌拆分/军争卡牌/HuoSha_png.png",
+      "sha256Before": "0a0d1a0a42eac7136b6c87f9ea9c6deb04ec0547f691429c1e45f643f0a24653",
+      "bytesBefore": 87475,
+      "sha256After": "0a0d1a0a42eac7136b6c87f9ea9c6deb04ec0547f691429c1e45f643f0a24653",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/JieDaoShaRen_png.png",
+      "target": "卡牌拆分/军争卡牌/JieDaoShaRen_png.png",
+      "sha256Before": "fbeac47f15d652d7fd0c00d953d2ae27cf2a7910dd951cd903fa829dd836b34b",
+      "bytesBefore": 94307,
+      "sha256After": "fbeac47f15d652d7fd0c00d953d2ae27cf2a7910dd951cd903fa829dd836b34b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/Jiu_png.png",
+      "target": "卡牌拆分/军争卡牌/Jiu_png.png",
+      "sha256Before": "1e7c29e2ed72249d8e3829986e947cc3a685f5f027d4fbf7c93081eecf502683",
+      "bytesBefore": 87449,
+      "sha256After": "1e7c29e2ed72249d8e3829986e947cc3a685f5f027d4fbf7c93081eecf502683",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/JueDou_png.png",
+      "target": "卡牌拆分/军争卡牌/JueDou_png.png",
+      "sha256Before": "f493f0b21922c8707dd649884d76510d0f40501b7d3fcee343d7ae34f21f6bcd",
+      "bytesBefore": 87767,
+      "sha256After": "f493f0b21922c8707dd649884d76510d0f40501b7d3fcee343d7ae34f21f6bcd",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/JueYing_png.png",
+      "target": "卡牌拆分/军争卡牌/JueYing_png.png",
+      "sha256Before": "bd8ad2eb1395548ff89867be73995f00b7bca9d84114fd98b32f0949fb54c62e",
+      "bytesBefore": 81246,
+      "sha256After": "bd8ad2eb1395548ff89867be73995f00b7bca9d84114fd98b32f0949fb54c62e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/LeBuSiShu_png.png",
+      "target": "卡牌拆分/军争卡牌/LeBuSiShu_png.png",
+      "sha256Before": "6cc33edf836239081cb864fade193dcb5784f8fdeb8eaf2524c2666d3566ae51",
+      "bytesBefore": 94585,
+      "sha256After": "6cc33edf836239081cb864fade193dcb5784f8fdeb8eaf2524c2666d3566ae51",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/LeiSha_png.png",
+      "target": "卡牌拆分/军争卡牌/LeiSha_png.png",
+      "sha256Before": "bc92053c7194869ca4bf86a4e26853b79e54decc240a31383a2a535043165faa",
+      "bytesBefore": 87343,
+      "sha256After": "bc92053c7194869ca4bf86a4e26853b79e54decc240a31383a2a535043165faa",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/MuNiuLiuMa_png.png",
+      "target": "卡牌拆分/军争卡牌/MuNiuLiuMa_png.png",
+      "sha256Before": "6c1f45b9e419d81622e95fedf384917418de391d81be84dcdad1c65faa2921c9",
+      "bytesBefore": 86352,
+      "sha256After": "6c1f45b9e419d81622e95fedf384917418de391d81be84dcdad1c65faa2921c9",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/NanManRuQin_png.png",
+      "target": "卡牌拆分/军争卡牌/NanManRuQin_png.png",
+      "sha256Before": "5c82bd201aa1d9dc2254202497a76e3d2c584dc58f0d7755ced7fafb0e8e8319",
+      "bytesBefore": 84133,
+      "sha256After": "5c82bd201aa1d9dc2254202497a76e3d2c584dc58f0d7755ced7fafb0e8e8319",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/preview.html",
+      "target": "卡牌拆分/军争卡牌/preview.html",
+      "sha256Before": "6823662fe409fcef423b6d063dd339a3f4bd850590cc2c84643e4e7cdb9e234f",
+      "bytesBefore": 8799,
+      "sha256After": "6823662fe409fcef423b6d063dd339a3f4bd850590cc2c84643e4e7cdb9e234f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/QiLinGong_png.png",
+      "target": "卡牌拆分/军争卡牌/QiLinGong_png.png",
+      "sha256Before": "6be95fb75c2803d930d4feaaf4358acfd992015a9363b48a549a6ca005abd650",
+      "bytesBefore": 81183,
+      "sha256After": "6be95fb75c2803d930d4feaaf4358acfd992015a9363b48a549a6ca005abd650",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/QingGangJian_png.png",
+      "target": "卡牌拆分/军争卡牌/QingGangJian_png.png",
+      "sha256Before": "4b3519b8018c600933d9c2bba7fc1f4dfa74c44d55a4ff4a039955b83a1386fd",
+      "bytesBefore": 78664,
+      "sha256After": "4b3519b8018c600933d9c2bba7fc1f4dfa74c44d55a4ff4a039955b83a1386fd",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/QingLongYanYueDao_png.png",
+      "target": "卡牌拆分/军争卡牌/QingLongYanYueDao_png.png",
+      "sha256Before": "77151d2d6c805e5dae391f10cf096e1e5bb6798cdea0c41ea4ccd20f15c4feec",
+      "bytesBefore": 80953,
+      "sha256After": "77151d2d6c805e5dae391f10cf096e1e5bb6798cdea0c41ea4ccd20f15c4feec",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/README.md",
+      "target": "卡牌拆分/军争卡牌/README.md",
+      "sha256Before": "1075679b96552eb80311b632a4c285d23259ffa63506bb7f416e78dd6c66b3ae",
+      "bytesBefore": 1366,
+      "sha256After": "1075679b96552eb80311b632a4c285d23259ffa63506bb7f416e78dd6c66b3ae",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/RenWangDun_png.png",
+      "target": "卡牌拆分/军争卡牌/RenWangDun_png.png",
+      "sha256Before": "5707e82813e4b5d8b5f8b6bded13ea3d6de111db164bcd74df962af91b1b3430",
+      "bytesBefore": 84362,
+      "sha256After": "5707e82813e4b5d8b5f8b6bded13ea3d6de111db164bcd74df962af91b1b3430",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/Sha_png.png",
+      "target": "卡牌拆分/军争卡牌/Sha_png.png",
+      "sha256Before": "8b972b006262c571e2fb9999bc994bf3200b0af902a41d19a411729ea36db6f6",
+      "bytesBefore": 85908,
+      "sha256After": "8b972b006262c571e2fb9999bc994bf3200b0af902a41d19a411729ea36db6f6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/Shan_png.png",
+      "target": "卡牌拆分/军争卡牌/Shan_png.png",
+      "sha256Before": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a",
+      "bytesBefore": 91818,
+      "sha256After": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/ShanDian_png.png",
+      "target": "卡牌拆分/军争卡牌/ShanDian_png.png",
+      "sha256Before": "38672615c5bd55b15fd59d63a17b13e2ed4808558c56154c1ad8acfa1c65c994",
+      "bytesBefore": 71351,
+      "sha256After": "38672615c5bd55b15fd59d63a17b13e2ed4808558c56154c1ad8acfa1c65c994",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/ShunShouQianYang_png.png",
+      "target": "卡牌拆分/军争卡牌/ShunShouQianYang_png.png",
+      "sha256Before": "f484a7f18b6da0022d72d441d4d6bc5aa32eacf4bb824a0091e7946cbfbb1d05",
+      "bytesBefore": 90470,
+      "sha256After": "f484a7f18b6da0022d72d441d4d6bc5aa32eacf4bb824a0091e7946cbfbb1d05",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/Tao_png.png",
+      "target": "卡牌拆分/军争卡牌/Tao_png.png",
+      "sha256Before": "eed59fd936e683c1abb9f91e318b6a9dc3e15eb4df398ce779f81327bb8e4ed9",
+      "bytesBefore": 87121,
+      "sha256After": "eed59fd936e683c1abb9f91e318b6a9dc3e15eb4df398ce779f81327bb8e4ed9",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/TaoYuanJieYi_png.png",
+      "target": "卡牌拆分/军争卡牌/TaoYuanJieYi_png.png",
+      "sha256Before": "4673d5e9f33652fadd2f0de166b527f4ad8281425f88e545c60317965bb6bc30",
+      "bytesBefore": 91145,
+      "sha256After": "4673d5e9f33652fadd2f0de166b527f4ad8281425f88e545c60317965bb6bc30",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/TengJia_png.png",
+      "target": "卡牌拆分/军争卡牌/TengJia_png.png",
+      "sha256Before": "fc8634fd6c7628dd51d29341897343971d1e947f53ad4b708c6b2144df4f06d1",
+      "bytesBefore": 75189,
+      "sha256After": "fc8634fd6c7628dd51d29341897343971d1e947f53ad4b708c6b2144df4f06d1",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/texture-mapping.json",
+      "target": "卡牌拆分/军争卡牌/texture-mapping.json",
+      "sha256Before": "ca914530286c1d6f3bc5d4bb39a4435ffa98dba0b14eda6e9a20169dc6c6226f",
+      "bytesBefore": 45291,
+      "sha256After": "ca914530286c1d6f3bc5d4bb39a4435ffa98dba0b14eda6e9a20169dc6c6226f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/TieSuoLianHuan_png.png",
+      "target": "卡牌拆分/军争卡牌/TieSuoLianHuan_png.png",
+      "sha256Before": "c2d2cff7c47502b3907439dae37ed02e46de172ea9671377da9c9be03442f1e6",
+      "bytesBefore": 97794,
+      "sha256After": "c2d2cff7c47502b3907439dae37ed02e46de172ea9671377da9c9be03442f1e6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/WanJianQiFa_png.png",
+      "target": "卡牌拆分/军争卡牌/WanJianQiFa_png.png",
+      "sha256Before": "65c206bde70157c9983039df3d534345b800490fb662f71ab64b0ebaf9050273",
+      "bytesBefore": 94704,
+      "sha256After": "65c206bde70157c9983039df3d534345b800490fb662f71ab64b0ebaf9050273",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/WuGuFengDeng_png.png",
+      "target": "卡牌拆分/军争卡牌/WuGuFengDeng_png.png",
+      "sha256Before": "a2e3cf7ffd1d88a515a8da7b389d20e1fa443f1b610c72c9b0745033e1d2903b",
+      "bytesBefore": 83850,
+      "sha256After": "a2e3cf7ffd1d88a515a8da7b389d20e1fa443f1b610c72c9b0745033e1d2903b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/WuXieKeJi_png.png",
+      "target": "卡牌拆分/军争卡牌/WuXieKeJi_png.png",
+      "sha256Before": "25e017db3445cf30e0654cfe65bccc8d59d60901a4f4c416a1c6dc1b3d86c407",
+      "bytesBefore": 92045,
+      "sha256After": "25e017db3445cf30e0654cfe65bccc8d59d60901a4f4c416a1c6dc1b3d86c407",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/WuZhongShengYou_png.png",
+      "target": "卡牌拆分/军争卡牌/WuZhongShengYou_png.png",
+      "sha256Before": "1f7eb291a846a9b9cadfb70848e897deaa75965f2ad99c31b60514f890a45d1e",
+      "bytesBefore": 89608,
+      "sha256After": "1f7eb291a846a9b9cadfb70848e897deaa75965f2ad99c31b60514f890a45d1e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/ZhangBaSheMao_png.png",
+      "target": "卡牌拆分/军争卡牌/ZhangBaSheMao_png.png",
+      "sha256Before": "da54df3c6c5a8468df36f279602d315832fcbd2402b0e407ffd66e9395f80f0e",
+      "bytesBefore": 81110,
+      "sha256After": "da54df3c6c5a8468df36f279602d315832fcbd2402b0e407ffd66e9395f80f0e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/ZhuaHuangFeiDian_png.png",
+      "target": "卡牌拆分/军争卡牌/ZhuaHuangFeiDian_png.png",
+      "sha256Before": "37973e9ce41d5f2b957d3ac44718f11441a4f00eeccf1dd6d4c7b0dc19905c24",
+      "bytesBefore": 83932,
+      "sha256After": "37973e9ce41d5f2b957d3ac44718f11441a4f00eeccf1dd6d4c7b0dc19905c24",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/ZhuGeLianNu_png.png",
+      "target": "卡牌拆分/军争卡牌/ZhuGeLianNu_png.png",
+      "sha256Before": "c30c2f7e37f9086e8d6e3d15afe91e87d4a62f8f434abf70c9a782d6e5c0dc9b",
+      "bytesBefore": 82947,
+      "sha256After": "c30c2f7e37f9086e8d6e3d15afe91e87d4a62f8f434abf70c9a782d6e5c0dc9b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/ZhuQueYuShan_png.png",
+      "target": "卡牌拆分/军争卡牌/ZhuQueYuShan_png.png",
+      "sha256Before": "394486c075f0a87552d1a532b49486a39838b0ed89caf85ac95b1c773d783b02",
+      "bytesBefore": 82653,
+      "sha256After": "394486c075f0a87552d1a532b49486a39838b0ed89caf85ac95b1c773d783b02",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/ZiXing_png.png",
+      "target": "卡牌拆分/军争卡牌/ZiXing_png.png",
+      "sha256Before": "d353a538e091ca67e398f079dd24ecf028ec9635735959a320616548dc1852dc",
+      "bytesBefore": 78705,
+      "sha256After": "d353a538e091ca67e398f079dd24ecf028ec9635735959a320616548dc1852dc",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "卡牌拆分/军争卡牌/卡面清单.csv",
+      "target": "卡牌拆分/军争卡牌/卡面清单.csv",
+      "sha256Before": "ec210b9d4f311846c28b3a00a462a8b27d88c0f328d62a88f8ff0a6733167697",
+      "bytesBefore": 2643,
+      "sha256After": "ec210b9d4f311846c28b3a00a462a8b27d88c0f328d62a88f8ff0a6733167697",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/preview.html",
+      "target": "塔罗牌卡面/preview.html",
+      "sha256Before": "bd6c7d62bec7e9f5788a2f17025d34366edb1d087404bbc851003308b7ead060",
+      "bytesBefore": 5257,
+      "sha256After": "bd6c7d62bec7e9f5788a2f17025d34366edb1d087404bbc851003308b7ead060",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/README.md",
+      "target": "塔罗牌卡面/README.md",
+      "sha256Before": "98aeb18a193cdeacb3aeb5552f6dc20b8e1755b3b1b8b47c9c95cdd06cfdaa5e",
+      "bytesBefore": 1818,
+      "sha256After": "98aeb18a193cdeacb3aeb5552f6dc20b8e1755b3b1b8b47c9c95cdd06cfdaa5e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/参考/原始闪.png",
+      "target": "塔罗牌卡面/参考/原始闪.png",
+      "sha256Before": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a",
+      "bytesBefore": 91818,
+      "sha256After": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/参考/用户风格参考.png",
+      "target": "塔罗牌卡面/参考/用户风格参考.png",
+      "sha256Before": "c0f607b87f07c5b60e7733a0be9d7b552e60e31cca98ac72f95f9f3523724755",
+      "bytesBefore": 905777,
+      "sha256After": "c0f607b87f07c5b60e7733a0be9d7b552e60e31cca98ac72f95f9f3523724755",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/186x260/Shan_club.png",
+      "target": "塔罗牌卡面/四花色样板/186x260/Shan_club.png",
+      "sha256Before": "8f80f52048cbeaa28e7021bb92532620d60157bc2058a735301950b5047a2098",
+      "bytesBefore": 115958,
+      "sha256After": "8f80f52048cbeaa28e7021bb92532620d60157bc2058a735301950b5047a2098",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/186x260/Shan_diamond.png",
+      "target": "塔罗牌卡面/四花色样板/186x260/Shan_diamond.png",
+      "sha256Before": "15569d6c630ded561946d2691aa17d068073bbbf230e9760731a8d4ef44f82c4",
+      "bytesBefore": 114923,
+      "sha256After": "15569d6c630ded561946d2691aa17d068073bbbf230e9760731a8d4ef44f82c4",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/186x260/Shan_heart.png",
+      "target": "塔罗牌卡面/四花色样板/186x260/Shan_heart.png",
+      "sha256Before": "ae02a43af57caf2bd5eb212fc40da3b9cb8b604d2833f94cccadac09024a3488",
+      "bytesBefore": 122136,
+      "sha256After": "ae02a43af57caf2bd5eb212fc40da3b9cb8b604d2833f94cccadac09024a3488",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/186x260/Shan_spade.png",
+      "target": "塔罗牌卡面/四花色样板/186x260/Shan_spade.png",
+      "sha256Before": "e92ddab7df2226a3c488be618a6e7ec258bd66874834c0d86cf929ba4d6fea48",
+      "bytesBefore": 118411,
+      "sha256After": "e92ddab7df2226a3c488be618a6e7ec258bd66874834c0d86cf929ba4d6fea48",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/generation-record.json",
+      "target": "塔罗牌卡面/四花色样板/generation-record.json",
+      "sha256Before": "52513f7d120a98636853a10f6f41b92d117d9688d7a63c858c5208bf37bb91a5",
+      "bytesBefore": 6298,
+      "sha256After": "52513f7d120a98636853a10f6f41b92d117d9688d7a63c858c5208bf37bb91a5",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/四花色对比.png",
+      "target": "塔罗牌卡面/四花色样板/四花色对比.png",
+      "sha256Before": "d222af8ad27f5be6953d8d0f0b01cacdea73cc468c194ab0aa1425a20ff6e3a1",
+      "bytesBefore": 491909,
+      "sha256After": "d222af8ad27f5be6953d8d0f0b01cacdea73cc468c194ab0aa1425a20ff6e3a1",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/大图/方块.png",
+      "target": "塔罗牌卡面/四花色样板/大图/方块.png",
+      "sha256Before": "29187f87bc5ccbef0fb1b110edeb39d46f1d2c9c141a8817a3b25e66996c470a",
+      "bytesBefore": 2577016,
+      "sha256After": "29187f87bc5ccbef0fb1b110edeb39d46f1d2c9c141a8817a3b25e66996c470a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/大图/梅花.png",
+      "target": "塔罗牌卡面/四花色样板/大图/梅花.png",
+      "sha256Before": "6c2953dfbbdf7c39a5f2c3b9eab76116dedd6135252d73673ef45f2e35c41984",
+      "bytesBefore": 2850691,
+      "sha256After": "6c2953dfbbdf7c39a5f2c3b9eab76116dedd6135252d73673ef45f2e35c41984",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/大图/红桃.png",
+      "target": "塔罗牌卡面/四花色样板/大图/红桃.png",
+      "sha256Before": "201380d8f383ba9ba895531469cd55e6663054652b67d5ba9a14ad6adc7bc3be",
+      "bytesBefore": 2806353,
+      "sha256After": "201380d8f383ba9ba895531469cd55e6663054652b67d5ba9a14ad6adc7bc3be",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/四花色样板/大图/黑桃.png",
+      "target": "塔罗牌卡面/四花色样板/大图/黑桃.png",
+      "sha256Before": "91103e95a3ea3898c542c4055fb2ebab8897c0e172378b7244db39f277a40d0d",
+      "bytesBefore": 2831968,
+      "sha256After": "91103e95a3ea3898c542c4055fb2ebab8897c0e172378b7244db39f277a40d0d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/README.md",
+      "target": "塔罗牌卡面/提示词/README.md",
+      "sha256Before": "7ccfb1e179e9b360001127b652267c7398d1122617b1fb6e6b40bb53a45698d1",
+      "bytesBefore": 826,
+      "sha256After": "7ccfb1e179e9b360001127b652267c7398d1122617b1fb6e6b40bb53a45698d1",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/分层/01_底图.txt",
+      "target": "塔罗牌卡面/提示词/分层/01_底图.txt",
+      "sha256Before": "aed10664a1d6b209a91626ad279990302da6de0aa958d856d353ec0fa90a8490",
+      "bytesBefore": 1486,
+      "sha256After": "aed10664a1d6b209a91626ad279990302da6de0aa958d856d353ec0fa90a8490",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/分层/02_点数2提取.txt",
+      "target": "塔罗牌卡面/提示词/分层/02_点数2提取.txt",
+      "sha256Before": "0ea1dcfaeb08303003d1365a249c4184ea1580e707a6e6ad9b2a68c15039911c",
+      "bytesBefore": 1218,
+      "sha256After": "0ea1dcfaeb08303003d1365a249c4184ea1580e707a6e6ad9b2a68c15039911c",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/分层/03_红桃提取.txt",
+      "target": "塔罗牌卡面/提示词/分层/03_红桃提取.txt",
+      "sha256Before": "a9fb54fbd19b306db5548cddbc1af394df370bb2c74b11362d1a880910dd528a",
+      "bytesBefore": 1129,
+      "sha256After": "a9fb54fbd19b306db5548cddbc1af394df370bb2c74b11362d1a880910dd528a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/分层/04_点数位置微调.txt",
+      "target": "塔罗牌卡面/提示词/分层/04_点数位置微调.txt",
+      "sha256Before": "308678c82849f43571b5b1a611eca156a9230c50d838da00dca36ad21b69ea21",
+      "bytesBefore": 915,
+      "sha256After": "308678c82849f43571b5b1a611eca156a9230c50d838da00dca36ad21b69ea21",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/历史_红桃2整图布局.txt",
+      "target": "塔罗牌卡面/提示词/历史_红桃2整图布局.txt",
+      "sha256Before": "6cfdecf10829ab1be7f1c9a47e193997e556821013f3f80d3ea711f221da640b",
+      "bytesBefore": 1961,
+      "sha256After": "6cfdecf10829ab1be7f1c9a47e193997e556821013f3f80d3ea711f221da640b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/四花色/方块.txt",
+      "target": "塔罗牌卡面/提示词/四花色/方块.txt",
+      "sha256Before": "7994248f55ae034172ff6a3e54b7b16d25097f3bc7ea83578929fd99fccdf33d",
+      "bytesBefore": 1935,
+      "sha256After": "7994248f55ae034172ff6a3e54b7b16d25097f3bc7ea83578929fd99fccdf33d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/四花色/梅花.txt",
+      "target": "塔罗牌卡面/提示词/四花色/梅花.txt",
+      "sha256Before": "20956aa5e27bdfb150786aad08a4e08e096d965349c4f0592ce0a5f0e6056318",
+      "bytesBefore": 1997,
+      "sha256After": "20956aa5e27bdfb150786aad08a4e08e096d965349c4f0592ce0a5f0e6056318",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/四花色/红桃.txt",
+      "target": "塔罗牌卡面/提示词/四花色/红桃.txt",
+      "sha256Before": "74e8eb08512985040a52714f89143ebda52ceb85e6d1cf54ec72878882ad2103",
+      "bytesBefore": 1710,
+      "sha256After": "74e8eb08512985040a52714f89143ebda52ceb85e6d1cf54ec72878882ad2103",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/提示词/四花色/黑桃.txt",
+      "target": "塔罗牌卡面/提示词/四花色/黑桃.txt",
+      "sha256Before": "d3f5bbbc8b9359e2ab7104c355a97c8bd2c4a107c404ae7d4540f85b83c0fee8",
+      "bytesBefore": 1815,
+      "sha256After": "d3f5bbbc8b9359e2ab7104c355a97c8bd2c4a107c404ae7d4540f85b83c0fee8",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/分层与UI布局.md",
+      "target": "塔罗牌卡面/文档/分层与UI布局.md",
+      "sha256Before": "8b143f1bd96ddc5990740c1945aab60024766eddc203cfbbc4f23ba7ebf00cbe",
+      "bytesBefore": 1676,
+      "sha256After": "a1825fa5d0b41ad0e51486779b3aec938d312af42543459a6e33e69376a0f47e",
+      "contentChangedForRelocation": true
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/README.md",
+      "target": "塔罗牌卡面/文档/历史记录/README.md",
+      "sha256Before": "fd246994b0680c9c6c7ae91d67b6962e6f5f923cdd04cb61f3d61d6a4201ec81",
+      "bytesBefore": 1036,
+      "sha256After": "fd246994b0680c9c6c7ae91d67b6962e6f5f923cdd04cb61f3d61d6a4201ec81",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/adjust-rank.py.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/adjust-rank.py.txt",
+      "sha256Before": "f0e1d822e92de1ec887b160f9c5c1aad5ee61a29c8222e9ba1821fecb898fdd7",
+      "bytesBefore": 1464,
+      "sha256After": "f0e1d822e92de1ec887b160f9c5c1aad5ee61a29c8222e9ba1821fecb898fdd7",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/base-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/base-record.json",
+      "sha256Before": "367bbbfd67803ac10f4f0c23e6d56da86bfd32fad5424401b255efe7e28ed52f",
+      "bytesBefore": 1799,
+      "sha256After": "367bbbfd67803ac10f4f0c23e6d56da86bfd32fad5424401b255efe7e28ed52f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/compose.py.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/compose.py.txt",
+      "sha256Before": "e940403651f1bcf4a88baab7acf3049ad3099cf9edec93e1822473ee68530899",
+      "bytesBefore": 3911,
+      "sha256After": "e940403651f1bcf4a88baab7acf3049ad3099cf9edec93e1822473ee68530899",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/deliver-rank-v2.py.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/deliver-rank-v2.py.txt",
+      "sha256Before": "56cd01e73085dd4b75b8a65088b494623c1047fbdb11eb719195c6c63a739ea2",
+      "bytesBefore": 2156,
+      "sha256After": "56cd01e73085dd4b75b8a65088b494623c1047fbdb11eb719195c6c63a739ea2",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/deliver.py.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/deliver.py.txt",
+      "sha256Before": "22f47e68972b39b26ae1d6ea452e60f5f5db18ea57d9ea876e21812e0cf3e9f0",
+      "bytesBefore": 3849,
+      "sha256After": "22f47e68972b39b26ae1d6ea452e60f5f5db18ea57d9ea876e21812e0cf3e9f0",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/prepare.py.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/prepare.py.txt",
+      "sha256Before": "1ac5e77131b66c4c793688d730318f54b0ee7574acabb5b7be3827dd2f2fe0e0",
+      "bytesBefore": 962,
+      "sha256After": "1ac5e77131b66c4c793688d730318f54b0ee7574acabb5b7be3827dd2f2fe0e0",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-adjustment.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-adjustment.json",
+      "sha256Before": "c0800cb5c5054a224045b18f6191cbc84852449c39cbcc55edc3c280a14ffdcf",
+      "bytesBefore": 530,
+      "sha256After": "c0800cb5c5054a224045b18f6191cbc84852449c39cbcc55edc3c280a14ffdcf",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-record.json",
+      "sha256Before": "c39c0c438a20d9edaa5e4fc878cb7d8d6284c9d645d45ae1ed9f5aa7b7586fa0",
+      "bytesBefore": 1551,
+      "sha256After": "c39c0c438a20d9edaa5e4fc878cb7d8d6284c9d645d45ae1ed9f5aa7b7586fa0",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-shifted-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/rank-shifted-record.json",
+      "sha256Before": "c31ce3a862b20a9f420550bc37806c339a784c8dd8f70e03f08246e7f8391339",
+      "bytesBefore": 1256,
+      "sha256After": "c31ce3a862b20a9f420550bc37806c339a784c8dd8f70e03f08246e7f8391339",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/save-native.py.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/save-native.py.txt",
+      "sha256Before": "ff3f8df10de3c2883f7478edf0a6a98863b839e9ca241603c54491ec6bf24a32",
+      "bytesBefore": 1447,
+      "sha256After": "ff3f8df10de3c2883f7478edf0a6a98863b839e9ca241603c54491ec6bf24a32",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/suit-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/heart2-split/suit-record.json",
+      "sha256Before": "ec83c821150b1a7ac9718f5d722ba2447eee26236acb0e69e0613f5a598f3582",
+      "bytesBefore": 1462,
+      "sha256After": "ec83c821150b1a7ac9718f5d722ba2447eee26236acb0e69e0613f5a598f3582",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/club-soft-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/club-soft-record.json",
+      "sha256Before": "6c8fb9b72981d6a826afbea91a3244b950d2cb27b415ffd224eb6562fd896bec",
+      "bytesBefore": 793,
+      "sha256After": "6c8fb9b72981d6a826afbea91a3244b950d2cb27b415ffd224eb6562fd896bec",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/diamond-soft-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/diamond-soft-record.json",
+      "sha256Before": "1de7ddad1a91682aec7f45a9b9d2bc8fbfc63018e3183aac69941a418145881b",
+      "bytesBefore": 802,
+      "sha256After": "1de7ddad1a91682aec7f45a9b9d2bc8fbfc63018e3183aac69941a418145881b",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/finish-soft-set.ps1.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/finish-soft-set.ps1.txt",
+      "sha256Before": "c86c7e702440eb022d69b20e1540a9d6025791cfe64f2b8b8762baa9e42379fd",
+      "bytesBefore": 4890,
+      "sha256After": "c86c7e702440eb022d69b20e1540a9d6025791cfe64f2b8b8762baa9e42379fd",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/heart-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/heart-record.json",
+      "sha256Before": "3f39eeabca106ccbe130aae652c7818c9aba4098e166cb09c28d4875b9eb903d",
+      "bytesBefore": 782,
+      "sha256After": "3f39eeabca106ccbe130aae652c7818c9aba4098e166cb09c28d4875b9eb903d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/heart-soft-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/heart-soft-record.json",
+      "sha256Before": "44410eea094a5b4e16ec3df320afdd791a5fc381c853a6d075a850e67482728e",
+      "bytesBefore": 806,
+      "sha256After": "44410eea094a5b4e16ec3df320afdd791a5fc381c853a6d075a850e67482728e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/preview-script.js.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/preview-script.js.txt",
+      "sha256Before": "7852317994dd4566a4f3d81637b63f58896d72b73233c2b23b8d657ab5079010",
+      "bytesBefore": 1417,
+      "sha256After": "7852317994dd4566a4f3d81637b63f58896d72b73233c2b23b8d657ab5079010",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/save-generated-card.ps1.txt",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/save-generated-card.ps1.txt",
+      "sha256Before": "435ea9944bb96ea441861f2f2194cff385238bd7ead556a1d997f7018ae28bb2",
+      "bytesBefore": 4505,
+      "sha256After": "435ea9944bb96ea441861f2f2194cff385238bd7ead556a1d997f7018ae28bb2",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/spade-soft-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/tmp/imagegen/shan-v6/spade-soft-record.json",
+      "sha256Before": "0265e58f0a8bcd1b465c0043ef3b4f03f4dcb6a37c48b8da2862f878a1c7b819",
+      "bytesBefore": 808,
+      "sha256After": "0265e58f0a8bcd1b465c0043ef3b4f03f4dcb6a37c48b8da2862f878a1c7b819",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v1/generation-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v1/generation-record.json",
+      "sha256Before": "00677f40d023916147201ed33e319c045e3c5f21482b5c3e611103adef181243",
+      "bytesBefore": 5268,
+      "sha256After": "00677f40d023916147201ed33e319c045e3c5f21482b5c3e611103adef181243",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v1/prompt.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v1/prompt.txt",
+      "sha256Before": "9eb97baea602b7abf62b12e2240aa36e2c8f431526a2ecabdf5c884e4203bc96",
+      "bytesBefore": 1711,
+      "sha256After": "9eb97baea602b7abf62b12e2240aa36e2c8f431526a2ecabdf5c884e4203bc96",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/generation-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/generation-record.json",
+      "sha256Before": "21aedef7dcf63f79b36a30a32b5a4f75b239c8ebcf3fcb47118bd5e9b1c41f77",
+      "bytesBefore": 1273,
+      "sha256After": "21aedef7dcf63f79b36a30a32b5a4f75b239c8ebcf3fcb47118bd5e9b1c41f77",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/prompt.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/prompt.txt",
+      "sha256Before": "fe2674ca3430a2c474701c967d6df0ef7a0d56253a781181b1bce6a182d31328",
+      "bytesBefore": 1384,
+      "sha256After": "fe2674ca3430a2c474701c967d6df0ef7a0d56253a781181b1bce6a182d31328",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/README.md",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v2/README.md",
+      "sha256Before": "1a40b272069e1a82c797a939014a781c922c5aea4998dfe8d33591c88f0b1d94",
+      "bytesBefore": 645,
+      "sha256After": "1a40b272069e1a82c797a939014a781c922c5aea4998dfe8d33591c88f0b1d94",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/generation-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/generation-record.json",
+      "sha256Before": "324df23b5e7b1a3ab83745058f22dbcf621576526bb23976ca208c7bd1a6042f",
+      "bytesBefore": 1381,
+      "sha256After": "324df23b5e7b1a3ab83745058f22dbcf621576526bb23976ca208c7bd1a6042f",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/prompt.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/prompt.txt",
+      "sha256Before": "be2097af79be63c7daae78578ae23cb062523fa6a4f7d87eb81c97d3f26e3798",
+      "bytesBefore": 2050,
+      "sha256After": "be2097af79be63c7daae78578ae23cb062523fa6a4f7d87eb81c97d3f26e3798",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/README.md",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v4/README.md",
+      "sha256Before": "2fb4be6f9cc379f4c822ff80f415022a62c7cbc121fd737c105248f7c9cd49cc",
+      "bytesBefore": 676,
+      "sha256After": "2fb4be6f9cc379f4c822ff80f415022a62c7cbc121fd737c105248f7c9cd49cc",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/generation-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/generation-record.json",
+      "sha256Before": "eb71b78482f840b7909c0c12ef62e94c7b90b3adbd60c138bd1e2e5d586a5c8d",
+      "bytesBefore": 3809,
+      "sha256After": "eb71b78482f840b7909c0c12ef62e94c7b90b3adbd60c138bd1e2e5d586a5c8d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/preview.html.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/preview.html.txt",
+      "sha256Before": "3ab9430fd7a055f585f733888573048027c52590d45057801a976727aac2bc9c",
+      "bytesBefore": 1617,
+      "sha256After": "3ab9430fd7a055f585f733888573048027c52590d45057801a976727aac2bc9c",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/README.md",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/README.md",
+      "sha256Before": "64bf42ab52351a1f6252c1051684501e7e753b526e5c24021178bcac2c8d2fb4",
+      "bytesBefore": 822,
+      "sha256After": "64bf42ab52351a1f6252c1051684501e7e753b526e5c24021178bcac2c8d2fb4",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/方块.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/方块.txt",
+      "sha256Before": "a7cceca589c73cac506d66968440f8fc46aff8cbced42e6573c5071edd0e3cbd",
+      "bytesBefore": 1419,
+      "sha256After": "a7cceca589c73cac506d66968440f8fc46aff8cbced42e6573c5071edd0e3cbd",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/梅花.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/梅花.txt",
+      "sha256Before": "6c44d29045cf629ae4e662d782cd7297958c6ade806ce655ecf8ac3bca9371d6",
+      "bytesBefore": 1516,
+      "sha256After": "6c44d29045cf629ae4e662d782cd7297958c6ade806ce655ecf8ac3bca9371d6",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/红桃.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/红桃.txt",
+      "sha256Before": "1d65957e88ec9420203fa223193dfac8dc3e07599f23efc3433c2fea5a82bfdf",
+      "bytesBefore": 1724,
+      "sha256After": "1d65957e88ec9420203fa223193dfac8dc3e07599f23efc3433c2fea5a82bfdf",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/黑桃.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v5_四花色/提示词/黑桃.txt",
+      "sha256Before": "8f81ba661cd046ffbbc68bc2f9afb37c2e4c05e66959c6ab807d0117acd21bac",
+      "bytesBefore": 1748,
+      "sha256After": "8f81ba661cd046ffbbc68bc2f9afb37c2e4c05e66959c6ab807d0117acd21bac",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/README.md",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/README.md",
+      "sha256Before": "d36fa37e8d198960137ed2473d4e085d18390a357f6d1d86b75fcf45c1a64f55",
+      "bytesBefore": 383,
+      "sha256After": "d36fa37e8d198960137ed2473d4e085d18390a357f6d1d86b75fcf45c1a64f55",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/提示词/红桃.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/提示词/红桃.txt",
+      "sha256Before": "f5bcb9e2d69f67c1796df947ba5d9b91ae584e1b54c0defff18d03f7a9366c2e",
+      "bytesBefore": 1567,
+      "sha256After": "f5bcb9e2d69f67c1796df947ba5d9b91ae584e1b54c0defff18d03f7a9366c2e",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/generation-record.json",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/generation-record.json",
+      "sha256Before": "8e5c6ef3329b4452490dd3f13da0ef1409aeb7a15facfab459bb3e95218a602d",
+      "bytesBefore": 6119,
+      "sha256After": "8e5c6ef3329b4452490dd3f13da0ef1409aeb7a15facfab459bb3e95218a602d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/preview.html.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/preview.html.txt",
+      "sha256Before": "bfb1c3f09a74548de21ff29d8deef267fab5e99e35436cce1711f305d3543fca",
+      "bytesBefore": 4712,
+      "sha256After": "bfb1c3f09a74548de21ff29d8deef267fab5e99e35436cce1711f305d3543fca",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/README.md",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/README.md",
+      "sha256Before": "cb103d563fc1f1263c1996d52f552ca4a425ed1e0b95bcca5e2d0c91a51393cb",
+      "bytesBefore": 4286,
+      "sha256After": "cb103d563fc1f1263c1996d52f552ca4a425ed1e0b95bcca5e2d0c91a51393cb",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/方块.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/方块.txt",
+      "sha256Before": "7994248f55ae034172ff6a3e54b7b16d25097f3bc7ea83578929fd99fccdf33d",
+      "bytesBefore": 1935,
+      "sha256After": "7994248f55ae034172ff6a3e54b7b16d25097f3bc7ea83578929fd99fccdf33d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/梅花.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/梅花.txt",
+      "sha256Before": "20956aa5e27bdfb150786aad08a4e08e096d965349c4f0592ce0a5f0e6056318",
+      "bytesBefore": 1997,
+      "sha256After": "20956aa5e27bdfb150786aad08a4e08e096d965349c4f0592ce0a5f0e6056318",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/红桃.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/红桃.txt",
+      "sha256Before": "74e8eb08512985040a52714f89143ebda52ceb85e6d1cf54ec72878882ad2103",
+      "bytesBefore": 1710,
+      "sha256After": "74e8eb08512985040a52714f89143ebda52ceb85e6d1cf54ec72878882ad2103",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/黑桃.txt",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/提示词/黑桃.txt",
+      "sha256Before": "d3f5bbbc8b9359e2ab7104c355a97c8bd2c4a107c404ae7d4540f85b83c0fee8",
+      "bytesBefore": 1815,
+      "sha256After": "d3f5bbbc8b9359e2ab7104c355a97c8bd2c4a107c404ae7d4540f85b83c0fee8",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/README.md",
+      "target": "塔罗牌卡面/文档/历史记录/卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_分层/README.md",
+      "sha256Before": "663a0d62c611f373487dad726ae48972dee53bcf0552620f6975bb501da01a01",
+      "bytesBefore": 9819,
+      "sha256After": "663a0d62c611f373487dad726ae48972dee53bcf0552620f6975bb501da01a01",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/文档/整理记录.json",
+      "target": "塔罗牌卡面/文档/整理记录.json",
+      "sha256Before": "18a112e50abe7a00dc68cc83ef076867646d1c67e7e33cb7f9b9e2cc687cb7be",
+      "bytesBefore": 57203,
+      "sha256After": "d7abebb81627b490422d208b43509b0a15439b9c4200c68d32b30f9132b33893",
+      "contentChangedForRelocation": true
+    },
+    {
+      "source": "塔罗牌卡面/文档/来源与兼容边界.md",
+      "target": "塔罗牌卡面/文档/来源与兼容边界.md",
+      "sha256Before": "805760dc2cdd06ac1a64f918f00f955bc02b9c3e3da25ea2b3438adc2081be2d",
+      "bytesBefore": 1689,
+      "sha256After": "298fd226aae831dc5f9423209531a1cc4ca99c67b9685215a7d3e8a35e140b0c",
+      "contentChangedForRelocation": true
+    },
+    {
+      "source": "塔罗牌卡面/文档/设计说明.md",
+      "target": "塔罗牌卡面/文档/设计说明.md",
+      "sha256Before": "e3dd1a162853f0784c92bf4c5531c199de24a6f3d39692548f59f4cdd7530123",
+      "bytesBefore": 1735,
+      "sha256After": "e3dd1a162853f0784c92bf4c5531c199de24a6f3d39692548f59f4cdd7530123",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/红桃2分层/heart.png",
+      "target": "塔罗牌卡面/红桃2分层/heart.png",
+      "sha256Before": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "bytesBefore": 2235,
+      "sha256After": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/红桃2分层/layout.json",
+      "target": "塔罗牌卡面/红桃2分层/layout.json",
+      "sha256Before": "3bc050610cb74de97e8bdce915fd1a7879b2716a2d5266599d0db907322e34bd",
+      "bytesBefore": 3220,
+      "sha256After": "3bc050610cb74de97e8bdce915fd1a7879b2716a2d5266599d0db907322e34bd",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/红桃2分层/red_2.png",
+      "target": "塔罗牌卡面/红桃2分层/red_2.png",
+      "sha256Before": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058",
+      "bytesBefore": 1685,
+      "sha256After": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/红桃2分层/Shan_heart_base.png",
+      "target": "塔罗牌卡面/红桃2分层/Shan_heart_base.png",
+      "sha256Before": "75612a0ec5c2c28becc8f8aea48427d33f8a986dce85c9f565a1a5a24593e45a",
+      "bytesBefore": 105398,
+      "sha256After": "75612a0ec5c2c28becc8f8aea48427d33f8a986dce85c9f565a1a5a24593e45a",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "塔罗牌卡面/红桃2分层/分层预览.png",
+      "target": "塔罗牌卡面/红桃2分层/分层预览.png",
+      "sha256Before": "c0d48a5ad5e41de9553e8c250e965e9317bed75915bab9d71c04a7d49703c356",
+      "bytesBefore": 605124,
+      "sha256After": "c0d48a5ad5e41de9553e8c250e965e9317bed75915bab9d71c04a7d49703c356",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "tmp/card-face-inspection/verification.json",
+      "target": "资料/点数花色调查/verification.json",
+      "sha256Before": "9171bf904d76d60b72ec520df9518c05e6ed3106cac99ef5f65a0a7044101f9d",
+      "bytesBefore": 2190,
+      "sha256After": "9171bf904d76d60b72ec520df9518c05e6ed3106cac99ef5f65a0a7044101f9d",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "tmp/card-face-inspection/verify.cjs",
+      "target": "资料/点数花色调查/verify.cjs",
+      "sha256Before": "116874928b6cdae1db51fc98ed840e8123d4c2c16da9c84204a85ba581383f0a",
+      "bytesBefore": 7830,
+      "sha256After": "bc22e9e747bda84618312631dacb5ca810aa0fca0169f446a3f241e5e98cf955",
+      "contentChangedForRelocation": true
+    },
+    {
+      "source": "tmp/tarot-asset-cleanup/organize.py",
+      "target": "资料/上一轮整理脚本/organize.py",
+      "sha256Before": "2665357dbe419f9af50ed52bd1cf6098a453cdc1b117986d46b02e7944e79779",
+      "bytesBefore": 18185,
+      "sha256After": "2665357dbe419f9af50ed52bd1cf6098a453cdc1b117986d46b02e7944e79779",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "tmp/tarot-asset-cleanup/preview-check.js",
+      "target": "资料/上一轮整理脚本/preview-check.js",
+      "sha256Before": "97f0dd992931c90edc9ef7a57cc473a44aad8a3b728def0d9d57cf1adb932655",
+      "bytesBefore": 1111,
+      "sha256After": "97f0dd992931c90edc9ef7a57cc473a44aad8a3b728def0d9d57cf1adb932655",
+      "contentChangedForRelocation": false
+    },
+    {
+      "source": "tmp/tarot-asset-cleanup/preview-template.html",
+      "target": "资料/上一轮整理脚本/preview-template.html",
+      "sha256Before": "ad3e3dc2cd1a60d44299ed0a2870940b9e1ff1489018aff5872d1e7fcd22b6f9",
+      "bytesBefore": 5206,
+      "sha256After": "ad3e3dc2cd1a60d44299ed0a2870940b9e1ff1489018aff5872d1e7fcd22b6f9",
+      "contentChangedForRelocation": false
+    }
+  ],
+  "completedAt": "2026-10-20T17:47:46.405472+00:00",
+  "verification": {
+    "movedImagesHashUnchanged": 174,
+    "relativeLinksChecked": 390,
+    "originalImageReadable": true
+  }
+}

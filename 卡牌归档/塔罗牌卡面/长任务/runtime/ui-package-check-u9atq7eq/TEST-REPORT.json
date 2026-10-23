@@ -1,0 +1,16 @@
+{
+  "cardValidated": 16,
+  "uiValidated": 17,
+  "combinations": 52,
+  "readOnlyPreflightFilesUnchanged": true,
+  "copy": {
+    "verifiedExports": 17,
+    "copiedFiles": 100,
+    "relativePathsVerified": true,
+    "rgbaReadback": "passed"
+  },
+  "existingPackageOverwriteRejected": true,
+  "previewUsesDeliveredCardPath": true,
+  "staging": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\runtime\\ui-package-check-u9atq7eq",
+  "fullAtlasBuildPerformed": false
+}

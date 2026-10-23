@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "taskId": "ZhuaHuangFeiDian_png__heart",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:ZhuaHuangFeiDian_png__heart:v1]",
+  "status": "reviewed",
+  "savedAt": "2026-10-21T08:45:27.326489+00:00",
+  "generatedAt": "2026-10-21T08:45:13.883Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_0a17ce68a49003f9016ad87b6bf26087d0a76af6c3dba31c07",
+  "prompt": "[TAROT-PROD:ZhuaHuangFeiDian_png__heart:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the heart family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"爪黄飞电\". Exactly 2 columns by 2 rows: top \"爪黄\", bottom \"飞电\"; read across each row, whole block centered. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "revisedPrompt": "[TAROT-PROD:ZhuaHuangFeiDian_png__heart:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the heart family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"爪黄飞电\". Exactly 2 columns by 2 rows: top \"爪黄\", bottom \"飞电\"; read across each row, whole block centered. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "sourceCard": {
+    "id": "ZhuaHuangFeiDian_png__heart",
+    "resourceKey": "ZhuaHuangFeiDian_png",
+    "suitValue": 1,
+    "suit": "heart",
+    "suitName": "红桃",
+    "originalName": "爪黄飞电",
+    "originalNames": [
+      "爪黄飞电"
+    ],
+    "displayName": "爪黄飞电",
+    "layout": "2x2-left-to-right-row-major",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      52,
+      1054,
+      1235,
+      3052,
+      7037,
+      12091,
+      20224,
+      20601,
+      20602,
+      20603,
+      20604,
+      20605,
+      31151,
+      60224
+    ],
+    "representativeCardId": 52,
+    "representativeNumber": 13,
+    "representativeRank": "K",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 51
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 13,
+        "rank": "K",
+        "cardIds": [
+          52,
+          1054,
+          1235,
+          3052,
+          7037,
+          12091,
+          20224,
+          20601,
+          20602,
+          20603,
+          20604,
+          20605,
+          31151,
+          60224
+        ]
+      }
+    ],
+    "type": 3,
+    "subType": 3,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "392_2416_186_260",
+    "sharedFrameNames": [
+      "ZhuaHuangFeiDian_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/ZhuaHuangFeiDian_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 22
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_0a17ce68a49003f9016ad87b6bf26087d0a76af6c3dba31c07",
+    "timestamp": "2026-10-21T08:45:13.883Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T16-43-45-01a15da1-765b-7470-90ac-b4c6ba357add.jsonl",
+    "line": 40
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\ZhuaHuangFeiDian_png__heart\\v1.png",
+    "bytes": 2331389,
+    "sha256": "6ba0988bda78b8540e700bacb7a9238b6d1de4c27aa0c7221ddabc8d2081d87d",
+    "rgbaSha256": "fd669507ebdac258d5dc47957b26322b4eecf6f2af6668574f65a7c6f570f9e7",
+    "size": [
+      1061,
+      1483
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\ZhuaHuangFeiDian_png__heart\\v1_186x260.png",
+    "bytes": 113208,
+    "sha256": "cb7da003251796ae17b6ed0e08a34c1a11c5fe4f4bc68db7977417c6ef14194b",
+    "rgbaSha256": "b51cbc830cfc0fc54389fe31ebeda18a8a73be2a2df2c680e0168e1b2342abf0",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "nativeMode": "RGB",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 7.975695879469669e-05,
+  "reviews": [
+    {
+      "at": "2026-10-21T08:45:51.039349+00:00",
+      "result": "accepted-offline",
+      "note": "已实际查看186×260交付PNG一次：标题为爪黄／飞电，2×2横读字序正确、四字完整清晰；上中及右上红桃正确；按任务无右下徽记；左上x8..46、y8..72仅连续自然暗红黑底纹与最外框，无点数、功能小花色、内金线悬饰或有边界补丁；完整外框，主体与装饰间距合理。内置image_gen使用prepare冻结提示词生成，验收通过。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": {
+    "native": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\ZhuaHuangFeiDian_png__heart.png",
+      "bytes": 2331389,
+      "sha256": "6ba0988bda78b8540e700bacb7a9238b6d1de4c27aa0c7221ddabc8d2081d87d",
+      "rgbaSha256": "fd669507ebdac258d5dc47957b26322b4eecf6f2af6668574f65a7c6f570f9e7",
+      "size": [
+        1061,
+        1483
+      ],
+      "mode": "RGB",
+      "format": "PNG"
+    },
+    "export": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\ZhuaHuangFeiDian_png__heart.png",
+      "bytes": 113208,
+      "sha256": "cb7da003251796ae17b6ed0e08a34c1a11c5fe4f4bc68db7977417c6ef14194b",
+      "rgbaSha256": "b51cbc830cfc0fc54389fe31ebeda18a8a73be2a2df2c680e0168e1b2342abf0",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "format": "PNG"
+    }
+  },
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "awaiting-parent-commit"
+}

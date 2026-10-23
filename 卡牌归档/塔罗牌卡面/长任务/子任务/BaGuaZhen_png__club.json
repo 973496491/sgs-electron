@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "taskId": "BaGuaZhen_png__club",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:BaGuaZhen_png__club:v1]",
+  "status": "reviewed",
+  "savedAt": "2026-10-21T09:07:33.307580+00:00",
+  "generatedAt": "2026-10-21T09:07:30.407Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_0141b8a8a0c01f64016ad880a5a96087d0a1c13f08033f75d9",
+  "prompt": "[TAROT-PROD:BaGuaZhen_png__club:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the club family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"八卦阵\". All 3 characters in one horizontal left-to-right line; center the group without stretching glyphs. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "revisedPrompt": "[TAROT-PROD:BaGuaZhen_png__club:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the club family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"八卦阵\". All 3 characters in one horizontal left-to-right line; center the group without stretching glyphs. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "sourceCard": {
+    "id": "BaGuaZhen_png__club",
+    "resourceKey": "BaGuaZhen_png",
+    "suitValue": 4,
+    "suit": "club",
+    "suitName": "梅花",
+    "originalName": "八卦阵",
+    "originalNames": [
+      "八卦阵"
+    ],
+    "displayName": "八卦阵",
+    "layout": "horizontal",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      67,
+      3067,
+      11067,
+      12067,
+      20213,
+      20556,
+      20557,
+      20558,
+      20559,
+      20560,
+      31153,
+      31154,
+      60213,
+      61001
+    ],
+    "representativeCardId": 67,
+    "representativeNumber": 2,
+    "representativeRank": "2",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 66
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 2,
+        "rank": "2",
+        "cardIds": [
+          67,
+          3067,
+          11067,
+          12067,
+          20213,
+          20556,
+          20557,
+          20558,
+          20559,
+          20560,
+          31153,
+          31154,
+          60213,
+          61001
+        ]
+      }
+    ],
+    "type": 3,
+    "subType": 2,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "406_4_186_260",
+    "sharedFrameNames": [
+      "BaGuaZhen_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/BaGuaZhen_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 27
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_0141b8a8a0c01f64016ad880a5a96087d0a1c13f08033f75d9",
+    "timestamp": "2026-10-21T09:07:30.407Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T17-05-47-01a15db5-a058-7440-819f-ef7ba51e4614.jsonl",
+    "line": 51
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\BaGuaZhen_png__club\\v1.png",
+    "bytes": 2370755,
+    "sha256": "3577fca426293f2494e80ff24892f41facca34367f79845334b7bb013a58a46d",
+    "rgbaSha256": "45ab78993431af001d3fe6e16212bb437da94ecf42ef4ea649691af8f45ee282",
+    "size": [
+      1062,
+      1482
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\BaGuaZhen_png__club\\v1_186x260.png",
+    "bytes": 109479,
+    "sha256": "a83625740142d77285f254bbcbc3318708a924d2fde85d9894fe27a0acaeaa2e",
+    "rgbaSha256": "32fcce4b6aedb1d64dd85f426d1fa1d53ebea209a14e49f9a286b60a553835fb",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1062,
+    1482
+  ],
+  "nativeMode": "RGB",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 0.001697792869269854,
+  "reviews": [
+    {
+      "at": "2026-10-21T09:07:59.032791+00:00",
+      "result": "accepted-offline",
+      "note": "已实际查看186×260交付PNG一次：标题为简体八卦阵，三字自左至右单行横排，笔画完整、间距均衡且可识别；上中与右上梅花装饰保留；右下无徽记或残留圆环；左上x8..46、y8..72为自然连续暗底，无点数、功能花色、内金线或悬饰，无有边界补丁；外框完整，中央文字与上下装饰间距充足。视觉检查通过，无须额外局部检查。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": {
+    "native": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\BaGuaZhen_png__club.png",
+      "bytes": 2370755,
+      "sha256": "3577fca426293f2494e80ff24892f41facca34367f79845334b7bb013a58a46d",
+      "rgbaSha256": "45ab78993431af001d3fe6e16212bb437da94ecf42ef4ea649691af8f45ee282",
+      "size": [
+        1062,
+        1482
+      ],
+      "mode": "RGB",
+      "format": "PNG"
+    },
+    "export": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\BaGuaZhen_png__club.png",
+      "bytes": 109479,
+      "sha256": "a83625740142d77285f254bbcbc3318708a924d2fde85d9894fe27a0acaeaa2e",
+      "rgbaSha256": "32fcce4b6aedb1d64dd85f426d1fa1d53ebea209a14e49f9a286b60a553835fb",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "format": "PNG"
+    }
+  },
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "awaiting-parent-commit"
+}

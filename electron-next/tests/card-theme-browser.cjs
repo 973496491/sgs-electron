@@ -20,7 +20,7 @@ for (const name of [...Object.values(manifest.faces).flatMap(Object.values), ...
   ...Object.values(manifest.suits)].filter(Boolean))
   assets[name] = { ok: true, dataUrl: 'data:image/png;base64,' + fs.readFileSync(path.join(assetRoot, name)).toString('base64') };
 const originals = {};
-for (const key of ['Shan', 'HanBingJian', 'Sha']) originals[key + '_png'] =
+for (const key of ['Shan', 'HanBingJian', 'WuXieKeJi']) originals[key + '_png'] =
   'data:image/png;base64,' + fs.readFileSync(path.join(repo, '卡牌归档/卡牌拆分/cards', key + '_png.png')).toString('base64');
 function sourceSlice(start, end) {
   const a = source.indexOf(start), b = source.indexOf(end, a + start.length);
@@ -116,7 +116,7 @@ function fixture() {
   }
   for (const [resource, flower, number, title] of [
     ['Shan', 1, 2, '红桃闪 · 三层'], ['Shan', 2, 2, '方块闪 · 共用点数2'],
-    ['HanBingJian', 3, 2, '寒冰剑 · 原花色图层'], ['Sha', 1, 7, '杀 · 原始图层'],
+    ['HanBingJian', 3, 2, '寒冰剑 · 共用点数2'], ['WuXieKeJi', 1, 7, '无懈可击 · 原始图层'],
   ]) {
     const card = document.createElement('div'); card.className = 'sample';
     const front = document.createElement('div'); front.className = 'front'; card.appendChild(front);
@@ -154,7 +154,7 @@ async function runChecks() {
       views[0].bmpFace.texture.height === 130 && views[0].bmpFace.texture.sourceHeight === 130,
       '2x PNG retains full UVs with consistent logical source and display sizes');
     assertCheck(views[0].bmpNumber.texture === views[2].bmpNumber.texture, 'shared red/black number texture');
-    assertCheck(views[3].bmpFace.texture.image.src === originalPngs.Sha_png, 'unlisted face stays original');
+    assertCheck(views[3].bmpFace.texture.image.src === originalPngs.WuXieKeJi_png, 'unlisted face stays original');
     const contentKeys = ['bmpFace2', 'bmpNormalName', 'bmpNameBg', 'bmpName', 'bmpCardType', 'bmpSmallDesc'];
     assertCheck(views.slice(0, 3).every(ui => contentKeys.every(key => !ui[key].visible)), 'native illustration/title layers hidden above tarot');
     assertCheck(views[3].bmpFace2.visible && views[3].bmpNormalName.visible, 'unlisted card keeps native split layers');
@@ -186,7 +186,7 @@ const html = '<!doctype html><meta charset="utf-8"><style>' + style +
   '.xc-test-native-name{position:absolute;left:45px;top:0;width:141px;height:100px;overflow:hidden}.xc-test-native-name img{position:absolute;left:-45px;top:0;width:186px;height:260px}' +
   '.xc-test-native-bg,.xc-test-native-type,.xc-test-native-desc{position:absolute;bottom:4px;left:4px}' +
   '#result{text-align:center;font-size:13px;color:#b4c6a8}.note{text-align:center;color:#a9a4a0;font-size:13px}</style>' +
-  '<h1>塔罗第一阶段 · 本地分层预览</h1><p class="note">设置面板与PNG加载实测；下方为模拟牌UI，非游戏截图。</p>' +
+  '<h1>塔罗卡面 · 本地分层预览</h1><p class="note">设置面板与PNG加载实测；下方为模拟牌UI，非游戏截图。</p>' +
   '<input id="cardBackThemeSwitch" type="checkbox" hidden>' + markup.slice(dialogStart, dialogEnd) +
   '<div id="cards"></div><pre id="result">PENDING</pre><script>const decoded=' + JSON.stringify(mappings) +
   ';const nativeContentSource=' + JSON.stringify(nativeContentMethod) +

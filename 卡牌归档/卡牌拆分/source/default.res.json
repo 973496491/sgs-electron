@@ -1,0 +1,4511 @@
+{
+    "groups": [
+        {
+            "keys": "mainLoading_atlas",
+            "name": "mainLoading"
+        },
+        {
+            "keys": "baseUI_atlas,tipCommon_atlas,smallBaseUI_atlas,newWindowBg,common_get_prop_bg,generals_atlas,bigSkin_atlas,chat,sound_atlas,guild_atlas,lamp_atlas,tip_atlas,cardsNew_atlas,activityCards_atlas,newPaiWeiFlags_atlas",
+            "name": "preload"
+        },
+        {
+            "keys": "GameMode_json,CityConfig_json,hd_rog_open_json,JuBaoPen_json,ServerList_config,traitRefined_json,shenwu_json,GameGlobalConfig_json,h5_officer_Json,Cards_json,hd_all_active_json,ZongHeConfig_json,week_general_json,hd_rog_open_json,mod_barenshenfen_json,mod_wurenshenfen_json,character_json,gn_paijuhudong_json,Skills_json,SpellExtend_json,goodsbaseinfo_json,Shop_json,WallPaper_json,Text_Json,GeneralSkin_json,special_json,lamp_json,GoodsCompose_json,zhibo_config,AvatarShow_json,Level_json,Task_json,TaskSpecial_json,JingCaiShiKe_json,guild_json,Achievement_json,officials_json,Sound_json,dbs_giftbag_json,dbs_pay_gift_json,dbs_generaltree_json,h5_bar_control_json,competition_json,mentorconfig_json,qifuConfig_json,GuildMatch_json,dbs_market_json,mod_elite_race_json,elite_ttrank_json,gn_generalcheckin_json,dbs_coupon_cfg_json,fight_lord_config,1v1_rogue_config,general_chest_info_config_json,ActivityCBPReward_json,RksRank_json,swjg_config,NewbieStep_json,longzhouhuizhan,treasure_new_json,lottery_new_json,shidianyanluo,sbm_challenge_match,guan_du_zhi_zhan_config,nianshou_config,mastery_config,report_new,ttrank_json,exchange_new_json,channelGroup_json,jinlanjie_json,server_item_drops_json,taskdaily_Json,treasure_chest_json,seven_task_json,general_trial_json,point_race_json,reli_config,transpond_json,special1v1_json,oldBack_json,newoldBack_json,new_fuli_json,chess_json,mod33_json,gn_recommend_json,chongzhitips,sys_appearance_json,roguelike_json,ff_tiangong_config,SysH5Quest_json,GamePause_json,TaskMain_json,characterSelect_json,general_stars,ff_skin_chest_info_config_json,invitation_json,invitation2_json,gn_country_json,mod_AIGame_json,characterlabel_json,gamemedal_json,gn_share_json,freeGeneral_json,sys_NewShopItem_json,hd_cha_monthlycard_json,gn_charactershow_json,qifu_new_json,hd_officer_run_json,hd_officer_run3_json,ff_seckill_new_json,cfg_goods_source_json,gn_itempath_json,sys_laya_v4fuli_json,hd_dafuwen_json",
+            "name": "config"
+        },
+        {
+            "keys": "modeselect_atlas,modeselect1_atlas,ShareShotBtn_atlas,prezhuti_atlas,hall_atlas",
+            "name": "modeselect"
+        },
+        {
+            "keys": "offlineMatch_atlas,ShareShotBtn_atlas,tianti_atlas",
+            "name": "offlineMatchJoin"
+        },
+        {
+            "keys": "guanshifish_atlas",
+            "name": "guanshifish"
+        },
+        {
+            "keys": "obGameResult_atlas",
+            "name": "obGameResult"
+        },
+        {
+            "keys": "recharge_atlas,recharge0_atlas",
+            "name": "recharge"
+        },
+        {
+            "keys": "wallPaperWindow_atlas,simpleActRcd_atlas,skillWin_atlas,seat_atlas,seatDead_atlas,seatState_atlas,selfseat_atlas,seatbottom_atlas,gameBase_atlas,gusheWords_atlas,sjybEffect_atlas,takeShot_atlas,wallpaper_rect_mask",
+            "name": "game"
+        },
+        {
+            "keys": "jichupai1_sk,jichupai2_sk,fangjuzhuangbei_sk,jinengfenlei_sk,jinengfenlei2_sk,jinnang1_sk,jinnang2_sk,jinnang3_sk,wuqizhuangbei_sk,yidianjiang_sk",
+            "name": "gameAnimate"
+        },
+        {
+            "keys": "mvp_atlas,zhanjiNew_atlas,mvpBg_atlas",
+            "name": "mvp"
+        },
+        {
+            "keys": "duanzao_atlas",
+            "name": "duanzao"
+        },
+        {
+            "keys": "suisui_atlas,suisui_bg_back,suisui_cover_bottom,suisui_cover_icon,suisui_cover_top",
+            "name": "suisui"
+        },
+        {
+            "keys": "qmbzGame_atlas",
+            "name": "qmbzGame"
+        },
+        {
+            "keys": "banCountry_atlas,kaijujinpc_01_sk",
+            "name": "banCountry"
+        },
+        {
+            "keys": "jiangdengshouji_sk,countryBg_atlas,generalSkinGet_atlas",
+            "name": "lampOpen"
+        },
+        {
+            "keys": "generalSkinGet_atlas",
+            "name": "generalSkinGet"
+        },
+        {
+            "keys": "officer_uplevel_bg",
+            "name": "officerUpLvBg"
+        },
+        {
+            "keys": "interactProp_atlas",
+            "name": "interactProp"
+        },
+        {
+            "keys": "qrshare_atlas",
+            "name": "qrshare"
+        },
+        {
+            "keys": "23guang_sk,45guang_sk,nanshengjie_sk,nvshengjie_sk",
+            "name": "generalUp"
+        },
+        {
+            "keys": "zhenfaji_atlas",
+            "name": "zhenfaji"
+        },
+        {
+            "keys": "nsnewyear_atlas",
+            "name": "nsnewyear"
+        },
+        {
+            "keys": "ddzgame_atlas",
+            "name": "ddzgame"
+        },
+        {
+            "keys": "zgsgame_atlas",
+            "name": "zgsgame"
+        },
+        {
+            "keys": "sdylGame_atlas",
+            "name": "sdylGame"
+        },
+        {
+            "keys": "rogue1v1Game_atlas, roguelike_atlas",
+            "name": "rogue1v1Game"
+        },
+        {
+            "keys": "zhuanchangzi_sk,jieduan_sk",
+            "name": "paiwei"
+        },
+        {
+            "keys": "tongshuai_atlas",
+            "name": "tongshuai"
+        },
+        {
+            "keys": "hall_atlas,matcheffect_atlas,dianjiang_atlas,matchSucBg_jpg,limitTimeAct_atlas",
+            "name": "hall"
+        },
+        {
+            "keys": "hallMatch_atlas,matchBase_atlas",
+            "name": "hallMatch"
+        },
+        {
+            "keys": "tianti_atlas,matcheffect_atlas,matchSucBg_jpg,matchSuccess_atlas",
+            "name": "tianti"
+        },
+        {
+            "keys": "matchSuccess_atlas",
+            "name": "matchSuccess"
+        },
+        {
+            "keys": "cbp_atlas",
+            "name": "cbp"
+        },
+        {
+            "keys": "ddz_atlas",
+            "name": "ddz"
+        },
+        {
+            "keys": "ddz_atlas,ddzJbs_atlas,rank_atlas,rankCommon_atlas,tianti_atlas,matcheffect_atlas,newPaiWei_atlas,liansheng_atlas,zgs_atlas,hallicon_atlas,ddz_img_117,ddz_zhaomu_bg",
+            "name": "ddz2023"
+        },
+        {
+            "keys": "ddz_winInfo_atlas,highlight_main_atlas",
+            "name": "ddzWinInfo"
+        },
+        {
+            "keys": "zgs_atlas",
+            "name": "zgs"
+        },
+        {
+            "keys": "qldj_atlas,qianlidanqiguanyubeijing_sk,qianlidanqiguanyu_sk,seat_atlas,seatbottom_atlas",
+            "name": "qldj"
+        },
+        {
+            "keys": "labeltex_atlas",
+            "name": "labeltex"
+        },
+        {
+            "keys": "swjg_atlas, sdyl_atlas",
+            "name": "swjg"
+        },
+        {
+            "keys": "swjgaward_atlas",
+            "name": "swjgaward"
+        },
+        {
+            "keys": "table_atlas,dianjiang_atlas,matcheffect_atlas,matchSucBg_jpg,limitTimeAct_atlas,hall_atlas",
+            "name": "table"
+        },
+        {
+            "keys": "offlineMatchTable_atlas",
+            "name": "offlineMatchTable"
+        },
+        {
+            "keys": "huLaoGuanTable_atlas",
+            "name": "huLaoGuanTable"
+        },
+        {
+            "keys": "gameover_atlas,shengli_sk,shousheng_sk,roguelikezhanji_atlas,generalSkinGet_atlas",
+            "name": "gameover"
+        },
+        {
+            "keys": "zhanjiNew_atlas,zhanji_bgDown,zhanjiBg_atlas",
+            "name": "zhanji"
+        },
+        {
+            "keys": "guidePreface_atlas",
+            "name": "guidePreface"
+        },
+        {
+            "keys": "guide_atlas",
+            "name": "guide"
+        },
+        {
+            "keys": "guideNew_atlas, guide_new_zhaoyun, guide_new_wuhujiang",
+            "name": "guideNew"
+        },
+        {
+            "keys": "newSecKill_atlas, newSecKill_General_Bg, newSecKill_Item_Bg, newSecKill_ItemBetter_Bg",
+            "name": "newSecKill"
+        },
+        {
+            "keys": "generalInfo_atlas,generalskin_atlas,chrlb_atlas,generalinfoBg_atlas,generalBattle_atlas",
+            "name": "generalInfo"
+        },
+        {
+            "keys": "chrlb_atlas",
+            "name": "chrlb"
+        },
+        {
+            "keys": "generalprivilegeinfo_atlas",
+            "name": "generalprivilegeinfo"
+        },
+        {
+            "keys": "obGame_atlas",
+            "name": "obGame"
+        },
+        {
+            "keys": "createUser_atlas,create_user_bg,create_user_man_bg,create_user_man_dark,create_user_man_light,create_user_woman_bg,create_user_woman_dark,create_user_woman_light",
+            "name": "createUser"
+        },
+        {
+            "keys": "newbieQA_atlas,newbieQA_text_bg",
+            "name": "newbieQA"
+        },
+        {
+            "keys": "directpay_atlas",
+            "name": "directpay"
+        },
+        {
+            "keys": "xxf_atlas",
+            "name": "xxf"
+        },
+        {
+            "keys": "chess_atlas,chess_win_bg,chess_win_chess_panel_bg,chess_full_mask,chessRank_atlas,ShareShotBtn_atlas,gameBase_atlas",
+            "name": "chess"
+        },
+        {
+            "keys": "upgradeWinNew_atlas",
+            "name": "upgradeWinNew"
+        },
+        {
+            "keys": "userInfo_atlas,achievement_atlas,vivid_atlas,zhangongkuang_sk,newPaiWeiFlag_atlas,bag_show_bg,ddz_winInfo_atlas,highlight_main_atlas",
+            "name": "userInfo"
+        },
+        {
+            "keys": "lamp_atlas",
+            "name": "lamp"
+        },
+        {
+            "keys": "lampCollect_atlas",
+            "name": "lampCollect"
+        },
+        {
+            "keys": "taskBuyScore_atlas",
+            "name": "taskBuyScore"
+        },
+        {
+            "keys": "taskChapterAward_atlas",
+            "name": "taskChapterAward"
+        },
+        {
+            "keys": "feigechuanshu_sk",
+            "name": "mail"
+        },
+        {
+            "keys": "shop_atlas,shopBg,generalInfo_atlas,avatar_shop_bg,generalMFMap_atlas",
+            "name": "shop"
+        },
+        {
+            "keys": "shopBuy_atlas",
+            "name": "shopBuy"
+        },
+        {
+            "keys": "tianshu_bg, tianshu_atlas",
+            "name": "tianshu"
+        },
+        {
+            "keys": "pingjian_atlas",
+            "name": "pingjian"
+        },
+        {
+            "keys": "jinlan2025_atlas",
+            "name": "jinlan2025"
+        },
+        {
+            "keys": "simpleActRcd_atlas",
+            "name": "simpleActRcd"
+        },
+        {
+            "keys": "skin_atlas,generalskin_atlas",
+            "name": "skin"
+        },
+        {
+            "keys": "generalskin_atlas",
+            "name": "generalskin"
+        },
+        {
+            "keys": "selfseat_atlas",
+            "name": "selfseat"
+        },
+        {
+            "keys": "funcOpen_atlas",
+            "name": "funcOpen"
+        },
+        {
+            "keys": "skinXBGOpen_atlas,chaibao_sk,pifupinzhi_sk,KaBaoSkinContainerBg,skinOpenDefault_atlas",
+            "name": "skinOpen"
+        },
+        {
+            "keys": "skinShop_atlas,gPackItem_atlas",
+            "name": "skinShop"
+        },
+        {
+            "keys": "juBaoPen_atlas,jubaopen_bg",
+            "name": "juBaoPen"
+        },
+        {
+            "keys": "wyqj_atlas,activity_atlas",
+            "name": "wyqj"
+        },
+        {
+            "keys": "jgqy_atlas,jgqy_bg,jgqyPeople_atlas",
+            "name": "jgqy"
+        },
+        {
+            "keys": "jingjin_atlas",
+            "name": "jingjin"
+        },
+        {
+            "keys": "duihua_atlas",
+            "name": "duihua"
+        },
+        {
+            "keys": "jgqyNew_atlas,jgqy_bg,jgqyPeople_atlas",
+            "name": "jgqyNew"
+        },
+        {
+            "keys": "video_atlas",
+            "name": "video"
+        },
+        {
+            "keys": "mentor_atlas,bag_show_bg",
+            "name": "mentor"
+        },
+        {
+            "keys": "genralprison_atlas",
+            "name": "genralprison"
+        },
+        {
+            "keys": "rank_atlas,rankCommon_atlas,rank_list_bg",
+            "name": "rank"
+        },
+        {
+            "keys": "zhibo_atlas",
+            "name": "zhibo"
+        },
+        {
+            "keys": "swjgChooseCamp_atlas",
+            "name": "swjgChooseCamp"
+        },
+        {
+            "keys": "qldjChooseRule_atlas",
+            "name": "qldjChooseRule"
+        },
+        {
+            "keys": "swjgEvent_atlas",
+            "name": "swjgEvent"
+        },
+        {
+            "keys": "ageappropriate_atlas",
+            "name": "ageappropriate"
+        },
+        {
+            "keys": "blessweekcard_atlas,blessweekcardbg",
+            "name": "blessweekcard"
+        },
+        {
+            "keys": "newMonthWeekCard_atlas,newMonthWeek_bg",
+            "name": "newMonthWeekCard"
+        },
+        {
+            "keys": "chat_atlas",
+            "name": "chat"
+        },
+        {
+            "keys": "skinInfo_atlas",
+            "name": "skinInfo"
+        },
+        {
+            "keys": "pwSelectGeneral_atlas",
+            "name": "pwSelectGeneral"
+        },
+        {
+            "keys": "treasureChest_atlas,treasureChestProgress_atlas",
+            "name": "treasureChest"
+        },
+        {
+            "keys": "ssj_atlas,power_main_atlas",
+            "name": "ssj"
+        },
+        {
+            "keys": "ssjYyxk_atlas",
+            "name": "ssjYyxk"
+        },
+        {
+            "keys": "ndhzOrder_atlas",
+            "name": "ndhzOrder"
+        },
+        {
+            "keys": "ndhzAwd_atlas",
+            "name": "ndhzAwd"
+        },
+        {
+            "keys": "cjyy_atlas",
+            "name": "cjyy"
+        },
+        {
+            "keys": "actGeneralPuzzle_atlas, act_general_puzzle_bg1",
+            "name": "actGeneralPuzzle"
+        },
+        {
+            "keys": "download_atlas",
+            "name": "download"
+        },
+        {
+            "keys": "selectGeneral_atlas",
+            "name": "selectGeneral"
+        },
+        {
+            "keys": "selectSkin_atlas,",
+            "name": "selectSkin"
+        },
+        {
+            "keys": "sgx_atlas,seat_atlas,takeShot_atlas,seatbottom_atlas,wallPaperWindow_atlas,gameBase_atlas,cardsNew_atlas",
+            "name": "sgx"
+        },
+        {
+            "keys": "sgx_atlas,sgxf_atlas,seat_atlas",
+            "name": "sgxf"
+        },
+        {
+            "keys": "task_atlas",
+            "name": "task"
+        },
+        {
+            "keys": "vipright_atlas,generalRight_atlas",
+            "name": "vipright"
+        },
+        {
+            "keys": "vipPoint_atlas",
+            "name": "vipPoint"
+        },
+        {
+            "keys": "vipGift_atlas,officer_atlas,vip_gift_scroll,vip_gift_title",
+            "name": "vipGift"
+        },
+        {
+            "keys": "recommendPoBing_atlas",
+            "name": "recommendPoBing"
+        },
+        {
+            "keys": "recommendSelfChoose_atlas,recommendRecruit_atlas,recommend_selfChoose_bg",
+            "name": "recommendSelfChoose"
+        },
+        {
+            "keys": "recommendRecruit_atlas,recommend_recruit_bg",
+            "name": "recommendRecruit"
+        },
+        {
+            "keys": "prv_win_generalBg",
+            "name": "ChrPrvWin"
+        },
+        {
+            "keys": "kanshuGift_atlas,kanshu_gift_title",
+            "name": "kanshuGift"
+        },
+        {
+            "keys": "generalOpen_atlas,skinXBGOpen_atlas,KaBaoSkinContainerBg",
+            "name": "generalOpen"
+        },
+        {
+            "keys": "skinXBGOpen_atlas,skinOpen_bg,skinXBG_redbg,skinXBGWish_atlas,generalOpen_atlas,skinXBGOpen_atlas,KaBaoSkinContainerBg",
+            "name": "skinXBGOpen"
+        },
+        {
+            "keys": "skinXBGUp_atlas",
+            "name": "skinXBGUp"
+        },
+        {
+            "keys": "generalOpenUp_atlas",
+            "name": "generalOpenUp"
+        },
+        {
+            "keys": "activity_atlas,rebateActivity_atlas,timelimit_atlas,welfare_atlas,activityExchange_atlas,shopBuy_atlas,rebateActivityNew,actGeneralPuzzle_atlas",
+            "name": "activity"
+        },
+        {
+            "keys": "activity_atlas,activityCalendar_atlas,activity_calendar_bg",
+            "name": "activitycalendar"
+        },
+        {
+            "keys": "activity_atlas",
+            "name": "activitySingle"
+        },
+        {
+            "keys": "newPlayerWelfare_atlas",
+            "name": "newPlayerWelfare"
+        },
+        {
+            "keys": "seatState_atlas",
+            "name": "seatState"
+        },
+        {
+            "keys": "maxSkin_atlas",
+            "name": "maxSkin"
+        },
+        {
+            "keys": "rebateActivity_atlas,activityRebateNew_atlas",
+            "name": "rebateActivity"
+        },
+        {
+            "keys": "activityRebateNew_atlas",
+            "name": "rebateActivityNew"
+        },
+        {
+            "keys": "hallicon_atlas",
+            "name": "hallicon"
+        },
+        {
+            "keys": "bindWeChat_atlas",
+            "name": "bindWeChat"
+        },
+        {
+            "keys": "secondaryPw_atlas",
+            "name": "secondaryPw"
+        },
+        {
+            "keys": "guild_atlas,qiaogu_sk",
+            "name": "guild"
+        },
+        {
+            "keys": "guildGuide_atlas",
+            "name": "guildGuide"
+        },
+        {
+            "keys": "selectGeneral_atlas, dfmatch_selectgeneral_bg",
+            "name": "dfmatchselectGeneral"
+        },
+        {
+            "keys": "guildShop_atlas,guild_person",
+            "name": "guildShop"
+        },
+        {
+            "keys": "seqlamp_atlas,guildManager_atlas,guild_person,guild_manage_bg",
+            "name": "guildManager"
+        },
+        {
+            "keys": "guildDrum_atlas",
+            "name": "guildDrum"
+        },
+        {
+            "keys": "achievement_atlas",
+            "name": "achievement"
+        },
+        {
+            "keys": "activity3V3_atlas",
+            "name": "activity3V3"
+        },
+        {
+            "keys": "limitSeckill_atlas",
+            "name": "limitSeckill"
+        },
+        {
+            "keys": "recruitOther_atlas,recruitChr_atlas,rc_other_bg",
+            "name": "recruitOther"
+        },
+        {
+            "keys": "szxyCall_atlas",
+            "name": "szxyCall"
+        },
+        {
+            "keys": "szxyMain_atlas,recruitChr_atlas",
+            "name": "szxyMain"
+        },
+        {
+            "keys": "recruitRcd_atlas",
+            "name": "recruitRcd"
+        },
+        {
+            "keys": "recruitInvite_atlas,ShareShotBtn_atlas",
+            "name": "recruitInvite"
+        },
+        {
+            "keys": "recruitInvite_atlas,ShareShotBtn_atlas,ndhzOrder_atlas",
+            "name": "ndhzInvite"
+        },
+        {
+            "keys": "generalTrial_atlas,tianti_atlas",
+            "name": "generalTrial"
+        },
+        {
+            "keys": "wuhuLevel_atlas,wuhuLevel_bg,rogueBig_atlas",
+            "name": "wuhuLevel"
+        },
+        {
+            "keys": "gtrial_challenge_big_bg",
+            "name": "gtrialChallengeBg"
+        },
+        {
+            "keys": "gift_atlas",
+            "name": "gift"
+        },
+        {
+            "keys": "rogueRule_atlas",
+            "name": "rogueRule"
+        },
+        {
+            "keys": "officer_atlas,officerRank_atlas",
+            "name": "officer"
+        },
+        {
+            "keys": "officerPoint_atlas,generalskin_atlas",
+            "name": "officerPoint"
+        },
+        {
+            "keys": "officerDetail_atlas",
+            "name": "officerDetail"
+        },
+        {
+            "keys": "officerBigLevel_atlas, officerBigLevel_bg",
+            "name": "officerBigLevel"
+        },
+        {
+            "keys": "officerUpLevel_atlas",
+            "name": "officerUpLevel"
+        },
+        {
+            "keys": "officerDashima_atlas,generalMFMap_atlas",
+            "name": "officerDashima"
+        },
+        {
+            "keys": "bindMobile_atlas",
+            "name": "bindMobile"
+        },
+        {
+            "keys": "bindMobile_atlas,bindWeChat_atlas",
+            "name": "bindZongHe"
+        },
+        {
+            "keys": "marry_atlas",
+            "name": "marry"
+        },
+        {
+            "keys": "seekMarry_atlas",
+            "name": "seekMarry"
+        },
+        {
+            "keys": "seekMarryBook_atlas",
+            "name": "seekMarryBook"
+        },
+        {
+            "keys": "friendless_bg",
+            "name": "friendless"
+        },
+        {
+            "keys": "JiangYin_atlas,jiangyinhecheng_sk",
+            "name": "JiangYin"
+        },
+        {
+            "keys": "oldreturn_atlas",
+            "name": "oldreturn"
+        },
+        {
+            "keys": "general_menfa_bg",
+            "name": "general_menfa"
+        },
+        {
+            "keys": "Goto_Poker_bg",
+            "name": "Goto_Poker"
+        },
+        {
+            "keys": "creatematch_atlas,matchDetail_atlas",
+            "name": "creatematch"
+        },
+        {
+            "keys": "matchDetail_atlas",
+            "name": "matchDetail"
+        },
+        {
+            "keys": "matchrank_atlas",
+            "name": "matchrank"
+        },
+        {
+            "keys": "rogueGrabWindow_atlas",
+            "name": "rogueGrabWindow"
+        },
+        {
+            "keys": "qmbzSymbol_atlas",
+            "name": "qmbzSymbol"
+        },
+        {
+            "keys": "nianshouProp_atlas",
+            "name": "nianshouProp"
+        },
+        {
+            "keys": "generalVoice_atlas",
+            "name": "generalVoice"
+        },
+        {
+            "keys": "matchResult_atlas",
+            "name": "matchMail"
+        },
+        {
+            "keys": "newbieAutoReward_atlas",
+            "name": "newbieAutoReward"
+        },
+        {
+            "keys": "friendChat_atlas",
+            "name": "friendChat"
+        },
+        {
+            "keys": "tableGuide_atlas, guide_new_zhaoyun, guideNew_atlas, guide_new_tip_bg",
+            "name": "tableGuide"
+        },
+        {
+            "keys": "blessNew_atlas,gameBase_atlas,chessRank_atlas,ShareShotBtn_atlas,tiangong_atlas,blessNewBg,bless_big_awd_red_light,bigSkin_atlas",
+            "name": "blessNew"
+        },
+        {
+            "keys": "trove_atlas,gameBase_atlas,chessRank_atlas,ShareShotBtn_atlas,tianti_atlas,Trove_Selected01_T70,Trove_Selected02_T70,Trove_Selected03_T70,Trove_Selected04_T70,Trove_Selected05_T70,Trove_Selected06_T70,Trove_Selected07_T70,Trove_Selected08_T70,Trove_Selected09_T70,Trove_Selected010_T70",
+            "name": "trove"
+        },
+        {
+            "keys": "guideGeneralLight_atlas",
+            "name": "guideGeneralLight"
+        },
+        {
+            "keys": "firstRecharge_atlas",
+            "name": "firstRecharge"
+        },
+        {
+            "keys": "festivalListView_atlas",
+            "name": "festivalList"
+        },
+        {
+            "keys": "firstNewRecharge_atlas",
+            "name": "firstNewRecharge"
+        },
+        {
+            "keys": "guildTask_atlas",
+            "name": "guildTask"
+        },
+        {
+            "keys": "guildMatchAward_atlas",
+            "name": "guildMatchAward"
+        },
+        {
+            "keys": "openVipTip_bg",
+            "name": "openVipTipBg"
+        },
+        {
+            "keys": "newcomerSeven_atlas",
+            "name": "newcomerSeven"
+        },
+        {
+            "keys": "lzhz_atlas,lzhzBg_png",
+            "name": "lzhz"
+        },
+        {
+            "keys": "qldjSelectGeneral_atlas,selectGeneral_atlas",
+            "name": "qldjSelectGeneral"
+        },
+        {
+            "keys": "selectGeneral_atlas,qmbzSymbol_atlas",
+            "name": "qmbzSelectGeneral"
+        },
+        {
+            "keys": "qmbz_atlas,qmbzBg_png,qmbzQiPan_png",
+            "name": "qmbz"
+        },
+        {
+            "keys": "qmbzDetail_atlas,seat_atlas,seatbottom_atlas,qmbzGame",
+            "name": "qmbzDetail"
+        },
+        {
+            "keys": "qmbzSelect_atlas",
+            "name": "qmbzSelect"
+        },
+        {
+            "keys": "recommendGift_atlas,newRecommendGift_atlas,generalInfo_atlas,newRecommendPropGift_atlas,newSaleGift_atlas",
+            "name": "recommendGift"
+        },
+        {
+            "keys": "challengeList_atlas",
+            "name": "challengeList"
+        },
+        {
+            "keys": "challengeMatch_atlas",
+            "name": "challengeMatch"
+        },
+        {
+            "keys": "challenge_result_num_atlas",
+            "name": "challenge_result_num"
+        },
+        {
+            "keys": "matchBase_atlas",
+            "name": "matchMine"
+        },
+        {
+            "keys": "sdyl_atlas",
+            "name": "sdyl"
+        },
+        {
+            "keys": "swjgSelect_atlas",
+            "name": "swjgSelect"
+        },
+        {
+            "keys": "sdyl_atlas,nianshou2022_atlas,zgs_atlas",
+            "name": "nianshou2022"
+        },
+        {
+            "keys": "nianshou2022Select_atlas",
+            "name": "nianshou2022Select"
+        },
+        {
+            "keys": "gdzz_atlas",
+            "name": "gdzz"
+        },
+        {
+            "keys": "sdylSelect_atlas",
+            "name": "sdylSelect"
+        },
+        {
+            "keys": "propReplace_atlas",
+            "name": "propReplace"
+        },
+        {
+            "keys": "lottery_atlas",
+            "name": "lottery"
+        },
+        {
+            "keys": "navigaiton_atlas,timelimit_atlas",
+            "name": "navigaiton"
+        },
+        {
+            "keys": "swjgaward_atlas,shop_atlas,sdylBP_bg",
+            "name": "sdylaward"
+        },
+        {
+            "keys": "cardsBook_atlas",
+            "name": "cardsBook"
+        },
+        {
+            "keys": "skinCollect_atlas,skinCollect_bg",
+            "name": "skinCollect"
+        },
+        {
+            "keys": "offlineMatchW_atlas",
+            "name": "offlineMatchW"
+        },
+        {
+            "keys": "newPaiWei_atlas,liansheng_atlas,tianti_atlas,matcheffect_atlas",
+            "name": "newPaiWei"
+        },
+        {
+            "keys": "tianti_atlas,matcheffect_atlas,newPaiWei_atlas",
+            "name": "matcheffect"
+        },
+        {
+            "keys": "newPaiWeiFlag_atlas",
+            "name": "newPaiWeiFlag"
+        },
+        {
+            "keys": "dfMatch_atlas",
+            "name": "dfMatch"
+        },
+        {
+            "keys": "activityExchange_atlas",
+            "name": "activityExchange"
+        },
+        {
+            "keys": "priMonthCard_atlas,new_monthCard_viewBg",
+            "name": "priMonthCard"
+        },
+        {
+            "keys": "monthCard_atlas",
+            "name": "monthCard"
+        },
+        {
+            "keys": "sign_atlas,sign_new_bg",
+            "name": "sign"
+        },
+        {
+            "keys": "newSkin_atlas",
+            "name": "newSkin"
+        },
+        {
+            "keys": "treasure_atlas",
+            "name": "treasure"
+        },
+        {
+            "keys": "sevenGift_atlas",
+            "name": "sevenGift"
+        },
+        {
+            "keys": "jdPriviege_atlas",
+            "name": "jdPriviege"
+        },
+        {
+            "keys": "treasureNew_atlas",
+            "name": "treasureNew"
+        },
+        {
+            "keys": "treasureGift_atlas",
+            "name": "treasureGift"
+        },
+        {
+            "keys": "sevenTask_atlas",
+            "name": "sevenTask"
+        },
+        {
+            "keys": "propGet_png",
+            "name": "propGet"
+        },
+        {
+            "keys": "no1_get_rank_words_png",
+            "name": "no1_get_rank_words"
+        },
+        {
+            "keys": "activityPre_atlas",
+            "name": "activityPre"
+        },
+        {
+            "keys": "raceLevel_atlas,raceLevelBg_png",
+            "name": "raceLevel"
+        },
+        {
+            "keys": "adNotice_atlas,generalInfo_atlas,countryBg_atlas",
+            "name": "adNotice"
+        },
+        {
+            "keys": "CardScreenShot_atlas,ShareShotBtn_atlas,skinInfo_atlas",
+            "name": "CardScreenShot"
+        },
+        {
+            "keys": "MapShare_atlas,ShareShotBtn_atlas",
+            "name": "MapShare"
+        },
+        {
+            "keys": "propXianDing_atlas",
+            "name": "propXianDing"
+        },
+        {
+            "keys": "propGetNew_atlas",
+            "name": "propGetNew"
+        },
+        {
+            "keys": "propGetNew_atlas,obBtnTxt_atlas",
+            "name": "obPropGetNew"
+        },
+        {
+            "keys": "pointRace_atlas",
+            "name": "pointRace"
+        },
+        {
+            "keys": "shenwu_atlas",
+            "name": "shenwu"
+        },
+        {
+            "keys": "swzsSelect_atlas",
+            "name": "swzsSelect"
+        },
+        {
+            "keys": "oldFriendNewbie_atlas",
+            "name": "oldFriendNewbie"
+        },
+        {
+            "keys": "birth_atlas,birth_big_ttl_img, CardScreenShot_atlas, ShareShotBtn_atlas",
+            "name": "birth"
+        },
+        {
+            "keys": "power_pick_atlas",
+            "name": "power_pick"
+        },
+        {
+            "keys": "highlight_main_atlas,ddz_winInfo_atlas",
+            "name": "highlight"
+        },
+        {
+            "keys": "power_slogan_atlas",
+            "name": "power_slogan"
+        },
+        {
+            "keys": "power_main_atlas,officerRank_atlas",
+            "name": "power_main"
+        },
+        {
+            "keys": "power_mine_atlas",
+            "name": "power_mine"
+        },
+        {
+            "keys": "generalMFMap_atlas,generalTitle_atlas",
+            "name": "generalmf"
+        },
+        {
+            "keys": "generalExercise_atlas",
+            "name": "generalExercise"
+        },
+        {
+            "keys": "feedBack_atlas,chat_atlas,limitGift_atlas,hallPracticeRecord_atlas",
+            "name": "feedBack"
+        },
+        {
+            "keys": "matchCreateDate_atlas",
+            "name": "matchCreateDate"
+        },
+        {
+            "keys": "limitGift_atlas",
+            "name": "limitGift"
+        },
+        {
+            "keys": "loginOnlineUp_atlas",
+            "name": "loginOnlineUp"
+        },
+        {
+            "keys": "oldback_atlas,obBtnTxt_atlas",
+            "name": "oldback"
+        },
+        {
+            "keys": "oldbackbp_atlas",
+            "name": "oldbackbp"
+        },
+        {
+            "keys": "oldbackPickMode_atlas,oldback_bg",
+            "name": "oldbackPickMode"
+        },
+        {
+            "keys": "oldbackTask_atlas",
+            "name": "oldbackTask"
+        },
+        {
+            "keys": "welback_atlas",
+            "name": "welback"
+        },
+        {
+            "keys": "goPlay_atlas,obBtnTxt_atlas",
+            "name": "goPlay"
+        },
+        {
+            "keys": "oldbackQuick_atlas",
+            "name": "oldbackQuick"
+        },
+        {
+            "keys": "oldback_awd_bg,oldbackQuick_atlas",
+            "name": "oldback_awd"
+        },
+        {
+            "keys": "oldbackPreGift_atlas",
+            "name": "oldbackPreGift"
+        },
+        {
+            "keys": "modeGeneralPool_atlas, roguelikeCommon_atlas",
+            "name": "modeGeneralPool"
+        },
+        {
+            "keys": "generalBreak_atlas",
+            "name": "generalBreak"
+        },
+        {
+            "keys": "addUpCharge_atlas",
+            "name": "addUpCharge"
+        },
+        {
+            "keys": "roguelikezhanji_atlas,seat_atlas,seatbottom_atlas,roguelikeSeaconLevel_atlas,roguelike_atlas,ShareShotBtn_atlas,CardScreenShot_atlas",
+            "name": "roguelikezhanji"
+        },
+        {
+            "keys": "roguelikediff_atlas, roguelikeCommon_atlas,rg_diff_sel_bg,rg_diff_desperate_bg",
+            "name": "roguelikediff"
+        },
+        {
+            "keys": "roguelike1v1_160,zgs_atlas,ddz_atlas,table_atlas,matcheffect_atlas,matchSucBg_jpg,tianti_atlas,matchSuccess_atlas,newPaiWei_atlas,liansheng_atlas,rank_atlas,roguelike_atlas",
+            "name": "roguelike1v1"
+        },
+        {
+            "keys": "roguelikediffdes_atlas",
+            "name": "roguelikediffdes"
+        },
+        {
+            "keys": "roguelikeReplace_atlas",
+            "name": "roguelikeReplace"
+        },
+        {
+            "keys": "rogue_event_txt_bg, roguelikesmallmap_atlas, seat_atlas, roguelike_atlas, seatbottom_atlas, roguelikeSeaconLevel_atlas",
+            "name": "roguelikesmallmap"
+        },
+        {
+            "keys": "officerRun_atlas,activity_atlas",
+            "name": "officerRun"
+        },
+        {
+            "keys": "roguelikeFight_atlas, rogueVideo_atlas, roguelike_fight_bg1, roguelike_fight_bg2, seat_atlas, seatbottom_atlas, qmbzGame_atlas",
+            "name": "roguelikeFight"
+        },
+        {
+            "keys": "rogueBig_atlas,rogue_event_txt_bg",
+            "name": "rogueBig"
+        },
+        {
+            "keys": "rogueVideo_atlas, roguelikediff_atlas",
+            "name": "rogueVideo"
+        },
+        {
+            "keys": "roguelike_atlas,roguelike_jishi_bg,rogueAward_atlas",
+            "name": "roguelikeJishi"
+        },
+        {
+            "keys": "roguelike_atlas",
+            "name": "roguelike"
+        },
+        {
+            "keys": "rogueAward_atlas,roguelike_atlas,roguelikeSeaconLevel_atlas",
+            "name": "rogueAward"
+        },
+        {
+            "keys": "rogueAward_atlas,roguelike_atlas,roguelikeSeaconLevel_atlas,rogue1v1Game_atlas",
+            "name": "xinghan_jiangwu"
+        },
+        {
+            "keys": "peixiuSpBg_atlas",
+            "name": "peixiuSpBg"
+        },
+        {
+            "keys": "rogueDiffSeed_atlas,roguelike_atlas",
+            "name": "rogueDiffSeed"
+        },
+        {
+            "keys": "rogueQiYu_atlas,roguelike_atlas,rogueVideo_atlas,rogueAdventureLuck21_atlas,rogueAward_atlas",
+            "name": "rogueQiYu"
+        },
+        {
+            "keys": "rog_tree_bg,roguelikeSeaconLevel_atlas,roguelike_atlas,roguelikediff_atlas,rog_suit_collect_bg",
+            "name": "roguelikeSeaconLevel"
+        },
+        {
+            "keys": "rogue_invade_big_bg2,roguelikeInvade_atlas,firstNewRecharge_atlas,generalInfo_atlas,seatbottom_atlas,seat_atlas,roguelikesmallmap_atlas",
+            "name": "roguelikeInvade"
+        },
+        {
+            "keys": "roguelikeSeasonPreview_atlas",
+            "name": "roguelikeSeasonPreview"
+        },
+        {
+            "keys": "rogue_guessCup_role,rogue_guessCup_table,roguelikeGuessCup_atlas,roguelike_atlas",
+            "name": "roguelikeGuessCup"
+        },
+        {
+            "keys": "rogue_mul_lines_bg,roguelikeMulLine_atlas",
+            "name": "roguelikeMulLine"
+        },
+        {
+            "keys": "tiangong_atlas,tiangongLoadBg,chessRank_atlas,ShareShotBtn_atlas,gameBase_atlas,roguelikezhanji_atlas,qiyuantai_bg",
+            "name": "tiangong"
+        },
+        {
+            "keys": "tiangongLook_atlas",
+            "name": "tiangongLook"
+        },
+        {
+            "keys": "swjgaward_atlas,sdylBP_bg",
+            "name": "blessNewAward"
+        },
+        {
+            "keys": "hallMatchPracticeWin_atlas",
+            "name": "hallMatchPracticeWin"
+        },
+        {
+            "keys": "rankCommon_atlas",
+            "name": "rankCommon"
+        },
+        {
+            "keys": "huaQuan_atlas",
+            "name": "huaQuan"
+        },
+        {
+            "keys": "hallPracticeRecord_atlas",
+            "name": "hallPracticeRecord"
+        },
+        {
+            "keys": "taskMainNew_atlas,activity_atlas",
+            "name": "taskMainNew"
+        },
+        {
+            "keys": "shareTy_atlas",
+            "name": "shareTy"
+        },
+        {
+            "keys": "qicheng_atlas,jdPriviege_atlas",
+            "name": "qicheng"
+        },
+        {
+            "keys": "newSaleGift_atlas,newRecommendGift_atlas",
+            "name": "newSale"
+        },
+        {
+            "keys": "free_general_win_bg,free_general_win_bg2,free_general_win_bg3,freeGeneralWin_atlas, generalMFMap_atlas",
+            "name": "freeGeneralWin"
+        },
+        {
+            "keys": "activityTheme_atlas",
+            "name": "activityTheme"
+        },
+        {
+            "keys": "sgx_atlas,seat_atlas,seatbottom_atlas,no1_get_rank_words",
+            "name": "no1rank"
+        },
+        {
+            "keys": "invite_lottery_atlas,activity_atlas,activityRebateNew_atlas",
+            "name": "invite_lottery"
+        },
+        {
+            "keys": "freeLimitYuanBao_atlas",
+            "name": "freeLimitYuanBao"
+        },
+        {
+            "keys": "monthcard_popup_multi,monthcard_popup_single,generalmonthcard_atlas",
+            "name": "generalmonthcardgift"
+        },
+        {
+            "keys": "generalmonthcard_atlas,monthcard_bg_r,monthcard_text",
+            "name": "generalmonthcard"
+        },
+        {
+            "keys": "generalmonthcard_atlas,oldBackMonthcard_atlas,ob_monthcard_bg,ob_monthcard_bg_r,ob_monthcard_text",
+            "name": "oldBackMonthcard"
+        },
+        {
+            "keys": "specialFigure_atlas",
+            "name": "specialFigure"
+        },
+        {
+            "keys": "freemix_atlas,newSaleGift_atlas",
+            "name": "freemix"
+        },
+        {
+            "keys": "newJD_atlas,newJD_bg",
+            "name": "newJDMain"
+        },
+        {
+            "keys": "newcodexbuypop_atlas,jdPriviege_atlas",
+            "name": "newcodexbuypop"
+        },
+        {
+            "keys": "awakenfuli_atlas,tianti_atlas",
+            "name": "awakenfuli"
+        },
+        {
+            "keys": "monopoly_atlas,monopoly_bg,chess_atlas,activity_atlas,monopoly_grid",
+            "name": "monopoly"
+        },
+        {
+            "keys": "specialFigureRule_atlas,gameBase_atlas",
+            "name": "specialFigureRule"
+        },
+        {
+            "keys": "oldbackMode_atlas,oldReturn_mode_bg",
+            "name": "oldbackMode"
+        },
+        {
+            "keys": "oldbackMode_atlas,oldbackFreeAwd_atlas,oldReturn_mode_bg",
+            "name": "oldbackFreeAwd"
+        },
+        {
+            "keys": "oldbackSign_atlas",
+            "name": "oldbackSign"
+        },
+        {
+            "keys": "genRefine_atlas,generalInfo_atlas",
+            "name": "genRefineGnl"
+        },
+        {
+            "keys": "genRefine_atlas,seat_atlas,seatbottom_atlas",
+            "name": "genRefine"
+        },
+        {
+            "keys": "oldbackTaskAward_atlas",
+            "name": "oldbackTaskAward"
+        },
+        {
+            "keys": "resetreturnprivileges_atlas,resetreturngifts_bg",
+            "name": "resetreturnprivileges"
+        },
+        {
+            "keys": "activity_atlas,rebateActivity_atlas,timelimit_atlas,welfare_atlas,activityExchange_atlas,shopBuy_atlas,rebateActivityNew,actGeneralPuzzle_atlas,skinXBGWish_atlas",
+            "name": "indpdt2"
+        }
+    ],
+    "resources": [
+        {
+            "url": "assets/window/oldbackSign.atlas",
+            "type": "atlas",
+            "name": "oldbackSign_atlas"
+        },
+        {
+            "url": "assets/window/genRefine.atlas",
+            "type": "atlas",
+            "name": "genRefine_atlas"
+        },
+        {
+            "url": "assets/resetreturnprivileges/resetreturnprivileges.atlas",
+            "type": "atlas",
+            "name": "resetreturnprivileges_atlas"
+        },
+        {
+            "url": "assets/window/oldbackTaskAward.atlas",
+            "type": "atlas",
+            "name": "oldbackTaskAward_atlas"
+        },
+        {
+            "url": "assets/window/oldbackMode.atlas",
+            "type": "atlas",
+            "name": "oldbackMode_atlas"
+        },
+        {
+            "url": "assets/window/oldbackFreeAwd.atlas",
+            "type": "atlas",
+            "name": "oldbackFreeAwd_atlas"
+        },
+        {
+            "url": "assets/window/specialFigureRule.atlas",
+            "type": "atlas",
+            "name": "specialFigureRule_atlas"
+        },
+        {
+            "url": "assets/window/specialFigure.atlas",
+            "type": "atlas",
+            "name": "specialFigure_atlas"
+        },
+        {
+            "url": "assets/freemix/freemix.atlas",
+            "type": "atlas",
+            "name": "freemix_atlas"
+        },
+        {
+            "url": "assets/activityui/freeLimitYuanBao.atlas",
+            "type": "atlas",
+            "name": "freeLimitYuanBao_atlas"
+        },
+        {
+            "url": "assets/window/freeGeneralWin.atlas",
+            "type": "atlas",
+            "name": "freeGeneralWin_atlas"
+        },
+        {
+            "url": "assets/inviteLottery/invite_lottery.atlas",
+            "type": "atlas",
+            "name": "invite_lottery_atlas"
+        },
+        {
+            "url": "assets/bigPng/free_general_win_bg.png",
+            "type": "image",
+            "name": "free_general_win_bg"
+        },
+        {
+            "url": "assets/bigPng/blessWeekCardBg.png",
+            "type": "image",
+            "name": "blessweekcardbg"
+        },
+		 {
+            "url": "assets/bigPng/bless_big_awd_red_light.png",
+            "type": "image",
+            "name": "bless_big_awd_red_light"
+        },
+        {
+            "url": "assets/bigPng/bless_big_awd_red_light.png",
+            "type": "image",
+            "name": "bless_big_awd_red_light"
+        },
+        {
+            "url": "assets/bigPng/wallpaper_rect_mask.png",
+            "type": "image",
+            "name": "wallpaper_rect_mask"
+        },
+        {
+            "url": "assets/bigPng/free_general_win_bg2.png",
+            "type": "image",
+            "name": "free_general_win_bg2"
+        },
+        {
+            "url": "assets/bigPng/free_general_win_bg3.png",
+            "type": "image",
+            "name": "free_general_win_bg3"
+        },
+        {
+            "url": "assets/window/generalMFMap.atlas",
+            "type": "atlas",
+            "name": "generalMFMap_atlas"
+        },
+        {
+            "url": "assets/window/birth.atlas",
+            "type": "atlas",
+            "name": "birth_atlas"
+        },
+        {
+            "url": "assets/window/highlight_main.atlas",
+            "type": "atlas",
+            "name": "highlight_main_atlas"
+        },
+        {
+            "url": "assets/window/power_pick.atlas",
+            "type": "atlas",
+            "name": "power_pick_atlas"
+        },
+        {
+            "url": "assets/window/power_slogan.atlas",
+            "type": "atlas",
+            "name": "power_slogan_atlas"
+        },
+        {
+            "url": "assets/window/power_main.atlas",
+            "type": "atlas",
+            "name": "power_main_atlas"
+        },
+        {
+            "url": "assets/window/power_mine.atlas",
+            "type": "atlas",
+            "name": "power_mine_atlas"
+        },
+        {
+            "url": "assets/window/generalTitle.atlas",
+            "type": "atlas",
+            "name": "generalTitle_atlas"
+        },
+        {
+            "url": "assets/window/skinCollect.atlas",
+            "type": "atlas",
+            "name": "skinCollect_atlas"
+        },
+        {
+            "url": "assets/window/lottery.atlas",
+            "type": "atlas",
+            "name": "lottery_atlas"
+        },
+        {
+            "url": "assets/window/hallNavigation.atlas",
+            "type": "atlas",
+            "name": "navigaiton_atlas"
+        },
+        {
+            "url": "assets/window/propReplace.atlas",
+            "type": "atlas",
+            "name": "propReplace_atlas"
+        },
+        {
+            "url": "assets/window/qmbzSelect.atlas",
+            "type": "atlas",
+            "name": "qmbzSelect_atlas"
+        },
+        {
+            "url": "assets/window/recommendGift.atlas",
+            "type": "atlas",
+            "name": "recommendGift_atlas"
+        },
+        {
+            "url": "assets/window/newRecommendGift.atlas",
+            "type": "atlas",
+            "name": "newRecommendGift_atlas"
+        },
+        {
+            "url": "assets/window/newRecommendPropGift.atlas",
+            "type": "atlas",
+            "name": "newRecommendPropGift_atlas"
+        },
+        {
+            "url": "assets/window/newSecKill.atlas",
+            "type": "atlas",
+            "name": "newSecKill_atlas"
+        },
+        {
+            "url": "assets/window/newSaleGift.atlas",
+            "type": "atlas",
+            "name": "newSaleGift_atlas"
+        },
+        {
+            "url": "assets/window/qmbzDetail.atlas",
+            "type": "atlas",
+            "name": "qmbzDetail_atlas"
+        },
+        {
+            "url": "assets/qmbz/qmbz.atlas",
+            "type": "atlas",
+            "name": "qmbz_atlas"
+        },
+        {
+            "url": "assets/mainloading/qmbzBg.png",
+            "type": "image",
+            "name": "qmbzBg_png"
+        },
+        {
+            "url": "assets/mainloading/qmbzQipan.png",
+            "type": "image",
+            "name": "qmbzQiPan_png"
+        },
+        {
+            "url": "assets/lzhz/lzhz.atlas",
+            "type": "atlas",
+            "name": "lzhz_atlas"
+        },
+        {
+            "url": "assets/sdyl/sdyl.atlas",
+            "type": "atlas",
+            "name": "sdyl_atlas"
+        },
+        {
+            "url": "assets/nianshou2022/nianshou2022.atlas",
+            "type": "atlas",
+            "name": "nianshou2022_atlas"
+        },
+        {
+            "url": "assets/nianshou2022/nianshou2022Select.atlas",
+            "type": "atlas",
+            "name": "nianshou2022Select_atlas"
+        },
+        {
+            "url": "assets/window/nianshouProp.atlas",
+            "type": "atlas",
+            "name": "nianshouProp_atlas"
+        },
+        {
+            "url": "assets/gdzz/gdzz.atlas",
+            "type": "atlas",
+            "name": "gdzz_atlas"
+        },
+        {
+            "url": "assets/sdyl/sdylSelect.atlas",
+            "type": "atlas",
+            "name": "sdylSelect_atlas"
+        },
+        {
+            "url": "assets/shenwu/swzsSelect.atlas",
+            "type": "atlas",
+            "name": "swzsSelect_atlas"
+        },
+        {
+            "url": "assets/mainloading/lzhzBg.png",
+            "type": "image",
+            "name": "lzhzBg_png"
+        },
+        {
+            "url": "assets/challengeMatch/challengeMatch.atlas",
+            "type": "atlas",
+            "name": "challengeMatch_atlas"
+        },
+        {
+            "url": "assets/challengeMatch/challenge_result_num.atlas",
+            "type": "atlas",
+            "name": "challenge_result_num_atlas"
+        },
+        {
+            "url": "config/Config.sgs",
+            "type": "arraybuffer",
+            "name": "Config_sgs"
+        },
+        {
+            "url": "proto/Proto.sgs",
+            "type": "arraybuffer",
+            "name": "Proto_sgs"
+        },
+        {
+            "url": "assets/mainloading/mainLoading.atlas",
+            "type": "atlas",
+            "name": "mainLoading_atlas"
+        },
+        {
+            "url": "assets/window/qldjSelectGeneral.atlas",
+            "type": "atlas",
+            "name": "qldjSelectGeneral_atlas"
+        },
+        {
+            "url": "assets/modeselect/modeselect.atlas",
+            "type": "atlas",
+            "name": "modeselect_atlas"
+        },
+        {
+            "url": "assets/modeselect/modeselect1.atlas",
+            "type": "atlas",
+            "name": "modeselect1_atlas"
+        },
+        {
+            "url": "assets/cards/normal/cards.atlas",
+            "type": "atlas",
+            "name": "cards_atlas"
+        },
+        {
+            "url": "assets/cards/normal/cardsNew.atlas",
+            "type": "atlas",
+            "name": "cardsNew_atlas"
+        },
+        {
+            "url": "assets/cards/normal/activityCards.atlas",
+            "type": "atlas",
+            "name": "activityCards_atlas"
+        },
+        {
+            "url": "assets/cards/normal/emptyCard.atlas",
+            "type": "atlas",
+            "name": "emptyCard_atlas"
+        },
+        {
+            "url": "assets/cards/normal/sjybEffect.atlas",
+            "type": "atlas",
+            "name": "sjybEffect_atlas"
+        },
+        {
+            "url": "assets/animate/game/weigong/zhenfaji.atlas",
+            "type": "atlas",
+            "name": "zhenfaji_atlas"
+        },
+        {
+            "url": "assets/window/newbieAutoReward.atlas",
+            "type": "atlas",
+            "name": "newbieAutoReward_atlas"
+        },
+        {
+            "url": "assets/window/generalVoice.atlas",
+            "type": "atlas",
+            "name": "generalVoice_atlas"
+        },
+        {
+            "url": "assets/bigSkin/bigSkin.atlas",
+            "type": "atlas",
+            "name": "bigSkin_atlas"
+        },
+        {
+            "url": "assets/game/seat.atlas",
+            "type": "atlas",
+            "name": "seat_atlas"
+        },
+        {
+            "url": "assets/game/seatDead.atlas",
+            "type": "atlas",
+            "name": "seatDead_atlas"
+        },
+        {
+            "url": "assets/game/selfseat.atlas",
+            "type": "atlas",
+            "name": "selfseat_atlas"
+        },
+        {
+            "url": "assets/game/seatbottom.atlas",
+            "type": "atlas",
+            "name": "seatbottom_atlas"
+        },
+        {
+            "url": "assets/game/gameBase.atlas",
+            "type": "atlas",
+            "name": "gameBase_atlas"
+        },
+        {
+            "url": "assets/game/ddzgame.atlas",
+            "type": "atlas",
+            "name": "ddzgame_atlas"
+        },
+        {
+            "url": "assets/game/zgsgame.atlas",
+            "type": "atlas",
+            "name": "zgsgame_atlas"
+        },
+        {
+            "url": "assets/game/sdylGame.atlas",
+            "type": "atlas",
+            "name": "sdylGame_atlas"
+        },
+        {
+            "url": "assets/game/rogue1v1Game.atlas",
+            "type": "atlas",
+            "name": "rogue1v1Game_atlas"
+        },
+        {
+            "url": "assets/game/tongshuai.atlas",
+            "type": "atlas",
+            "name": "tongshuai_atlas"
+        },
+        {
+            "url": "assets/window/ageappropriate.atlas",
+            "type": "atlas",
+            "name": "ageappropriate_atlas"
+        },
+        {
+            "url": "assets/activityui/blessweekcard.atlas",
+            "type": "atlas",
+            "name": "blessweekcard_atlas"
+        },
+        {
+            "url": "assets/activityui/newMonthWeekCard.atlas",
+            "type": "atlas",
+            "name": "newMonthWeekCard_atlas"
+        },
+        {
+            "url": "assets/prezhuti/prezhuti.atlas",
+            "type": "atlas",
+            "name": "prezhuti_atlas"
+        },
+        {
+            "url": "assets/window/peixiuSpBg.atlas",
+            "type": "atlas",
+            "name": "peixiuSpBg_atlas"
+        },
+        {
+            "url": "assets/window/treasureChest.atlas",
+            "type": "atlas",
+            "name": "treasureChest_atlas"
+        },
+        {
+            "url": "assets/window/ssj.atlas",
+            "type": "atlas",
+            "name": "ssj_atlas"
+        },
+        {
+            "url": "assets/window/ssjYyxk.atlas",
+            "type": "atlas",
+            "name": "ssjYyxk_atlas"
+        },
+        {
+            "url": "assets/window/ndhzOrder.atlas",
+            "type": "atlas",
+            "name": "ndhzOrder_atlas"
+        },
+        {
+            "url": "assets/window/cjyy.atlas",
+            "type": "atlas",
+            "name": "cjyy_atlas"
+        },
+        {
+            "url": "assets/window/ndhzAwd.atlas",
+            "type": "atlas",
+            "name": "ndhzAwd_atlas"
+        },
+        {
+            "url": "assets/window/actGeneralPuzzle.atlas",
+            "type": "atlas",
+            "name": "actGeneralPuzzle_atlas"
+        },
+        {
+            "url": "assets/window/treasureChestProgress.atlas",
+            "type": "atlas",
+            "name": "treasureChestProgress_atlas"
+        },
+        {
+            "url": "assets/window/oldFriendNewbie.atlas",
+            "type": "atlas",
+            "name": "oldFriendNewbie_atlas"
+        },
+        {
+            "url": "assets/animate/game/skill/base/jichupai1.sk",
+            "type": "arraybuffer",
+            "name": "jichupai1_sk"
+        },
+        {
+            "url": "assets/animate/game/skill/base/jichupai2.sk",
+            "type": "arraybuffer",
+            "name": "jichupai2_sk"
+        },
+        {
+            "url": "assets/animate/game/skill/base/fangjuzhuangbei.sk",
+            "type": "arraybuffer",
+            "name": "fangjuzhuangbei_sk"
+        },
+        {
+            "url": "assets/animate/game/skill/base/jinengfenlei.sk",
+            "type": "arraybuffer",
+            "name": "jinengfenlei_sk"
+        },
+        {
+            "url": "assets/animate/game/skill/base/jinengfenlei2.sk",
+            "type": "arraybuffer",
+            "name": "jinengfenlei2_sk"
+        },
+        {
+            "url": "assets/animate/game/skill/base/jinnang1.sk",
+            "type": "arraybuffer",
+            "name": "jinnang1_sk"
+        },
+        {
+            "url": "assets/animate/game/skill/base/jinnang2.sk",
+            "type": "arraybuffer",
+            "name": "jinnang2_sk"
+        },
+        {
+            "url": "assets/animate/game/skill/base/jinnang3.sk",
+            "type": "arraybuffer",
+            "name": "jinnang3_sk"
+        },
+        {
+            "url": "assets/animate/game/skill/base/wuqizhuangbei.sk",
+            "type": "arraybuffer",
+            "name": "wuqizhuangbei_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/zhixiangxianlong.sk",
+            "type": "arraybuffer",
+            "name": "zhixiangxianlong_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/yuguangbaohe.sk",
+            "type": "arraybuffer",
+            "name": "yuguangbaohe_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/duijue.sk",
+            "type": "arraybuffer",
+            "name": "duijue_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/panding.sk",
+            "type": "arraybuffer",
+            "name": "panding_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/biaojichufa.sk",
+            "type": "arraybuffer",
+            "name": "biaojichufa_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/xuanpai.sk",
+            "type": "arraybuffer",
+            "name": "xuanpai_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/jinlongkuang.sk",
+            "type": "arraybuffer",
+            "name": "jinlongkuang_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/yinlongkuang.sk",
+            "type": "arraybuffer",
+            "name": "yinlongkuang_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/yimingxiaoshipc_01.sk",
+            "type": "arraybuffer",
+            "name": "yimingxiaoshipc_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/kouxue.sk",
+            "type": "arraybuffer",
+            "name": "kouxue_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/shouji.sk",
+            "type": "arraybuffer",
+            "name": "shouji_sk"
+        },
+        {
+            "url": "assets/animate/game/paiwei/zhuanchangzi.sk",
+            "type": "arraybuffer",
+            "name": "zhuanchangzi_sk"
+        },
+        {
+            "url": "assets/animate/game/paiwei/jieduan.sk",
+            "type": "arraybuffer",
+            "name": "jieduan_sk"
+        },
+        {
+            "url": "assets/animate/game/mvp/MVP.sk",
+            "type": "arraybuffer",
+            "name": "MVP_sk"
+        },
+        {
+            "url": "assets/animate/game/mvp/MVP2.sk",
+            "type": "arraybuffer",
+            "name": "MVP2_sk"
+        },
+        {
+            "url": "assets/window/mvp.atlas",
+            "type": "atlas",
+            "name": "mvp_atlas"
+        },
+        {
+            "url": "assets/window/mvpBg.atlas",
+            "type": "atlas",
+            "name": "mvpBg_atlas"
+        },
+        {
+            "url": "assets/window/duanzao.atlas",
+            "type": "atlas",
+            "name": "duanzao_atlas"
+        },
+        {
+            "url": "assets/window/suisui.atlas",
+            "type": "atlas",
+            "name": "suisui_atlas"
+        },
+        {
+            "url": "assets/bigPng/suisui_bg_back.png",
+            "type": "image",
+            "name": "suisui_bg_back"
+        },
+        {
+            "url": "assets/bigPng/act_general_puzzle_bg1.png",
+            "type": "image",
+            "name": "act_general_puzzle_bg1"
+        },
+        {
+            "url": "assets/bigPng/suisui_cover_bottom.png",
+            "type": "image",
+            "name": "suisui_cover_bottom"
+        },
+        {
+            "url": "assets/bigPng/suisui_cover_icon.png",
+            "type": "image",
+            "name": "suisui_cover_icon"
+        },
+        {
+            "url": "assets/bigPng/suisui_cover_top.png",
+            "type": "image",
+            "name": "suisui_cover_top"
+        },
+        {
+            "url": "assets/window/banCountry.atlas",
+            "type": "atlas",
+            "name": "banCountry_atlas"
+        },
+        {
+            "url": "/assets/animate/game/fight/kaijujinpc_01.sk",
+            "type": "arraybuffer",
+            "name": "kaijujinpc_01_sk"
+        },
+        {
+            "url": "assets/animate/mail/feigechuanshu.sk",
+            "type": "arraybuffer",
+            "name": "feigechuanshu_sk"
+        },
+        {
+            "url": "assets/animate/qldj/qianlidanqiguanyu.sk",
+            "type": "arraybuffer",
+            "name": "qianlidanqiguanyu_sk"
+        },
+        {
+            "url": "assets/animate/qldj/qianlidanqiguanyubeijing.sk",
+            "type": "arraybuffer",
+            "name": "qianlidanqiguanyubeijing_sk"
+        },
+        {
+            "url": "assets/animate/match/pipei.sk",
+            "type": "arraybuffer",
+            "name": "pipei_sk"
+        },
+        {
+            "url": "assets/hall/hall.atlas",
+            "type": "atlas",
+            "name": "hall_atlas"
+        },
+        {
+            "url": "assets/hallMatch/hallMatch.atlas",
+            "type": "atlas",
+            "name": "hallMatch_atlas"
+        },
+        {
+            "url": "assets/tianti/tianti.atlas",
+            "type": "atlas",
+            "name": "tianti_atlas"
+        },
+        {
+            "url": "assets/tianti/matchSuccess.atlas",
+            "type": "atlas",
+            "name": "matchSuccess_atlas"
+        },
+        {
+            "url": "assets/tianti/matcheffect.atlas",
+            "type": "atlas",
+            "name": "matcheffect_atlas"
+        },
+        {
+            "url": "assets/cbp/cbp.atlas",
+            "type": "atlas",
+            "name": "cbp_atlas"
+        },
+        {
+            "url": "assets/ddz/ddz.atlas",
+            "type": "atlas",
+            "name": "ddz_atlas"
+        },
+        {
+            "url": "assets/ddz/ddzJbs.atlas",
+            "type": "atlas",
+            "name": "ddzJbs_atlas"
+        },
+        {
+            "url": "assets/window/ddzWinInfo.atlas",
+            "type": "atlas",
+            "name": "ddz_winInfo_atlas"
+        },
+        {
+            "url": "assets/zgs/zgs.atlas",
+            "type": "atlas",
+            "name": "zgs_atlas"
+        },
+        {
+            "url": "assets/qldj/qldj.atlas",
+            "type": "atlas",
+            "name": "qldj_atlas"
+        },
+        {
+            "url": "assets/labeltex/labeltex.atlas",
+            "type": "atlas",
+            "name": "labeltex_atlas"
+        },
+        {
+            "url": "assets/swjg/swjgSelect.atlas",
+            "type": "atlas",
+            "name": "swjgSelect_atlas"
+        },
+        {
+            "url": "assets/swjg/swjg.atlas",
+            "type": "atlas",
+            "name": "swjg_atlas"
+        },
+        {
+            "url": "assets/swjg/swjgaward.atlas",
+            "type": "atlas",
+            "name": "swjgaward_atlas"
+        },
+        {
+            "url": "assets/table/table.atlas",
+            "type": "atlas",
+            "name": "table_atlas"
+        },
+        {
+            "url": "assets/table/offlineMatchTable.atlas",
+            "type": "atlas",
+            "name": "offlineMatchTable_atlas"
+        },
+        {
+            "url": "assets/table/huLaoGuanTable.atlas",
+            "type": "atlas",
+            "name": "huLaoGuanTable_atlas"
+        },
+        {
+            "url": "assets/window/gameover.atlas",
+            "type": "atlas",
+            "name": "gameover_atlas"
+        },
+        {
+            "url": "assets/window/newcomerSeven.atlas",
+            "type": "atlas",
+            "name": "newcomerSeven_atlas"
+        },
+        {
+            "url": "assets/animate/game/result/shengli.sk",
+            "type": "arraybuffer",
+            "name": "shengli_sk"
+        },
+        {
+            "url": "assets/animate/lampOpen/jiangdengshouji.sk",
+            "type": "arraybuffer",
+            "name": "jiangdengshouji_sk"
+        },
+        {
+            "url": "assets/animate/game/result/shousheng.sk",
+            "type": "arraybuffer",
+            "name": "shousheng_sk"
+        },
+        {
+            "url": "assets/window/shop.atlas",
+            "type": "atlas",
+            "name": "shop_atlas"
+        },
+        {
+            "url": "assets/window/bindWeChat.atlas",
+            "type": "atlas",
+            "name": "bindWeChat_atlas"
+        },
+        {
+            "url": "assets/window/secondaryPw.atlas",
+            "type": "atlas",
+            "name": "secondaryPw_atlas"
+        },
+        {
+            "url": "assets/window/selectGeneral.atlas",
+            "type": "atlas",
+            "name": "selectGeneral_atlas"
+        },
+        {
+            "url": "assets/window/selectSkin.atlas",
+            "type": "atlas",
+            "name": "selectSkin_atlas"
+        },
+        {
+            "url": "assets/window/zhanjiNew.atlas",
+            "type": "atlas",
+            "name": "zhanjiNew_atlas"
+        },
+        {
+            "url": "assets/window/zhanjiBg.atlas",
+            "type": "atlas",
+            "name": "zhanjiBg_atlas"
+        },
+        {
+            "url": "assets/window/nsnewyear.atlas",
+            "type": "atlas",
+            "name": "nsnewyear_atlas"
+        },
+        {
+            "url": "assets/window/guidePreface.atlas",
+            "type": "atlas",
+            "name": "guidePreface_atlas"
+        },
+        {
+            "url": "assets/guide/guide.atlas",
+            "type": "atlas",
+            "name": "guide_atlas"
+        },
+        {
+            "url": "assets/guide/guideNew.atlas",
+            "type": "atlas",
+            "name": "guideNew_atlas"
+        },
+        {
+            "url": "assets/game/qmbzGame.atlas",
+            "type": "atlas",
+            "name": "qmbzGame_atlas"
+        },
+        {
+            "url": "assets/game/obGame.atlas",
+            "type": "atlas",
+            "name": "obGame_atlas"
+        },
+        {
+            "url": "assets/game/obGameResult.atlas",
+            "type": "atlas",
+            "name": "obGameResult_atlas"
+        },
+        {
+            "url": "assets/window/recharge0.atlas",
+            "type": "atlas",
+            "name": "recharge0_atlas"
+        },
+        {
+            "url": "assets/window/generals.atlas",
+            "type": "atlas",
+            "name": "generals_atlas"
+        },
+        {
+            "url": "assets/window/interactProp.atlas",
+            "type": "atlas",
+            "name": "interactProp_atlas"
+        },
+        {
+            "url": "assets/window/qrshare.atlas",
+            "type": "atlas",
+            "name": "qrshare_atlas"
+        },
+        {
+            "url": "assets/window/generalInfo.atlas",
+            "type": "atlas",
+            "name": "generalInfo_atlas"
+        },
+        {
+            "url": "assets/window/generalinfoBg.atlas",
+            "type": "atlas",
+            "name": "generalinfoBg_atlas"
+        },
+        {
+            "url": "assets/window/generalBattle.atlas",
+            "type": "atlas",
+            "name": "generalBattle_atlas"
+        },
+        {
+            "url": "assets/window/chrlb.atlas",
+            "type": "atlas",
+            "name": "chrlb_atlas"
+        },
+        {
+            "url": "assets/window/generalprivilegeinfo.atlas",
+            "type": "atlas",
+            "name": "generalprivilegeinfo_atlas"
+        },
+        {
+            "url": "assets/window/shopBuy.atlas",
+            "type": "atlas",
+            "name": "shopBuy_atlas"
+        },
+        {
+            "url": "assets/window/upgradeWinNew.atlas",
+            "type": "atlas",
+            "name": "upgradeWinNew_atlas"
+        },
+        {
+            "url": "assets/window/genralprison.atlas",
+            "type": "atlas",
+            "name": "genralprison_atlas"
+        },
+        {
+            "url": "assets/window/skinInfo.atlas",
+            "type": "atlas",
+            "name": "skinInfo_atlas"
+        },
+        {
+            "url": "assets/window/pwSelectGeneral.atlas",
+            "type": "atlas",
+            "name": "pwSelectGeneral_atlas"
+        },
+        {
+            "url": "assets/window/download.atlas",
+            "type": "atlas",
+            "name": "download_atlas"
+        },
+        {
+            "url": "assets/mainloading/shopBg.png",
+            "type": "image",
+            "name": "shopBg"
+        },
+        {
+            "url": "assets/bigPng/avatar_shop_bg.png",
+            "type": "image",
+            "name": "avatar_shop_bg"
+        },
+        {
+            "url": "assets/bigPng/birth/birth_big_ttl0.png",
+            "type": "image",
+            "name": "birth_big_ttl_img"
+        },
+        {
+            "url": "assets/bigPng/common_get_prop_bg.png",
+            "type": "image",
+            "name": "common_get_prop_bg"
+        },
+        {
+            "url": "assets/bigPng/bag_show_bg.png",
+            "type": "image",
+            "name": "bag_show_bg"
+        },
+        {
+            "url": "assets/sdyl/sdylBP_bg.png",
+            "type": "image",
+            "name": "sdylBP_bg"
+        },
+        {
+            "url": "assets/window/officerBigLevel_bg.png",
+            "type": "image",
+            "name": "officerBigLevel_bg"
+        },
+        {
+            "url": "assets/bg/lobbyBg.jpg",
+            "type": "image",
+            "name": "lobbyBg_jpg"
+        },
+        {
+            "url": "assets/bg/matchSuccBg.png",
+            "type": "image",
+            "name": "matchSucBg_jpg"
+        },
+        {
+            "url": "assets/baseUI/baseUI.atlas",
+            "type": "atlas",
+            "name": "baseUI_atlas"
+        },
+        {
+            "url": "assets/baseUI/baseSmall.atlas",
+            "type": "atlas",
+            "name": "smallBaseUI_atlas"
+        },
+        {
+            "url": "assets/window/activityCalendar.atlas",
+            "type": "atlas",
+            "name": "activityCalendar_atlas"
+        },
+        {
+            "url": "assets/baseUI/newWindowBg.png",
+            "type": "image",
+            "name": "newWindowBg"
+        },
+        {
+            "url": "assets/bigPng/activity_calendar_bg.png",
+            "type": "image",
+            "name": "activity_calendar_bg"
+        },
+        {
+            "url": "assets/bigPng/newJD_bg.png",
+            "type": "image",
+            "name": "newJD_bg"
+        },
+        {
+            "url": "assets/window/newJD.atlas",
+            "type": "atlas",
+            "name": "newJD_atlas"
+        },
+        {
+            "url": "assets/window/newcodexbuypop.atlas",
+            "type": "atlas",
+            "name": "newcodexbuypop_atlas"
+        },
+        {
+            "url": "assets/baseUI/tipCommon.atlas",
+            "type": "atlas",
+            "name": "tipCommon_atlas"
+        },
+        {
+            "url": "assets/game/wallPaperWindow.atlas",
+            "type": "atlas",
+            "name": "wallPaperWindow_atlas"
+        },
+        {
+            "url": "assets/monthcard/monthcard.atlas",
+            "type": "atlas",
+            "name": "generalmonthcard_atlas"
+        },
+        {
+            "url": "assets/oldBackMonthcard/oldBackMonthcard.atlas",
+            "type": "atlas",
+            "name": "oldBackMonthcard_atlas"
+        },
+        {
+            "url": "assets/createUser/createUser.atlas",
+            "type": "atlas",
+            "name": "createUser_atlas"
+        },
+        {
+            "url": "assets/window/newbieQA.atlas",
+            "type": "atlas",
+            "name": "newbieQA_atlas"
+        },
+        {
+            "url": "assets/window/directpay.atlas",
+            "type": "atlas",
+            "name": "directpay_atlas"
+        },
+        {
+            "url": "assets/window/xxf.atlas",
+            "type": "atlas",
+            "name": "xxf_atlas"
+        },
+        {
+            "url": "assets/window/chess.atlas",
+            "type": "atlas",
+            "name": "chess_atlas"
+        },
+        {
+            "url": "assets/bigPng/chessBg/chess_win_bg.png",
+            "type": "image",
+            "name": "chess_win_bg"
+        },
+        {
+            "url": "assets/bigPng/chessBg/chess_win_chess_panel_bg.png",
+            "type": "image",
+            "name": "chess_win_chess_panel_bg"
+        },
+        {
+            "url": "assets/bigPng/chessBg/chess_full_mask.png",
+            "type": "image",
+            "name": "chess_full_mask"
+        },
+        {
+            "url": "assets/window/chessrank.atlas",
+            "type": "atlas",
+            "name": "chessRank_atlas"
+        },
+        {
+            "url": "assets/window/userInfo.atlas",
+            "type": "atlas",
+            "name": "userInfo_atlas"
+        },
+        {
+            "url": "assets/window/zhibo.atlas",
+            "type": "atlas",
+            "name": "zhibo_atlas"
+        },
+        {
+            "url": "assets/bigPng/rank_list_bg.png",
+            "type": "image",
+            "name": "rank_list_bg"
+        },
+        {
+            "url": "assets/bigPng/officer_uplevel_bg.png",
+            "type": "image",
+            "name": "officer_uplevel_bg"
+        },
+        {
+            "url": "assets/bigPng/general_menfa_bg.png",
+            "type": "image",
+            "name": "general_menfa_bg"
+        },
+        {
+            "url": "assets/bigPng/guild_person.png",
+            "type": "image",
+            "name": "guild_person"
+        },
+        {
+            "url": "assets/bigPng/guild_manage_bg.png",
+            "type": "image",
+            "name": "guild_manage_bg"
+        },
+        {
+            "url": "assets/bigPng/raid_match_bg.png",
+            "type": "image",
+            "name": "raid_match_bg"
+        },
+        {
+            "url": "assets/bigPng/coloringlosewarning.png",
+            "type": "image",
+            "name": "coloringlosewarning"
+        },
+        {
+            "url": "assets/bigPng/dfmatch_selectgeneral_bg.png",
+            "type": "image",
+            "name": "dfmatch_selectgeneral_bg"
+        },
+        {
+            "url": "assets/bigPng/create_user_bg.png",
+            "type": "image",
+            "name": "create_user_bg"
+        },
+        {
+            "url": "assets/bigPng/kanshu_gift_title.png",
+            "type": "image",
+            "name": "kanshu_gift_title"
+        },
+        {
+            "url": "assets/bigPng/vip_gift_scroll.png",
+            "type": "image",
+            "name": "vip_gift_scroll"
+        },
+        {
+            "url": "assets/bigPng/recommend_recruit_bg.png",
+            "type": "image",
+            "name": "recommend_recruit_bg"
+        },
+        {
+            "url": "assets/bigPng/new_monthCard_viewBg.png",
+            "type": "image",
+            "name": "new_monthCard_viewBg"
+        },
+        {
+            "url": "assets/bigPng/recommend_selfChoose_bg.png",
+            "type": "image",
+            "name": "recommend_selfChoose_bg"
+        },
+        {
+            "url": "assets/bigPng/prv_win_generalBg.png",
+            "type": "image",
+            "name": "prv_win_generalBg"
+        },
+        {
+            "url": "assets/bigPng/vip_gift_title.png",
+            "type": "image",
+            "name": "vip_gift_title"
+        },
+        {
+            "url": "assets/bigPng/create_user_man_bg.png",
+            "type": "image",
+            "name": "create_user_man_bg"
+        },
+        {
+            "url": "assets/bigPng/create_user_man_dark.png",
+            "type": "image",
+            "name": "create_user_man_dark"
+        },
+        {
+            "url": "assets/bigPng/create_user_man_light.png",
+            "type": "image",
+            "name": "create_user_man_light"
+        },
+        {
+            "url": "assets/bigPng/ddz_img_117.png",
+            "type": "image",
+            "name": "ddz_img_117"
+        },
+        {
+            "url": "assets/bigPng/ddz_zhaomu_bg.png",
+            "type": "image",
+            "name": "ddz_zhaomu_bg"
+        },
+        {
+            "url": "assets/bigPng/create_user_woman_bg.png",
+            "type": "image",
+            "name": "create_user_woman_bg"
+        },
+        {
+            "url": "assets/bigPng/create_user_woman_dark.png",
+            "type": "image",
+            "name": "create_user_woman_dark"
+        },
+        {
+            "url": "assets/bigPng/create_user_woman_light.png",
+            "type": "image",
+            "name": "create_user_woman_light"
+        },
+        {
+            "url": "assets/bigPng/newbieQA_text_bg.png",
+            "type": "image",
+            "name": "newbieQA_text_bg"
+        },
+        {
+            "url": "assets/bigPng/zhanji_bgDown.png",
+            "type": "image",
+            "name": "zhanji_bgDown"
+        },
+        {
+            "url": "assets/window/gPackItem.atlas",
+            "type": "atlas",
+            "name": "gPackItem_atlas"
+        },
+        {
+            "url": "assets/game/simpleActRcd.atlas",
+            "type": "atlas",
+            "name": "simpleActRcd_atlas"
+        },
+        {
+            "url": "assets/window/skin.atlas",
+            "type": "atlas",
+            "name": "skin_atlas"
+        },
+        {
+            "url": "assets/window/generalskin.atlas",
+            "type": "atlas",
+            "name": "generalskin_atlas"
+        },
+        {
+            "url": "assets/newPaiWei/newPaiWei.atlas",
+            "type": "atlas",
+            "name": "newPaiWei_atlas"
+        },
+        {
+            "url": "assets/newPaiWei/liansheng.atlas",
+            "type": "atlas",
+            "name": "liansheng_atlas"
+        },
+        {
+            "url": "assets/newPaiWei/newPaiWeiFlag.atlas",
+            "type": "atlas",
+            "name": "newPaiWeiFlag_atlas"
+        },
+        {
+            "url": "assets/newPaiWei/newPaiWeiFlags.atlas",
+            "type": "atlas",
+            "name": "newPaiWeiFlags_atlas"
+        },
+        {
+            "url": "assets/newPaiWei/dfMatch.atlas",
+            "type": "atlas",
+            "name": "dfMatch_atlas"
+        },
+        {
+            "url": "assets/pointRace/pointRace.atlas",
+            "type": "atlas",
+            "name": "pointRace_atlas"
+        },
+        {
+            "url": "assets/shenwu/shenwu.atlas",
+            "type": "atlas",
+            "name": "shenwu_atlas"
+        },
+        {
+            "url": "assets/animate/skinOpen/chaibao.sk",
+            "type": "arraybuffer",
+            "name": "chaibao_sk"
+        },
+        {
+            "url": "assets/animate/skinOpen/pifupinzhi.sk",
+            "type": "arraybuffer",
+            "name": "pifupinzhi_sk"
+        },
+        {
+            "url": "assets/window/skillWin.atlas",
+            "type": "atlas",
+            "name": "skillWin_atlas"
+        },
+        {
+            "url": "assets/game/gusheWords.atlas",
+            "type": "atlas",
+            "name": "gusheWords_atlas"
+        },
+        {
+            "url": "assets/window/skinXBGOpen.atlas",
+            "type": "atlas",
+            "name": "skinXBGOpen_atlas"
+        },
+        {
+            "url": "assets/window/skinXBGWish.atlas",
+            "type": "atlas",
+            "name": "skinXBGWish_atlas"
+        },
+        {
+            "url": "assets/window/skinOpenDefault.atlas",
+            "type": "atlas",
+            "name": "skinOpenDefault_atlas"
+        },
+        {
+            "url": "assets/window/skinXBGUp.atlas",
+            "type": "atlas",
+            "name": "skinXBGUp_atlas"
+        },
+        {
+            "url": "assets/window/skinXBG_redbg.png",
+            "type": "image",
+            "name": "skinXBG_redbg"
+        },
+        {
+            "url": "assets/bigPng/skinCollect_bg.png",
+            "type": "image",
+            "name": "skinCollect_bg"
+        },
+        {
+            "url": "assets/window/skinOpen_bg.png",
+            "type": "image",
+            "name": "skinOpen_bg"
+        },
+        {
+            "url": "assets/bigPng/KaBaoSkinContainerBg.png",
+            "type": "image",
+            "name": "KaBaoSkinContainerBg"
+        },
+        {
+            "url": "assets/window/challengeList.atlas",
+            "type": "atlas",
+            "name": "challengeList_atlas"
+        },
+        {
+            "url": "assets/window/skinShop.atlas",
+            "type": "atlas",
+            "name": "skinShop_atlas"
+        },
+        {
+            "url": "assets/window/juBaoPen.atlas",
+            "type": "atlas",
+            "name": "juBaoPen_atlas"
+        },
+        {
+            "url": "assets/window/wyqj.atlas",
+            "type": "atlas",
+            "name": "wyqj_atlas"
+        },
+        {
+            "url": "assets/window/jgqy.atlas",
+            "type": "atlas",
+            "name": "jgqy_atlas"
+        },
+        {
+            "url": "assets/window/jgqyNew.atlas",
+            "type": "atlas",
+            "name": "jgqyNew_atlas"
+        },
+        {
+            "url": "assets/window/jgqyPeople.atlas",
+            "type": "atlas",
+            "name": "jgqyPeople_atlas"
+        },
+        {
+            "url": "assets/window/jingjin.atlas",
+            "type": "atlas",
+            "name": "jingjin_atlas"
+        },
+        {
+            "url": "assets/window/duihua.atlas",
+            "type": "atlas",
+            "name": "duihua_atlas"
+        },
+        {
+            "url": "assets/window/mentor.atlas",
+            "type": "atlas",
+            "name": "mentor_atlas"
+        },
+        {
+            "url": "assets/table/dianjiang.atlas",
+            "type": "atlas",
+            "name": "dianjiang_atlas"
+        },
+        {
+            "url": "assets/table/limitTimeAct.atlas",
+            "type": "atlas",
+            "name": "limitTimeAct_atlas"
+        },
+        {
+            "url": "assets/chat/chat.atlas",
+            "type": "atlas",
+            "name": "chat_atlas"
+        },
+        {
+            "url": "assets/lamp/lamp.atlas",
+            "type": "atlas",
+            "name": "lamp_atlas"
+        },
+        {
+            "url": "assets/lampCollect/lampCollect.atlas",
+            "type": "atlas",
+            "name": "lampCollect_atlas"
+        },
+        {
+            "url": "assets/window/taskBuyScore.atlas",
+            "type": "atlas",
+            "name": "taskBuyScore_atlas"
+        },
+        {
+            "url": "assets/window/taskChapterAward.atlas",
+            "type": "atlas",
+            "name": "taskChapterAward_atlas"
+        },
+        {
+            "url": "assets/vivid/vivid.atlas",
+            "type": "atlas",
+            "name": "vivid_atlas"
+        },
+        {
+            "url": "assets/window/propXianDing.atlas",
+            "type": "atlas",
+            "name": "propXianDing_atlas"
+        },
+        {
+            "url": "assets/window/propGetNew.atlas",
+            "type": "atlas",
+            "name": "propGetNew_atlas"
+        },
+        {
+            "url": "assets/modeselect/openVipTip_bg.png",
+            "type": "image",
+            "name": "openVipTip_bg"
+        },
+        {
+            "url": "assets/bigPng/propGet.png",
+            "type": "image",
+            "name": "propGet_png"
+        },
+        {
+            "url": "assets/bigPng/no1_get_rank_words.png",
+            "type": "image",
+            "name": "no1_get_rank_words_png"
+        },
+        {
+            "url": "assets/bigPng/raceLevelBg.png",
+            "type": "image",
+            "name": "raceLevelBg_png"
+        },
+        {
+            "url": "assets/animate/hall/userinfo/zhangongkuang.sk",
+            "type": "arraybuffer",
+            "name": "zhangongkuang_sk"
+        },
+        {
+            "url": "assets/animate/hall/skin/pifujiaobiao.sk",
+            "type": "arraybuffer",
+            "name": "pifujiaobiao_sk"
+        },
+        {
+            "url": "assets/animate/hall/skin/pifuhechengfenjie.sk",
+            "type": "arraybuffer",
+            "name": "pifuhechengfenjie_sk"
+        },
+        {
+            "url": "assets/animate/hall/skin/pifuhechengfenjie2.sk",
+            "type": "arraybuffer",
+            "name": "pifuhechengfenjie2_sk"
+        },
+        {
+            "url": "assets/animate/hall/gonghui/qiaogu.sk",
+            "type": "arraybuffer",
+            "name": "qiaogu_sk"
+        },
+        {
+            "url": "assets/window/sgx.atlas",
+            "type": "atlas",
+            "name": "sgx_atlas"
+        },
+        {
+            "url": "assets/window/takeShot.atlas",
+            "type": "atlas",
+            "name": "takeShot_atlas"
+        },
+        {
+            "url": "assets/window/sgxf.atlas",
+            "type": "atlas",
+            "name": "sgxf_atlas"
+        },
+        {
+            "url": "assets/window/funcOpen.atlas",
+            "type": "atlas",
+            "name": "funcOpen_atlas"
+        },
+        {
+            "url": "assets/seqlamp/seqlamp.atlas",
+            "type": "atlas",
+            "name": "seqlamp_atlas"
+        },
+        {
+            "url": "assets/window/task.atlas",
+            "type": "atlas",
+            "name": "task_atlas"
+        },
+        {
+            "url": "assets/window/avtivity.atlas",
+            "type": "atlas",
+            "name": "activity_atlas"
+        },
+        {
+            "url": "assets/window/sign.atlas",
+            "type": "atlas",
+            "name": "sign_atlas"
+        },
+        {
+            "url": "assets/window/maxSkin.atlas",
+            "type": "atlas",
+            "name": "maxSkin_atlas"
+        },
+        {
+            "url": "assets/game/seatState.atlas",
+            "type": "atlas",
+            "name": "seatState_atlas"
+        },
+        {
+            "url": "assets/window/welfare.atlas",
+            "type": "atlas",
+            "name": "welfare_atlas"
+        },
+        {
+            "url": "assets/window/monthCard.atlas",
+            "type": "atlas",
+            "name": "monthCard_atlas"
+        },
+        {
+            "url": "assets/window/treasure.atlas",
+            "type": "atlas",
+            "name": "treasure_atlas"
+        },
+        {
+            "url": "assets/window/sound.atlas",
+            "type": "atlas",
+            "name": "sound_atlas"
+        },
+        {
+            "url": "assets/window/gift.atlas",
+            "type": "atlas",
+            "name": "gift_atlas"
+        },
+        {
+            "url": "assets/window/officer.atlas",
+            "type": "atlas",
+            "name": "officer_atlas"
+        },
+        {
+            "url": "assets/window/officerRank.atlas",
+            "type": "atlas",
+            "name": "officerRank_atlas"
+        },
+        {
+            "url": "assets/window/officerPoint.atlas",
+            "type": "atlas",
+            "name": "officerPoint_atlas"
+        },
+        {
+            "url": "assets/window/officerDetail.atlas",
+            "type": "atlas",
+            "name": "officerDetail_atlas"
+        },
+        {
+            "url": "assets/window/officerBigLevel.atlas",
+            "type": "atlas",
+            "name": "officerBigLevel_atlas"
+        },
+        {
+            "url": "assets/window/officerUpLevel.atlas",
+            "type": "atlas",
+            "name": "officerUpLevel_atlas"
+        },
+        {
+            "url": "assets/window/officerDashima.atlas",
+            "type": "atlas",
+            "name": "officerDashima_atlas"
+        },
+        {
+            "url": "assets/window/bindMobile.atlas",
+            "type": "atlas",
+            "name": "bindMobile_atlas"
+        },
+        {
+            "url": "assets/window/JiangYin.atlas",
+            "type": "atlas",
+            "name": "JiangYin_atlas"
+        },
+        {
+            "url": "assets/hallicon/hallicon.atlas",
+            "type": "atlas",
+            "name": "hallicon_atlas"
+        },
+        {
+            "url": "assets/animate/jiangyin/jiangyinhecheng.sk",
+            "type": "arraybuffer",
+            "name": "jiangyinhecheng_sk"
+        },
+        {
+            "url": "assets/window/timelimit.atlas",
+            "type": "atlas",
+            "name": "timelimit_atlas"
+        },
+        {
+            "url": "assets/window/oldreturn.atlas",
+            "type": "atlas",
+            "name": "oldreturn_atlas"
+        },
+        {
+            "url": "assets/window/video.atlas",
+            "type": "atlas",
+            "name": "video_atlas"
+        },
+        {
+            "url": "assets/window/rebateActivity.atlas",
+            "type": "atlas",
+            "name": "rebateActivity_atlas"
+        },
+        {
+            "url": "assets/window/marry.atlas",
+            "type": "atlas",
+            "name": "marry_atlas"
+        },
+        {
+            "url": "assets/window/seekMarry.atlas",
+            "type": "atlas",
+            "name": "seekMarry_atlas"
+        },
+        {
+            "url": "assets/window/seekMarryBook.atlas",
+            "type": "atlas",
+            "name": "seekMarryBook_atlas"
+        },
+        {
+            "url": "assets/bigPng/friendless_bg.png",
+            "type": "image",
+            "name": "friendless_bg"
+        },
+        {
+            "url": "assets/window/sevenTask.atlas",
+            "type": "atlas",
+            "name": "sevenTask_atlas"
+        },
+        {
+            "url": "assets/window/oldback.atlas",
+            "type": "atlas",
+            "name": "oldback_atlas"
+        },
+        {
+            "url": "assets/window/obBtnTxt.atlas",
+            "type": "atlas",
+            "name": "obBtnTxt_atlas"
+        },
+        {
+            "url": "assets/window/oldbackbp.atlas",
+            "type": "atlas",
+            "name": "oldbackbp_atlas"
+        },
+        {
+            "url": "assets/window/rogueGrabWindow.atlas",
+            "type": "atlas",
+            "name": "rogueGrabWindow_atlas"
+        },
+        {
+            "url": "assets/window/oldbackPickMode.atlas",
+            "type": "atlas",
+            "name": "oldbackPickMode_atlas"
+        },
+        {
+            "url": "assets/window/oldbackTask.atlas",
+            "type": "atlas",
+            "name": "oldbackTask_atlas"
+        },
+        {
+            "url": "assets/window/welback.atlas",
+            "type": "atlas",
+            "name": "welback_atlas"
+        },
+        {
+            "url": "assets/window/goPlay.atlas",
+            "type": "atlas",
+            "name": "goPlay_atlas"
+        },
+        {
+            "url": "assets/window/oldbackQuick.atlas",
+            "type": "atlas",
+            "name": "oldbackQuick_atlas"
+        },
+        {
+            "url": "assets/window/countryBg.atlas",
+            "type": "atlas",
+            "name": "countryBg_atlas"
+        },
+        {
+            "url": "assets/window/generalSkinGet.atlas",
+            "type": "atlas",
+            "name": "generalSkinGet_atlas"
+        },
+        {
+            "url": "assets/window/oldbackPreGift.atlas",
+            "type": "atlas",
+            "name": "oldbackPreGift_atlas"
+        },
+        {
+            "url": "assets/animate/game/aozhan/aozhan.sk",
+            "type": "arraybuffer",
+            "name": "aozhan_sk"
+        },
+        {
+            "url": "assets/animate/game/kill/jisha.sk",
+            "type": "arraybuffer",
+            "name": "beijisha1_sk"
+        },
+        {
+            "url": "assets/animate/game/kill/beijisha2.sk",
+            "type": "arraybuffer",
+            "name": "beijisha2_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/kaizhanzi01.sk",
+            "type": "arraybuffer",
+            "name": "kaizhanzi01_sk"
+        },
+        {
+            "url": "assets/animate/game/djSelect/yidianjiang.sk",
+            "type": "arraybuffer",
+            "name": "yidianjiang_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/huihe.sk",
+            "type": "arraybuffer",
+            "name": "huihe_sk"
+        },
+        {
+            "url": "assets/animate/hall/upgrade/23guang.sk",
+            "type": "arraybuffer",
+            "name": "23guang_sk"
+        },
+        {
+            "url": "assets/animate/hall/upgrade/45guang.sk",
+            "type": "arraybuffer",
+            "name": "45guang_sk"
+        },
+        {
+            "url": "assets/animate/hall/upgrade/nanshengjie.sk",
+            "type": "arraybuffer",
+            "name": "nanshengjie_sk"
+        },
+        {
+            "url": "assets/animate/hall/upgrade/nvshengjie.sk",
+            "type": "arraybuffer",
+            "name": "nvshengjie_sk"
+        },
+        {
+            "url": "assets/animate/common/prop/gaojidaojukuang.sk",
+            "type": "arraybuffer",
+            "name": "gaojidaojukuang_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/lianzhan.sk",
+            "type": "arraybuffer",
+            "name": "lianzhan_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/pifuchuchang1.sk",
+            "type": "arraybuffer",
+            "name": "pifuchuchang1_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/pifuchuchang2.sk",
+            "type": "arraybuffer",
+            "name": "pifuchuchang2_sk"
+        },
+        {
+            "url": "assets/animate/game/fight/huihetishi.sk",
+            "type": "arraybuffer",
+            "name": "huihetishi_sk"
+        },
+        {
+            "url": "assets/window/vipright.atlas",
+            "type": "atlas",
+            "name": "vipright_atlas"
+        },
+        {
+            "url": "assets/window/vipPoint.atlas",
+            "type": "atlas",
+            "name": "vipPoint_atlas"
+        },
+        {
+            "url": "assets/window/vipGift.atlas",
+            "type": "atlas",
+            "name": "vipGift_atlas"
+        },
+        {
+            "url": "assets/window/recommendPoBing.atlas",
+            "type": "atlas",
+            "name": "recommendPoBing_atlas"
+        },
+        {
+            "url": "assets/window/recommendRecruit.atlas",
+            "type": "atlas",
+            "name": "recommendRecruit_atlas"
+        },
+        {
+            "url": "assets/window/recommendSelfChoose.atlas",
+            "type": "atlas",
+            "name": "recommendSelfChoose_atlas"
+        },
+        {
+            "url": "assets/window/kanshuGift.atlas",
+            "type": "atlas",
+            "name": "kanshuGift_atlas"
+        },
+        {
+            "url": "assets/window/generalRight.atlas",
+            "type": "atlas",
+            "name": "generalRight_atlas"
+        },
+        {
+            "url": "assets/window/guild.atlas",
+            "type": "atlas",
+            "name": "guild_atlas"
+        },
+        {
+            "url": "assets/window/guildGuide.atlas",
+            "type": "atlas",
+            "name": "guildGuide_atlas"
+        },
+        {
+            "url": "assets/window/guildShop.atlas",
+            "type": "atlas",
+            "name": "guildShop_atlas"
+        },
+        {
+            "url": "assets/window/guildDrum.atlas",
+            "type": "atlas",
+            "name": "guildDrum_atlas"
+        },
+        {
+            "url": "assets/window/guildManager.atlas",
+            "type": "atlas",
+            "name": "guildManager_atlas"
+        },
+        {
+            "url": "assets/window/generalOpen.atlas",
+            "type": "atlas",
+            "name": "generalOpen_atlas"
+        },
+        {
+            "url": "assets/window/generalOpenUp.atlas",
+            "type": "atlas",
+            "name": "generalOpenUp_atlas"
+        },
+        {
+            "url": "assets/achievement/achievement.atlas",
+            "type": "atlas",
+            "name": "achievement_atlas"
+        },
+        {
+            "url": "assets/activity3V3/activity3V3.atlas",
+            "type": "atlas",
+            "name": "activity3V3_atlas"
+        },
+        {
+            "url": "assets/window/limitSeckill.atlas",
+            "type": "atlas",
+            "name": "limitSeckill_atlas"
+        },
+        {
+            "url": "assets/window/recruitOther.atlas",
+            "type": "atlas",
+            "name": "recruitOther_atlas"
+        },
+        {
+            "url": "assets/window/recruitChr.atlas",
+            "type": "atlas",
+            "name": "recruitChr_atlas"
+        },
+        {
+            "url": "assets/window/szxyCall.atlas",
+            "type": "atlas",
+            "name": "szxyCall_atlas"
+        },
+        {
+            "url": "assets/window/szxyMain.atlas",
+            "type": "atlas",
+            "name": "szxyMain_atlas"
+        },
+        {
+            "url": "assets/window/recruitRcd.atlas",
+            "type": "atlas",
+            "name": "recruitRcd_atlas"
+        },
+        {
+            "url": "assets/window/recruitInvite.atlas",
+            "type": "atlas",
+            "name": "recruitInvite_atlas"
+        },
+        {
+            "url": "assets/generalTrial/generalTrial.atlas",
+            "type": "atlas",
+            "name": "generalTrial_atlas"
+        },
+        {
+            "url": "assets/generalTrial/wuhuLevel.atlas",
+            "type": "atlas",
+            "name": "wuhuLevel_atlas"
+        },
+        {
+            "url": "assets/generalTrial/gtrial_challenge_big_bg.png",
+            "type": "image",
+            "name": "gtrial_challenge_big_bg"
+        },
+        {
+            "url": "assets/generalTrial/wuhuLevel_bg.png",
+            "type": "image",
+            "name": "wuhuLevel_bg"
+        },
+        {
+            "url": "assets/window/creatematch.atlas",
+            "type": "atlas",
+            "name": "creatematch_atlas"
+        },
+        {
+            "url": "assets/match/matchBase.atlas",
+            "type": "atlas",
+            "name": "matchBase_atlas"
+        },
+        {
+            "url": "assets/match/matchDetail.atlas",
+            "type": "atlas",
+            "name": "matchDetail_atlas"
+        },
+        {
+            "url": "assets/match/offlineMatch.atlas",
+            "type": "atlas",
+            "name": "offlineMatch_atlas"
+        },
+        {
+            "url": "assets/window/guanshifish.atlas",
+            "type": "atlas",
+            "name": "guanshifish_atlas"
+        },
+        {
+            "url": "assets/window/offlineMatchW.atlas",
+            "type": "atlas",
+            "name": "offlineMatchW_atlas"
+        },
+        {
+            "url": "assets/tip/tip.atlas",
+            "type": "atlas",
+            "name": "tip_atlas"
+        },
+        {
+            "url": "assets/window/matchrank.atlas",
+            "type": "atlas",
+            "name": "matchrank_atlas"
+        },
+        {
+            "url": "assets/window/matchResult.atlas",
+            "type": "atlas",
+            "name": "matchResult_atlas"
+        },
+        {
+            "url": "assets/window/qmbzSymbol.atlas",
+            "type": "atlas",
+            "name": "qmbzSymbol_atlas"
+        },
+        {
+            "url": "assets/window/newPlayerWelfare.atlas",
+            "type": "atlas",
+            "name": "newPlayerWelfare_atlas"
+        },
+        {
+            "url": "assets/window/rechargeIianyun.atlas",
+            "type": "atlas",
+            "name": "rechargeIianyun_atlas"
+        },
+        {
+            "url": "assets/window/friendChat.atlas",
+            "type": "atlas",
+            "name": "friendChat_atlas"
+        },
+        {
+            "url": "assets/window/blessNew.atlas",
+            "type": "atlas",
+            "name": "blessNew_atlas"
+        },
+        {
+            "url": "assets/window/trove.atlas",
+            "type": "atlas",
+            "name": "trove_atlas"
+        },
+        {
+            "url": "assets/game/tableGuide.atlas",
+            "type": "atlas",
+            "name": "tableGuide_atlas"
+        },
+        {
+            "url": "assets/window/guideGeneralLight.atlas",
+            "type": "atlas",
+            "name": "guideGeneralLight_atlas"
+        },
+        {
+            "url": "assets/window/newSkin.atlas",
+            "type": "atlas",
+            "name": "newSkin_atlas"
+        },
+        {
+            "url": "assets/window/rogueRule.atlas",
+            "type": "atlas",
+            "name": "rogueRule_atlas"
+        },
+        {
+            "url": "assets/window/firstRecharge.atlas",
+            "type": "atlas",
+            "name": "firstRecharge_atlas"
+        },
+        {
+            "url": "assets/window/festivalListView.atlas",
+            "type": "atlas",
+            "name": "festivalListView_atlas"
+        },
+        {
+            "url": "assets/window/firstNewRecharge.atlas",
+            "type": "atlas",
+            "name": "firstNewRecharge_atlas"
+        },
+        {
+            "url": "assets/window/guildTask.atlas",
+            "type": "atlas",
+            "name": "guildTask_atlas"
+        },
+        {
+            "url": "assets/window/guildMatchAward.atlas",
+            "type": "atlas",
+            "name": "guildMatchAward_atlas"
+        },
+        {
+            "url": "assets/window/secKill.atlas",
+            "type": "atlas",
+            "name": "secKill_atlas"
+        },
+        {
+            "url": "assets/window/rank.atlas",
+            "type": "atlas",
+            "name": "rank_atlas"
+        },
+        {
+            "url": "assets/window/rankCommon.atlas",
+            "type": "atlas",
+            "name": "rankCommon_atlas"
+        },
+        {
+            "url": "assets/window/hallPracticeRecord.atlas",
+            "type": "atlas",
+            "name": "hallPracticeRecord_atlas"
+        },
+        {
+            "url": "assets/window/swjgChooseCamp.atlas",
+            "type": "atlas",
+            "name": "swjgChooseCamp_atlas"
+        },
+        {
+            "url": "assets/window/qldjChooseRule.atlas",
+            "type": "atlas",
+            "name": "qldjChooseRule_atlas"
+        },
+        {
+            "url": "assets/window/swjgEvent.atlas",
+            "type": "atlas",
+            "name": "swjgEvent_atlas"
+        },
+        {
+            "url": "assets/window/cardsBook.atlas",
+            "type": "atlas",
+            "name": "cardsBook_atlas"
+        },
+        {
+            "url": "assets/window/activityExchange.atlas",
+            "type": "atlas",
+            "name": "activityExchange_atlas"
+        },
+        {
+            "url": "assets/window/activityrebatenew.atlas",
+            "type": "atlas",
+            "name": "activityRebateNew_atlas"
+        },
+        {
+            "url": "assets/window/priMonthCard.atlas",
+            "type": "atlas",
+            "name": "priMonthCard_atlas"
+        },
+        {
+            "url": "assets/window/sevenGift.atlas",
+            "type": "atlas",
+            "name": "sevenGift_atlas"
+        },
+        {
+            "url": "assets/window/jdPriviege.atlas",
+            "type": "atlas",
+            "name": "jdPriviege_atlas"
+        },
+        {
+            "url": "assets/window/treasureNew.atlas",
+            "type": "atlas",
+            "name": "treasureNew_atlas"
+        },
+        {
+            "url": "assets/window/treasureGift.atlas",
+            "type": "atlas",
+            "name": "treasureGift_atlas"
+        },
+        {
+            "url": "assets/window/activityPre.atlas",
+            "type": "atlas",
+            "name": "activityPre_atlas"
+        },
+        {
+            "url": "assets/window/raceLevel.atlas",
+            "type": "atlas",
+            "name": "raceLevel_atlas"
+        },
+        {
+            "url": "assets/window/adNotice.atlas",
+            "type": "atlas",
+            "name": "adNotice_atlas"
+        },
+        {
+            "url": "assets/window/CardScreenShot.atlas",
+            "type": "atlas",
+            "name": "CardScreenShot_atlas"
+        },
+        {
+            "url": "assets/window/MapShare.atlas",
+            "type": "atlas",
+            "name": "MapShare_atlas"
+        },
+        {
+            "url": "assets/window/ShareShotBtn.atlas",
+            "type": "atlas",
+            "name": "ShareShotBtn_atlas"
+        },
+        {
+            "url": "assets/window/modeGeneralPool.atlas",
+            "type": "atlas",
+            "name": "modeGeneralPool_atlas"
+        },
+        {
+            "url": "assets/window/generalBreak.atlas",
+            "type": "atlas",
+            "name": "generalBreak_atlas"
+        },
+        {
+            "url": "assets/window/generalRank.atlas",
+            "type": "atlas",
+            "name": "generalRank_atlas"
+        },
+        {
+            "url": "assets/window/addUpCharge.atlas",
+            "type": "atlas",
+            "name": "addUpCharge_atlas"
+        },
+        {
+            "url": "assets/window/generalExercise.atlas",
+            "type": "atlas",
+            "name": "generalExercise_atlas"
+        },
+        {
+            "url": "assets/window/feedBack.atlas",
+            "type": "atlas",
+            "name": "feedBack_atlas"
+        },
+        {
+            "url": "assets/window/limitGift.atlas",
+            "type": "atlas",
+            "name": "limitGift_atlas"
+        },
+        {
+            "url": "assets/window/matchCreateDate.atlas",
+            "type": "atlas",
+            "name": "matchCreateDate_atlas"
+        },
+        {
+            "url": "assets/noScale/loginOnlineUp.atlas",
+            "type": "atlas",
+            "name": "loginOnlineUp_atlas"
+        },
+        {
+            "url": "assets/roguelike/rogueBig.atlas",
+            "type": "atlas",
+            "name": "rogueBig_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikediff.atlas",
+            "type": "atlas",
+            "name": "roguelikediff_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikediffdes.atlas",
+            "type": "atlas",
+            "name": "roguelikediffdes_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikeReplace.atlas",
+            "type": "atlas",
+            "name": "roguelikeReplace_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelike.atlas",
+            "type": "atlas",
+            "name": "roguelike_atlas"
+        },
+        {
+            "url": "assets/roguelike/rogueAward.atlas",
+            "type": "atlas",
+            "name": "rogueAward_atlas"
+        },
+        {
+            "url": "assets/roguelike/rogueDiffSeed.atlas",
+            "type": "atlas",
+            "name": "rogueDiffSeed_atlas"
+        },
+        {
+            "url": "assets/roguelike/rogueQiYu.atlas",
+            "type": "atlas",
+            "name": "rogueQiYu_atlas"
+        },
+        {
+            "url": "assets/roguelike/rogueAdventureLuck21.atlas",
+            "type": "atlas",
+            "name": "rogueAdventureLuck21_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikeCommon.atlas",
+            "type": "atlas",
+            "name": "roguelikeCommon_atlas"
+        },
+        {
+            "url": "assets/roguelike/rog_tree_bg.png",
+            "type": "image",
+            "name": "rog_tree_bg"
+        },
+        {
+            "url": "assets/roguelike/rogue_invade_big_bg.png",
+            "type": "image",
+            "name": "rogue_invade_big_bg"
+        },
+        {
+            "url": "assets/roguelike/rogue_invade_big_bg2.png",
+            "type": "image",
+            "name": "rogue_invade_big_bg2"
+        },
+        {
+            "url": "assets/roguelike/rogue_guessCup_role.png",
+            "type": "image",
+            "name": "rogue_guessCup_role"
+        },
+        {
+            "url": "assets/roguelike/rogue_guessCup_table.png",
+            "type": "image",
+            "name": "rogue_guessCup_table"
+        },
+        {
+            "url": "assets/roguelike/rogue_mul_lines_bg.png",
+            "type": "image",
+            "name": "rogue_mul_lines_bg"
+        },
+        {
+            "url": "assets/roguelike/rog_suit_collect_bg.png",
+            "type": "image",
+            "name": "rog_suit_collect_bg"
+        },
+        {
+            "url": "assets/roguelike/rg_diff_sel_bg.png",
+            "type": "image",
+            "name": "rg_diff_sel_bg"
+        },
+        {
+            "url": "assets/roguelike/rg_diff_desperate_bg.png",
+            "type": "image",
+            "name": "rg_diff_desperate_bg"
+        },
+        {
+            "url": "assets/roguelike1v1/roguelike1v1_160.png",
+            "type": "image",
+            "name": "roguelike1v1_160"
+        },
+        {
+            "url": "assets/bigPng/oldback_bg.png",
+            "type": "image",
+            "name": "oldback_bg"
+        },
+        {
+            "url": "assets/bigPng/oldback_awd_bg.png",
+            "type": "image",
+            "name": "oldback_awd_bg"
+        },
+        {
+            "url": "assets/roguelike/rogue_event_txt_bg.png",
+            "type": "image",
+            "name": "rogue_event_txt_bg"
+        },
+        {
+            "url": "assets/roguelike/roguelikeSeaconLevel.atlas",
+            "type": "atlas",
+            "name": "roguelikeSeaconLevel_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikeInvade.atlas",
+            "type": "atlas",
+            "name": "roguelikeInvade_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikeSeasonPreview.atlas",
+            "type": "atlas",
+            "name": "roguelikeSeasonPreview_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikeGuessCup.atlas",
+            "type": "atlas",
+            "name": "roguelikeGuessCup_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikeMulLine.atlas",
+            "type": "atlas",
+            "name": "roguelikeMulLine_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikezhanji.atlas",
+            "type": "atlas",
+            "name": "roguelikezhanji_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikesmallmap.atlas",
+            "type": "atlas",
+            "name": "roguelikesmallmap_atlas"
+        },
+        {
+            "url": "assets/window/officerRun.atlas",
+            "type": "atlas",
+            "name": "officerRun_atlas"
+        },
+        {
+            "url": "assets/window/tiangong.atlas",
+            "type": "atlas",
+            "name": "tiangong_atlas"
+        },
+        {
+            "url": "assets/window/tiangongLook.atlas",
+            "type": "atlas",
+            "name": "tiangongLook_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikeFight.atlas",
+            "type": "atlas",
+            "name": "roguelikeFight_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelikeVideo.atlas",
+            "type": "atlas",
+            "name": "rogueVideo_atlas"
+        },
+        {
+            "url": "assets/roguelike/roguelike_fight_bg1.png",
+            "type": "image",
+            "name": "roguelike_fight_bg1"
+        },
+        {
+            "url": "assets/roguelike/roguelike_fight_bg2.png",
+            "type": "image",
+            "name": "roguelike_fight_bg2"
+        },
+        {
+            "url": "assets/roguelike/roguelike_jishi_bg.png",
+            "type": "image",
+            "name": "roguelike_jishi_bg"
+        },
+        {
+            "url": "assets/window/hallMatchPracticeWin.atlas",
+            "type": "atlas",
+            "name": "hallMatchPracticeWin_atlas"
+        },
+        {
+            "url": "assets/window/taskMainNew.atlas",
+            "type": "atlas",
+            "name": "taskMainNew_atlas"
+        },
+        {
+            "url": "assets/bigPng/tiangongLoadBg.png",
+            "type": "image",
+            "name": "tiangongLoadBg"
+        },
+        {
+            "url": "assets/bigPng/blessNewBg.png",
+            "type": "image",
+            "name": "blessNewBg"
+        },
+        {
+            "url": "assets/window/tianshu.atlas",
+            "type": "atlas",
+            "name": "tianshu_atlas"
+        },
+        {
+            "url": "assets/window/pingjian.atlas",
+            "type": "atlas",
+            "name": "pingjian_atlas"
+        },
+        {
+            "url": "assets/window/jinlan2025.atlas",
+            "type": "atlas",
+            "name": "jinlan2025_atlas"
+        },
+        {
+            "url": "assets/bigPng/tianshu_bg.png",
+            "type": "image",
+            "name": "tianshu_bg"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected01_T70.png",
+            "type": "image",
+            "name": "Trove_Selected01_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected02_T70.png",
+            "type": "image",
+            "name": "Trove_Selected02_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected03_T70.png",
+            "type": "image",
+            "name": "Trove_Selected03_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected04_T70.png",
+            "type": "image",
+            "name": "Trove_Selected04_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected05_T70.png",
+            "type": "image",
+            "name": "Trove_Selected05_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected06_T70.png",
+            "type": "image",
+            "name": "Trove_Selected06_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected07_T70.png",
+            "type": "image",
+            "name": "Trove_Selected07_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected08_T70.png",
+            "type": "image",
+            "name": "Trove_Selected08_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected09_T70.png",
+            "type": "image",
+            "name": "Trove_Selected09_T70"
+        },
+        {
+            "url": "assets/bigPng/Trove_Selected010_T70.png",
+            "type": "image",
+            "name": "Trove_Selected010_T70"
+        },
+        {
+            "url": "assets/bigPng/jubaopen_bg.jpg",
+            "type": "image",
+            "name": "jubaopen_bg"
+        },
+        {
+            "url": "assets/bigPng/jgqy_bg.png",
+            "type": "image",
+            "name": "jgqy_bg"
+        },
+        {
+            "url": "assets/bigPng/qiyuantai_bg.png",
+            "type": "image",
+            "name": "qiyuantai_bg"
+        },
+        {
+            "url": "assets/window/shareTy.atlas",
+            "type": "atlas",
+            "name": "shareTy_atlas"
+        },
+        {
+            "url": "assets/window/qicheng.atlas",
+            "type": "atlas",
+            "name": "qicheng_atlas"
+        },
+        {
+            "url": "assets/bigPng/rc_other_bg.png",
+            "type": "image",
+            "name": "rc_other_bg"
+        },
+        {
+            "url": "assets/bigPng/guide_new_zhaoyun.png",
+            "type": "image",
+            "name": "guide_new_zhaoyun"
+        },
+        {
+            "url": "assets/bigPng/guide_new_wuhujiang.png",
+            "type": "image",
+            "name": "guide_new_wuhujiang"
+        },
+        {
+            "url": "assets/bigPng/newSecKill_ItemBetter_Bg.png",
+            "type": "image",
+            "name": "newSecKill_ItemBetter_Bg"
+        },
+        {
+            "url": "assets/bigPng/oldReturn_mode_bg.png",
+            "type": "image",
+            "name": "oldReturn_mode_bg"
+        },
+        {
+            "url": "assets/bigPng/resetreturngifts_bg.png",
+            "type": "image",
+            "name": "resetreturngifts_bg"
+        },
+        {
+            "url": "assets/bigPng/newSecKill_Item_Bg.png",
+            "type": "image",
+            "name": "newSecKill_Item_Bg"
+        },
+        {
+            "url": "assets/bigPng/newSecKill_General_Bg.png",
+            "type": "image",
+            "name": "newSecKill_General_Bg"
+        },
+        {
+            "url": "assets/bigPng/guide_new_tip_bg.png",
+            "type": "image",
+            "name": "guide_new_tip_bg"
+        },
+        {
+            "url": "assets/bigPng/Goto_Poker.png",
+            "type": "image",
+            "name": "Goto_Poker_bg"
+        },
+        {
+            "url": "assets/window/activityTheme.atlas",
+            "type": "atlas",
+            "name": "activityTheme_atlas"
+        },
+        {
+            "url": "assets/window/huaQuan.atlas",
+            "type": "atlas",
+            "name": "huaQuan_atlas"
+        },
+        {
+            "url": "config/sys_h5_server.json",
+            "type": "json",
+            "name": "ServerList_config"
+        },
+        {
+            "url": "config/cha_traitRefined.json",
+            "type": "json",
+            "name": "traitRefined_json"
+        },
+        {
+            "url": "config/ff_reli_config.json",
+            "type": "json",
+            "name": "reli_config"
+        },
+        {
+            "url": "config/h5_global_conf.json",
+            "type": "json",
+            "name": "GameGlobalConfig_json"
+        },
+        {
+            "url": "config/mod_elite_race.json",
+            "type": "json",
+            "name": "mod_elite_race_json"
+        },
+        {
+            "url": "config/gn_generalcheckin.json",
+            "type": "json",
+            "name": "gn_generalcheckin_json"
+        },
+        {
+            "url": "config/mod_elite_ttrank.json",
+            "type": "json",
+            "name": "elite_ttrank_json"
+        },
+        {
+            "url": "config/hd_shen_wu_config.json",
+            "type": "json",
+            "name": "shenwu_json"
+        },
+        {
+            "url": "config/h5_officer.json",
+            "type": "json",
+            "name": "h5_officer_Json"
+        },
+        {
+            "url": "config/gn_dbs_gamemedal.json",
+            "type": "json",
+            "name": "gamemedal_json"
+        },
+        {
+            "url": "config/gn_Cities.json",
+            "type": "json",
+            "name": "CityConfig_json"
+        },
+        {
+            "url": "config/hd_rog_open.json",
+            "type": "json",
+            "name": "hd_rog_open_json"
+        },
+        {
+            "url": "config/hd_officer_run.json",
+            "type": "json",
+            "name": "hd_officer_run_json"
+        },
+        {
+            "url": "config/hd_officer_run3.json",
+            "type": "json",
+            "name": "hd_officer_run3_json"
+        },
+        {
+            "url": "config/gn_share.json",
+            "type": "json",
+            "name": "gn_share_json"
+        },
+        {
+            "url": "config/ff_jubaopen.json",
+            "type": "json",
+            "name": "JuBaoPen_json"
+        },
+        {
+            "url": "config/sys_ss_gamelabel_config.json",
+            "type": "json",
+            "name": "GameMode_json"
+        },
+        {
+            "url": "config/gn_free_general.json",
+            "type": "json",
+            "name": "freeGeneral_json"
+        },
+        {
+            "url": "config/gn_country.json",
+            "type": "json",
+            "name": "gn_country_json"
+        },
+        {
+            "url": "config/mod_AIGame.json",
+            "type": "json",
+            "name": "mod_AIGame_json"
+        },
+        {
+            "url": "config/ff_chess.json",
+            "type": "json",
+            "name": "chess_json"
+        },
+        {
+            "url": "config/gn_dbs_gamemedal.json",
+            "type": "json",
+            "name": "gamemedal_json"
+        },
+        {
+            "url": "config/gn_dbs_general_stars.json",
+            "type": "json",
+            "name": "general_stars"
+        },
+        {
+            "url": "config/sys_playcard.json",
+            "type": "json",
+            "name": "Cards_json"
+        },
+        {
+            "url": "config/hd_all_active.json",
+            "type": "json",
+            "name": "hd_all_active_json"
+        },
+        {
+            "url": "config/character.json",
+            "type": "json",
+            "name": "character_json"
+        },
+        {
+            "url": "config/gn_paijuhudong.json",
+            "type": "json",
+            "name": "gn_paijuhudong_json"
+        },
+        {
+            "url": "config/mod_wurenshenfen.json",
+            "type": "json",
+            "name": "mod_wurenshenfen_json"
+        },
+        {
+            "url": "config/mod_barenshenfen.json",
+            "type": "json",
+            "name": "mod_barenshenfen_json"
+        },
+        {
+            "url": "config/gn_week_general.json",
+            "type": "json",
+            "name": "week_general_json"
+        },
+        {
+            "url": "config/gn_zonghe.json",
+            "type": "json",
+            "name": "ZongHeConfig_json"
+        },
+        {
+            "url": "config/sys_gs_dbs_fs_goodsbaseinfo.json",
+            "type": "json",
+            "name": "goodsbaseinfo_json"
+        },
+        {
+            "url": "config/sys_h5_shop.json",
+            "type": "json",
+            "name": "Shop_json"
+        },
+        {
+            "url": "config/cha_spell.json",
+            "type": "json",
+            "name": "Skills_json"
+        },
+        {
+            "url": "config/cha_spellextend.json",
+            "type": "json",
+            "name": "SpellExtend_json"
+        },
+        {
+            "url": "config/hd_swjg_config.json",
+            "type": "json",
+            "name": "swjg_config"
+        },
+        {
+            "url": "config/hd_tong_zhou_gong_ji.json",
+            "type": "json",
+            "name": "longzhouhuizhan"
+        },
+        {
+            "url": "config/hd_fight_lord_config.json",
+            "type": "json",
+            "name": "fight_lord_config"
+        },
+        {
+            "url": "config/hd_1v1_rogue.json",
+            "type": "json",
+            "name": "1v1_rogue_config"
+        },
+        {
+            "url": "config/ff_chongzhitips.json",
+            "type": "json",
+            "name": "chongzhitips"
+        },
+        {
+            "url": "config/cfg_goods_source.json",
+            "type": "json",
+            "name": "cfg_goods_source_json"
+        },
+        {
+            "url": "config/gn_itempath.json",
+            "type": "json",
+            "name": "gn_itempath_json"
+        },
+        {
+            "url": "config/ff_seckill_new.json",
+            "type": "json",
+            "name": "ff_seckill_new_json"
+        },
+        {
+            "url": "config/gn_recommend.json",
+            "type": "json",
+            "name": "gn_recommend_json"
+        },
+        {
+            "url": "config/gn_WallPaper.json",
+            "type": "json",
+            "name": "WallPaper_json"
+        },
+        {
+            "url": "config/sys_h5_text.json",
+            "type": "json",
+            "name": "Text_Json"
+        },
+        {
+            "url": "config/gn_zhibo.json",
+            "type": "json",
+            "name": "zhibo_config"
+        },
+        {
+            "url": "config/cha_gs_dbs_fs_skininfo.json",
+            "type": "json",
+            "name": "GeneralSkin_json"
+        },
+        {
+            "url": "config/sys_h5_dbs_clientserverpub.json",
+            "type": "json",
+            "name": "special_json"
+        },
+        {
+            "url": "config/cha_dbs_general_series.json",
+            "type": "json",
+            "name": "lamp_json"
+        },
+        {
+            "url": "config/gn_dbs_general_stars.json",
+            "type": "json",
+            "name": "general_stars"
+        },
+        {
+            "url": "assets/bigPng/sign_new_bg.png",
+            "type": "image",
+            "name": "sign_new_bg"
+        },
+        {
+            "url": "config/gn_dbs_goods_compose.json",
+            "type": "json",
+            "name": "GoodsCompose_json"
+        },
+        {
+            "url": "config/gn_pub_sanguoxiu_info_config.json",
+            "type": "json",
+            "name": "AvatarShow_json"
+        },
+        {
+            "url": "config/gn_dbs_levelexp.json",
+            "type": "json",
+            "name": "Level_json"
+        },
+        {
+            "url": "config/gn_dbs_quest.json",
+            "type": "json",
+            "name": "Task_json"
+        },
+        {
+            "url": "config/sys_h5_task.json",
+            "type": "json",
+            "name": "TaskSpecial_json"
+        },
+        {
+            "url": "config/gn_gs_ahievement.json",
+            "type": "json",
+            "name": "Achievement_json"
+        },
+        {
+            "url": "config/gn_jingcaishike.json",
+            "type": "json",
+            "name": "JingCaiShiKe_json"
+        },
+        {
+            "url": "config/gn_h5_gds_dbs_guild.json",
+            "type": "json",
+            "name": "guild_json"
+        },
+        {
+            "url": "config/gn_Officials.json",
+            "type": "json",
+            "name": "officials_json"
+        },
+        {
+            "url": "config/sys_h5_music.json",
+            "type": "json",
+            "name": "Sound_json"
+        },
+        {
+            "url": "config/gn_dbs_giftbag.json",
+            "type": "json",
+            "name": "dbs_giftbag_json"
+        },
+        {
+            "url": "config/ff_general_chest_info_config.json",
+            "type": "json",
+            "name": "general_chest_info_config_json"
+        },
+        {
+            "url": "config/ff_dbs_pay_gift.json",
+            "type": "json",
+            "name": "dbs_pay_gift_json"
+        },
+        {
+            "url": "config/ff_dbs_generaltree.json",
+            "type": "json",
+            "name": "dbs_generaltree_json"
+        },
+        {
+            "url": "config/h5_bar_control.json",
+            "type": "json",
+            "name": "h5_bar_control_json"
+        },
+        {
+            "url": "config/mod_cs_dbs_competition.json",
+            "type": "json",
+            "name": "competition_json"
+        },
+        {
+            "url": "config/sys_mentor_config.json",
+            "type": "json",
+            "name": "mentorconfig_json"
+        },
+        {
+            "url": "config/gn_newbieguide.json",
+            "type": "json",
+            "name": "NewbieStep_json"
+        },
+        {
+            "url": "config/gn_dbs_coupon_cfg.json",
+            "type": "json",
+            "name": "dbs_coupon_cfg_json"
+        },
+        {
+            "url": "config/ff_qifu_config.json",
+            "type": "json",
+            "name": "qifuConfig_json"
+        },
+        {
+            "url": "config/ff_qifu_new.json",
+            "type": "json",
+            "name": "qifu_new_json"
+        },
+        {
+            "url": "config/mod_h5_guildMatch.json",
+            "type": "json",
+            "name": "GuildMatch_json"
+        },
+        {
+            "url": "config/gn_dbs_market_config.json",
+            "type": "json",
+            "name": "dbs_market_json"
+        },
+        {
+            "url": "config/gn_rks_rank_reward_cfg.json",
+            "type": "json",
+            "name": "ActivityCBPReward_json"
+        },
+        {
+            "url": "config/sys_rks_rank_config.json",
+            "type": "json",
+            "name": "RksRank_json"
+        },
+        {
+            "url": "config/ff_dbs_lottery_new.json",
+            "type": "json",
+            "name": "lottery_new_json"
+        },
+        {
+            "url": "config/hd_shidianyanluo.json",
+            "type": "json",
+            "name": "shidianyanluo"
+        },
+        {
+            "url": "config/ff_treasure_new.json",
+            "type": "json",
+            "name": "treasure_new_json"
+        },
+        {
+            "url": "config/sys_treasure_chest.json",
+            "type": "json",
+            "name": "treasure_chest_json"
+        },
+        {
+            "url": "config/sys_appearance.json",
+            "type": "json",
+            "name": "sys_appearance_json"
+        },
+        {
+            "url": "config/gn_jingcaishike.json",
+            "type": "json",
+            "name": "gn_jingcaishike_json"
+        },
+        {
+            "url": "config/sys_sbm_challenge_match.json",
+            "type": "json",
+            "name": "sbm_challenge_match"
+        },
+        {
+            "url": "config/hd_guan_du_zhi_zhan_config.json",
+            "type": "json",
+            "name": "guan_du_zhi_zhan_config"
+        },
+        {
+            "url": "config/hd_nianshou_config.json",
+            "type": "json",
+            "name": "nianshou_config"
+        },
+        {
+            "url": "config/gn_mastery_config.json",
+            "type": "json",
+            "name": "mastery_config"
+        },
+        {
+            "url": "config/gn_tipoff_config.json",
+            "type": "json",
+            "name": "report_new"
+        },
+        {
+            "url": "config/mod_new_ttrank_config.json",
+            "type": "json",
+            "name": "ttrank_json"
+        },
+        {
+            "url": "config/ff_exchange_new.json",
+            "type": "json",
+            "name": "exchange_new_json"
+        },
+        {
+            "url": "config/hd_invitation.json",
+            "type": "json",
+            "name": "invitation_json"
+        },
+        {
+            "url": "config/hd_invitation2.json",
+            "type": "json",
+            "name": "invitation2_json"
+        },
+        {
+            "url": "config/characterlabel.json",
+            "type": "json",
+            "name": "characterlabel_json"
+        },
+        {
+            "url": "config/sys_channelgroup.json",
+            "type": "json",
+            "name": "channelGroup_json"
+        },
+        {
+            "url": "config/hd_jinlanjie.json",
+            "type": "json",
+            "name": "jinlanjie_json"
+        },
+        {
+            "url": "config/sys_server_item_drops_templete_config.json",
+            "type": "json",
+            "name": "server_item_drops_json"
+        },
+        {
+            "url": "config/ff_task_daily.json",
+            "type": "json",
+            "name": "taskdaily_Json"
+        },
+        {
+            "url": "config/gn_seven_task.json",
+            "type": "json",
+            "name": "seven_task_json"
+        },
+        {
+            "url": "config/characterSelect.json",
+            "type": "json",
+            "name": "characterSelect_json"
+        },
+        {
+            "url": "config/hd_characterChallenge.json",
+            "type": "json",
+            "name": "general_trial_json"
+        },
+        {
+            "url": "config/mod_point_race.json",
+            "type": "json",
+            "name": "point_race_json"
+        },
+        {
+            "url": "config/gn_transpond.json",
+            "type": "json",
+            "name": "transpond_json"
+        },
+        {
+            "url": "config/hd_special1v1.json",
+            "type": "json",
+            "name": "special1v1_json"
+        },
+        {
+            "url": "config/gn_oldBack.json",
+            "type": "json",
+            "name": "oldBack_json"
+        },
+        {
+            "url": "config/gn_newoldBack.json",
+            "type": "json",
+            "name": "newoldBack_json"
+        },
+        {
+            "url": "config/gn_new_fuli.json",
+            "type": "json",
+            "name": "new_fuli_json"
+        },
+        {
+            "url": "config/mod_33.json",
+            "type": "json",
+            "name": "mod33_json"
+        },
+        {
+            "url": "config/hd_roguelike.json",
+            "type": "json",
+            "name": "roguelike_json"
+        },
+        {
+            "url": "config/hd_rog_open.json",
+            "type": "json",
+            "name": "rogopen_json"
+        },
+        {
+            "url": "config/ff_tiangong.json",
+            "type": "json",
+            "name": "ff_tiangong_config"
+        },
+        {
+            "url": "config/sys_h5_quest.json",
+            "type": "json",
+            "name": "SysH5Quest_json"
+        },
+        {
+            "url": "config/sys_game_pause.json",
+            "type": "json",
+            "name": "GamePause_json"
+        },
+        {
+            "url": "config/sys_h5_task_main.json",
+            "type": "json",
+            "name": "TaskMain_json"
+        },
+        {
+            "url": "config/ff_skin_chest_info_config.json",
+            "type": "json",
+            "name": "ff_skin_chest_info_config_json"
+        },
+        {
+            "url": "config/sys_NewShopItem.json",
+            "type": "json",
+            "name": "sys_NewShopItem_json"
+        },
+        {
+            "url": "config/gn_charactershow.json",
+            "type": "json",
+            "name": "gn_charactershow_json"
+        },
+        {
+            "url": "config/hd_cha_monthlycard.json",
+            "type": "json",
+            "name": "hd_cha_monthlycard_json"
+        },
+        {
+            "url": "assets/bigPng/monthcard/monthcard_bg_r.png",
+            "type": "image",
+            "name": "monthcard_bg_r"
+        },
+        {
+            "url": "assets/bigPng/ob_monthcard/ob_monthcard_bg_r.png",
+            "type": "image",
+            "name": "ob_monthcard_bg_r"
+        },
+        {
+            "url": "assets/bigPng/ob_monthcard/ob_monthcard_text.png",
+            "type": "image",
+            "name": "ob_monthcard_text"
+        },
+        {
+            "url": "assets/bigPng/ob_monthcard/ob_monthcard_bg.png",
+            "type": "image",
+            "name": "ob_monthcard_bg"
+        },
+        {
+            "url": "assets/bigPng/newMonthWeek_bg.png",
+            "type": "image",
+            "name": "newMonthWeek_bg"
+        },
+        {
+            "url": "assets/bigPng/monthcard/monthcard_popup_multi.png",
+            "type": "image",
+            "name": "monthcard_popup_multi"
+        },
+        {
+            "url": "assets/bigPng/monthcard/monthcard_popup_single.png",
+            "type": "image",
+            "name": "monthcard_popup_single"
+        },
+        {
+            "url": "assets/bigPng/monthcard/monthcard_text.png",
+            "type": "image",
+            "name": "monthcard_text"
+        },
+        {
+            "url": "assets/bigPng/monthcard/monthcard_bg.png",
+            "type": "image",
+            "name": "monthcard_bg"
+        },
+        {
+            "url": "config/sys_laya_v4fuli.json",
+            "type": "json",
+            "name": "sys_laya_v4fuli_json"
+        },
+        {
+            "url": "assets/activityui/awakenfuli.atlas",
+            "type": "atlas",
+            "name": "awakenfuli_atlas"
+        },
+        {
+            "url": "config/hd_dafuwen.json",
+            "type": "json",
+            "name": "hd_dafuwen_json"
+        },
+        {
+            "url": "assets/activityui/monopoly.atlas",
+            "type": "atlas",
+            "name": "monopoly_atlas"
+        },
+        {
+            "url": "assets/bigPng/monopoly_bg.png",
+            "type": "image",
+            "name": "monopoly_bg"
+        },
+        {
+            "url": "assets/bigPng/monopoly_grid.png",
+            "type": "image",
+            "name": "monopoly_grid"
+        }
+    ]
+}

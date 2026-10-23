@@ -98,7 +98,7 @@ async function nativeProbe() {
   const result = spawnSync(path.join(runtimeDir, 'electron.exe'), [], { env, cwd: runtimeDir, encoding: 'utf8', windowsHide: true, timeout: 30000 });
   const data = fs.existsSync(report) ? JSON.parse(fs.readFileSync(report, 'utf8')) : null;
   assert.equal(result.status, 0, JSON.stringify(data) || result.stderr || result.error && result.error.message);
-  assert(data && data.ok && data.assets === 6 && data.registrations === 1);
+  assert(data && data.ok && data.assets === images.length + 1 && data.registrations === 1);
   process.stdout.write('PASS real legacy remote.require + IPC without pre-registration: ' + JSON.stringify(data) + '\n');
   process.stdout.write('Native test artifacts: ' + root + '\n');
 }
@@ -108,7 +108,7 @@ async function nativeProbe() {
     const h = host(); const results = await Promise.all([h.client.readAsset('manifest.json'), h.client.readAsset('manifest.json')]);
     assert(results.every(x => x.ok));
     for (const image of images) assert((await h.client.readAsset(image)).ok);
-    assert.deepEqual(h.counts(), { registrations: 1, remoteLoads: 1, bootstrapCalls: 1, idleCalls: 7 });
+    assert.deepEqual(h.counts(), { registrations: 1, remoteLoads: 1, bootstrapCalls: 1, idleCalls: images.length + 2 });
   });
   await check('modern and already registered legacy hosts do not access remote', async () => {
     for (const modern of [true, false]) {
@@ -118,7 +118,7 @@ async function nativeProbe() {
   });
   await check('missing PNG and invalid paths remain normal responses, not registration triggers', async () => {
     const h = host({ alreadyRegistered: true });
-    assert.equal((await h.client.readAsset('ranks/13.png')).code, 'missing');
+    assert.equal((await h.client.readAsset('ranks/unavailable.png')).code, 'missing');
     assert.equal((await h.client.readAsset('../config.json')).code, 'invalid-asset'); assert.equal(h.counts().remoteLoads, 0);
   });
   await check('installation and unrelated IPC errors retain their failure semantics', async () => {

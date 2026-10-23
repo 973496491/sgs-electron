@@ -1,0 +1,212 @@
+{
+  "taskId": "JueDou_png__club",
+  "attempt": 2,
+  "tag": "[TAROT-PROD:JueDou_png__club:v2]",
+  "preparedAt": "2026-10-21T08:51:03.901727+00:00",
+  "referenceSource": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\JueDou_png__club\\v1.png",
+  "reference": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\参考图\\JueDou_png__club.v2.jpg",
+    "bytes": 111500,
+    "sha256": "826579be775486d5a35bb109a20fd06b4918423329233e1a9768e5393cb9f917",
+    "rgbaSha256": "4866e24ce29cd1106143bda82b38194c6eba84ed6980e0d5dc0852dbf939557e",
+    "size": [
+      465,
+      650
+    ],
+    "mode": "RGB",
+    "format": "JPEG"
+  },
+  "prompt": "[TAROT-PROD:JueDou_png__club:v2]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the club family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"决斗\". All 2 characters in one horizontal left-to-right line; center the group without stretching glyphs. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.\nTARGETED V2 CORRECTION — the shown reference already has correct horizontal 决斗 text and club symbols. Keep their shapes and positions exactly unchanged. Completely DELETE the entire group of INNER decorations in the upper half of the LEFT side: the large sweeping curved/curling gold arc, every diagonal gold line, the inner vertical rod/line, and all associated leaves/foliage. Remove those actual objects in full, not merely shift them a few pixels, and do not leave an empty ring, thin arc remnant, or hanging line. The upper-left x8..46, y8..72 area of the 186x260 grid must contain only naturally continuous dark gray frosted texture and the outermost card frame; absolutely no inner gold stroke or leaf. Continue the existing background seamlessly with no visible patch, panel, ellipse, outline, seam, or flat rectangular fill. Preserve the upper-center and upper-right club ornaments, exact two-character horizontal title 决斗, absence of lower-right badge, all other borders, and the bottom decorative patterns unchanged.",
+  "taskSnapshot": {
+    "id": "JueDou_png__club",
+    "resourceKey": "JueDou_png",
+    "suitValue": 4,
+    "suit": "club",
+    "suitName": "梅花",
+    "originalName": "决斗",
+    "originalNames": [
+      "决斗"
+    ],
+    "displayName": "决斗",
+    "layout": "horizontal",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      53,
+      1055,
+      1236,
+      2040,
+      3053,
+      6036,
+      6336,
+      7132,
+      11053,
+      20100,
+      20435,
+      20994,
+      60435,
+      60984,
+      60988,
+      61066,
+      61271,
+      61275
+    ],
+    "representativeCardId": 53,
+    "representativeNumber": 1,
+    "representativeRank": "A",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 52
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 1,
+        "rank": "A",
+        "cardIds": [
+          53,
+          1055,
+          1236,
+          2040,
+          3053,
+          6036,
+          6336,
+          7132,
+          11053,
+          20100,
+          20994,
+          61271,
+          61275
+        ]
+      },
+      {
+        "number": 5,
+        "rank": "5",
+        "cardIds": [
+          60988
+        ]
+      },
+      {
+        "number": 10,
+        "rank": "10",
+        "cardIds": [
+          60984
+        ]
+      },
+      {
+        "number": 12,
+        "rank": "Q",
+        "cardIds": [
+          20435,
+          60435,
+          61066
+        ]
+      }
+    ],
+    "type": 2,
+    "subType": 0,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "1362_1076_186_260",
+    "sharedFrameNames": [
+      "JueDou_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/JueDou_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 23
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "tool": "OpenAI Responses native image_generation",
+  "reference": "v4参考.png",
+  "referenceSha256": "ab4ceb8faed5241df73e36fa27269b393d4f065c55b7d573339487d48c6e0c2c",
+  "requestedAssetCount": 4,
+  "text": "闪",
+  "outputStatus": "preview only; original cards and atlas unchanged; no game integration",
+  "postprocess": "opaque export if necessary; Lanczos sizing; contact sheet assembly",
+  "variants": [
+    {
+      "suit": "heart",
+      "label": "红桃",
+      "normalSgsColor": 1,
+      "baseTextureKey": "Shan_png",
+      "generatedAt": "2026-10-20T16:13:24.687Z",
+      "generationId": "ig_0df7a0f2f73c0337016ad792e2bfa887d09ccaf603c81a6e4e",
+      "nativeSize": [
+        1061,
+        1482
+      ],
+      "nativeMode": "RGB",
+      "nativeAlphaMinMax": [
+        255,
+        255
+      ],
+      "largeFile": "大图/红桃.png",
+      "gameFile": "186x260/Shan_heart.png",
+      "promptFile": "提示词/红桃.txt",
+      "gameSize": [
+        186,
+        260
+      ],
+      "finalAlpha": [
+        255,
+        255
+      ],
+      "largeSha256": "3a895a2945d71c9b11e395b7b49b71542f9456dfddbe598670ac410729a1026e",
+      "gameSha256": "350a0781afed24f0910a982cf41f7b567250061ca6faa146f7efadfad006872c"
+    },
+    {
+      "suit": "diamond",
+      "label": "方块",
+      "normalSgsColor": 2,
+      "baseTextureKey": "Shan_png",
+      "generatedAt": "2026-10-20T16:14:17.018Z",
+      "generationId": "ig_0df7a0f2f73c0337016ad793266a9c87d087a164beb942a587",
+      "nativeSize": [
+        1061,
+        1483
+      ],
+      "nativeMode": "RGB",
+      "nativeAlphaMinMax": [
+        255,
+        255
+      ],
+      "largeFile": "大图/方块.png",
+      "gameFile": "186x260/Shan_diamond.png",
+      "promptFile": "提示词/方块.txt",
+      "gameSize": [
+        186,
+        260
+      ],
+      "finalAlpha": [
+        255,
+        255
+      ],
+      "largeSha256": "af8491a504bec8b0cbe1d981063291b5a86d6dd296cf7405371d817ddf618164",
+      "gameSha256": "a5a98133d26c309b4dfd8d538d388349c86c57a9ff31c7f46f43366e6d642429"
+    },
+    {
+      "suit": "spade",
+      "label": "黑桃",
+      "normalSgsColor": 3,
+      "baseTextureKey": "Shan_png",
+      "generatedAt": "2026-10-20T16:15:17.825Z",
+      "generationId": "ig_0df7a0f2f73c0337016ad793577a8487d0b55273f22ad8239f",
+      "nativeSize": [
+        1061,
+        1483
+      ],
+      "nativeMode": "RGB",
+      "nativeAlphaMinMax": [
+        255,
+        255
+      ],
+      "largeFile": "大图/黑桃.png",
+      "gameFile": "186x260/Shan_spade.png",
+      "promptFile": "提示词/黑桃.txt",
+      "gameSize": [
+        186,
+        260
+      ],
+      "finalAlpha": [
+        255,
+        255
+      ],
+      "largeSha256": "21e75986ce2c51487d5f3edc9c435ddbd342c60d49a67360422b8bf5d3574338",
+      "gameSha256": "fafac26e611d749622f960681c3a4f503e64a49cb8e578ee5e34c502fa7748ae"
+    },
+    {
+      "suit": "club",
+      "label": "梅花",
+      "normalSgsColor": 4,
+      "baseTextureKey": "Shan_png",
+      "generatedAt": "2026-10-20T16:16:57.141Z",
+      "generationId": "ig_0df7a0f2f73c0337016ad79390bfc087d087d55e96146513c0",
+      "nativeSize": [
+        1061,
+        1482
+      ],
+      "nativeMode": "RGB",
+      "nativeAlphaMinMax": [
+        255,
+        255
+      ],
+      "largeFile": "大图/梅花.png",
+      "gameFile": "186x260/Shan_club.png",
+      "promptFile": "提示词/梅花.txt",
+      "gameSize": [
+        186,
+        260
+      ],
+      "finalAlpha": [
+        255,
+        255
+      ],
+      "largeSha256": "4c1a2481046726c7149300916965640d296471055fd963e17951104d2c6bd668",
+      "gameSha256": "c7ef6189ff310eb8a77b76eaa7e6ea479fd802eadbf4a4c8b23fa44a557b0c23"
+    }
+  ]
+}

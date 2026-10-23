@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "taskId": "suit_heart",
+  "attempt": 1,
+  "status": "accepted",
+  "savedAt": "2026-10-21T06:47:27.723961+00:00",
+  "source": "approved-byte-reuse",
+  "sourceFile": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\红桃2分层\\heart.png",
+  "sourceSha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+  "generationId": "ig_0e03e1afb090f834016ad7a156721487d0a0ab6170c5f610d8",
+  "prompt": "Use case: background-extraction. The MOST RECENT close-up of a small ruby HEART is the EDIT TARGET. Extract exactly this heart suit emblem as ONE standalone UI sprite on a genuinely TRANSPARENT PNG background with an alpha channel. Preserve the approved heart silhouette, two rounded upper lobes and pointed bottom, rich dark ruby-red enamel/crystal body, fine champagne-gold beveled outline, and the same restrained reflections. This is the little functional corner heart, not the large central medallion. Remove ALL burgundy card background and tiny stray star/glint pixels outside the emblem. Keep only the heart and its narrow gold edge; no outer ring, rays, flourish, plaque, glow, cast shadow or text. Transparent outside the contour with clean antialiased edges; do not bake in checkerboard, black, gray or white. Use a landscape sprite canvas aspect 19:17. Center the heart; approximately 76–80% of canvas height, preserving its natural shape and generous clear padding on every side. The sprite must remain recognizable at 19x17 UI units. Output ONE transparent heart sprite only, not a sheet, not a card, no mockup.\n",
+  "revisedPrompt": null,
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\候选\\suit_heart\\v1.png",
+    "bytes": 2235,
+    "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+    "rgbaSha256": "899d87aad5a5be52f47b2130c4c852a93f1666a185c081ac3c9c3505a2b6fdf8",
+    "size": [
+      38,
+      34
+    ],
+    "mode": "RGBA",
+    "format": "PNG",
+    "actualAlpha": true,
+    "alphaRange": [
+      0,
+      255
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "visibleBoundsAlphaAbove8": [
+      5,
+      4,
+      33,
+      30
+    ]
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\候选\\suit_heart\\v1_38x34.png",
+    "bytes": 2235,
+    "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+    "rgbaSha256": "899d87aad5a5be52f47b2130c4c852a93f1666a185c081ac3c9c3505a2b6fdf8",
+    "size": [
+      38,
+      34
+    ],
+    "mode": "RGBA",
+    "format": "PNG",
+    "actualAlpha": true,
+    "alphaRange": [
+      0,
+      255
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "visibleBoundsAlphaAbove8": [
+      5,
+      4,
+      33,
+      30
+    ]
+  },
+  "normalization": {
+    "method": "Original accepted 38x34 PNG bytes reused without modification; full-resolution historic source no longer retained"
+  },
+  "reviews": [
+    {
+      "at": "2026-10-21T06:47:42.782241+00:00",
+      "result": "reviewed",
+      "note": "实际查看深浅底检查图：红宝石心形双圆瓣和尖底完整，细金边清晰；38x34及19x17均可辨认，无背景块、外环或额外装饰。原字节SHA与旧layout完全一致，RGBA Alpha 0..255、四角透明，可见界(5,4,33,30)。",
+      "source": "actual visual inspection; manual statement"
+    }
+  ],
+  "production": {
+    "native": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\原图\\suit_heart.png",
+      "bytes": 2235,
+      "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "rgbaSha256": "899d87aad5a5be52f47b2130c4c852a93f1666a185c081ac3c9c3505a2b6fdf8",
+      "size": [
+        38,
+        34
+      ],
+      "mode": "RGBA",
+      "format": "PNG",
+      "actualAlpha": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visibleBoundsAlphaAbove8": [
+        5,
+        4,
+        33,
+        30
+      ]
+    },
+    "export": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\38x34\\suit_heart.png",
+      "bytes": 2235,
+      "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef",
+      "rgbaSha256": "899d87aad5a5be52f47b2130c4c852a93f1666a185c081ac3c9c3505a2b6fdf8",
+      "size": [
+        38,
+        34
+      ],
+      "mode": "RGBA",
+      "format": "PNG",
+      "actualAlpha": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visibleBoundsAlphaAbove8": [
+        5,
+        4,
+        33,
+        30
+      ]
+    }
+  },
+  "acceptedAt": "2026-10-21T06:47:44.084526+00:00"
+}

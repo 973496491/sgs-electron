@@ -14,7 +14,7 @@ import tempfile
 import zipfile
 
 from cos_upload import UploadError, load_settings, upload_release
-from release_version import parse_version, read_version, stamp_release
+from release_version import parse_version, read_version, read_update_notes, save_project_metadata, stamp_release
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -219,6 +219,41 @@ def show_archive(archive: Path):
                   file=sys.stderr, flush=True)
 
 
+def prepare_project_release(version=None, notes=None):
+    interactive = sys.stdin is not None and sys.stdin.isatty()
+    current = read_version(PROJECT_ROOT / "version.json")
+    print(f"当前工程版本：{current}", flush=True)
+    if version is None and interactive:
+        while True:
+            try:
+                answer = input(f"本次打包版本（直接回车使用 {current}）：").strip()
+            except EOFError as exc:
+                raise RuntimeError("未收到版本输入，已取消打包。") from exc
+            version = answer or current
+            try:
+                parse_version(version)
+                break
+            except ValueError:
+                print("版本格式应为三段数字，例如 1.0.4，请重新输入。", flush=True)
+    if version is not None:
+        save_project_metadata(PROJECT_ROOT, version=version)
+        print(f"工程版本已同步：{version}（version.json 和主脚本）。", flush=True)
+    else:
+        version = current
+    if notes is None and interactive:
+        script = PROJECT_ROOT / "resources" / "daxiaochao.user.js"
+        current_notes = read_update_notes(script.read_bytes().decode("utf-8"))
+        print(f"当前更新文案：{current_notes}", flush=True)
+        try:
+            notes = input("本次更新文案（用 ; 或 ； 分行，直接回车保留原文）：")
+        except EOFError as exc:
+            raise RuntimeError("未收到更新文案，已取消打包；已保存的工程版本保留。") from exc
+    if notes is not None and notes.strip():
+        save_project_metadata(PROJECT_ROOT, notes=notes)
+        print("更新文案已写回工程主脚本。", flush=True)
+    return version
+
+
 def choose_upload(choice, upload_only=False):
     if upload_only or choice is not None:
         return upload_only or choice
@@ -248,15 +283,16 @@ def parse_args(argv=None):
                         help="auto uses 7-Zip Ultra; python/windows uses Python Deflate level 9")
     parser.add_argument("--cos-config", type=Path, default=PROJECT_ROOT / "cos-upload.local.json")
     upload = parser.add_mutually_exclusive_group()
-    upload.add_argument("--upload", "-Upload", dest="upload", action="store_true", help="upload to COS without prompting")
-    upload.add_argument("--no-upload", "-NoUpload", dest="upload", action="store_false", help="build locally without prompting")
+    upload.add_argument("--upload", "-Upload", dest="upload", action="store_true", help="upload to COS; skip the upload question")
+    upload.add_argument("--no-upload", "-NoUpload", dest="upload", action="store_false", help="build locally; skip the upload question")
     parser.set_defaults(upload=None)
-    parser.add_argument("--version", help="override the staged release version without changing the working/local version")
+    parser.add_argument("--version", help="set and save the project/userscript version before packaging; otherwise prompt in a terminal")
+    parser.add_argument("--notes", help="save update notes to the project userscript; empty text keeps existing notes")
     parser.add_argument("--upload-only", type=Path, help="retry uploading an existing ZIP without repackaging")
     parser.add_argument("--no-open", "-NoOpen", action="store_true")
     args = parser.parse_args(argv)
-    if args.upload_only and (args.upload is False or args.output_directory or args.version):
-        parser.error("--upload-only cannot be combined with --no-upload, --version or --output-directory")
+    if args.upload_only and (args.upload is False or args.output_directory or args.version is not None or args.notes is not None):
+        parser.error("--upload-only cannot be combined with --no-upload, --version, --notes or --output-directory")
     return args
 
 
@@ -267,6 +303,7 @@ def main(argv=None):
     args = parse_args(argv)
     archive = None
     try:
+        version = None if args.upload_only else prepare_project_release(args.version, args.notes)
         should_upload = choose_upload(args.upload, bool(args.upload_only))
         print("本次模式：上传现有 ZIP。" if args.upload_only else
               "本次模式：打包并上传到云端。" if should_upload else "本次模式：仅本地打包，不上传云端。", flush=True)
@@ -274,7 +311,7 @@ def main(argv=None):
             archive = args.upload_only.absolute()
         else:
             output = args.output_directory or PROJECT_ROOT / "release" / ("xiaochao-" + datetime.now().strftime("%Y%m%d-%H%M%S-%f")[:-3])
-            archive = build_release(output, args.sgsol_directory, args.compression_tool, args.version)
+            archive = build_release(output, args.sgsol_directory, args.compression_tool, version)
         # Reveal the completed local archive immediately, even if cloud upload is slow or fails.
         if archive.is_file() and not args.no_open:
             show_archive(archive)
@@ -296,7 +333,7 @@ def main(argv=None):
         print("Package failed: " + str(exc), file=sys.stderr, flush=True)
         return 1
     except KeyboardInterrupt:
-        print("\n已取消。", file=sys.stderr, flush=True)
+        print("\n已取消打包，已保存的工程版本和更新文案保留。", file=sys.stderr, flush=True)
         return 130
 
 

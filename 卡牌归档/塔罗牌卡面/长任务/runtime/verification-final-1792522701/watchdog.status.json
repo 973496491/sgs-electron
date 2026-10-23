@@ -1,0 +1,12 @@
+{
+  "pid": 20076,
+  "startedAt": "2026-10-20T18:58:22+00:00",
+  "checkedAt": "2026-10-20T18:58:22+00:00",
+  "mode": "stopped",
+  "timeoutSeconds": 0.2,
+  "intervalSeconds": 0.05,
+  "heartbeatAgeSeconds": 0.06,
+  "taskStatus": "stopped",
+  "currentCardId": "encoding-check",
+  "revision": 3
+}

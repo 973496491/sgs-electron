@@ -1,0 +1,12 @@
+{
+  "id": "ig_00f1a263b1e86c7b016ad7a04ca2f887d098a5d4106b0a3812",
+  "timestamp": "2026-10-20T17:11:33.484Z",
+  "size": [
+    1061,
+    1482
+  ],
+  "mode": "RGB",
+  "alphaRange": null,
+  "prompt": "Precise localized edit of the MOST RECENT burgundy HEART 2 card reference, for splitting it into actual UI layers. Output ONE BACKGROUND CARD LAYER only: opaque full-bleed portrait, same 186:260 aspect. Preserve the current approved card: exact central gold brush character “闪”, upper-center large ruby heart, upper-right little heart decoration, gold/bronze frame, dark burgundy frosted celestial field and lower roses. Remove ONLY the top-left numeral “2” and the little red heart directly beneath it. Also gently clear the adjoining top-left inner filigree/leaf fragments where the original game UI will overlay the separate symbols. Reserve a quiet dark burgundy-black area spanning x=4.3% to 24.8% of card width and y=3.1% to 27.8% of card height (equivalent to x=8..46,y=8..72 on a 186x260 image). This is a seamless continuation of the dark card ground, NOT a visible rectangular panel, no outline, no box, no added decoration or bright stars in the reserved area. Keep the slim outer perimeter intact; leave all art outside this small top-left reserved area as unchanged as possible, including existing restrained lighting and texture. There must be no rank and no functional corner heart baked into the reserved upper-left region. Keep the decorative upper-center heart and upper-right heart. Only text remaining is “闪”. Do not generate the extracted glyphs here. One clean background layer only, not an exploded view, no grid, no labels or surrounding scene.",
+  "nativeFile": "C:\\Users\\97349\\Downloads\\electron\\tmp\\imagegen\\heart2-split\\base-native.png"
+}

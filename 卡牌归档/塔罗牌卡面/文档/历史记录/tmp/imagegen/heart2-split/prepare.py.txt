@@ -1,0 +1,16 @@
+from pathlib import Path
+from PIL import Image
+
+root = Path(__file__).resolve().parents[3]
+source = root / '卡牌毛玻璃/闪_v6_四花色/柔光版/红桃2_点数预览.png'
+image = Image.open(source).convert('RGB')
+image.thumbnail((600, 840), Image.Resampling.LANCZOS)
+image.save(Path(__file__).parent / 'heart2-reference.jpg', quality=85)
+print({'size': image.size, 'bytes': (Path(__file__).parent / 'heart2-reference.jpg').stat().st_size})
+original = Image.open(source).convert('RGB')
+for name, box in [('rank', (27, 24, 79, 90)), ('suit', (25, 88, 81, 145))]:
+    full_box = tuple(round(value * (original.width / 600 if i % 2 == 0 else original.height / 838)) for i, value in enumerate(box))
+    crop = original.crop(full_box)
+    crop.thumbnail((400, 400), Image.Resampling.LANCZOS)
+    crop = crop.resize((round(crop.width*3), round(crop.height*3)), Image.Resampling.LANCZOS)
+    crop.save(Path(__file__).parent / (name + '-reference.jpg'), quality=90)

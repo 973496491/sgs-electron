@@ -1,0 +1,105 @@
+{
+  "capturedAt": "2026-10-21",
+  "maintainedSource": "doc/彩虹表.js",
+  "originalCardFaces": {
+    "title": "原始卡面 / 本地卡牌配置与默认纹理资源",
+    "verifiedAt": "2026-10-20",
+    "sourceFile": "electron-next/resources/daxiaochao.user.js；2026-10-08 官方 sys_playcard.sgs / sys_appearance.sgs / sgsGame.main.js 本地快照",
+    "docFile": "doc/sanguosha.md",
+    "searchKeywords": [
+      "原始卡面",
+      "本地卡牌配置",
+      "sys_playcard",
+      "sys_appearance",
+      "GamePlayCards",
+      "abbreviation",
+      "CardInfo",
+      "ResName",
+      "imageId",
+      "Sha_png",
+      "ZhuGeLianNu_png",
+      "TengJia_png",
+      "GetAtlasUrl",
+      "parseAtlas",
+      "card-face-index.json"
+    ],
+    "decodedIndexes": {
+      "_0x262d": {
+        "133": "UpdateCardFace",
+        "166": "miaoCardSwitch",
+        "177": "https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.png",
+        "198": "https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.webp",
+        "238": "__cardTheme",
+        "246": "getCardUrl",
+        "261": "TengJia_png",
+        "285": "#originCardUseBtn",
+        "319": "baseCardTexMap",
+        "328": "syncTextureMap",
+        "374": "seedBaseTextureMap",
+        "426": "textureMap",
+        "513": "使用原始卡面",
+        "536": "cards/"
+      }
+    },
+    "chain": [
+      "sys_playcard.abbreviation: a=id,b=name,f=number,g=color,m=spellId,n=imageId,p=res；card 为短字段、card_H5 为长字段，后者初始化时覆盖同 ID 普通行，另有 configData2 二次解析。原始导出保留来源行，不能直接当去重运行时表。",
+      "Yx.initCardJson/GetCardById -> NormalCard(L$t).CardInfo -> resName=t.res -> zzt.UpdateCardFace/SetCardFace -> fwt.GetRes(Card.ResName+'_png') -> bmpFace.texture。iVi.UpdateCardFace 另画 bmpFlower/bmpNumber。7=杀/Sha_png、14=诸葛连弩/ZhuGeLianNu_png、25=桃/Tao_png、136/149=藤甲/TengJia_png。普通三国杀花色1红桃/2方块/3黑桃/4梅花，勿套用扑克牌斗地主编码。",
+      "sys_appearance.CardsShow 的 id=0 为经典卡牌；type 2/1 分别构成 FaceVO/BackVo，路径 card/kamian/<id>.png、card/kabei/<id>.png 是装饰，不是每种牌的原始插画。SetCardFaceEffect 叠在底图上，受本人座位、Bottom_CardFace 和 IsMatchOB 条件影响；空牌/易牌/扑克牌/技能变牌另有分支。",
+      "fwt.GetRes 优先查 atlasSubitemDic，rwt.parseAtlas 根据 frames 去扩展名，并以 meta.prefix 或图集路径解析子项。资源键不是独立 PNG 下载地址；尚需图集 JSON/贴图确认 URL、裁切和像素。93×130 仅为 UI 显示尺寸。",
+      "当前小抄 _0x262d 的 decoder/rotation/string array 已隔离核对440条一致。_0x3b9f65 原始卡面预览指向 cards.png，整图4096×2048、裁切{x:2046,y:4,w:186,h:260}仅为源码常量，未下载验证；cards.webp 用于原始卡背预览。",
+      "_0x52c243 -> window.__cardTheme 拥有 baseCardTexMap/miaoCardTexMap/cardUiRegistry。getCardUrl -> Laya.URL.formatURL('cards/'+key+'.png') 生成图集缓存路径，seedBaseTextureMap 收集 Laya.Loader.textureMap，syncTextureMap 关闭时恢复原纹理，refresh -> UpdateCardFace。#originCardUseBtn 点击将 globalConfig.miaoCardSwitch=false；未读取当前内存Map或实测按钮。",
+      "2026-10-20后续已实际拆分用户cards.png：与官方下载PNG哈希相同，cards.atlas有111个纹理名/109个矩形，真实图像2048×4096，旧预览常量不能作为裁切依据。tools/card_atlas.py -> 卡牌归档/卡牌拆分/cards + manifest.json，merge.cmd 按原位合回且atlas保持不变；没有读取游戏内存Map或安装替换图。ShuiYanQiJun2/ShuiYanQiJun及TengJia2/TengJia分别共享坐标，单份修改应用同组，两份不同修改报冲突。111张往返与真实CMD输出RGBA一致，9项检查通过；来源哈希/依赖/复用命令见OL指南。",
+      "军争筛选已核实：本地2026-10-08快照 CardsBookWindow(cQi) 的左页签 Model=1 是身份，CARDS_WORD_TAB_LIST[2] 是军争，onTopTabClick 按 ModelTab 过滤。2026-10-20重取当前官方sys_playcard，Model=1/ModelTab=2仍为44种res、num合计161；牌ID1～161的res/color/number多重集合与图鉴完全一致。已复制到卡牌归档/卡牌拆分/军争卡牌并保存161张牌对应表、纹理映射和预览，44份PNG与源文件逐字节相同；编辑后复制回父级cards再运行原merge.cmd。103不是此映射核实的底图数，当前配置来源指纹见OL指南。",
+      "2026-10-21素材归档：原始图集位于卡牌归档/cards.png，完整拆分在卡牌归档/卡牌拆分，最终四花色与分层在卡牌归档/塔罗牌卡面。合并脚本适配两级父目录的开发Python环境；图片未改动，未修改游戏代码或发布载荷。",
+      "2026-10-21武器范围：sys_playcard.abbreviation的h=attRange，f是点数，i/j为attDistance/defDistance。军争寒冰剑ID108为黑桃2且攻击范围2，与CardsBook(Model=1,ModelTab=2,cardid=108).dese及原始PNG范围文字一致；其他模式ID2035同名范围1，不能按名字或牌点数推断。来源及武器速查在OL指南武器攻击范围来源；本次未验证动态bmpRange显示或改游戏数据。",
+      "首次查询仅复用2026-10-08本地快照、解密两份JSON并静态追链；后续图片拆分见上一条，仍未游戏内实测。主程序SHA-256 f62c194174dd2ff4531bc44a795616b6a51f449a3c7c2bec5270f390da55f245；计数、临时产物和字符偏移见OL指南，混淆类名不是稳定运行接口。"
+    ]
+  },
+  "cardRankSuit": {
+    "title": "卡面点数 / 花色赋值与自定义图案可行性（仅调查）",
+    "verifiedAt": "2026-10-21",
+    "sourceFile": "electron-next/resources/daxiaochao.user.js；2026-10-08 官方 sgsGame.main.js 本地快照",
+    "docFile": "doc/sanguosha.md",
+    "searchKeywords": [
+      "自定义点数",
+      "自定义花色",
+      "CardNumber",
+      "CardNumberOri",
+      "DisplayFlower",
+      "IsModyfifyByServer",
+      "bmpNumber",
+      "bmpFlower",
+      "GetNumberResName",
+      "ChangeFlowerAndNumber",
+      "ChangeCardFlowerNumber",
+      "red_A",
+      "black_K",
+      "HideFlowerAndNumber"
+    ],
+    "decodedIndexes": {
+      "_0x262d": {
+        "133": "UpdateCardFace",
+        "146": "_png",
+        "238": "__cardTheme",
+        "246": "getCardUrl",
+        "302": "cards",
+        "319": "baseCardTexMap"
+      },
+      "_0x3812": {
+        "343": "CardNumber",
+        "897": "CardFlower",
+        "912": "bmpNumber",
+        "957": "bmpFlower",
+        "1475": "Clear"
+      }
+    },
+    "chain": [
+      "GetCardById把number/color转为Number/Color；NormalCard.CardInfo初始化cardNumberOri/cardNumber/cardFlower，CardNumber setter变化触发CARD_CHANGE -> onCardChange -> UpdateCardFace。当前点数可能受技能改写，应读Card.CardNumber；CardNumberOri是配置原值。",
+      "iVi.UpdateCardFace先父类底图，再独立bmpFlower.texture/bmpNumber.texture。flower=IsModyfifyByServer?FlowerOnSeat:CardFlower，与DisplayFlower一致；不要把FlowerOnSeat有效花色无条件当展示花色。普通1红桃2方块3黑桃4梅花，对应heart/diamond/spade/club；GetNumberResName按1..13映射A..K并加red_/black_，0用空纹理。",
+      "ChangeCardFlowerNumber(cardId,flower,number) -> gameScene -> stackCardContainer.cardUiDict -> ui.ChangeFlowerAndNumber(flower,number)，直接显示参数且不改模型；已有黑桃5/红桃5实例。挂此入口须用入参，再普通刷新应回到模型口径。装备sVi有独立UpdateCardFace/other_资源，扑克牌有poker_及独立编码。",
+      "现有initCardThemeFeature -> installCardThemeRuntime -> __cardTheme主要替换cards/底图，不等于点数花色已可配置；已拆cards.atlas不含30个符号键。建议独立符号主题拥有资源/开关/生命周期，在两个原生入口后换纹理，复用注册接口、缺项保留原生，不修改CardNumber模型。普通红黑点数各13项加4花色即可。",
+      "layout控制普通符号19x17或16x14，高清PNG不自动改变UI大小。保留空牌/虚拟牌/dontUpdateCard/扑克牌/HideFlowerAndNumber；小抄CardConfigWindow和pushHandCardUis仍会隐藏bmpFlower/bmpNumber。后续需验证Clear/复用/异步失效/关闭恢复及已有挂钩，不能强行显示或覆盖后装包装器。",
+      "63项同快照抽取方法检查通过，脚本/结果在卡牌归档/资料/点数花色调查/verify.cjs、verification.json，来源SHA-256及偏移见OL指南；资源加载器和父类使用桩。本次未实现自定义主题、未游戏内验收、未改源码或asar。"
+    ]
+  }
+}

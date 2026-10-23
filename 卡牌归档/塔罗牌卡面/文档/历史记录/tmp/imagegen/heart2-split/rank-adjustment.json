@@ -1,0 +1,36 @@
+{
+  "canvas": [
+    38,
+    34
+  ],
+  "visibleBoundsThreshold": "alpha > 8",
+  "previousBounds": [
+    9,
+    4,
+    29,
+    32
+  ],
+  "updatedBounds": [
+    6,
+    2,
+    26,
+    30
+  ],
+  "offsetInsideLayerPx": [
+    -3,
+    -2
+  ],
+  "offsetUiUnits": [
+    -1.5,
+    -1
+  ],
+  "layerPlacementPx": [
+    8,
+    8
+  ],
+  "layerPlacementUi": [
+    4,
+    4
+  ],
+  "postprocess": "Normalize the native edit to the previous visible glyph size and requested internal offset; preserve RGBA alpha."
+}

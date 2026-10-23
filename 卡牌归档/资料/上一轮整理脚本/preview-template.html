@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>塔罗牌卡面 · 闪</title>
+<style>
+:root{color-scheme:dark;font:15px/1.65 system-ui,"Microsoft YaHei",sans-serif;background:#15181f;color:#dadce2}body{max-width:1180px;margin:30px auto;padding:0 22px 50px}h1{font-size:26px;margin:0}h2{font-size:19px;margin:28px 0 12px}p{color:#a9aeba;margin:6px 0 18px}a{color:#d3bd91}.cards{display:flex;gap:22px;flex-wrap:wrap}figure{margin:0}figure img{display:block;width:186px;height:260px}figcaption{text-align:center;padding:8px 0}.controls{display:flex;flex-wrap:wrap;gap:20px;padding:12px 0}label{display:flex;align-items:center;gap:8px}input{accent-color:#bd9d6d}input[type=range]{width:160px}.scroll{overflow:auto;padding-bottom:10px}.hand{position:relative;height:260px}.hand img{position:absolute;top:0;width:186px;height:260px}.layers{display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap}.stage{width:186px;height:260px;position:relative}.stage img{position:absolute}.base{inset:0;width:186px;height:260px}.rank{left:8px;top:8px;width:38px;height:34px}.suit{left:8px;top:38px;width:38px;height:34px}.links{display:flex;gap:16px;flex-wrap:wrap}.notes{max-width:580px}output{min-width:42px}table{border-collapse:collapse}th,td{padding:5px 14px 5px 0;text-align:left;border-bottom:1px solid #303641}
+</style>
+<h1>塔罗牌卡面 · 闪</h1>
+<p>最终柔光四花色，以及红桃2最新分层效果。点击单张查看大图。</p>
+<h2>四花色样板</h2>
+<div class="cards">
+<figure><a href="四花色样板/大图/红桃.png"><img src="四花色样板/186x260/Shan_heart.png" alt="红桃闪"></a><figcaption>红桃</figcaption></figure>
+<figure><a href="四花色样板/大图/方块.png"><img src="四花色样板/186x260/Shan_diamond.png" alt="方块闪"></a><figcaption>方块</figcaption></figure>
+<figure><a href="四花色样板/大图/黑桃.png"><img src="四花色样板/186x260/Shan_spade.png" alt="黑桃闪"></a><figcaption>黑桃</figcaption></figure>
+<figure><a href="四花色样板/大图/梅花.png"><img src="四花色样板/186x260/Shan_club.png" alt="梅花闪"></a><figcaption>梅花</figcaption></figure>
+</div>
+<h2>叠牌预览</h2>
+<div class="controls"><label>每张露出 <input id="step" type="range" min="24" max="186" value="76"><output id="stepValue">76 px</output></label><label>张数 <input id="count" type="range" min="4" max="12" value="8"><output id="countValue">8</output></label></div>
+<div class="scroll"><div id="hand" class="hand" aria-label="四花色叠牌"></div></div>
+<h2>红桃2 · 独立图层</h2>
+<div class="layers">
+<div class="stage" aria-label="红桃2三层合成"><img class="base" src="红桃2分层/Shan_heart_base.png" alt="底图"><img id="rank" class="rank" src="红桃2分层/red_2.png" alt="点数2"><img id="suit" class="suit" src="红桃2分层/heart.png" alt="红桃"></div>
+<div class="notes"><div class="controls"><label><input id="showRank" type="checkbox" checked>显示点数</label><label><input id="showSuit" type="checkbox" checked>显示花色</label></div>
+<p>点数在自身图层内左移3 px、上移2 px；外部合成位置不变，无需与花色中心完全对齐。</p>
+<table><tr><th>图层</th><th>文件尺寸</th><th>合成位置</th></tr><tr><td>底图</td><td>186×260</td><td>(0,0)</td></tr><tr><td>点数</td><td>38×34</td><td>(8,8)</td></tr><tr><td>花色</td><td>38×34</td><td>(8,38)</td></tr></table>
+<p>图像按2倍UI尺寸导出。这里只演示素材叠加，尚未接入游戏。</p>
+<div class="links"><a href="红桃2分层/分层预览.png">查看分层效果图</a><a href="红桃2分层/layout.json">布局参数</a><a href="文档/分层与UI布局.md">详细说明</a></div></div>
+</div>
+<h2>资料</h2><div class="links"><a href="README.md">总说明</a><a href="提示词/README.md">提示词</a><a href="文档/设计说明.md">设计说明</a><a href="文档/来源与兼容边界.md">来源与兼容边界</a><a href="文档/历史记录/README.md">历史文字记录</a></div>
+<script>
+const suits=['heart','diamond','spade','club'];
+const labels=['红桃','方块','黑桃','梅花'];
+const step=document.getElementById('step');
+const count=document.getElementById('count');
+function renderHand(){
+  const hand=document.getElementById('hand'),gap=Number(step.value),total=Number(count.value);
+  hand.replaceChildren();hand.style.width=`${186+(total-1)*gap}px`;
+  document.getElementById('stepValue').textContent=`${gap} px`;
+  document.getElementById('countValue').textContent=String(total);
+  for(let i=0;i<total;i++){
+    const image=document.createElement('img');image.src=`四花色样板/186x260/Shan_${suits[i%4]}.png`;
+    image.alt=`${labels[i%4]}闪`;image.style.left=`${i*gap}px`;image.style.zIndex=String(i);image.draggable=false;hand.append(image);
+  }
+}
+step.addEventListener('input',renderHand);count.addEventListener('input',renderHand);renderHand();
+for(const [control,target] of [['showRank','rank'],['showSuit','suit']]){
+  document.getElementById(control).addEventListener('change',event=>{document.getElementById(target).hidden=!event.target.checked;});
+}
+</script>
+</html>

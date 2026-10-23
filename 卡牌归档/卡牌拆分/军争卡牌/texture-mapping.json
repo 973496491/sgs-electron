@@ -1,0 +1,1854 @@
+{
+  "selection": {
+    "Model": 1,
+    "ModelTab": 2,
+    "label": "身份→军争"
+  },
+  "physicalCardCount": 161,
+  "uniqueTextureCount": 44,
+  "source": {
+    "url": "https://web.sanguosha.com/220/h5_2/res/config/Config.sgs",
+    "retrievedAt": "2026-10-20T15:37:48.924324+00:00",
+    "bytes": 4153280,
+    "sha256": "9d2b017d7112c1d5999d61b48600945b4139fe237d840a38784623114706de9f",
+    "savedEntry": "sys_playcard.sgs"
+  },
+  "membershipVerified": "IDs 1..161 match CardsBook res/color/number multiset including duplicates",
+  "atlasManifest": "../manifest.json",
+  "frames": [
+    {
+      "name": "Sha_png.png",
+      "resourceKey": "Sha_png",
+      "texturePath": "cards/Sha_png.png",
+      "file": "Sha_png.png",
+      "names": [
+        "杀"
+      ],
+      "cardIds": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        26,
+        36,
+        49,
+        50,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        73,
+        74,
+        75,
+        76,
+        85,
+        86,
+        87,
+        88,
+        99,
+        100,
+        101
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1362,
+          "y": 1612,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "Sha_png.png"
+      ],
+      "rgbaSha256": "3d88f4a7370229eb562410631097e05f73ebeae82c07cb11f7edfe3e624856a9",
+      "deckCount": 30,
+      "copiedFrom": "../cards/Sha_png.png",
+      "fileSha256": "8b972b006262c571e2fb9999bc994bf3200b0af902a41d19a411729ea36db6f6"
+    },
+    {
+      "name": "LeiSha_png.png",
+      "resourceKey": "LeiSha_png",
+      "texturePath": "cards/LeiSha_png.png",
+      "file": "LeiSha_png.png",
+      "names": [
+        "雷杀"
+      ],
+      "cardIds": [
+        138,
+        139,
+        140,
+        141,
+        142,
+        152,
+        153,
+        154,
+        155
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 392,
+          "y": 1344,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "LeiSha_png.png"
+      ],
+      "rgbaSha256": "0ecf8c5467dc5760021789658b852cfcb9ae2782b31fbf3b4090854533359be2",
+      "deckCount": 9,
+      "copiedFrom": "../cards/LeiSha_png.png",
+      "fileSha256": "bc92053c7194869ca4bf86a4e26853b79e54decc240a31383a2a535043165faa"
+    },
+    {
+      "name": "HuoSha_png.png",
+      "resourceKey": "HuoSha_png",
+      "texturePath": "cards/HuoSha_png.png",
+      "file": "HuoSha_png.png",
+      "names": [
+        "火杀"
+      ],
+      "cardIds": [
+        112,
+        115,
+        118,
+        125,
+        126
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 198,
+          "y": 1076,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "HuoSha_png.png"
+      ],
+      "rgbaSha256": "18f5432b983a70fd9b69e1cc6c6fc07df4ab61a4f548fa0fb6f43166d33812ca",
+      "deckCount": 5,
+      "copiedFrom": "../cards/HuoSha_png.png",
+      "fileSha256": "0a0d1a0a42eac7136b6c87f9ea9c6deb04ec0547f691429c1e45f643f0a24653"
+    },
+    {
+      "name": "Shan_png.png",
+      "resourceKey": "Shan_png",
+      "texturePath": "cards/Shan_png.png",
+      "file": "Shan_png.png",
+      "names": [
+        "闪"
+      ],
+      "cardIds": [
+        2,
+        11,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        28,
+        39,
+        41,
+        116,
+        117,
+        119,
+        120,
+        127,
+        128,
+        129,
+        131,
+        132
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1556,
+          "y": 1612,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "Shan_png.png"
+      ],
+      "rgbaSha256": "9fad0ea6137a07a59c3fd1f53918a608624e4a06aa94dca5d9a3d8372f87dba5",
+      "deckCount": 24,
+      "copiedFrom": "../cards/Shan_png.png",
+      "fileSha256": "525156ff50e59c30ce05e7f87478100e5382d494ce5757110d20515ac85ed46a"
+    },
+    {
+      "name": "Tao_png.png",
+      "resourceKey": "Tao_png",
+      "texturePath": "cards/Tao_png.png",
+      "file": "Tao_png.png",
+      "names": [
+        "桃"
+      ],
+      "cardIds": [
+        25,
+        42,
+        43,
+        45,
+        46,
+        47,
+        48,
+        51,
+        113,
+        114,
+        123,
+        124
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1556,
+          "y": 1880,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "Tao_png.png"
+      ],
+      "rgbaSha256": "efc4d6c27e1da897ade07e0a7ece6b119b19c0bf972fe573acca0bd50b238c0a",
+      "deckCount": 12,
+      "copiedFrom": "../cards/Tao_png.png",
+      "fileSha256": "eed59fd936e683c1abb9f91e318b6a9dc3e15eb4df398ce779f81327bb8e4ed9"
+    },
+    {
+      "name": "Jiu_png.png",
+      "resourceKey": "Jiu_png",
+      "texturePath": "cards/Jiu_png.png",
+      "file": "Jiu_png.png",
+      "names": [
+        "酒"
+      ],
+      "cardIds": [
+        130,
+        137,
+        143,
+        150,
+        156
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 974,
+          "y": 1076,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "Jiu_png.png"
+      ],
+      "rgbaSha256": "b590ad876fd028c55b6d112ca9bdb312e0d8141270016da7e389df8f749c4f8e",
+      "deckCount": 5,
+      "copiedFrom": "../cards/Jiu_png.png",
+      "fileSha256": "1e7c29e2ed72249d8e3829986e947cc3a685f5f027d4fbf7c93081eecf502683"
+    },
+    {
+      "name": "ZhuGeLianNu_png.png",
+      "resourceKey": "ZhuGeLianNu_png",
+      "texturePath": "cards/ZhuGeLianNu_png.png",
+      "file": "ZhuGeLianNu_png.png",
+      "names": [
+        "诸葛连弩"
+      ],
+      "cardIds": [
+        14,
+        66
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 392,
+          "y": 2952,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "ZhuGeLianNu_png.png"
+      ],
+      "rgbaSha256": "614c179592196e34e52723fe722d9e0e1fddc40059a2f6692d963aeb19acfe07",
+      "deckCount": 2,
+      "copiedFrom": "../cards/ZhuGeLianNu_png.png",
+      "fileSha256": "c30c2f7e37f9086e8d6e3d15afe91e87d4a62f8f434abf70c9a782d6e5c0dc9b"
+    },
+    {
+      "name": "CiXiongShuangGuJian_png.png",
+      "resourceKey": "CiXiongShuangGuJian_png",
+      "texturePath": "cards/CiXiongShuangGuJian_png.png",
+      "file": "CiXiongShuangGuJian_png.png",
+      "names": [
+        "雌雄双股剑"
+      ],
+      "cardIds": [
+        80
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1764,
+          "y": 272,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "CiXiongShuangGuJian_png.png"
+      ],
+      "rgbaSha256": "d00d09d31ba5a42c2f804e6839a8a81b65b27d6c51479ddc16405216ef942a01",
+      "deckCount": 1,
+      "copiedFrom": "../cards/CiXiongShuangGuJian_png.png",
+      "fileSha256": "7f0acf021c6385e5e2396dce4e4fc2fd93aa14c49df4b8a6ed0cb33e162d839c"
+    },
+    {
+      "name": "QingGangJian_png.png",
+      "resourceKey": "QingGangJian_png",
+      "texturePath": "cards/QingGangJian_png.png",
+      "file": "QingGangJian_png.png",
+      "names": [
+        "青釭剑"
+      ],
+      "cardIds": [
+        84
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 4,
+          "y": 1634,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "QingGangJian_png.png"
+      ],
+      "rgbaSha256": "4f37fdb0777e69af66675b445d876c728fa3c91ea367d328b0a6a0fe5a1325d6",
+      "deckCount": 1,
+      "copiedFrom": "../cards/QingGangJian_png.png",
+      "fileSha256": "4b3519b8018c600933d9c2bba7fc1f4dfa74c44d55a4ff4a039955b83a1386fd"
+    },
+    {
+      "name": "QingLongYanYueDao_png.png",
+      "resourceKey": "QingLongYanYueDao_png",
+      "texturePath": "cards/QingLongYanYueDao_png.png",
+      "file": "QingLongYanYueDao_png.png",
+      "names": [
+        "青龙偃月刀"
+      ],
+      "cardIds": [
+        96
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 392,
+          "y": 1612,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "QingLongYanYueDao_png.png"
+      ],
+      "rgbaSha256": "4a54fa8475f5527f52e546b1524e3ba8d04953c890a51d9e04a1659076684575",
+      "deckCount": 1,
+      "copiedFrom": "../cards/QingLongYanYueDao_png.png",
+      "fileSha256": "77151d2d6c805e5dae391f10cf096e1e5bb6798cdea0c41ea4ccd20f15c4feec"
+    },
+    {
+      "name": "ZhangBaSheMao_png.png",
+      "resourceKey": "ZhangBaSheMao_png",
+      "texturePath": "cards/ZhangBaSheMao_png.png",
+      "file": "ZhangBaSheMao_png.png",
+      "names": [
+        "丈八蛇矛"
+      ],
+      "cardIds": [
+        103
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1556,
+          "y": 2148,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "ZhangBaSheMao_png.png"
+      ],
+      "rgbaSha256": "615366ca72320eb129954edc1d16d4ba08658aeb52699dc3cc7538ccd5b0fbdb",
+      "deckCount": 1,
+      "copiedFrom": "../cards/ZhangBaSheMao_png.png",
+      "fileSha256": "da54df3c6c5a8468df36f279602d315832fcbd2402b0e407ffd66e9395f80f0e"
+    },
+    {
+      "name": "GuanShiFu_png.png",
+      "resourceKey": "GuanShiFu_png",
+      "texturePath": "cards/GuanShiFu_png.png",
+      "file": "GuanShiFu_png.png",
+      "names": [
+        "贯石斧"
+      ],
+      "cardIds": [
+        5
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1556,
+          "y": 540,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "GuanShiFu_png.png"
+      ],
+      "rgbaSha256": "4caaae61559c91d758185700e100baa1857faeb75610d74c54f8e6951ac153b2",
+      "deckCount": 1,
+      "copiedFrom": "../cards/GuanShiFu_png.png",
+      "fileSha256": "14bae88d63ee8dfbb5223fcc32b7fe1fcac4f4c850626a9541da6319a1312806"
+    },
+    {
+      "name": "QiLinGong_png.png",
+      "resourceKey": "QiLinGong_png",
+      "texturePath": "cards/QiLinGong_png.png",
+      "file": "QiLinGong_png.png",
+      "names": [
+        "麒麟弓"
+      ],
+      "cardIds": [
+        44
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 198,
+          "y": 1612,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "QiLinGong_png.png"
+      ],
+      "rgbaSha256": "d00c663f3420da5a5e313aa86462d370b89c1f3def9ff5092418579a4e6ba248",
+      "deckCount": 1,
+      "copiedFrom": "../cards/QiLinGong_png.png",
+      "fileSha256": "6be95fb75c2803d930d4feaaf4358acfd992015a9363b48a549a6ca005abd650"
+    },
+    {
+      "name": "GuDingDao_png.png",
+      "resourceKey": "GuDingDao_png",
+      "texturePath": "cards/GuDingDao_png.png",
+      "file": "GuDingDao_png.png",
+      "names": [
+        "古锭刀"
+      ],
+      "cardIds": [
+        135
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1750,
+          "y": 540,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "GuDingDao_png.png"
+      ],
+      "rgbaSha256": "4ed97cfdccf60edc02bea7c69ab6f4a9025da70312a4a934846d5a64d91ecba9",
+      "deckCount": 1,
+      "copiedFrom": "../cards/GuDingDao_png.png",
+      "fileSha256": "e8e09e898e82ca377b147d7c8bb4b26807e158d8a4783cc92cf5cb88646b1851"
+    },
+    {
+      "name": "ZhuQueYuShan_png.png",
+      "resourceKey": "ZhuQueYuShan_png",
+      "texturePath": "cards/ZhuQueYuShan_png.png",
+      "file": "ZhuQueYuShan_png.png",
+      "names": [
+        "朱雀羽扇"
+      ],
+      "cardIds": [
+        122
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 392,
+          "y": 3488,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "ZhuQueYuShan_png.png"
+      ],
+      "rgbaSha256": "10ad39a9e444e4431a315becdd38e1c32dec87894889fcabfcd436d3cd5b1f63",
+      "deckCount": 1,
+      "copiedFrom": "../cards/ZhuQueYuShan_png.png",
+      "fileSha256": "394486c075f0a87552d1a532b49486a39838b0ed89caf85ac95b1c773d783b02"
+    },
+    {
+      "name": "FangTianHuaJi_png.png",
+      "resourceKey": "FangTianHuaJi_png",
+      "texturePath": "cards/FangTianHuaJi_png.png",
+      "file": "FangTianHuaJi_png.png",
+      "names": [
+        "方天画戟"
+      ],
+      "cardIds": [
+        12
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 974,
+          "y": 540,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "FangTianHuaJi_png.png"
+      ],
+      "rgbaSha256": "ac9fd2267115950821d958f791ed2ba2c628464fd4294f7c27871972d71c1509",
+      "deckCount": 1,
+      "copiedFrom": "../cards/FangTianHuaJi_png.png",
+      "fileSha256": "f13a0b2853f92843fdb57c88b74423532c837ef6625f1f621d01e86ee77ad319"
+    },
+    {
+      "name": "HanBingJian_png.png",
+      "resourceKey": "HanBingJian_png",
+      "texturePath": "cards/HanBingJian_png.png",
+      "file": "HanBingJian_png.png",
+      "names": [
+        "寒冰剑"
+      ],
+      "cardIds": [
+        108
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1168,
+          "y": 808,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "HanBingJian_png.png"
+      ],
+      "rgbaSha256": "9b6ed4047bc92ffab1386a0330499d8e04a5b5cc8bcca962e3dab92085b13e44",
+      "deckCount": 1,
+      "copiedFrom": "../cards/HanBingJian_png.png",
+      "fileSha256": "215f384d3d5d91494debc218028361e64c3b67329b2952eafe0cb78fa5f2abeb"
+    },
+    {
+      "name": "BaGuaZhen_png.png",
+      "resourceKey": "BaGuaZhen_png",
+      "texturePath": "cards/BaGuaZhen_png.png",
+      "file": "BaGuaZhen_png.png",
+      "names": [
+        "八卦阵"
+      ],
+      "cardIds": [
+        67,
+        93
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 406,
+          "y": 4,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "BaGuaZhen_png.png"
+      ],
+      "rgbaSha256": "19513ea84791fc6163ef061ca48fde9c299814674ceccd5507a96d9a0bc8ebcc",
+      "deckCount": 2,
+      "copiedFrom": "../cards/BaGuaZhen_png.png",
+      "fileSha256": "bbfb2396aaf662985dcf9d38870e03e3fdea0ef897838abe24b600c3480576fa"
+    },
+    {
+      "name": "RenWangDun_png.png",
+      "resourceKey": "RenWangDun_png",
+      "texturePath": "cards/RenWangDun_png.png",
+      "file": "RenWangDun_png.png",
+      "names": [
+        "仁王盾"
+      ],
+      "cardIds": [
+        107
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 780,
+          "y": 1612,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "RenWangDun_png.png"
+      ],
+      "rgbaSha256": "15986e7481e20cc1bae3b0a9c5522892c412e7368857fbcb72a3b55e66832099",
+      "deckCount": 1,
+      "copiedFrom": "../cards/RenWangDun_png.png",
+      "fileSha256": "5707e82813e4b5d8b5f8b6bded13ea3d6de111db164bcd74df962af91b1b3430"
+    },
+    {
+      "name": "TengJia_png.png",
+      "resourceKey": "TengJia_png",
+      "texturePath": "cards/TengJia_png.png",
+      "file": "TengJia_png.png",
+      "names": [
+        "藤甲"
+      ],
+      "cardIds": [
+        136,
+        149
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 198,
+          "y": 2148,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "TengJia2_png.png",
+        "TengJia_png.png"
+      ],
+      "rgbaSha256": "3a1b3e95d04e7c291b5b44a756354133ec7d0ee3a8a1ce7d5c953386b615c3b1",
+      "deckCount": 2,
+      "copiedFrom": "../cards/TengJia_png.png",
+      "fileSha256": "fc8634fd6c7628dd51d29341897343971d1e947f53ad4b708c6b2144df4f06d1"
+    },
+    {
+      "name": "BaiYinShiZi_png.png",
+      "resourceKey": "BaiYinShiZi_png",
+      "texturePath": "cards/BaiYinShiZi_png.png",
+      "file": "BaiYinShiZi_png.png",
+      "names": [
+        "白银狮子"
+      ],
+      "cardIds": [
+        148
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 794,
+          "y": 4,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "BaiYinShiZi_png.png"
+      ],
+      "rgbaSha256": "e2ec7b97c056fd3cc45de56ad9a3e51843099714720164db1a3b5380c07c2764",
+      "deckCount": 1,
+      "copiedFrom": "../cards/BaiYinShiZi_png.png",
+      "fileSha256": "ea3153dbbe90ac340a13fc51988a74e2249f9666559f945fb1657a91a45bea03"
+    },
+    {
+      "name": "MuNiuLiuMa_png.png",
+      "resourceKey": "MuNiuLiuMa_png",
+      "texturePath": "cards/MuNiuLiuMa_png.png",
+      "file": "MuNiuLiuMa_png.png",
+      "names": [
+        "木牛流马"
+      ],
+      "cardIds": [
+        161
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1168,
+          "y": 1344,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "MuNiuLiuMa_png.png"
+      ],
+      "rgbaSha256": "7c5b3fb0ceeb1b4693ddeac077c3e9bb75596faa199c03792e868c76e9a62caa",
+      "deckCount": 1,
+      "copiedFrom": "../cards/MuNiuLiuMa_png.png",
+      "fileSha256": "6c1f45b9e419d81622e95fedf384917418de391d81be84dcdad1c65faa2921c9"
+    },
+    {
+      "name": "ChiTu_png.png",
+      "resourceKey": "ChiTu_png",
+      "texturePath": "cards/ChiTu_png.png",
+      "file": "ChiTu_png.png",
+      "names": [
+        "赤兔"
+      ],
+      "cardIds": [
+        31
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 988,
+          "y": 272,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "ChiTu_png.png"
+      ],
+      "rgbaSha256": "7615872126eb86567d8547a706d38d5268e176d40c6033a8e38376a4f7ea6c54",
+      "deckCount": 1,
+      "copiedFrom": "../cards/ChiTu_png.png",
+      "fileSha256": "ea49b2399167ab80e8d88e767ea676cd136d5d6681523f98b747a974877c257c"
+    },
+    {
+      "name": "ZiXing_png.png",
+      "resourceKey": "ZiXing_png",
+      "texturePath": "cards/ZiXing_png.png",
+      "file": "ZiXing_png.png",
+      "names": [
+        "紫騂"
+      ],
+      "cardIds": [
+        13
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 392,
+          "y": 3756,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "ZiXing_png.png"
+      ],
+      "rgbaSha256": "70ed36835b8173387be8ea27aaf45da7a71895650f921d1816df8f58932afabe",
+      "deckCount": 1,
+      "copiedFrom": "../cards/ZiXing_png.png",
+      "fileSha256": "d353a538e091ca67e398f079dd24ecf028ec9635735959a320616548dc1852dc"
+    },
+    {
+      "name": "DaWan_png.png",
+      "resourceKey": "DaWan_png",
+      "texturePath": "cards/DaWan_png.png",
+      "file": "DaWan_png.png",
+      "names": [
+        "大宛"
+      ],
+      "cardIds": [
+        104
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 4,
+          "y": 562,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "DaWan_png.png"
+      ],
+      "rgbaSha256": "0dfaca7536934e7b6279d296c820f2c399c438dbd8f67b53e65b865f59a0c02d",
+      "deckCount": 1,
+      "copiedFrom": "../cards/DaWan_png.png",
+      "fileSha256": "c12c1f99c249c4d9744a448202541c3100c34c0d0f483feba957aab323e9045e"
+    },
+    {
+      "name": "JueYing_png.png",
+      "resourceKey": "JueYing_png",
+      "texturePath": "cards/JueYing_png.png",
+      "file": "JueYing_png.png",
+      "names": [
+        "绝影"
+      ],
+      "cardIds": [
+        83
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1556,
+          "y": 1076,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "JueYing_png.png"
+      ],
+      "rgbaSha256": "56d6ac865db2540152cb4f2ab0661e82bb6d7d5fa88817045d01ddce3e071bd2",
+      "deckCount": 1,
+      "copiedFrom": "../cards/JueYing_png.png",
+      "fileSha256": "bd8ad2eb1395548ff89867be73995f00b7bca9d84114fd98b32f0949fb54c62e"
+    },
+    {
+      "name": "DiLu_png.png",
+      "resourceKey": "DiLu_png",
+      "texturePath": "cards/DiLu_png.png",
+      "file": "DiLu_png.png",
+      "names": [
+        "的卢"
+      ],
+      "cardIds": [
+        70
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 392,
+          "y": 540,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "DiLu_png.png"
+      ],
+      "rgbaSha256": "e92e2f39469fb5f7d3c7558eb75809d27ad5eebe4a9cca08deeeb5d9ef0154e2",
+      "deckCount": 1,
+      "copiedFrom": "../cards/DiLu_png.png",
+      "fileSha256": "6f7d678993a6fefcb9ba0de286641d9bb9625ddad6f555c3138b63f33239560a"
+    },
+    {
+      "name": "ZhuaHuangFeiDian_png.png",
+      "resourceKey": "ZhuaHuangFeiDian_png",
+      "texturePath": "cards/ZhuaHuangFeiDian_png.png",
+      "file": "ZhuaHuangFeiDian_png.png",
+      "names": [
+        "爪黄飞电"
+      ],
+      "cardIds": [
+        52
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 392,
+          "y": 2416,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "ZhuaHuangFeiDian_png.png"
+      ],
+      "rgbaSha256": "20904f6a162f6ebe25cf59c33139d0f4c1d1189de0d14c29734421b71ffb6aff",
+      "deckCount": 1,
+      "copiedFrom": "../cards/ZhuaHuangFeiDian_png.png",
+      "fileSha256": "37973e9ce41d5f2b957d3ac44718f11441a4f00eeccf1dd6d4c7b0dc19905c24"
+    },
+    {
+      "name": "HuaLiu_png.png",
+      "resourceKey": "HuaLiu_png",
+      "texturePath": "cards/HuaLiu_png.png",
+      "file": "HuaLiu_png.png",
+      "names": [
+        "骅骝"
+      ],
+      "cardIds": [
+        134
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1362,
+          "y": 808,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "HuaLiu_png.png"
+      ],
+      "rgbaSha256": "0d1e9ec340ceb6590f2269c551184b7cead142e4b5a8d29ec1be065b5c2687f3",
+      "deckCount": 1,
+      "copiedFrom": "../cards/HuaLiu_png.png",
+      "fileSha256": "6cc0b57a85f11ad73d7247151d5a584f0bfc812552fa6719f6bd7c58823288bc"
+    },
+    {
+      "name": "ShunShouQianYang_png.png",
+      "resourceKey": "ShunShouQianYang_png",
+      "texturePath": "cards/ShunShouQianYang_png.png",
+      "file": "ShunShouQianYang_png.png",
+      "names": [
+        "顺手牵羊"
+      ],
+      "cardIds": [
+        3,
+        4,
+        81,
+        82,
+        89
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 586,
+          "y": 1880,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "ShunShouQianYang_png.png"
+      ],
+      "rgbaSha256": "dddd1c63ad018692caff784076cf7143c19facac76666e59e1b45774bca45893",
+      "deckCount": 5,
+      "copiedFrom": "../cards/ShunShouQianYang_png.png",
+      "fileSha256": "f484a7f18b6da0022d72d441d4d6bc5aa32eacf4bb824a0091e7946cbfbb1d05"
+    },
+    {
+      "name": "GuoHeChaiQiao_png.png",
+      "resourceKey": "GuoHeChaiQiao_png",
+      "texturePath": "cards/GuoHeChaiQiao_png.png",
+      "file": "GuoHeChaiQiao_png.png",
+      "names": [
+        "过河拆桥"
+      ],
+      "cardIds": [
+        38,
+        68,
+        69,
+        90,
+        94,
+        95
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 4,
+          "y": 830,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "GuoHeChaiQiao_png.png"
+      ],
+      "rgbaSha256": "c6e050d33260112a422a93bdab2f90fb97071dadb65e9d2c48a837481e261f5d",
+      "deckCount": 6,
+      "copiedFrom": "../cards/GuoHeChaiQiao_png.png",
+      "fileSha256": "dcc058cf7e2479cc19c61ba45bf79eeb843dff9b699f503b549fa2451cb73d3f"
+    },
+    {
+      "name": "WuGuFengDeng_png.png",
+      "resourceKey": "WuGuFengDeng_png",
+      "texturePath": "cards/WuGuFengDeng_png.png",
+      "file": "WuGuFengDeng_png.png",
+      "names": [
+        "五谷丰登"
+      ],
+      "cardIds": [
+        29,
+        30
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 4,
+          "y": 3778,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "WuGuFengDeng_png.png"
+      ],
+      "rgbaSha256": "b0bd59364a5cb18f6cf564761b2e6a987cd37f8399cf7b12e691c8d651d62c59",
+      "deckCount": 2,
+      "copiedFrom": "../cards/WuGuFengDeng_png.png",
+      "fileSha256": "a2e3cf7ffd1d88a515a8da7b389d20e1fa443f1b610c72c9b0745033e1d2903b"
+    },
+    {
+      "name": "JueDou_png.png",
+      "resourceKey": "JueDou_png",
+      "texturePath": "cards/JueDou_png.png",
+      "file": "JueDou_png.png",
+      "names": [
+        "决斗"
+      ],
+      "cardIds": [
+        1,
+        53,
+        79
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1362,
+          "y": 1076,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "JueDou_png.png"
+      ],
+      "rgbaSha256": "177ae31baf728f3b29abbd128d2490d1f6d07d2df15cb01780f4d2b57308712e",
+      "deckCount": 3,
+      "copiedFrom": "../cards/JueDou_png.png",
+      "fileSha256": "f493f0b21922c8707dd649884d76510d0f40501b7d3fcee343d7ae34f21f6bcd"
+    },
+    {
+      "name": "NanManRuQin_png.png",
+      "resourceKey": "NanManRuQin_png",
+      "texturePath": "cards/NanManRuQin_png.png",
+      "file": "NanManRuQin_png.png",
+      "names": [
+        "南蛮入侵"
+      ],
+      "cardIds": [
+        72,
+        91,
+        98
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1362,
+          "y": 1344,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "NanManRuQin_png.png"
+      ],
+      "rgbaSha256": "f530c6c2682ed98bfd8a77cfeb74357355690a3004a0676211086661577e8298",
+      "deckCount": 3,
+      "copiedFrom": "../cards/NanManRuQin_png.png",
+      "fileSha256": "5c82bd201aa1d9dc2254202497a76e3d2c584dc58f0d7755ced7fafb0e8e8319"
+    },
+    {
+      "name": "WanJianQiFa_png.png",
+      "resourceKey": "WanJianQiFa_png",
+      "texturePath": "cards/WanJianQiFa_png.png",
+      "file": "WanJianQiFa_png.png",
+      "names": [
+        "万箭齐发"
+      ],
+      "cardIds": [
+        27
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 4,
+          "y": 3510,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "WanJianQiFa_png.png"
+      ],
+      "rgbaSha256": "2f9127d24c3ef4373599df1275aa4f4ba016dc987c63c9b0c601019bf65beb28",
+      "deckCount": 1,
+      "copiedFrom": "../cards/WanJianQiFa_png.png",
+      "fileSha256": "65c206bde70157c9983039df3d534345b800490fb662f71ab64b0ebaf9050273"
+    },
+    {
+      "name": "ShanDian_png.png",
+      "resourceKey": "ShanDian_png",
+      "texturePath": "cards/ShanDian_png.png",
+      "file": "ShanDian_png.png",
+      "names": [
+        "闪电"
+      ],
+      "cardIds": [
+        92,
+        105
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1750,
+          "y": 1612,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "ShanDian_png.png"
+      ],
+      "rgbaSha256": "145fd9f371900cf72d9c88e58662814a5a40075c761753325583ebfe132efa3e",
+      "deckCount": 2,
+      "copiedFrom": "../cards/ShanDian_png.png",
+      "fileSha256": "38672615c5bd55b15fd59d63a17b13e2ed4808558c56154c1ad8acfa1c65c994"
+    },
+    {
+      "name": "TaoYuanJieYi_png.png",
+      "resourceKey": "TaoYuanJieYi_png",
+      "texturePath": "cards/TaoYuanJieYi_png.png",
+      "file": "TaoYuanJieYi_png.png",
+      "names": [
+        "桃园结义"
+      ],
+      "cardIds": [
+        40
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1750,
+          "y": 1880,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "TaoYuanJieYi_png.png"
+      ],
+      "rgbaSha256": "0057d18759aae203c423be572b62b10c70627d13796ad870ef3a2830a748cc6b",
+      "deckCount": 1,
+      "copiedFrom": "../cards/TaoYuanJieYi_png.png",
+      "fileSha256": "4673d5e9f33652fadd2f0de166b527f4ad8281425f88e545c60317965bb6bc30"
+    },
+    {
+      "name": "WuXieKeJi_png.png",
+      "resourceKey": "WuXieKeJi_png",
+      "texturePath": "cards/WuXieKeJi_png.png",
+      "file": "WuXieKeJi_png.png",
+      "names": [
+        "无懈可击"
+      ],
+      "cardIds": [
+        64,
+        65,
+        102,
+        106,
+        109,
+        121,
+        147
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 198,
+          "y": 2684,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "WuXieKeJi_png.png"
+      ],
+      "rgbaSha256": "62f33ffba1851322a2cdd0d4c2347b51d2bbe9e3816b59d556808289290518d8",
+      "deckCount": 7,
+      "copiedFrom": "../cards/WuXieKeJi_png.png",
+      "fileSha256": "25e017db3445cf30e0654cfe65bccc8d59d60901a4f4c416a1c6dc1b3d86c407"
+    },
+    {
+      "name": "LeBuSiShu_png.png",
+      "resourceKey": "LeBuSiShu_png",
+      "texturePath": "cards/LeBuSiShu_png.png",
+      "file": "LeBuSiShu_png.png",
+      "names": [
+        "乐不思蜀"
+      ],
+      "cardIds": [
+        32,
+        71,
+        97
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 198,
+          "y": 1344,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "LeBuSiShu_png.png"
+      ],
+      "rgbaSha256": "9879634a9bc538fbde15dcf87119ee6132612e2b9e99c4f178d0208a89338740",
+      "deckCount": 3,
+      "copiedFrom": "../cards/LeBuSiShu_png.png",
+      "fileSha256": "6cc33edf836239081cb864fade193dcb5784f8fdeb8eaf2524c2666d3566ae51"
+    },
+    {
+      "name": "TieSuoLianHuan_png.png",
+      "resourceKey": "TieSuoLianHuan_png",
+      "texturePath": "cards/TieSuoLianHuan_png.png",
+      "file": "TieSuoLianHuan_png.png",
+      "names": [
+        "铁索连环"
+      ],
+      "cardIds": [
+        145,
+        146,
+        157,
+        158,
+        159,
+        160
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 4,
+          "y": 2706,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "TieSuoLianHuan_png.png"
+      ],
+      "rgbaSha256": "ea546efd8b2bb44aff92d4f73b72b591b018eb58b4e3abdda99d0a195f1ec298",
+      "deckCount": 6,
+      "copiedFrom": "../cards/TieSuoLianHuan_png.png",
+      "fileSha256": "c2d2cff7c47502b3907439dae37ed02e46de172ea9671377da9c9be03442f1e6"
+    },
+    {
+      "name": "BingLiangCunDuan_png.png",
+      "resourceKey": "BingLiangCunDuan_png",
+      "texturePath": "cards/BingLiangCunDuan_png.png",
+      "file": "BingLiangCunDuan_png.png",
+      "names": [
+        "兵粮寸断"
+      ],
+      "cardIds": [
+        144,
+        151
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1182,
+          "y": 4,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "BingLiangCunDuan_png.png"
+      ],
+      "rgbaSha256": "fde42205f504ae03fd3371a2e3c9db9821f0e7261763598e25b5a1bf363a7da5",
+      "deckCount": 2,
+      "copiedFrom": "../cards/BingLiangCunDuan_png.png",
+      "fileSha256": "272b98d73676e87bfb55bceb8dc7de94ff8ab95b9b1d075707db31238da233c2"
+    },
+    {
+      "name": "JieDaoShaRen_png.png",
+      "resourceKey": "JieDaoShaRen_png",
+      "texturePath": "cards/JieDaoShaRen_png.png",
+      "file": "JieDaoShaRen_png.png",
+      "names": [
+        "借刀"
+      ],
+      "cardIds": [
+        77,
+        78
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 392,
+          "y": 1076,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "JieDaoShaRen_png.png"
+      ],
+      "rgbaSha256": "33878296b16381b36b47746bda3ca0729a55eddf36f074bc848f6c68febfa154",
+      "deckCount": 2,
+      "copiedFrom": "../cards/JieDaoShaRen_png.png",
+      "fileSha256": "fbeac47f15d652d7fd0c00d953d2ae27cf2a7910dd951cd903fa829dd836b34b"
+    },
+    {
+      "name": "HuoGong_png.png",
+      "resourceKey": "HuoGong_png",
+      "texturePath": "cards/HuoGong_png.png",
+      "file": "HuoGong_png.png",
+      "names": [
+        "火攻"
+      ],
+      "cardIds": [
+        110,
+        111,
+        133
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 1750,
+          "y": 808,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "HuoGong_png.png"
+      ],
+      "rgbaSha256": "4d1f5ffe2ddbf0adec011b9a432fde2605390e7738815f1f793605036f1f7139",
+      "deckCount": 3,
+      "copiedFrom": "../cards/HuoGong_png.png",
+      "fileSha256": "7c3e3088bed961e3dc2ca247aa64475ffa385932d1c3dd26ef049062c0686932"
+    },
+    {
+      "name": "WuZhongShengYou_png.png",
+      "resourceKey": "WuZhongShengYou_png",
+      "texturePath": "cards/WuZhongShengYou_png.png",
+      "file": "WuZhongShengYou_png.png",
+      "names": [
+        "无中生有"
+      ],
+      "cardIds": [
+        33,
+        34,
+        35,
+        37
+      ],
+      "atlasEntry": {
+        "frame": {
+          "idx": 0,
+          "x": 198,
+          "y": 3220,
+          "w": 186,
+          "h": 260
+        },
+        "sourceSize": {
+          "w": 186,
+          "h": 260
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 260
+        },
+        "scale": 2
+      },
+      "sharedFrameNames": [
+        "WuZhongShengYou_png.png"
+      ],
+      "rgbaSha256": "2677f24f1af18c268291abbb9596edd41963c9a575cd29b1f4c75dac1512c6ba",
+      "deckCount": 4,
+      "copiedFrom": "../cards/WuZhongShengYou_png.png",
+      "fileSha256": "1f7eb291a846a9b9cadfb70848e897deaa75965f2ad99c31b60514f890a45d1e"
+    }
+  ]
+}

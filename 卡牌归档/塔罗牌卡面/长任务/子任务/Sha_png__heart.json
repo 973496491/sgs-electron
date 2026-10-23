@@ -1,0 +1,353 @@
+{
+  "schemaVersion": 1,
+  "taskId": "Sha_png__heart",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:Sha_png__heart:v1]",
+  "status": "reviewed",
+  "savedAt": "2026-10-21T08:09:59.791466+00:00",
+  "generatedAt": "2026-10-21T08:09:57.371Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_01e3d6f544cfc2c9016ad87330a48887d097a64a724cda3c82",
+  "prompt": "[TAROT-PROD:Sha_png__heart:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为红桃，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：杀。中央单字，按完整笔画视觉重心居中，可见字宽约卡宽38%～44%，保持单字的主体重量。\n此牌右下没有范围或属性徽记；若参考有徽记，应完整移除该圆环及其中数字/属性字，自然补回低对比底材，不得新增额外标记。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“杀”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。",
+  "revisedPrompt": "[TAROT-PROD:Sha_png__heart:v1]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为红桃，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：杀。必须是简体“杀”（Unicode U+6740），六画，上部是交叉的撇捺，下部是木；右侧绝对没有“殳”部件，绝不能写成繁体“殺”。中央单字，按完整笔画视觉重心居中，可见字宽约卡宽38%～44%，保持单字的主体重量。\n此牌右下没有范围或属性徽记；若参考有徽记，应完整移除该圆环及其中数字/属性字，自然补回低对比底材，不得新增额外标记。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8,8,38,64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“杀”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。",
+  "sourceCard": {
+    "id": "Sha_png__heart",
+    "resourceKey": "Sha_png",
+    "suitValue": 1,
+    "suit": "heart",
+    "suitName": "红桃",
+    "originalName": "杀",
+    "originalNames": [
+      "杀"
+    ],
+    "displayName": "杀",
+    "layout": "center",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      36,
+      49,
+      50,
+      1046,
+      1050,
+      1118,
+      1119,
+      1227,
+      1231,
+      2010,
+      2011,
+      3036,
+      3049,
+      3050,
+      7024,
+      7034,
+      7035,
+      12088,
+      13000,
+      13001,
+      13002,
+      13003,
+      20007,
+      20008,
+      20009,
+      20402,
+      21034,
+      21040,
+      21043,
+      21044,
+      21045,
+      21046,
+      21047,
+      21057,
+      21061,
+      31075,
+      60402,
+      61033,
+      61222,
+      61226
+    ],
+    "representativeCardId": 36,
+    "representativeNumber": 10,
+    "representativeRank": "10",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 35
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 1,
+        "rank": "A",
+        "cardIds": [
+          20402,
+          21034,
+          21040,
+          31075,
+          60402,
+          61033
+        ]
+      },
+      {
+        "number": 5,
+        "rank": "5",
+        "cardIds": [
+          13000,
+          21047,
+          21057,
+          21061
+        ]
+      },
+      {
+        "number": 6,
+        "rank": "6",
+        "cardIds": [
+          13001,
+          61222
+        ]
+      },
+      {
+        "number": 7,
+        "rank": "7",
+        "cardIds": [
+          61226
+        ]
+      },
+      {
+        "number": 8,
+        "rank": "8",
+        "cardIds": [
+          13002
+        ]
+      },
+      {
+        "number": 9,
+        "rank": "9",
+        "cardIds": [
+          13003,
+          21045,
+          21046
+        ]
+      },
+      {
+        "number": 10,
+        "rank": "10",
+        "cardIds": [
+          36,
+          49,
+          1046,
+          1118,
+          1227,
+          2010,
+          3036,
+          3049,
+          7024,
+          7034,
+          12088,
+          20007,
+          20008,
+          21043,
+          21044
+        ]
+      },
+      {
+        "number": 11,
+        "rank": "J",
+        "cardIds": [
+          50,
+          1119,
+          2011,
+          3050,
+          7035,
+          20009
+        ]
+      },
+      {
+        "number": 12,
+        "rank": "Q",
+        "cardIds": [
+          1050,
+          1231
+        ]
+      }
+    ],
+    "type": 1,
+    "subType": 0,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "1362_1612_186_260",
+    "sharedFrameNames": [
+      "Sha_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/Sha_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 17
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_01e3d6f544cfc2c9016ad87330a48887d097a64a724cda3c82",
+    "timestamp": "2026-10-21T08:09:57.371Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T16-07-59-01a15d80-b662-7df3-907a-b00870708726.jsonl",
+    "line": 54
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\Sha_png__heart\\v1.png",
+    "bytes": 2272303,
+    "sha256": "b15970c2a04215a3b4d6e169828a7d4964af71a30508772141a4ea102625d61d",
+    "rgbaSha256": "18b68cba7720874164f8241b03af73ed4c5f51cbc0366a4fd809e312e1073e87",
+    "size": [
+      1061,
+      1483
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\Sha_png__heart\\v1_186x260.png",
+    "bytes": 110383,
+    "sha256": "1200a79daaaa0981f12dfdd2a5ef3d10f96a0b9483626584a5a8ea0b31df2a82",
+    "rgbaSha256": "71ddf74eff318067536470b17cc351dc352a82109cdc2ff9783def223bbd8826",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "nativeMode": "RGB",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 7.975695879469669e-05,
+  "reviews": [
+    {
+      "at": "2026-10-21T08:10:38.370769+00:00",
+      "result": "accepted-offline",
+      "note": "已实际查看465×650检查图和93×130实际UI缩图：中央为准确六画简体杀（U+6740），上部交叉撇捺、下部木，无右侧殳，无残留闪字；小图字形完整清晰，主体居中且与上下装饰分隔。红桃主纹样及右上装饰红桃保留；右下无数字或属性徽记；左上x8..46、y8..72无点数、功能小花色、金线悬饰或有边界补丁，仅连续暗红底纹；四边完整、文字与装饰未挤出框，低对比枝叶未遮挡标题。内置工具未直接展示原图，已先保存原始PNG后基于实际检查图完成视觉验收。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": {
+    "native": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Sha_png__heart.png",
+      "bytes": 2272303,
+      "sha256": "b15970c2a04215a3b4d6e169828a7d4964af71a30508772141a4ea102625d61d",
+      "rgbaSha256": "18b68cba7720874164f8241b03af73ed4c5f51cbc0366a4fd809e312e1073e87",
+      "size": [
+        1061,
+        1483
+      ],
+      "mode": "RGB",
+      "format": "PNG"
+    },
+    "export": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Sha_png__heart.png",
+      "bytes": 110383,
+      "sha256": "1200a79daaaa0981f12dfdd2a5ef3d10f96a0b9483626584a5a8ea0b31df2a82",
+      "rgbaSha256": "71ddf74eff318067536470b17cc351dc352a82109cdc2ff9783def223bbd8826",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "format": "PNG"
+    }
+  },
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "awaiting-parent-commit"
+}

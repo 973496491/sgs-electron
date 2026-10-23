@@ -1,0 +1,153 @@
+{
+  "canvasPx": [
+    186,
+    260
+  ],
+  "uiCanvas": [
+    93,
+    130
+  ],
+  "assetPixelScale": 2,
+  "layers": [
+    {
+      "role": "base",
+      "file": "Shan_heart_base.png",
+      "pixelSize": [
+        186,
+        260
+      ],
+      "positionPx": [
+        0,
+        0
+      ],
+      "uiSize": [
+        93,
+        130
+      ],
+      "uiPosition": [
+        0,
+        0
+      ],
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "75612a0ec5c2c28becc8f8aea48427d33f8a986dce85c9f565a1a5a24593e45a"
+    },
+    {
+      "role": "rank",
+      "file": "red_2.png",
+      "pixelSize": [
+        38,
+        34
+      ],
+      "positionPx": [
+        8,
+        8
+      ],
+      "uiSize": [
+        19,
+        17
+      ],
+      "uiPosition": [
+        4,
+        4
+      ],
+      "visibleContentOffsetPx": [
+        -3,
+        -2
+      ],
+      "visibleContentOffsetUi": [
+        -1.5,
+        -1
+      ],
+      "visibleBoundsAlphaAbove8": [
+        6,
+        2,
+        26,
+        30
+      ],
+      "previousName": "red_2_v2.png",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "55c61d02d25d2fc4db1b15d24bc61e42552c6e476a6f16952322bb1d798ea058"
+    },
+    {
+      "role": "suit",
+      "file": "heart.png",
+      "pixelSize": [
+        38,
+        34
+      ],
+      "positionPx": [
+        8,
+        38
+      ],
+      "uiSize": [
+        19,
+        17
+      ],
+      "uiPosition": [
+        4,
+        19
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "f97a96f4552b679f5eea134794cfce9ff71fe9cfd0efb8a0b8a0d7905da3fcef"
+    }
+  ],
+  "previewFile": "分层预览.png",
+  "generations": [
+    {
+      "stage": "base",
+      "generationId": "ig_00f1a263b1e86c7b016ad7a04ca2f887d098a5d4106b0a3812",
+      "generatedAt": "2026-10-20T17:11:33.484Z",
+      "originalGenerationSize": [
+        1061,
+        1482
+      ],
+      "promptFile": "../提示词/分层/01_底图.txt"
+    },
+    {
+      "stage": "rank",
+      "generationId": "ig_00c134af2c907e53016ad7a10c0c3087d0b000675f28673972",
+      "generatedAt": "2026-10-20T17:13:32.553Z",
+      "originalGenerationSize": [
+        1327,
+        1186
+      ],
+      "promptFile": "../提示词/分层/02_点数2提取.txt"
+    },
+    {
+      "stage": "suit",
+      "generationId": "ig_0e03e1afb090f834016ad7a156721487d0a0ab6170c5f610d8",
+      "generatedAt": "2026-10-20T17:14:48.834Z",
+      "originalGenerationSize": [
+        1326,
+        1187
+      ],
+      "promptFile": "../提示词/分层/03_红桃提取.txt"
+    },
+    {
+      "stage": "rank-shifted",
+      "generationId": "ig_051fea5d232504cf016ad7a385f62c87d0a9a01c99583b917b",
+      "generatedAt": "2026-10-20T17:24:29.014Z",
+      "originalGenerationSize": [
+        1326,
+        1186
+      ],
+      "promptFile": "../提示词/分层/04_点数位置微调.txt"
+    }
+  ],
+  "sourceCard": {
+    "id": 28,
+    "name": "闪",
+    "suit": "heart",
+    "rank": "2"
+  },
+  "scope": "Design assets only. Current rank is the accepted up-left adjustment. No game integration."
+}

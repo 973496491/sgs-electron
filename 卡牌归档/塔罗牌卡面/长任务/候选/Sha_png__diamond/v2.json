@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "taskId": "Sha_png__diamond",
+  "attempt": 2,
+  "tag": "[TAROT-PROD:Sha_png__diamond:v2]",
+  "status": "reviewed",
+  "savedAt": "2026-10-21T05:40:49.061130+00:00",
+  "generatedAt": "2026-10-21T05:40:39.880Z",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_012e20c713800cef016ad8502c3ff887d0aec965a3d1546a04",
+  "prompt": "[TAROT-PROD:Sha_png__diamond:v2]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为方块，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：杀。中央单字，按完整笔画视觉重心居中，可见字宽约卡宽38%～44%，保持单字的主体重量。\n此牌右下没有范围或属性徽记；若参考有徽记，应完整移除该圆环及其中数字/属性字，自然补回低对比底材，不得新增额外标记。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“杀”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。",
+  "revisedPrompt": "[TAROT-PROD:Sha_png__diamond:v2]\nUse case: precise-object-edit. 只输出一张塔罗风格游戏卡牌生产底图；以已展示的单张参考图为美术与构图依据。\n竖向186:260比例、完整卡面铺满画布，四边完整，不拼图、不加画布外背景或展示标题。\n保持参考的暗灰毛玻璃底、细金框、浅香槟金浮雕毛笔字、低饱和低亮度枝叶；主花色为方块，保留其专属花纹形态。\n上中部主装饰花色、右上小装饰花色和柔光花纹保持；花纹轻、暗、低对比，无刺眼发光，叠牌时不抢字。\n将中间原文字完整替换为准确简体卡名：杀。中央单字，按完整笔画视觉重心居中，可见字宽约卡宽38%～44%，保持单字的主体重量。\n此牌右下没有范围或属性徽记；若参考有徽记，应完整移除该圆环及其中数字/属性字，自然补回低对比底材，不得新增额外标记。\n重要：这是底图，不是含点数的合成预览。左上独立UI预留区域在186×260基准为(x,y,w,h)=(8, 8, 38, 64)，按比例放大。\n彻底移除该左上区域原有点数及功能小花色，仅自然延续干净底材；绝不能烘焙A、2～10、J、Q、K或左上花色。不可删除上中主花色和右上装饰花色。\n该留位矩形内部也不保留穿过图案中心的金色斜线、悬垂小菱形、亮星或枝叶；装饰弧线在留位区外绕行。只保留卡片最外侧细边框，留白与暗底自然衔接，不画一块有边界的面板。\n图中可读文字仅为“杀”；不残留参考原卡名，不写牌ID、资源名、标签、水印、英文或说明。\n左上留白是单独UI层的固定位置，主标题不要侵入；93×130缩小时文字、花色与右下徽记仍清楚。\n本提示首行方括号标签仅用于生成记录匹配，不要将其绘制进图片。\n\n本次唯一的定向修正：当前参考中央的字是错误的繁体“殺”，必须把它整个擦除，重写为标准简体“杀”，Unicode U+6740。准确目标字仅为：杀。它总共六画，上半部是两笔交叉的撇捺“乂”，下半部是“木”的横、竖钩、撇、点；上下结构，只有这一个完整字。绝对不能有右侧“殳”部件，不能残留右侧独立的几、又、弯钩或第二组文字笔画；不要写繁体“殺”。使用清晰可读的简体毛笔字而不造字。文字的浅香槟金浮雕材质和视觉重量保持。除这一处字形纠正之外，参考的红色方块主花色、右上方块装饰、四周完整金框、下部枝叶、干净左上留位以及无右下属性徽记全部保持原样。完整保留以上生成提示词于原生 revisedPrompt。",
+  "sourceCard": {
+    "id": "Sha_png__diamond",
+    "resourceKey": "Sha_png",
+    "suitValue": 2,
+    "suit": "diamond",
+    "suitName": "方块",
+    "originalName": "杀",
+    "originalNames": [
+      "杀"
+    ],
+    "displayName": "杀",
+    "layout": "center",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      26,
+      1100,
+      1102,
+      1104,
+      1268,
+      1270,
+      1272,
+      2019,
+      2022,
+      2026,
+      3006,
+      3007,
+      3008,
+      3009,
+      3010,
+      3026,
+      6059,
+      6359,
+      7005,
+      7006,
+      7007,
+      7020,
+      7151,
+      11008,
+      11010,
+      12097,
+      12101,
+      12104,
+      20001,
+      20002,
+      20003,
+      20004,
+      20005,
+      20006,
+      20404,
+      20898,
+      20899,
+      20900,
+      20901,
+      20902,
+      20903,
+      20904,
+      20905,
+      20906,
+      20907,
+      31076,
+      31080,
+      60404,
+      61035,
+      61224,
+      61228
+    ],
+    "representativeCardId": 6,
+    "representativeNumber": 6,
+    "representativeRank": "6",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 5
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 1,
+        "rank": "A",
+        "cardIds": [
+          20404,
+          60404,
+          61035
+        ]
+      },
+      {
+        "number": 2,
+        "rank": "2",
+        "cardIds": [
+          20898,
+          20900,
+          31076
+        ]
+      },
+      {
+        "number": 3,
+        "rank": "3",
+        "cardIds": [
+          20901
+        ]
+      },
+      {
+        "number": 4,
+        "rank": "4",
+        "cardIds": [
+          20902
+        ]
+      },
+      {
+        "number": 5,
+        "rank": "5",
+        "cardIds": [
+          20903
+        ]
+      },
+      {
+        "number": 6,
+        "rank": "6",
+        "cardIds": [
+          6,
+          2019,
+          3006,
+          7005,
+          12097,
+          20001,
+          20904,
+          31080,
+          61224
+        ]
+      },
+      {
+        "number": 7,
+        "rank": "7",
+        "cardIds": [
+          7,
+          3007,
+          7006,
+          20002,
+          20905,
+          61228
+        ]
+      },
+      {
+        "number": 8,
+        "rank": "8",
+        "cardIds": [
+          8,
+          3008,
+          6059,
+          6359,
+          7151,
+          11008,
+          20003,
+          20906
+        ]
+      },
+      {
+        "number": 9,
+        "rank": "9",
+        "cardIds": [
+          9,
+          2022,
+          3009,
+          7007,
+          20004,
+          20907
+        ]
+      },
+      {
+        "number": 10,
+        "rank": "10",
+        "cardIds": [
+          10,
+          1100,
+          1268,
+          3010,
+          11010,
+          12101,
+          20005
+        ]
+      },
+      {
+        "number": 11,
+        "rank": "J",
+        "cardIds": [
+          1102,
+          1270,
+          20899
+        ]
+      },
+      {
+        "number": 12,
+        "rank": "Q",
+        "cardIds": [
+          1104,
+          1272
+        ]
+      },
+      {
+        "number": 13,
+        "rank": "K",
+        "cardIds": [
+          26,
+          2026,
+          3026,
+          7020,
+          12104,
+          20006
+        ]
+      }
+    ],
+    "type": 1,
+    "subType": 0,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "1362_1612_186_260",
+    "sharedFrameNames": [
+      "Sha_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/Sha_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 6
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  },
+  "provenance": {
+    "kind": "native-session-result",
+    "generationId": "ig_012e20c713800cef016ad8502c3ff887d0aec965a3d1546a04",
+    "timestamp": "2026-10-21T05:40:39.880Z",
+    "session": "C:\\Users\\97349\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T13-38-58-01a15cf8-4b37-7aa2-a5c1-7a6a4d3f51af.jsonl",
+    "line": 51
+  },
+  "native": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\Sha_png__diamond\\v2.png",
+    "bytes": 2140857,
+    "sha256": "6056743e28c923de9c2debb5d91ce80721571ff6e2a2e6274db07294e0547e17",
+    "rgbaSha256": "7139df195d304bab933df9bf244a53f98a20d9424d0e0f4a5543b67ea2a77f80",
+    "size": [
+      1061,
+      1483
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "export": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\候选\\Sha_png__diamond\\v2_186x260.png",
+    "bytes": 104132,
+    "sha256": "6c68cc759ad7c6857c43672b66667dfdb05f9bf290ca9116822c0dcd6b142fa2",
+    "rgbaSha256": "9c8f36456012fbb3fbca2094f47d670b464f83afce4f861872c07d9cc7272c70",
+    "size": [
+      186,
+      260
+    ],
+    "mode": "RGBA",
+    "format": "PNG"
+  },
+  "nativeSize": [
+    1061,
+    1483
+  ],
+  "nativeMode": "RGB",
+  "exportMethod": "Pillow RGBA LANCZOS resize to 186x260; no cropping; no generative edits",
+  "aspectRatioRelativeDifference": 7.975695879469669e-05,
+  "reviews": [
+    {
+      "at": "2026-10-21T05:41:28.168288+00:00",
+      "result": "accepted-offline",
+      "note": "已检查生成结果及465×650检查图、93×130 UI缩图。中央为准确简体“杀”（U+6740），上部交叉撇捺、下部木，六画结构且无右侧殳，单字居中、笔画完整，小尺寸清晰可辨。上中主花色及右上装饰均为红色方块；普通杀无右下范围数字或火冰雷等属性徽记。186×260基准左上x8..46、y8..72为连续暗底，无点数、功能花色、内侧悬饰或穿越线条；最外细框完整保留。四边完整，标题未侵入留位或与上下菱形相叠，下部枝叶相对标题低对比、无刺眼外发光；背景与构图沿用v1。按93×130可读性与主体视觉重量验收，不机械套用字宽百分比。离线视觉验收通过；未进行游戏内验证。",
+      "source": "explicit reviewer-supplied note; not automatic vision"
+    }
+  ],
+  "production": {
+    "native": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\Sha_png__diamond.png",
+      "bytes": 2140857,
+      "sha256": "6056743e28c923de9c2debb5d91ce80721571ff6e2a2e6274db07294e0547e17",
+      "rgbaSha256": "7139df195d304bab933df9bf244a53f98a20d9424d0e0f4a5543b67ea2a77f80",
+      "size": [
+        1061,
+        1483
+      ],
+      "mode": "RGB",
+      "format": "PNG"
+    },
+    "export": {
+      "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\186x260\\Sha_png__diamond.png",
+      "bytes": 104132,
+      "sha256": "6c68cc759ad7c6857c43672b66667dfdb05f9bf290ca9116822c0dcd6b142fa2",
+      "rgbaSha256": "9c8f36456012fbb3fbca2094f47d670b464f83afce4f861872c07d9cc7272c70",
+      "size": [
+        186,
+        260
+      ],
+      "mode": "RGBA",
+      "format": "PNG"
+    }
+  },
+  "completionBoundary": "Offline review recorded; parent must commit main queue. No game integration verified.",
+  "workflowStatus": "awaiting-parent-commit"
+}

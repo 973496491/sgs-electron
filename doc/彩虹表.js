@@ -32724,6 +32724,26 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  autoTaskChain: {
+    title: "自动任务：TASK_VIP 无监听、虚假每日完成标记与本地执行链修复",
+    verifiedAt: "2026-10-21",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: ["自动任务", "TASK_VIP", "autoTasks", "autoTaskSwitch", "AUTO_TASK_SWITCH", "autoTaskRunning", "autoTaskGuard", "lastTaskDate", "initAllButtons", "decodeClientSecretInfoRep", "RequestTaskAward", "NewFuLiManager", "空派发", "auto-task-chain.cjs"],
+    decodedIndexes: {
+      _0x3812: { "199": "autoTaskGuard", "420": "autoTaskRunning", "685": "GetNoGetTaskDataByTaskID", "821": "RequestTaskAward", "1108": "TaskRewardSelectWindow", "1110": "taskIds", "1238": "getTaskListFromServer", "1328": "TaskManager", "1576": "SmsgTaskFailed", "1748": "GetAllTaskDataByTaskID" },
+      _0x3911: { "261": "autoTaskSwitch", "366": "TASK_VIP", "527": "xc:config-change", "591": "AUTO_TASK_SWITCH" },
+      _0x871b: { "278": "autoTaskSwitch", "538": "TASK_VIP", "569": "task" },
+      _0x497b: { "420": "lastTaskDate", "566": "小抄正在执行自动签到每日三敲领武将包等每日任务", "613": "TASK_VIP", "791": "autoTaskSwitch" }
+    },
+    chain: [
+      "修前开关/按钮、game.end 和 decodeClientSecretInfoRep 只有 TASK_VIP 派发，没有本地注册；laya.task 未被接通。登录处无条件写 lastTaskDate 并提示执行，与是否真正运行脱节；动态eval存在不等于已验证安装监听。",
+      "initAllButtons -> autoTasks.start 使用 ged.on/off 只管理自身 TASK_VIP 监听；四处本地触发直达 request，laya.task保留兼容委托。active/dispatcher/current与可取消等待由闭包拥有；多入口合并，关闭及Exit取消，重建总线移除旧订阅，迟到回调核对任务身份。",
+      "TaskManager/ActivityManager及必要方法最多等待10次/500ms。原任务/军典/节日签到/点灯/图鉴筛选保留；可选NewFuLiManager缺失和单项错误隔离并写既有调试窗口。仅无本地错误轮次写每日日期，不将请求发送当成服务器到账。",
+      "原生2026-10-21快照仍有SmsgTaskFailed监听、getTaskListFromServer、TaskRewardSelectWindow领取分支和GetNoGetTaskDataByTaskID查询分支；laya.caller.method按后两项特征恢复RequestTaskAward/GetAllTaskDataByTaskID别名，字面方法名缺失不等于接口失效。",
+      "auto-task-chain.cjs共13项源码抽取模拟通过，修前首项复现0个事件监听；2026-10-21 22:07已备份并同步Roaming实际脚本，--source对安装文件13项验证通过，备份后缀before-auto-task-20261021-220730-849.bak。未重启/热注入、未游戏内领取实测或生成asar。回退同步恢复控制器、四处入口、初始化/Exit和日期逻辑，详见架构表。"
+    ]
+  },
   tarotCardTheme: {
     title: "塔罗牌第一阶段：原始/猫猫/塔罗互斥、13张共用点数、独立PNG逐层回退",
     verifiedAt: "2026-10-21",
@@ -32735,10 +32755,10 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     },
     chain: [
       "initCardThemeFeature -> installCardThemeRuntime -> createCardThemeClient/createCardThemeFeature.start；两个独立源码经build-userscript-modules装配。偏好xcCardFaceTheme，兼容旧miaoCardSwitch并受cardBackSwitch总开关控制；_0x126168的原始/猫猫按钮委托setMode，mount添加tarotCardUseBtn。",
-      "首批只有Shan_png+1/2、HanBingJian_png+3；其它组合全原生。组合内底图/数字/花色独立回退。ranks键1..13红黑共用，目前只有2.png；suits只有heart.png。用户确认攻击范围按画面，不设置特殊模式范围门槛。",
+      "首版以Shan_png+1/2、HanBingJian_png+3验证；2026-10-21 17:59批次已导入26种牌/36个资源花色组合，ranks的1..13和suits的1..4全部齐备，1/11/12/13为A/J/Q/K PNG，红黑共用。其它组合全原生，已声明组合仍独立回退；用户确认攻击范围按画面，不设特殊模式范围门槛。",
       "UpdateCardFace/SetCardFace/Draw后按当前ResName/DisplayFlower/CardNumber，ChangeFlowerAndNumber按参数与UI/Card身份，普通刷新清临时值；apply按图层幂等，已是所需纹理不先恢复原图，原生后来写入记作恢复值。空牌/易牌/扑克/装备独立renderer/特殊变牌与隐藏状态保留。",
       "_0x52c243保持单例，listCardUis显式查询；enableRequest防晚到猫猫启用，塔罗不改全局cards纹理Map。PNG私有Texture完整UV，sourceWidth/sourceHeight和逻辑宽高一致为93x130或19x17。",
-      "read-card-theme-asset经宿主读取Roaming/card-themes/tarot，仓库preload的daxiaochaoElectron与旧宿主原有window.electron.ipcRenderer接到同一协议。接口缺失时经既有remote.require加载随包runtime模块的bootstrapCardThemeAssets，主进程自行注册并共享安装屏障；不再依赖手改main，不传渲染页回调。6项素材和3项模块已登记release-files；不依赖归档或开发绝对路径。",
+      "read-card-theme-asset经宿主读取Roaming/card-themes/tarot，仓库preload的daxiaochaoElectron与旧宿主原有window.electron.ipcRenderer接到同一协议。接口缺失时经既有remote.require加载随包runtime模块的bootstrapCardThemeAssets，主进程自行注册并共享安装屏障；不再依赖手改main，不传渲染页回调。当前54项清单/PNG和3项模块已登记release-files；不依赖归档或开发绝对路径。",
       "闪动退回原图：skillCardLabelChange对普通牌也调UpdateMultiSkill，旧beforeSpecial先恢复而原生无状态/无动画分支不重画。specialFaceReason按实际IsMultiSkillState/AvatarSkill/扑克/SetChangeSkill参数决定让出，普通检查不清理、特殊结束补回；诊断按UI/Card/方法/状态去重写调试窗口。",
       "原始底图塔罗符号：现有setCardBack在普通UI原型包装SetCardFace并缓存__SetCardFace；若塔罗只挂父类，RefreshCardFace只重画底图时会绕过塔罗。现改为包装NormalCardUi原型的有效SetCardFace，已回归卡背先装/后装及卸载保留。",
       "Exit dispose/clear/Clear/destroy清理，addFrame重新start/mount，后装包装器保留、晚回调失效。两项问题修前均复现失败，修后29项原生方法/模拟检查通过，含40轮例行检查无多余纹理写入；既有14项实际DOM/PNG与Electron10 Node12读取6项为首版验证。用户已确认游戏内出现塔罗，修复仍待重新加载后回测，无asar变更。",
@@ -32746,7 +32766,51 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "getFaceContentLayers列举六个原生内容层，feature.owned.content记录独立可见性；塔罗底图加载成功才隐藏，缺图和其它牌仍原生。updateNewCardFace前恢复后重新接管，resetNewCardFace前释放；指定UpdateCardFaceRes/UpdateCardFaceOrBackRes按UI/Card临时让出，普通重画解除。保留点数花色、选中框、技能标记、范围和其它功能层，不修改isNewCardUI标志。",
       "tests/card-theme-layers.cjs使用保存的9段原生方法，修前复现bmpFace2覆盖塔罗，修后12项通过；原29项主题回归保留，浏览器以真实updateNewCardFace摘录驱动DOM内容层，18项通过。游戏内修复效果待用户重新加载确认。",
       "旧宿主自动接线只响应No handler registered for指定素材通道，适配器Promise合并并发、每实例一次，后台WeakMap幂等；已有接口、缺图和安装错误不重复注册。card-theme-bootstrap.cjs 7项及隔离真实Electron10.4.5/Node12.16.3验证通过：没有宿主预注册也读到6项素材，注册次数1。",
-      "package_release.py新增validate_card_theme_resources，在创建输出前核对所有非空PNG引用已有发布映射，空项保留回退，漏映射拒绝。桌面入口与工程pack.cmd已同步；15项打包安装检查和桌面实际试包通过，未上传云端。"
+      "package_release.py新增validate_card_theme_resources，在创建输出前核对所有非空PNG引用已有发布映射，空项保留回退，漏映射拒绝。桌面入口与工程pack.cmd已同步；15项打包安装检查和桌面实际试包通过，未上传云端。",
+      "accepted-20261021-164636素材扩展：按卡面state.done revision151和通用图层17项accepted校验PNG原字节、SHA/尺寸/模式后导入；22底图+13点数+4花色=39 PNG，比首版新增34，旧5张不变，不纳入候选。逻辑31项覆盖22×13当前点数，分层12项、DOM18项通过，真实Electron10接口读取40项成功；未改绘制/恢复机制，游戏内新素材待验收。",
+      "accepted-20261021-175929续接：冻结state.done revision197的36项验收，新增10张梅花与4张黑桃底图，总计26种牌/36组合、53 PNG；原39张字节不变，补齐14项发布映射并同步Roaming。逻辑31项覆盖36×13点数，分层12项、DOM18项、引导7项通过；隔离Electron10和本机宿主均读取54项素材，桌面实包66业务/70文件哈希一致。晚到纹理测试等待loader进入，替代固定25ms；运行绘制与生命周期未改，新卡面游戏内待验收。"
+    ]
+  },
+  cardRankSuit: {
+    title: "卡面点数 / 花色赋值与自定义图案可行性（仅调查）",
+    verifiedAt: "2026-10-21",
+    sourceFile: "electron-next/resources/daxiaochao.user.js；2026-10-08 官方 sgsGame.main.js 本地快照",
+    docFile: "doc/sanguosha.md",
+    searchKeywords: ["自定义点数", "自定义花色", "CardNumber", "CardNumberOri", "DisplayFlower", "IsModyfifyByServer", "bmpNumber", "bmpFlower", "GetNumberResName", "ChangeFlowerAndNumber", "ChangeCardFlowerNumber", "red_A", "black_K", "HideFlowerAndNumber"],
+    decodedIndexes: {
+      _0x262d: { "133": "UpdateCardFace", "146": "_png", "238": "__cardTheme", "246": "getCardUrl", "302": "cards", "319": "baseCardTexMap" },
+      _0x3812: { "343": "CardNumber", "897": "CardFlower", "912": "bmpNumber", "957": "bmpFlower", "1475": "Clear" }
+    },
+    chain: [
+      "GetCardById把number/color转为Number/Color；NormalCard.CardInfo初始化cardNumberOri/cardNumber/cardFlower，CardNumber setter变化触发CARD_CHANGE -> onCardChange -> UpdateCardFace。当前点数可能受技能改写，应读Card.CardNumber；CardNumberOri是配置原值。",
+      "iVi.UpdateCardFace先父类底图，再独立bmpFlower.texture/bmpNumber.texture。flower=IsModyfifyByServer?FlowerOnSeat:CardFlower，与DisplayFlower一致；不要把FlowerOnSeat有效花色无条件当展示花色。普通1红桃2方块3黑桃4梅花，对应heart/diamond/spade/club；GetNumberResName按1..13映射A..K并加red_/black_，0用空纹理。",
+      "ChangeCardFlowerNumber(cardId,flower,number) -> gameScene -> stackCardContainer.cardUiDict -> ui.ChangeFlowerAndNumber(flower,number)，直接显示参数且不改模型；已有黑桃5/红桃5实例。挂此入口须用入参，再普通刷新应回到模型口径。装备sVi有独立UpdateCardFace/other_资源，扑克牌有poker_及独立编码。",
+      "现有initCardThemeFeature -> installCardThemeRuntime -> __cardTheme主要替换cards/底图，不等于点数花色已可配置；已拆cards.atlas不含30个符号键。建议独立符号主题拥有资源/开关/生命周期，在两个原生入口后换纹理，复用注册接口、缺项保留原生，不修改CardNumber模型。普通红黑点数各13项加4花色即可。",
+      "layout控制普通符号19x17或16x14，高清PNG不自动改变UI大小。保留空牌/虚拟牌/dontUpdateCard/扑克牌/HideFlowerAndNumber；小抄CardConfigWindow和pushHandCardUis仍会隐藏bmpFlower/bmpNumber。后续需验证Clear/复用/异步失效/关闭恢复及已有挂钩，不能强行显示或覆盖后装包装器。",
+      "63项同快照抽取方法检查通过，脚本/结果在卡牌归档/资料/点数花色调查/verify.cjs、verification.json，来源SHA-256及偏移见OL指南；资源加载器和父类使用桩。本次未实现自定义主题、未游戏内验收、未改源码或asar。"
+    ]
+  },
+  originalCardFaces: {
+    title: "原始卡面 / 本地卡牌配置与默认纹理资源",
+    verifiedAt: "2026-10-20",
+    sourceFile: "electron-next/resources/daxiaochao.user.js；2026-10-08 官方 sys_playcard.sgs / sys_appearance.sgs / sgsGame.main.js 本地快照",
+    docFile: "doc/sanguosha.md",
+    searchKeywords: ["原始卡面", "本地卡牌配置", "sys_playcard", "sys_appearance", "GamePlayCards", "abbreviation", "CardInfo", "ResName", "imageId", "Sha_png", "ZhuGeLianNu_png", "TengJia_png", "GetAtlasUrl", "parseAtlas", "card-face-index.json"],
+    decodedIndexes: {
+      _0x262d: { "133": "UpdateCardFace", "166": "miaoCardSwitch", "177": "https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.png", "198": "https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.webp", "238": "__cardTheme", "246": "getCardUrl", "261": "TengJia_png", "285": "#originCardUseBtn", "319": "baseCardTexMap", "328": "syncTextureMap", "374": "seedBaseTextureMap", "426": "textureMap", "513": "使用原始卡面", "536": "cards/" }
+    },
+    chain: [
+      "sys_playcard.abbreviation: a=id,b=name,f=number,g=color,m=spellId,n=imageId,p=res；card 为短字段、card_H5 为长字段，后者初始化时覆盖同 ID 普通行，另有 configData2 二次解析。原始导出保留来源行，不能直接当去重运行时表。",
+      "Yx.initCardJson/GetCardById -> NormalCard(L$t).CardInfo -> resName=t.res -> zzt.UpdateCardFace/SetCardFace -> fwt.GetRes(Card.ResName+'_png') -> bmpFace.texture。iVi.UpdateCardFace 另画 bmpFlower/bmpNumber。7=杀/Sha_png、14=诸葛连弩/ZhuGeLianNu_png、25=桃/Tao_png、136/149=藤甲/TengJia_png。普通三国杀花色1红桃/2方块/3黑桃/4梅花，勿套用扑克牌斗地主编码。",
+      "sys_appearance.CardsShow 的 id=0 为经典卡牌；type 2/1 分别构成 FaceVO/BackVo，路径 card/kamian/<id>.png、card/kabei/<id>.png 是装饰，不是每种牌的原始插画。SetCardFaceEffect 叠在底图上，受本人座位、Bottom_CardFace 和 IsMatchOB 条件影响；空牌/易牌/扑克牌/技能变牌另有分支。",
+      "fwt.GetRes 优先查 atlasSubitemDic，rwt.parseAtlas 根据 frames 去扩展名，并以 meta.prefix 或图集路径解析子项。资源键不是独立 PNG 下载地址；尚需图集 JSON/贴图确认 URL、裁切和像素。93×130 仅为 UI 显示尺寸。",
+      "当前小抄 _0x262d 的 decoder/rotation/string array 已隔离核对440条一致。_0x3b9f65 原始卡面预览指向 cards.png，整图4096×2048、裁切{x:2046,y:4,w:186,h:260}仅为源码常量，未下载验证；cards.webp 用于原始卡背预览。",
+      "_0x52c243 -> window.__cardTheme 拥有 baseCardTexMap/miaoCardTexMap/cardUiRegistry。getCardUrl -> Laya.URL.formatURL('cards/'+key+'.png') 生成图集缓存路径，seedBaseTextureMap 收集 Laya.Loader.textureMap，syncTextureMap 关闭时恢复原纹理，refresh -> UpdateCardFace。#originCardUseBtn 点击将 globalConfig.miaoCardSwitch=false；未读取当前内存Map或实测按钮。",
+      "2026-10-20后续已实际拆分用户cards.png：与官方下载PNG哈希相同，cards.atlas有111个纹理名/109个矩形，真实图像2048×4096，旧预览常量不能作为裁切依据。tools/card_atlas.py -> 卡牌归档/卡牌拆分/cards + manifest.json，merge.cmd 按原位合回且atlas保持不变；没有读取游戏内存Map或安装替换图。ShuiYanQiJun2/ShuiYanQiJun及TengJia2/TengJia分别共享坐标，单份修改应用同组，两份不同修改报冲突。111张往返与真实CMD输出RGBA一致，9项检查通过；来源哈希/依赖/复用命令见OL指南。",
+      "军争筛选已核实：本地2026-10-08快照 CardsBookWindow(cQi) 的左页签 Model=1 是身份，CARDS_WORD_TAB_LIST[2] 是军争，onTopTabClick 按 ModelTab 过滤。2026-10-20重取当前官方sys_playcard，Model=1/ModelTab=2仍为44种res、num合计161；牌ID1～161的res/color/number多重集合与图鉴完全一致。已复制到卡牌归档/卡牌拆分/军争卡牌并保存161张牌对应表、纹理映射和预览，44份PNG与源文件逐字节相同；编辑后复制回父级cards再运行原merge.cmd。103不是此映射核实的底图数，当前配置来源指纹见OL指南。",
+      "2026-10-21素材归档：原始图集位于卡牌归档/cards.png，完整拆分在卡牌归档/卡牌拆分，最终四花色与分层在卡牌归档/塔罗牌卡面。合并脚本适配两级父目录的开发Python环境；图片未改动，未修改游戏代码或发布载荷。",
+      "2026-10-21武器范围：sys_playcard.abbreviation的h=attRange，f是点数，i/j为attDistance/defDistance。军争寒冰剑ID108为黑桃2且攻击范围2，与CardsBook(Model=1,ModelTab=2,cardid=108).dese及原始PNG范围文字一致；其他模式ID2035同名范围1，不能按名字或牌点数推断。来源及武器速查在OL指南武器攻击范围来源；本次未验证动态bmpRange显示或改游戏数据。",
+      "首次查询仅复用2026-10-08本地快照、解密两份JSON并静态追链；后续图片拆分见上一条，仍未游戏内实测。主程序SHA-256 f62c194174dd2ff4531bc44a795616b6a51f449a3c7c2bec5270f390da55f245；计数、临时产物和字符偏移见OL指南，混淆类名不是稳定运行接口。"
     ]
   },
   peiXiuRouteCalculation: {
@@ -32770,9 +32834,14 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     title: "小抄月见版 / COS 检查、下载与自动安装",
     verifiedAt: "2026-10-17",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
+    portableUpdateBootstrap: "2026-10-22跨机器更新修复：旧1.0.1包只有模块无启动调用，且匿名COS清单403，本机额外宿主接线/凭据掩盖了首次分发缺口。已新增userscript bootstrapLocalReleaseUpdates -> 已有remote.require -> modules/runtime/release-bootstrap.js:bootstrapReleaseUpdates(windowId)，主进程私有维护初始化、读取/退出保护和checker；release-update.windowChecks按同窗口/目标/URL与原宿主去重。旧Electron10 _invokeHandlers包原read-local-script保留语义，恢复失败给旧frame空成功响应阻止远程兜底；能力缺失明确失败，普通网页跳过。首轮读取早于引导，不宣称提前拦截首次加载。新增发布映射共67文件，工程/本地修复包1.0.2，需其它机器先手动install.cmd一次，未编译asar或覆盖宿主。10项及真实旧Electron webview无凭据访问COS、reload两次仅一次提示通过；详见架构表。",
+    releasePublicRead: "2026-10-22用户明确选择仅公开releases更新文件读取：桶默认ACL不变，新增匿名name/cos:GetObject只针对releases/*的策略；匿名清单200、ZIP Range206、桶列表及目录外403。固定密钥不发布，后续同前缀新包继承只读策略。策略及验证备份在Temp/xc-release-public-read-ersxh855。1.0.2包xiaochao-20261022-004315-316.zip已生成并空目录安装验证，当前未上传新版，云端仍1.0.1。",
+    downgradeUpdateProbe: "2026-10-21 23:41：本地回退测试时Roaming @version仍1.0.1，而内部XIAOCHAO_VERSION/记录均1.0.0；实际23:28/23:37日志证明检查已触发，按头部识别本地1.0.1与云端同版本而不弹。已用现有装配并备份同步，将工程及安装的三处字段统一1.0.0，保留用户回退测试意图。备份before-update-chain-test-20261021-234119-935.bak。实际Electron10/Node12抽取宿主入口、加载实际更新模块并请求真实COS：修前current，修后update-available，云端1.0.1/packageKey=releases/xiaochao-20261021-231944-994.zip，记录到一次下载并安装/稍后提示。dialog被诊断拦截、installer未执行，不代表可见弹窗或下载安装实测；完整重开后按每窗口检查触发。版本7项/更新9项通过，未改比较优先级或云端。检索：本地回退测试、版本字段不一致、脚本头部、readLocalVersion、@version、checkAndUpdateScript。",
+    packagingMetadata: "2026-10-23打包版本/更新文案写回：pack.cmd与桌面副本进入prepare_project_release，读取工程version.json，回车沿用或新版本经save_project_metadata同步记录、@version和XIAOCHAO_VERSION，随后询问并写回_0x378fb5字符串，保留555=replace/526=<br>的分号换行链。--version/--notes也写工程，--upload-only跳过且与两者互斥；无终端无显式参数不改工作文件。版本先保存再问文案，取消或后续失败保留已完成步骤；单步写入失败恢复之前写入。文案JSON编码、唯一标记验证，保留其余正文及DXCVersion/updateLog触发规则，不改Roaming或下载前清单。19项交互、8项盖章、16项真实CMD/ZIP/隔离安装及7项版本回归通过。检索：打包版本、更新文案写回、回车沿用、prepare_project_release、save_project_metadata、stamp_update_notes。",
+    updateNoticeMaintenance: "2026-10-21仅调查：游戏内文案_0x378fb5用中英文分号转<br>；addFrame新建面板时DXCVersion与XIAOCHAO_VERSION不等即显示15秒并保存版本，#updateLog点击以相同文案绿色显示30秒。同版本只改文案不自动重弹。随后按用户要求已将_0x378fb5替换为精确文案“·修复自动任务不自动领取·”，保留中点及原入口/去重，文案修改时版本1.0.0，随后升为1.0.1（见localVersionMaintenance）；22:24已同步Roaming，备份后缀before-update-notice-20261021-222459-472.bak。文案求值、文案外源码不变、userscript-version.cjs 7项及脚本语法通过。下载前弹窗由release-update.js控制，目前只列版本；cos_upload.py清单仅version/packageKey/publishedAt，若要下载前更新说明需同步扩展发布字段和实际运行模块，尚未实施。检索：更新提示维护、更新日志、_0x378fb5、acTooltip、下载前说明。",
     embeddedVersionRoles: "2026-10-17 已统一为核心 XIAOCHAO_VERSION：原 _0x43f342 的请求 version、原 _0x38a6c4 的创建/展开标题、updateLog 和 DXCVersion 提示均引用它；两个混淆字段已从源码移除。",
     localVersionPriority: "本地检测优先 userData/三国杀打小抄.js 的 @version，缺少脚本标记才回退同目录 version.json；工程 version.json 用于发布。已存在的版本记录仍先解析校验，非法内容会失败。",
-    localVersionMaintenance: "维护 electron-next/version.json 后执行 npm run build:userscript，stampVersion 同步工作脚本 @version 与 XIAOCHAO_VERSION；check:userscript 检查版本漂移。实际客户端仍读 Roaming，须同步脚本与记录后重新启动。本次同步统一为1.0.0，备份 before-version-unify-2026-10-17T13-59-21-699Z.bak。",
+    localVersionMaintenance: "维护 electron-next/version.json 后执行 npm run build:userscript，stampVersion 同步工作脚本 @version 与 XIAOCHAO_VERSION；check:userscript 检查版本漂移。实际客户端仍读 Roaming，须同步脚本与记录后重新启动。2026-10-21 22:27已按用户要求升为1.0.1，主脚本与版本记录同步Roaming，备份后缀before-version-1.0.1-20261021-222720-807.bak；两个版本标记之外的脚本正文不变，保留“·修复自动任务不自动领取·”。版本/提示7项与装配/语法检查通过，未发布云端或生成asar，重开加载后按原DXCVersion规则提示一次。",
     moduleFile: "electron-next/src/electron/release-update.js",
     installerModule: "electron-next/src/electron/release-install.js",
     installerFile: "electron-next/scripts/install.ps1",
@@ -32792,7 +32861,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "安装失败只重试已下载ZIP；成功提示重启客户端/稍后，只有用户点击才relaunch/quit。安装开始后关闭窗口不会打断提交；before-quit等安装/恢复结束。loader.whenIdle防混合版本注入，日志沿用app-log.txt。PS5.1 File.Replace必须传[NullString]::Value，$null会变空路径，中文脚本保留UTF-8 BOM。",
       "main -> Init -> initFrame -> addFrame；创建标题和展开恢复统一为小抄月见版加空格和 XIAOCHAO_VERSION。DXCVersion 不同时提示并写回，updateLog 点击显示同一版本；仅本地提示，不查询云端。",
       "Init 设置 window.WDVerSion=1.0.0 是兼容标识；act 中 sgsVersion 是本地时间门槛，不是最新版本；_0x53d3d5 的 version 字段携带本地常量，不能误判为版本查询结果。",
-      "version.json 经 build:userscript 同步工作脚本，release_version.stamp_release 另负责发布暂存副本；pack.cmd --version 只覆盖交付。upload_release 从ZIP提取版本、拒绝旧版覆盖新版、先上传ZIP后发布version.json；补传也使用该ZIP版本。",
+      "version.json 经 build:userscript 同步工作脚本，release_version.stamp_release 另负责发布暂存副本；2026-10-23起pack.cmd交互及--version先写回工程，--notes写回主脚本文案；底层build_release(version)仍仅暂存盖章。upload_release 从ZIP提取版本、拒绝旧版覆盖新版、先上传ZIP后发布version.json；补传也使用该ZIP版本。",
       "同次映射新增release-install.js及运行时install.ps1/release-common.ps1，共8个业务文件、12个包内文件；认证配置不打包。当前COS 1.0.0指向xiaochao-20261017-204331-525.zip(360370字节)，已包含全部新逻辑。宿主main/frame及运行时文件备份后缀before-auto-install-20261017-204529.bak。",
       "实际Electron10.4.5/Node12.16.3从私有COS下载并在独立userData副本中自动安装到1.0.0，验证退出延后到提交完成。13项PowerShell安装边界/恢复、5项自动链路、12项打包、17项发布、11项版本、16项下载验证通过。真实运行目录保留0.0.9供用户点击验收，不重启当前游戏、不编译asar。"
     ]
@@ -33210,7 +33279,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "Zone.draw -> rAF/flushRender/_renderZone -> Card.plot/allCard/getCardFaceHtml -> syncZoneMirrors；allCard 提供名称/花色/点数/类型，不提供持有者。",
       "本人当前 UI：laya.gamescene.SelfSeatUi.cardContainer.cardUis -> Card；自动手气先 Zone.shoupai(room.myID)，空时才按 Card.cardId/ui.cardId/ui.id 回退。laya.card() 会执行选牌，不能作为只读 getter。",
       "卡牌美化 seedRegistry 从 scene/WindowLayer/PromptLayer 遍历 _children/childs/Childs/textureContainer，注册具有 RefreshCardFace 和 Card/theCard 的节点；Draw 注册、clear/destroy 注销，refresh 清理 destroyed。没有 visible/祖先可见/舞台挂载统一过滤，cardUiRegistry 不是严格屏幕可见牌。",
-      "Card.key=NaN 时未初始化；移动消息 CardCount=0/MoveType=0/ToZone=11/isSend 早退，明暗牌混合时清空 CardIDs。ClientHappyGetFriendHandcardRep 仅在该座位 HasSkill(769) 时 show(Cards)，其他技能展示分支有独立条件。",
+      "Card.key=NaN 时未初始化；移动消息 CardCount=0/MoveType=0/ToZone=11/isSend 早退。混合明暗的工作数组原按未知处理；2026-10-23起普通牌堆移牌/同区展示会保留对齐槽位的deckMixedVisibleIDs，详见deckVisibilityFloatingPanel，原消息不改写。ClientHappyGetFriendHandcardRep 仅在该座位 HasSkill(769) 时 show(Cards)，其他技能展示分支有独立条件。",
       "2026-09-13 追加修复使用后可见牌残留的两处已复现路径：flushRender 清空整队列后某一区域抛错会丢掉后续手牌刷新，改为逐区 catch 继续；PubGsCMoveCard 中 result 统计 DOM 缺失会在真正移牌之前中断，权道/吉占/和衷三处改用 setVisibleCardResult，缺失时跳过 UI 写入。",
       "beginVisibleCardTrace -> logic -> stepVisibleCardTrace -> finally finishVisibleCardTrace：event:in/done/error 关联 seq，汇总 move:skip/mixed/source/target、remove/add/show 前后 known/unknown/groups。Zone.draw 记录 cause，flushRender 后 render:after 对比模型/主面板/座位副本 keys，区域异常写 render:error。",
       "所有新增日志经 logVisibleCardTrace -> window.__xcAppendLocalSkinDebugLine -> appendLocalSkinDebugLine(text,false) 写现有调试面板，前缀 [可见牌]，受 XC.isDebug 控制；不使用控制台、不新增轮询，桥失败不阻断移牌。Zone.init 清空 cause，消息 finally 恢复诊断上下文。",
@@ -33229,6 +33298,53 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "回归：visible-card-chain.cjs新增‘skill option payloads print in full and stay searchable by spell name’与‘spell data messages outside the old first option match are still traced’两项，22项全通过；回滚即恢复原24项截断replacer与RoleOptTarget正则，不会影响移牌与刷新隔离。",
       "2026-09-19 用户反馈同步后仍是‘…共 58 项’：核对AppData/Roaming/SGSOL/三国杀打小抄.js内容与工程源码一致（CRLF差异）且app-log显示16:12:59重启过，说明磁盘文件已是新版，嫌疑集中在‘页面还在跑旧注入’或‘同一台机器上另有旧实例窗口’。main.js的checkAndUpdateScript只删temp.js并打印自动更新已禁用，不会覆盖本地脚本。",
       "为此增加构建标记：核心IIFE导出window.__xcVisibleCardTraceBuild=2026-09-19-full-print-v1，openDebugFromButton打开调试时输出‘[可见牌] trace:build 2026-09-19-full-print-v1 maxItems=0’。缺失该行=页面仍加载旧脚本，需彻底退出所有微端窗口后重开（dom-ready才会重新read-local-script）；有该行却仍见截断=截断来自其它代码路径，需拿完整日志行继续定位。"
+    ]
+  },
+  deckVisibilityAudit: {
+    "title": "牌顶 / 牌底可见牌完整性核对：上下端顺序、浮层折叠和漏记边界",
+    "verifiedAt": "2026-10-23",
+    "followUp": "修改前历史基线；随后实现独立可拖动浮层、修复普通牌堆混合明暗及非零位置展示，当前行为见manualLookupNotes.deckVisibilityFloatingPanel。",
+    "sourceFile": "electron-next/resources/daxiaochao.user.js",
+    "searchKeywords": ["牌顶", "牌底", "完整性核对", "deckBottomEdge", "paiduiCards", "明暗牌混合丢信息", "非零位置", "悬停展开", "POS_RANDOM", "POS_NEEDLESS", "decodeGameDealPileTopCardList"],
+    "decodedIndexes": {
+      "_0x3911": { "188": "remove", "240": "cards", "326": "show", "488": "slice", "594": "pos" },
+      "_0x497b": { "631": "CGsRoleSpellOptRep", "652": "PubGsCMoveCard", "687": "slice", "751": "show", "839": "decodeGameDealPileTopCardList" },
+      "_0xe558": { "530": "show-ellipsis", "583": "sorder-body paiduiCards", "672": "seatUIs", "721": "deckBottomEdge", "813": "deckEdgeUI" }
+    },
+    "chain": [
+      "Zone.obj[1-255] 从牌顶到牌底；构造把协议65280转pos0、协议0转内部尾哨兵65280。底取remove=splice(-count).reverse()；3336/Type50的CGsRoleSpellOptRep经Datas.slice().reverse()->new Zone(255,1,DI).show记录底牌。只有key>0可当确定牌。",
+      "Zone._renderZone -> paiduiCards -> syncZoneMirrors -> _0x380c88 -> drawDeckEdgeUI/_0x2f6cfa -> deckBottomEdge 是同一有序列表，不是两个顶/底面板，也没有固定张数上限。真实D()模板索引16的sorder-body默认max-height48px/overflow:hidden，hover展开；seatUIs为空隐藏。旧_0x871b[559]虽有相近CSS，本次核对实际模板而非只信旧映射。",
+      "已复现：PubGsCMoveCard的CardCount=2/CardIDs=[7,0]会把dn整体清空；未知牌堆同区顶展示或未知手牌回顶均未保留已下发的7。原有mixed visibility测试只断言消息未改及日志完整，不能证明模型不漏牌。",
+      "已复现：Zone.show非尾端分支slice(this.pos,ids.length)把数量当终点；pos2/两张牌得到slice(2,2)，未识别。顶端pos0及尾端分支正常；尚无实战证据确认哪个技能使用该非零位置。",
+      "decodeGameDealPileTopCardList只有诊断观察、没有logic业务处理。官方2026-10-08快照中为回放107011消息/GS_CLIENT_REPLAY_RECORD_DEAL_PILE_CARD_TOP，Protocol.Data.ProtoObj.list_card_id写CardTopIds；不能当普通实战通用看顶。原生POS_RANDOM65281与POS_NEEDLESS65282不同，小抄RAND65282。",
+      "工程和实际Roaming入口的模型/logic/镜像三个区块相同。33项既有回归通过；额外真实浮层函数的3项模拟断言覆盖20顶+未知+20底、暗取底45/44后移除、空牌堆清理。仅检查和文档记录，未修业务、未验证游戏内/浏览器布局/全部技能，详细复现和回归边界见架构表同名小节。"
+    ]
+  },
+  deckVisibilityFloatingPanel: {
+    "title": "牌顶 / 牌底独立可拖动浮层：上下按钮、逐槽问号与双向取牌",
+    "verifiedAt": "2026-10-23",
+    "sourceFile": "electron-next/src/features/deck-visibility.js + electron-next/resources/daxiaochao.user.js",
+    "searchKeywords": ["牌顶", "牌底", "独立浮层", "可拖动", "上下按钮", "顶部卡牌", "底部卡牌", "问号占位", "去掉下标", "统一缩放", "floatSize", "resizeGrip", "xc-deck-origin", "顶底起始标记", "第0张左侧", "createDeckVisibilityPanel", "deckMixedVisibleIDs", "deckTopEdge", "deckBottomEdge", "xc-deck-slot", "getRanges"],
+    "decodedIndexes": {
+      "_0x3911": { "188": "remove", "222": "count", "240": "cards", "326": "show", "488": "slice", "594": "pos" },
+      "_0x497b": { "554": "add", "652": "PubGsCMoveCard", "674": "remove", "751": "show", "805": "pos" },
+      "_0xe558": { "672": "seatUIs", "721": "deckBottomEdge", "813": "deckEdgeUI" }
+    },
+    "chain": [
+      "唯一源码features/deck-visibility.js通过既有构建器装配deck-visibility区块，并映射modules/features/deck-visibility.js。Card/Zone继续拥有牌堆，模块注入readCards/renderKnownCard/log，不复制可变牌模型。",
+      "Zone._renderZone(1-255)优先drawDeckEdgeUI->_0x2f6cfa->refresh；不依赖paiduiCards DOM。模块在document.body创建fixed的deckEdgeUI，不挂主/座位面板；删除_0x188d85中的旧seatUI子浮层及_0x380c88等合并缓存。UI.seatUIs非空是场景门槛，seatUISwitch不再隐藏新浮层。",
+      "顶部卡牌/底部卡牌两个按钮上下排列，初始均关闭，文字+▸/▾。getRanges按设置上限分别取靠近两端的窗口，到窗口内最后已知牌为止，可重叠；key>0/id>0才显示牌，其余每张显示？，数组下标仅保留内部dataset，不显示数字。未知候选id不泄露，上限内列表完整渲染，共用70vh滚动区；无旧48px悬停限制。",
+      "普通牌堆移动的CardIDs与CardCount对齐且含0时保存deckMixedVisibleIDs，进入最终通用remove/add或同区show；不改特殊技能计数/移牌分支的旧输入。Zone.remove对有序槽逐个识别，随机源先明牌后未知、按原通知索引重组并恢复count；show使用slice(pos,pos+length)、0只跳过识别。原消息不改写，非对齐消息不猜位置。",
+      "expanded和position是页面内状态；按钮拖动5px起步，拖后250ms抑制点击，resize夹取坐标。reset/离场/DOM重建释放根节点与所有拖动/resize监听，旧按钮校验root/entry；addFrame.start和Exit.dispose管理启停，dispose后迟到刷新无效。Zone.init清旧视图并排队新牌堆刷新。",
+      "模型/集成12项、真实Chromium8项、原可见牌33项、手牌装配8项、弹幕生命周期9项通过。实际Roaming脚本已按区域同步（保留已安装版本和其它模块），--source的33+12项通过；备份/回退和范围限制见架构表，尚未游戏内实测，不生成asar。",
+      "历史缩放阶段（已被统一缩放替代）：标题按钮inline-flex/width:auto随文字图标大小，仍上下排列；原先每侧xc-deck-viewport各自包含把手，viewSizes.top/bottom单独保存尺寸。该双把手/双滚动区方案已删除，当前见链末统一缩放说明。",
+      "viewSizes仅页面内记忆，关闭/取牌/换局/DOM重建保留，各方向独立；resize按视口夹取。release解绑把手及既有pointer/resize监听并清旧click抑制，旧回调检查root/entry。缩放后模型/生命周期13项、真实Chromium10项、实际入口--source13项通过；只替换实际生成模块和模块文件并保存before-deck-resize备份，未生成asar，尚未实战。详见架构表显示区独立缩放追加。",
+      "2026-10-23总开关追加：addFrame末尾->deckVisibilityPanel.mountControls，以generalSwitch定位五阶特效原生行，克隆wallpaperContainer结构追加第二列，按钮在五阶右边/屏蔽弹幕下面。xcDeckVisibilityControl/xcDeckVisibilityToggle不走input[id$=Switch]旧配置绑定，标题牌堆记录+原生齿轮。首次默认关闭，开启且UI.seatUIs非空才显示两个浮层按钮，关闭后后续refresh仍不能重建。",
+      "storage显式注入核心localStorage，偏好键xcDeckVisibilitySettings保存visible/topLimit/bottomLimit，默认false/20/20。getRanges先截取距各端的N个位置（问号计数），再去尾部连续未知；不删除Card/Zone共享历史。setLimits只接受正安全整数，非法输入不保存；存储错误保留当页效果并在设置框准确提示未能保存。",
+      "齿轮click/键盘->openSettings，在body创建xcDeckVisibilitySettings非模态框，手填顶部/底部上限后保存；按原生按钮视口矩形就近定位，空间不足上翻、夹边并兼容主面板缩放。外点/Escape/再次点齿轮/关闭按钮/主设置折叠关闭，释放临时document/window监听和ResizeObserver；模板重建清理旧owner，dispose清理入口和设置，reset不删除持久偏好。",
+      "总开关/上限验证：模型集成16项、原生模板位置与设置浏览器9项、原浮层浏览器10项、弹幕模块9项、手牌装配8项通过；实际Roaming定向同步模块/依赖注入及addFrame接线，--source16项通过，before-deck-settings备份和回退范围见架构表。未生成asar、未游戏内实测，需dom-ready重载。",
+      "2026-10-23统一缩放：仅#deckEdgeUI直属的单一xc-deck-resize，和滚动panel并列，滚动不带走把手。beginDrag(event,true)->moveDrag->floatSize->layout统一设置外层宽高、两列同宽；通常最小160x100，最大视口宽减16/70vh，保留页面内尺寸和旧回调清理。删除双viewSizes状态，标题按钮仍紧凑并可拖动整体。",
+      "去掉可见下标：删除xc-deck-index和槽位数字title，内部dataset.index仍用于同步。renderList先放xc-deck-origin，top为顶、bottom为底，再显示真实首牌；标记没有card key、不属于slot、不占记录上限、不参与移牌，空牌也保留。两列显式LTR/row，底部只逆序数据，两端第0张均从左侧开始。模型17项、浮层浏览器10项、设置浏览器9项及实际入口--source17项通过，before-deck-unified备份/回退见架构表；未实战、未生成asar。"
     ]
   },
   handSortFloatingPanel: {

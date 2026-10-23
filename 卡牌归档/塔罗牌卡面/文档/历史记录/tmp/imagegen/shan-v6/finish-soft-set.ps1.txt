@@ -1,0 +1,79 @@
+$ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.Drawing
+$workspace = 'C:\Users\97349\Downloads\electron'
+$outputRoot = Join-Path $workspace '卡牌毛玻璃\闪_v6_四花色\柔光版'
+$originalRoot = Join-Path $workspace '卡牌毛玻璃\闪_v5_四花色'
+$suits = @(@('heart','红桃'),@('diamond','方块'),@('spade','黑桃'),@('club','梅花'))
+$variants = @()
+$checks = @()
+function Get-EdgeStats([System.Drawing.Bitmap]$bitmap) {
+  $sum = 0.0; $count = 0; $bright = 0; $alphaMin = 255
+  for ($y=0; $y -lt $bitmap.Height; $y++) {
+    for ($x=0; $x -lt $bitmap.Width; $x++) {
+      $pixel = $bitmap.GetPixel($x,$y)
+      $alphaMin = [Math]::Min($alphaMin,[int]$pixel.A)
+      if ($x -lt 24 -or $x -ge 162 -or $y -lt 31) {
+        $luma = 0.2126*$pixel.R + 0.7152*$pixel.G + 0.0722*$pixel.B
+        $sum += $luma; $count++
+        if ($luma -gt 180) { $bright++ }
+      }
+    }
+  }
+  return [ordered]@{meanLuma=[Math]::Round($sum/$count,2);brightPixelPercent=[Math]::Round(100*$bright/$count,2);alphaMin=$alphaMin}
+}
+foreach ($suit in $suits) {
+  $variants += Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot ($suit[0] + '-soft-record.json')) | ConvertFrom-Json
+  $gameFile = '186x260\Shan_' + $suit[0] + '.png'
+  $current = [System.Drawing.Bitmap]::new((Join-Path $outputRoot $gameFile))
+  $original = [System.Drawing.Bitmap]::new((Join-Path $originalRoot $gameFile))
+  if ($current.Width -ne 186 -or $current.Height -ne 260) { throw 'Unexpected game asset size.' }
+  $currentStats = Get-EdgeStats $current
+  $oldStats = Get-EdgeStats $original
+  if ($currentStats.alphaMin -ne 255) { throw 'Game asset contains transparent pixels.' }
+  $checks += [ordered]@{suit=$suit[0];size=@(186,260);alphaMin=$currentStats.alphaMin;v5Edge=$oldStats;softEdge=$currentStats;edgeMeanReductionPercent=[Math]::Round(100*(1-$currentStats.meanLuma/$oldStats.meanLuma),1)}
+  $current.Dispose(); $original.Dispose()
+}
+$record = [ordered]@{
+  tool='OpenAI Responses native image_generation'; generatedSequentially=$true;
+  requestedDirection='Differentiate suit styling; reduce ornamental brightness and clutter for overlapping cards';
+  text='闪'; variants=$variants;
+  verification=@{pixelChecks=$checks;regions='24-pixel left/right strips plus top 31 pixels at 186x260';notes='Luma statistics are a supporting comparison only; images were visually inspected. No gameplay integration or in-game validation.'};
+  outputStatus='Complete four-suit design set; original v5 assets and game resources unchanged';
+  references='Small JPEG references only; one generated card per native call';
+  previewFiles=@('preview.html','四花色对比.png','叠牌对比.png')
+}
+$record | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $outputRoot 'generation-record.json') -Encoding utf8
+$background = [System.Drawing.Color]::FromArgb(19,22,28)
+$textBrush = [System.Drawing.SolidBrush]::new([System.Drawing.Color]::FromArgb(208,199,177))
+$font = [System.Drawing.Font]::new('Microsoft YaHei',15,[System.Drawing.FontStyle]::Regular,[System.Drawing.GraphicsUnit]::Pixel)
+$sheet = [System.Drawing.Bitmap]::new(850,310)
+$draw = [System.Drawing.Graphics]::FromImage($sheet)
+$draw.Clear($background)
+for ($i=0; $i -lt 4; $i++) {
+  $card = [System.Drawing.Image]::FromFile((Join-Path $outputRoot ('186x260\Shan_' + $suits[$i][0] + '.png')))
+  $draw.DrawString($suits[$i][1],$font,$textBrush,[single](20+$i*208),[single]8)
+  $draw.DrawImageUnscaled($card,(20+$i*208),34)
+  $card.Dispose()
+}
+$sheet.Save((Join-Path $outputRoot '四花色对比.png'),[System.Drawing.Imaging.ImageFormat]::Png)
+$draw.Dispose(); $sheet.Dispose()
+$stack = [System.Drawing.Bitmap]::new(850,640)
+$draw = [System.Drawing.Graphics]::FromImage($stack)
+$draw.Clear($background)
+for ($row=0; $row -lt 2; $row++) {
+  $sourceRoot = if ($row -eq 0) { $originalRoot } else { $outputRoot }
+  $label = if ($row -eq 0) { 'v5 原版 · 186 × 260 · 每张露出 76 px' } else { '柔光版 · 相同尺寸与叠放间距' }
+  $draw.DrawString($label,$font,$textBrush,[single]24,[single](12+$row*318))
+  for ($i=0; $i -lt 8; $i++) {
+    $card = [System.Drawing.Image]::FromFile((Join-Path $sourceRoot ('186x260\Shan_' + $suits[$i%4][0] + '.png')))
+    $draw.DrawImageUnscaled($card,(24+$i*76),(42+$row*318))
+    $card.Dispose()
+  }
+}
+$stack.Save((Join-Path $outputRoot '叠牌对比.png'),[System.Drawing.Imaging.ImageFormat]::Png)
+$codec = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object MimeType -eq 'image/jpeg'
+$quality = [System.Drawing.Imaging.EncoderParameters]::new(1)
+$quality.Param[0] = [System.Drawing.Imaging.EncoderParameter]::new([System.Drawing.Imaging.Encoder]::Quality,[long]83)
+$stack.Save((Join-Path $PSScriptRoot 'soft-stack-review.jpg'),$codec,$quality)
+$quality.Dispose(); $draw.Dispose(); $stack.Dispose(); $font.Dispose(); $textBrush.Dispose()
+$checks | ConvertTo-Json -Depth 5

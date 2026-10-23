@@ -33,5 +33,5 @@ vm.runInNewContext(fs.readFileSync(path.join(host, 'script/electron_renderer.js'
   const expected = fs.readFileSync(path.join(__dirname, '../resources/daxiaochao.user.js'), 'utf8').replace(/\r\n/g, '\n');
   const installed = fs.readFileSync(path.join(userData, '三国杀打小抄.js'), 'utf8').replace(/\r\n/g, '\n');
   assert.equal(installed, expected);
-  process.stdout.write('PASS installed main registration + legacy preload + 6 assets + script match on ' + process.version + '\n');
+  process.stdout.write('PASS installed main registration + legacy preload + ' + (files.length + 1) + ' assets + script match on ' + process.version + '\n');
 })().catch(error => { process.stderr.write(error.stack + '\n'); process.exitCode = 1; });

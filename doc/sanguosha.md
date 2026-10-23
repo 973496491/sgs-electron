@@ -60,9 +60,38 @@
 
 ---
 
+### 已落地的专项查询：牌顶 / 牌底可见牌完整性核对（2026-10-23）
+
+复查前确认 `C:\Users\97349\AppData\Local\Temp\codex-ol-zuifeng-qJebR9\sgsGame.main.js` 仍存在，复用2026-10-08的ES6明文快照，没有重新下载在线版。`107011 -> decodeGameDealPileTopCardList` 的官方事件名是 `GS_CLIENT_REPLAY_RECORD_DEAL_PILE_CARD_TOP`，处理函数从 `Protocol.Data.ProtoObj.list_card_id` 写入 `c1t.CardTopIds`（字符偏移约9247724）；属于回放链，不能凭名称认定普通实战必发或小抄已接入。原生移牌类 `O$t` 附近11085372明确 `POS_FRONT_BOTTOM=0`、`POS_BACK_TOP=65280`、`POS_RANDOM=65281`、`POS_NEEDLESS=65282`；小抄 `RAND=65282`，位置语义核对不得混淆后两者。符号及偏移仅适用于该快照。
+
+小抄模型和真实镜像函数的模拟结果、48px折叠显示、明暗混合信息丢失及非零位置 `slice(pos,length)` 漏记详见 [代码架构表](代码架构表.md)“牌顶 / 牌底可见牌完整性核对”，手工索引 `manualLookupNotes.deckVisibilityAudit`；该节保留修改前基线。随后按用户要求实现的独立可拖动浮层及普通牌堆混合明暗/非零位置修复见同表“独立可拖动浮层”和 `manualLookupNotes.deckVisibilityFloatingPanel`。未游戏内实测，也没有证明所有技能消息覆盖；不改变上述官方快照协议结论。
+
 ### 已落地的专项查询：武将攻击动效
 
 2026-10-15 复用仍存在的 2026-10-08 ES6 主程序和普通配置快照，定向解密 `cha_gs_dbs_fs_skininfo.sgs`，确认 `PubGsCUseCard -> ShowUseCardAni -> USE_CARD -> useCardAniPlay -> onPlayNewSpEffect(3) -> xingxiang.json/GongJi`。已核对皮肤/形态选路、`skinEffectNew/Small/Big`、Spine 加载、出框/震屏/全屏/声音标签与停止恢复。详见 [武将攻击动效链路](武将攻击动效链路.md)，彩虹表入口 `manualLookupNotes.generalAttackAnimation`；31 项抽取方法模拟验证通过，未游戏内实测或下载动画依赖，不改变全量归档及 WASM 分支的未完成状态。
+
+### 已落地的专项查询：原始卡面 / 卡牌资源（2026-10-20）
+
+- **本地来源**：确认 `C:\Users\97349\AppData\Local\Temp\codex-ol-zuifeng-qJebR9` 中 `Config.sgs`、`sgsGame.main.js`、`sources.json` 仍存在，复用 2026-10-08 普通配置及 ES6 主程序快照；主程序 SHA-256 为 `f62c194174dd2ff4531bc44a795616b6a51f449a3c7c2bec5270f390da55f245`。本次没有重新下载在线客户端。
+- **配置与产物**：定向 AES-CFB/gzip 解出 `sys_playcard.sgs` 和 `sys_appearance.sgs`，JSON 已解析通过。临时输出为 `C:\Users\97349\AppData\Local\Temp\codex-ol-card-face-OtAFpU`，含两份 JSON、`card-face-index.json` 和来源记录；索引保留原始行及 `source=card/card_H5`，不是去重后的运行时表。临时目录可能被清理。
+- **字段恢复**：`sys_playcard.abbreviation` 明确 `a=id`、`b=name`、`f=number`、`g=color`、`m=spellId`、`n=imageId`、`p=res`。`GamePlayCards.card` 有 2878 行、`card_H5` 有 43 行，共 2921 行、2903 个不同 ID；非空 `res` 共 169 种，201 行没有显式 `res`，不能把行数等同于可提取图片数。`card_H5` 使用长字段名，初始化时覆盖同 ID 的普通行；还存在 `configData2` 二次解析入口，离线索引不代表当前完整运行时状态。
+
+| 卡牌 ID | 原始名称 | 普通三国杀花色 / 点数 | `res` | 默认纹理键 |
+|---|---|---|---|---|
+| 7 | 杀 | 方块 7 | `Sha` | `Sha_png` |
+| 14 | 诸葛连弩 | 方块 A | `ZhuGeLianNu` | `ZhuGeLianNu_png` |
+| 25 | 桃 | 方块 Q | `Tao` | `Tao_png` |
+| 136 / 149 | 藤甲 | 黑桃 2 / 梅花 2 | `TengJia` | `TengJia_png` |
+
+- **默认卡面链**：快照 `Yx.initCardsByClassName/initCardJson -> GetCardById -> L$t.CardId/CardInfo -> resName=t.res -> zzt.UpdateCardFace/SetCardFace -> fwt.GetRes(Card.ResName+"_png") -> bmpFace.texture`。`imageId` 是另一配置字段，本次确认的 H5 默认显示链实际使用 `res`。`iVi.UpdateCardFace` 再单独设置 `bmpFlower/bmpNumber`，花色点数不必烘焙在底图里；普通三国杀 `_q` 为 `1=红桃、2=方块、3=黑桃、4=梅花`，不要套用扑克牌斗地主的花色编码。`bF.NORMAL_SIZE=93×130` 是 UI 显示尺寸，不是原图分辨率。
+- **皮肤与例外**：`sys_appearance.CardsShow` 的 `id=0`、`type=1/2` 标题为“经典卡牌”；`jV` 将 type 2 用作 FaceVO、type 1 用作 BackVo，拼接 `card/kamian/<id>.png`、`card/kabei/<id>.png`、`card/icon/<id>.png`（均相对资源根）。普通 UI 先画卡牌自身底图，再经 `SetCardFaceEffect` 加装饰；这不是每种牌插画的路径表。此入口要求本人座位及 `Bottom_CardFace` 开放，实际装饰绘制还排除 `IsMatchOB`。空牌走 `EmptyCard_png` 等卡背，易牌可用 `WuTianWuJie_png`，扑克牌显示与技能变牌还有独立分支，不能把当前 `bmpFace.texture` 无条件当作原始卡面。
+- **图片本体边界**：`fwt.GetRes` 先查图集子项，再查资源配置 URL；`rwt.parseAtlas` 从 `frames` 去扩展名建立纹理键，路径由 `meta.prefix` 或图集路径派生。`Sha_png` 是资源键，不是已证实的独立 `Sha.png` 下载地址。还需匹配的资源清单、图集 JSON 与贴图，才能确认实际 URL、裁切坐标和像素尺寸。本次未提取图片、未验证图片文件齐全或游戏内效果，也未改游戏代码。
+- **小抄已有原图入口**：`electron-next/resources/daxiaochao.user.js` 的 `_0x262d` 解码器及 rotation/string array 已隔离抽取，440 个条目与彩虹表一致。`_0x3b9f65` 保存原卡面预览图集地址 `https://web.sanguosha.com/220/h5_2/res/assets/cards/normal/cards.png`，预览常量为整图 `4096×2048`、裁切 `{x:2046,y:4,w:186,h:260}`；同目录 `cards.webp` 用在原始卡背预览。以上是当前小抄源码常量，本次没有请求该图片或验证当前像素/裁切内容，不能当成完整图集坐标表。
+- **小抄原始纹理保存/恢复**：`_0x52c243 -> window.__cardTheme` 维护 `baseCardTexMap/miaoCardTexMap/cardUiRegistry`。`getCardUrl` 将 `Sha_png` 归一为 `Laya.URL.formatURL('cards/Sha_png.png')` 这类图集子纹理缓存路径，`seedBaseTextureMap` 从 `Laya.Loader.textureMap` 收集原始纹理，`syncTextureMap` 在关闭替换时写回，`refresh` 对注册 UI 调 `UpdateCardFace`。`#originCardUseBtn` 点击将 `globalConfig.miaoCardSwitch=false`；与“原始卡背”独立。这里只确认已有源码路径，没有读取当前游戏内存中的 Map 或实际点击按钮。额外索引保存为临时目录的 `userscript-original-face.json`。
+
+复查字符偏移：`Yx=2457004`、`initAbbreviation=1166923`、`_q=3100594`、`L$t=11054189`、`zzt.SetCardFace=10259200`、`iVi.UpdateCardFace=17105233`、`rwt.parseAtlas=4942817`、`QV/jV=2701023` 附近。这些混淆符号与偏移仅用于该快照；手工索引为 `manualLookupNotes.originalCardFaces`。
+
+关键词：`原始卡面`、`原始卡牌`、`sys_playcard`、`sys_appearance`、`GamePlayCards`、`abbreviation`、`imageId`、`resName`、`Sha_png`、`ZhuGeLianNu_png`、`TengJia_png`、`GetAtlasUrl`、`parseAtlas`、`card-face-index.json`。
 
 #### 分层卡面 / 原始插画叠加核验（2026-10-21）
 
@@ -82,9 +111,69 @@
 
 检索关键词：`分层卡面`、`原始插画叠加`、`isNewCardUI`、`getCardFaceBaseTexture`、`cardFace_0`、`face_Shan`、`name_Shan`、`bmpFace2`、`bmpNormalName`、`UpdateCardFaceRes`、`UpdateCardFaceOrBackRes`、`resetNewCardFace`。
 
-塔罗第一阶段已经实现于 `electron-next/src/features/card-theme.js` 与 `src/adapters/card-theme-client.js`，并装配进主脚本；实施事实及回归见架构表“塔罗牌卡面第一阶段”。用户确定塔罗点数红黑共用13张，原生点数则为红黑各13项；目前接入点数2和红桃符号，空缺独立回退。首批三个资源/花色组合的武器范围按底图徽记，不按特殊模式校验；其他牌、装备槽及特殊显示仍走原生。用户已确认塔罗可以显示，后续分层修复的游戏内效果待回测。
+#### 点数 / 花色赋值与自定义图案可行性（2026-10-21，仅调查）
+
+塔罗第一阶段已经实现于 `electron-next/src/features/card-theme.js` 与 `src/adapters/card-theme-client.js`，并装配进主脚本；实施事实及回归见架构表“塔罗牌卡面第一阶段”。用户确定塔罗点数红黑共用13张，原生点数则为红黑各13项；2026-10-21 17:59批次已接入36款底图、完整13个点数及4个花色，空缺仍独立回退。清单内组合的武器范围按底图徽记，不按特殊模式校验；未覆盖的牌、装备槽及特殊显示仍走原生。用户已确认塔罗可以显示，后续分层修复的游戏内效果待回测。
 
 用户曾确认能显示塔罗，但会退回原图。2026-10-21复查10月8日本地主程序快照：`skillCardLabelChange -> UpdateMultiSkill` 是普通牌也会经过的例行链；`IsMultiSkillState=false` 且无 `multiSkillAnimate` 时该方法不重画，不能见调用即恢复主题。`RefreshCardFace` 则只调用 `this.SetCardFace`，不保证经过 `UpdateCardFace`；小抄已有卡背包装器在普通UI原型保存 `__SetCardFace`，后挂父类会被绕过，表现为原生底图与塔罗符号混合。两项已用真实抽取方法复现并修复，挂钩位置、状态判断及29项回归见架构表；源码偏移 `UpdateMultiSkill=17111220`、`RefreshCardFace=10266830` 仍只对该10月8日快照有效，游戏修复效果待回测。
+
+复用上节实际存在的 `sgsGame.main.js`，重新核对 SHA-256 仍为 `f62c194174dd2ff4531bc44a795616b6a51f449a3c7c2bec5270f390da55f245`；这是 2026-10-08 快照的源码结论，不代表已验证最新在线或游戏内效果。小抄核对文件为 `electron-next/resources/daxiaochao.user.js`，未修改运行代码、安装文件、开关或 asar。
+
+- **点数来源与更新**：`sys_playcard.number -> Yx.GetCardById().Number -> NormalCard(L$t).CardInfo` 用 `Number(t.Number)` 同时初始化 `cardNumberOri/cardNumber`。`CardNumber` 是当前值，`CardNumberOri` 保存配置原值；`set CardNumber` 在值变化时发 `Eq.CARD_CHANGE`，`zzt.addCardEvent -> iVi.onCardChange -> UpdateCardFace` 重画。快照确有 `AddCardAvatarSkill` 将当前点数改为 13、失效后恢复 `CardNumberOri` 的分支，所以按牌 ID 重查配置不能代替读取当前模型。
+- **底图与符号分层**：`zzt.Card` setter 先换模型及事件，再 `UpdateCardFace`；`iVi.createChildren` 单独建立 `bmpFlower/bmpNumber`。普通刷新先经父类设置 `bmpFace.texture`，随后将 `fwt.GetRes(_q.GetFlowerResName(flower))`、`fwt.GetRes(_q.GetNumberResName(CardNumber,flower))` 分别赋给这两个图元的 `texture`。这两个符号可以单独替换为自定义纹理，无需按每张实体牌制作完整底图，也不需要修改 `CardNumber/CardFlower` 游戏数据。
+- **显示花色口径**：原生普通牌使用 `card.IsModyfifyByServer ? card.FlowerOnSeat : card.CardFlower`，恰与 `card.DisplayFlower` getter 一致；`FlowerOnSeat = SuitChange || TransFromFlower(card,seat)` 是有效花色。只按 `FlowerOnSeat` 画所有牌会改变原生展示口径，例如单纯红颜转换不等同服务端改色。字段名 `IsModyfifyByServer` 的拼写来自原源码。
+
+| 普通牌数据 | 纹理键 / 行为 |
+|---|---|
+| 花色 1 / 2 / 3 / 4 | `heart / diamond / spade / club`，即红桃 / 方块 / 黑桃 / 梅花 |
+| 点数 1～13 | `A,2,3,4,5,6,7,8,9,10,J,Q,K` |
+| 红桃、方块点数 | `red_A`～`red_K`；如方块 7 为 `red_7` |
+| 黑桃、梅花点数 | `black_A`～`black_K`；如黑桃 Q 为 `black_Q` |
+| 点数 / 花色为 0 | 对应图元用空纹理，不应画“0”或任意默认花色 |
+
+- **独立的技能显示入口**：`ChangeCardFlowerNumber(cardId,flower,number) -> gameScene -> stackCardContainer.cardUiDict -> ui.ChangeFlowerAndNumber(flower,number)` 直接更新符号及 `change_color_bg`，不写模型点数/花色。快照有 `JOi.CGsRoleSpellOptRepSelRespinse` 按参数显示黑桃 5 / 红桃 5 的实例。包装此入口时应使用调用参数；重新读模型会画回原牌。再次普通 `UpdateCardFace` 会恢复模型数据，不能把一次显示覆盖永久缓存到牌号上。
+- **接入建议（尚未实现）**：在现有 `initCardThemeFeature -> installCardThemeRuntime` 所在真实加载链接入独立的符号主题职责，负责资源 Map、启用状态、安装/注销与刷新；可复用现有 `cardUiRegistry` 查询接口，不直接写底图主题内部 Map。普通 `UpdateCardFace` 原调用后按当前模型选择自定义纹理，`ChangeFlowerAndNumber` 原调用后按入参选择；若扩到装备区，还要覆盖 `EquipCardUi(sVi).UpdateCardFace` 的独立实现，不能只挂父类。缺素材回退原生纹理。统一风格需要 26 张点数（红黑各 13）+ 4 张花色；也可以从自定义 atlas 建立这 30 个逻辑项。
+- **现有主题与资产边界**：`window.__cardTheme` 主要围绕 `cards/<key>.png`、底图白名单、`baseCardTexMap/miaoCardTexMap` 换图；它不等于已有点数/花色自定义入口。已拆分的 `卡牌归档/卡牌拆分/source/cards.atlas` 111 个条目不含上述 30 个符号键，因此只改 `cards.png` 无法替换这些独立图元。符号所在的官方 atlas 本次未定位、未下载；新增自定义素材不必先取得官方符号原图。全局拦截这些公共资源键还会影响图鉴、奖励等调用方，局部牌 UI 替换范围更明确。
+- **布局、场景与清理限制**：`iVi.layout` 对普通大尺寸分支将符号设为 19×17，点数在 `(4,4)`，花色在其下方；非大尺寸为 `ceil(0.8×19)` / `ceil(0.8×17)` 即 16×14，点数 `(3,3)`。这些是 UI 尺寸，不是 PNG 像素；只换高清图片会沿用原生显示大小，若改大小/位置还需协调 `layout`。空牌、无牌清空；不展示原始点数的虚拟牌使用 `virtural_card_<VirtualColor>` 且无点数；`dontUpdateCard` 和 `isPokerCardFace` 提前走独立分支。装备区其他座位用 `other_` 前缀，扑克牌用 `poker_` 资源及独立编码，不能套普通牌规则。`HideFlowerAndNumber`、小抄旧 `CardConfigWindow/pushHandCardUis` 会主动隐藏符号；替换不能强行设为可见。`Clear`/对象池复用、换牌、换局和关闭时需清理自有覆盖；异步回调核对当前 UI/Card 与主题代次，原生包装器保留后装链。
+- **验证与回归边界**：`卡牌归档/资料/点数花色调查/verify.cjs` 抽取同快照 `_q/iVi/L$t`，以资源加载器及父类桩验证 63 项：52 种花色点数组合、服务端改色、空牌/零值、虚拟牌、仅 UI 改写及再刷新、扑克牌/禁止重画分支、隐藏状态、布局、模型当前/原始点数和事件、显示/有效花色差异、事件重画、现有图集不含符号。结果及偏移写入相邻 `verification.json`；临时调查文件不属于发布载荷。本次没有实现自定义挂钩或测真实 GPU 纹理加载，不能把这些检查当作新功能已完成。后续需游戏内验证上述入口、装备区、已有卡面/卡背/技能标签兼容及关闭恢复；本次无运行代码回退项。
+
+复查字符偏移：`static GetNumberResName=3103471`、`L$t=11054189`、`iVi=17102901`、`UpdateCardFace=17105233`、`ChangeFlowerAndNumber=17110039`、`layout=17121454`、`Clear=17130276`、`UpdatePokerCardFace=17132531`、`sVi=17134023`；仅对该哈希快照有效。
+
+关键词：`自定义点数`、`自定义花色`、`CardNumberOri`、`DisplayFlower`、`IsModyfifyByServer`、`bmpNumber`、`bmpFlower`、`GetNumberResName`、`red_A`、`black_K`、`ChangeFlowerAndNumber`、`ChangeCardFlowerNumber`、`虚拟牌`、`63项`。
+
+#### 武器攻击范围来源（2026-10-21）
+
+- 复用2026-10-20获取的普通配置`卡牌归档/卡牌拆分/source/junzheng-check/sys_playcard.json`，`abbreviation`明确`h=attRange`；`f=number`为点数，`i=attDistance/j=defDistance`为另外的距离字段。配置文件SHA-256：`5f4511709f238e7f8eb9ea53bdc944509ea0253d7adf9cb39e619c27cdd5ef40`。
+- 军争牌ID108寒冰剑：`f=2,g=3,h=2,p=HanBingJian`，即黑桃2、攻击范围2；对应`CardsBook[Model=1,ModelTab=2,cardid=108].dese`开头是“攻击范围：2”，已拆原始`HanBingJian_png.png`图像自身也带“攻击范围 2”。本次没有将`bmpRange`的创建/清空代码当作动态范围显示已验证。
+- 军争ID1～161中`type=3,subType=1`有12张实体武器/11种底图；范围数据保存于`卡牌归档/塔罗牌卡面/文字排布样板/weapon-range-source.json`。范围必须按牌ID/模式取值，同名寒冰剑ID2035为1，不能按名称无条件沿用军争2。
+- 新样板将寒冰剑名称更正并在右下以黑曜石/金边徽记显示2；仅生成设计素材，未改游戏数据、原始图集或运行代码。长任务规则与用户对赤血刀范围3的覆盖属于设计任务配置，不回写官方配置。
+
+关键词：`武器攻击范围`、`attRange`、`attDistance`、`defDistance`、`寒冰剑`、`HanBingJian`、`右下徽记`、`weapon-range-source.json`。
+
+#### 卡牌拆分与原位合并（2026-10-20，后续实际完成）
+
+2026-10-21 已将原始图集、卡牌拆分、塔罗牌卡面及点数花色调查资料统一迁入[卡牌归档](../卡牌归档/README.md)。图片内容保持不变，合并入口已适配新目录；归档内包含当前卡牌说明摘录。工程工具源码仍在 `tools/card_atlas.py`，交付副本随拆分目录归档。
+
+- **输入匹配与来源**：用户提供的 `cards.png`（现归档于 `卡牌归档/cards.png`），实际为 **2048×4096 RGBA PNG**。本次下载官方 `res/assets/cards/normal/cards.atlas`、同目录 `cards.png` 和 `res/default.res.json`；用户图片与官方下载图片 SHA-256 相同，均为 `14e786fd774fc5a9e1de952ad6a042ec5b87220bf434bc2d8410584eae01c3df`，图集 JSON SHA-256 为 `f4ee16929bce2f4beb04020f87f8e4bdc267942a166bcda63913ace3d3630f15`。下载时间、URL、字节数和哈希已保存到 `卡牌归档/卡牌拆分/source/downloads.json`。上节4096×2048仅是小抄预览旧常量，本次拆分使用匹配的 atlas，未修改小抄预览代码。
+- **与 baseCardTexMap 的关系**：本次没有读取游戏内存。使用生成原始纹理缓存的官方 atlas：`meta.prefix=cards/`，例如 `Sha_png.png -> cards/Sha_png.png`；`frames[*].frame` 给出实际裁切矩形。全部111个纹理名对应109个不同矩形，110项为186×260、一项 `DJJ_Zhao_png.png` 为200×282，保留原始尺寸及 `scale/sourceSize/spriteSourceSize`，不按UI尺寸缩小。包括图集内特殊牌、占位图和装饰层，不把111项都宣称为不同实体卡牌。
+- **产物与工具**：[卡牌归档/卡牌拆分/README.md](../卡牌归档/卡牌拆分/README.md) 记录用户操作；`cards/` 有111份PNG，`manifest.json` 保存每项原始 atlas 数据、纹理键、文件名、共享坐标和像素哈希；`card-index.csv` 与可搜索的 `preview.html` 方便按名称查找。名称/ID来自此前2026-10-08配置，不能据此认定当前全量牌表。开发工具为 [tools/card_atlas.py](../tools/card_atlas.py)，交付目录保存同内容 `atlas_tool.py`；依赖 `Pillow==13.0.0`，本机安装于工程 `.venv-card-atlas`，开发依赖和资产不是游戏发布载荷，无需加入 `release-files.json`。
+- **共享坐标**：`ShuiYanQiJun2_png.png/ShuiYanQiJun_png.png` 共用 `{x:392,y:1880,w:186,h:260}`，`TengJia2_png.png/TengJia_png.png` 共用 `{x:198,y:2148,w:186,h:260}`。合并按矩形分组：只改一份时使用修改后的版本；多份修改但像素相同也可合并；同组不同修改报冲突，不依文件遍历顺序相互覆盖。保持原atlas时共享名必然显示相同内容，若需不同内容，应另做重排及坐标修改。
+- **合并行为**：双击 `merge.cmd`，或 `python atlas_tool.py merge --workspace .`，在 `merged/<时间戳>/` 新建 `cards.png/cards.atlas/merge-report.json`。以原图为底按原坐标无mask覆盖RGBA，保留图集外间隔和未编辑像素；atlas逐字节保留。校验原始源文件哈希、每张图存在且尺寸正确；不自动缩放、不覆盖原始素材、不自动装入游戏。工具仅支持已验证的单页无旋转图集，部分交叠会报错。
+- **验证**：`roundtrip-verification.json` 确认111份拆分图合回后RGBA字节完全一致，包含透明像素的RGB；整图RGBA SHA-256 `b4fecf571b9806b5ae2dd5cfca12755e57d1ad69321ea316299d55ab3db7ab92`。`tool-verification.json` 记录9项检查：原图往返、单个共享纹理修改及其余像素不变、编辑结果PNG读回/atlas不变、共享冲突、错误尺寸、缺图、真实CMD中文路径入口、真实CMD输出逐像素相同、交付工具与源码一致。已查看拆出的杀卡面；PNG重新编码后文件SHA可能不同，不能将文件字节不同当作像素丢失。未进行游戏内替换测试。
+- **范围**：只拆分用户这张 `cards.png`。资源清单另有 `cardsNew.atlas/activityCards.atlas/emptyCard.atlas/sjybEffect.atlas`，本次未将其图片一并下载拆分，也不以运行时 Map 的已加载项证明全部资源完整。
+- **按军争归类的已核实入口**：2026-10-08快照 `CardsBookWindow(cQi).createLeftTabSelectBtn` 将 `Model=1` 显示为“身份”；`CARDS_WORD_TAB_LIST=["","应变","军争","标准","排位","五人身份"]`，`onTopTabClick` 按 `ModelTab` 过滤。因此“身份→军争”为 `sys_playcard.CardsBook` 的 `Model=1 && ModelTab=2`。2026-10-20再次获取当前官方 `Config.sgs` 并定向解出 `sys_playcard.sgs`，仍为44条、44种 `res`、`num` 合计161；物理牌ID 1～161的 `(res,color,number)` 多重集合与图鉴 `color` 列表完全一致，包括重复数量。44种均存在于已拆图集。卡面种类、实体牌数量和图集条目数是不同口径，103未在这条映射中得到证实，不通过选入其他模式图片凑数。
+- **军争独立文件夹已生成**：[军争卡牌](../卡牌归档/卡牌拆分/军争卡牌/README.md) 直接保存44份同名PNG、`preview.html`、`161张牌对应表.csv`、`卡面清单.csv`、`texture-mapping.json`；每份与原 `cards/` 文件逐字节相同。映射保留图集矩形、scale、共享别名、全部161个牌ID和文件哈希。此目录是独立副本；编辑后复制同名PNG回上一层 `cards/` 再运行原 `merge.cmd`，不会自动同步或覆盖完整图集。未改变工具、游戏源码或发布映射。
+- **最新军争配置来源**：获取时间 `2026-10-20T15:37:48.924324+00:00`，官方 `Config.sgs` 4,153,280字节，SHA-256 `9d2b017d7112c1d5999d61b48600945b4139fe237d840a38784623114706de9f`；未保存整包，只保存定向提取的 `卡牌归档/卡牌拆分/source/junzheng-check/sys_playcard.sgs`、解码JSON和 `source.json`。解压明文原始字节SHA-256 `05584b30f7986c06158ee6e47f78417b3d5f1c7fbc61174cfad26e12a5ee64ab`；格式化JSON文件哈希与原始明文哈希不同。身份军争完整映射已核对，没有将44张独立底图描述为103张。
+
+复用命令（仓库根目录；拆分输出目录必须尚无 `cards/manifest.json`，避免覆盖编辑）：
+
+```powershell
+& '.\.venv-card-atlas\Scripts\python.exe' -X utf8 tools/card_atlas.py split --atlas 卡牌归档/卡牌拆分/source/cards.atlas --image 卡牌归档/cards.png --out 新拆分目录
+& '.\.venv-card-atlas\Scripts\python.exe' -X utf8 tools/card_atlas.py verify --workspace 卡牌归档/卡牌拆分
+& '.\.venv-card-atlas\Scripts\python.exe' -X utf8 tools/card_atlas.py merge --workspace 卡牌归档/卡牌拆分
+```
+
+关键词：`卡牌拆分`、`图集拆分`、`原位合并`、`baseCardTexMap`、`cards.atlas`、`sharedFrameGroups`、`共享坐标`、`RGBA`、`111`、`109`、`card_atlas.py`、`merge.cmd`、`roundtrip-verification.json`。
 
 ## 二、解包数据是什么
 

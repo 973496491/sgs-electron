@@ -1,0 +1,362 @@
+{
+  "taskId": "Tao_png__heart",
+  "attempt": 1,
+  "tag": "[TAROT-PROD:Tao_png__heart:v1]",
+  "preparedAt": "2026-10-21T08:38:24.014911+00:00",
+  "referenceSource": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\生产底图\\大图\\WanJianQiFa_png__heart.png",
+  "reference": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\长任务\\参考图\\Tao_png__heart.v1.jpg",
+    "bytes": 101169,
+    "sha256": "be27fb9b1ade39e594e49cf5f30afb88014c1b8354880cc529670a9440ddbbe0",
+    "rgbaSha256": "78e4d0544d9b30e6f71d859d8e61ec176bd675b522d2118318ee6f09fd56bf5a",
+    "size": [
+      465,
+      650
+    ],
+    "mode": "RGB",
+    "format": "JPEG"
+  },
+  "prompt": "[TAROT-PROD:Tao_png__heart:v1]\nUse case: precise-object-edit. Edit the single shown reference into ONE final card, full-bleed portrait 186:260, complete outer frame; no sheet or mockup.\nPreserve the heart family: upper-center and upper-right suit ornaments, dark frosted ground, subdued foliage, thin gold frame and pale champagne-gold embossed brush typography. No bright glow.\nReplace the title with exactly \"桃\". One large character, optically centered. Keep clear, complete strokes and balanced spacing.\nNo lower-right badge. Remove any reference badge and its entire ring, seamlessly restoring the dark ground.\nReserve the upper-left (x,y,w,h)=(8, 8, 38, 64) on the 186x260 grid: continuous natural dark ground only, no rank, corner suit, inner gold lines, hanging ornaments or foliage. Keep only the outermost frame there; no visible patch/ellipse/panel.\nOnly the exact title and specified badge may contain text. No old title, fixed card rank, IDs, watermark or tracking tag. Remain readable at 93x130. Output this card only; no extra background or preview image.",
+  "taskSnapshot": {
+    "id": "Tao_png__heart",
+    "resourceKey": "Tao_png",
+    "suitValue": 1,
+    "suit": "heart",
+    "suitName": "红桃",
+    "originalName": "桃",
+    "originalNames": [
+      "桃"
+    ],
+    "displayName": "桃",
+    "layout": "center",
+    "status": "generating",
+    "operation": "generate",
+    "reuseOfTaskId": null,
+    "sourceCardIds": [
+      42,
+      43,
+      45,
+      46,
+      47,
+      48,
+      51,
+      113,
+      114,
+      1035,
+      1039,
+      1041,
+      1043,
+      1045,
+      1047,
+      1051,
+      1116,
+      1117,
+      1218,
+      1222,
+      1223,
+      1224,
+      1226,
+      1228,
+      1232,
+      2003,
+      2004,
+      2009,
+      3042,
+      3043,
+      3045,
+      3046,
+      3047,
+      3048,
+      3051,
+      3110,
+      3111,
+      4038,
+      4040,
+      4042,
+      4044,
+      7027,
+      7028,
+      7030,
+      7031,
+      7032,
+      7033,
+      7036,
+      7063,
+      7064,
+      12031,
+      12032,
+      12082,
+      12085,
+      12087,
+      20070,
+      20071,
+      20072,
+      20073,
+      20074,
+      20075,
+      20076,
+      20077,
+      20078,
+      20414,
+      21052,
+      21063,
+      21064,
+      21065,
+      21066,
+      31097,
+      31098,
+      60414,
+      61045,
+      61238,
+      61242,
+      61246,
+      61250
+    ],
+    "representativeCardId": 42,
+    "representativeNumber": 3,
+    "representativeRank": "3",
+    "representativeSource": {
+      "table": "GamePlayCards.card",
+      "index": 41
+    },
+    "representativePolicy": "军争实体ID1..161优先，然后最小ID",
+    "hasJunzhengRepresentative": true,
+    "numberVariants": [
+      {
+        "number": 3,
+        "rank": "3",
+        "cardIds": [
+          42,
+          2003,
+          3042,
+          7027,
+          20070
+        ]
+      },
+      {
+        "number": 4,
+        "rank": "4",
+        "cardIds": [
+          43,
+          1035,
+          1218,
+          2004,
+          3043,
+          7028,
+          12082,
+          20071,
+          61238
+        ]
+      },
+      {
+        "number": 5,
+        "rank": "5",
+        "cardIds": [
+          113,
+          3110,
+          7063,
+          12031,
+          20077,
+          61242
+        ]
+      },
+      {
+        "number": 6,
+        "rank": "6",
+        "cardIds": [
+          45,
+          114,
+          1039,
+          1222,
+          3045,
+          3111,
+          4038,
+          7030,
+          7064,
+          12032,
+          20072,
+          20078,
+          21052,
+          21063,
+          21064,
+          21065,
+          21066,
+          61246
+        ]
+      },
+      {
+        "number": 7,
+        "rank": "7",
+        "cardIds": [
+          46,
+          1041,
+          1223,
+          3046,
+          4040,
+          7031,
+          12085,
+          20073,
+          61250
+        ]
+      },
+      {
+        "number": 8,
+        "rank": "8",
+        "cardIds": [
+          47,
+          1043,
+          1116,
+          1224,
+          3047,
+          4042,
+          7032,
+          20074,
+          20414,
+          60414,
+          61045
+        ]
+      },
+      {
+        "number": 9,
+        "rank": "9",
+        "cardIds": [
+          48,
+          1045,
+          1117,
+          1226,
+          2009,
+          3048,
+          4044,
+          7033,
+          12087,
+          20075
+        ]
+      },
+      {
+        "number": 10,
+        "rank": "10",
+        "cardIds": [
+          1047,
+          1228
+        ]
+      },
+      {
+        "number": 12,
+        "rank": "Q",
+        "cardIds": [
+          51,
+          1051,
+          1232,
+          3051,
+          7036,
+          20076,
+          31097,
+          31098
+        ]
+      }
+    ],
+    "type": 1,
+    "subType": 0,
+    "elementalName": null,
+    "weaponRange": null,
+    "rangeOverrideApplied": false,
+    "weaponRangeSource": null,
+    "weaponRangeVariants": [],
+    "rangeMismatchCardIds": [],
+    "badge": null,
+    "badgePlacement": null,
+    "sharedFrameGroupId": "1556_1880_186_260",
+    "sharedFrameNames": [
+      "Tao_png.png"
+    ],
+    "originalFile": "../../卡牌拆分/cards/Tao_png.png",
+    "output": null,
+    "record": null,
+    "warnings": [],
+    "sequence": 20
+  },
+  "scopeSnapshot": {
+    "schemaVersion": 1,
+    "createdAt": "2026-10-21",
+    "task": "原始卡面按实际花色制作塔罗风格底图",
+    "sourceManifest": "../../卡牌拆分/manifest.json",
+    "sourceConfig": "../../卡牌拆分/source/junzheng-check/sys_playcard.json",
+    "scopePolicy": "仅处理原始cards.atlas中能匹配具体卡牌信息的资源；按资源和实际存在的普通花色1..4建立子任务，不对缺少的花色扩充生成。",
+    "retainOriginalNames": [
+      "杀/闪",
+      "长安大舰",
+      "同党伐异",
+      "先驱",
+      "义薄云天",
+      "阴阳鱼",
+      "珠联璧合",
+      "金梳",
+      "琼梳",
+      "犀梳",
+      "左膀",
+      "右臂",
+      "思召剑",
+      "调剂盐梅",
+      "绝尘金戈",
+      "燎原之火"
+    ],
+    "retainOriginalResourceKeys": [
+      "AoZhanShaShan_png"
+    ],
+    "noCardInformation": "retain-original",
+    "rangeOverrides": {
+      "赤血刀": 3,
+      "赤血刃": 3
+    },
+    "displayNames": {
+      "借刀杀人": "借刀",
+      "青龙偃月刀": "青龙偃月",
+      "雌雄双股剑": "雌雄双股",
+      "鬼龙斩月刀": "鬼龙斩月",
+      "三尖两刃刀": "三尖两刃",
+      "五行鹤翎扇": "五行鹤翎",
+      "金环衔鳞甲": "金环衔鳞",
+      "无懈可击·国": "无懈可击"
+    },
+    "elementalSha": {
+      "火杀": {
+        "title": "杀",
+        "badge": "火"
+      },
+      "冰杀": {
+        "title": "杀",
+        "badge": "冰"
+      },
+      "雷杀": {
+        "title": "杀",
+        "badge": "雷"
+      }
+    },
+    "layout": {
+      "oneCharacter": "center",
+      "twoCharacters": "horizontal",
+      "threeCharacters": "horizontal",
+      "fourCharacters": "2x2-left-to-right-row-major"
+    },
+    "weaponBadge": "右下黑曜石/珐琅徽记、细金边，呼应上方主花色；只写范围数字",
+    "productionLayer": "底图保留主花色与装饰花色；清空左上点数/功能花色区域，供原生独立UI层绘制；不得固定代表牌点数。",
+    "reservedUiArea186x260": [
+      8,
+      8,
+      38,
+      64
+    ],
+    "generationPolicy": "内置图像工具，单卡串行调用，小JPEG参考；每张生成后先保存、验收、落文档再取下一张。",
+    "durability": "主任务文档+单卡JSON/文档+原子检查点+心跳/超时守护；守护不调用生成API，不伪装为会话关闭后能自动操作内置工具。",
+    "integration": "先生成和交付素材。原生同资源多花色共用纹理的问题须在最终合并报告明确，不将多花色样板伪称一张原图集即可自动按花色切换。",
+    "nameAliases": {
+      "同党伐异": "党同伐异",
+      "赤血刀": "赤血刃"
+    },
+    "specialBadges": {
+      "无懈可击·国": "国"
+    },
+    "colorEvidencePolicy": "GamePlayCards.card展开短字段后由card_H5同ID覆盖，取真实实体配置普通花色并集；不用CardsBook跨模式color合集；每个花色保留实体ID证据",
+    "retainSlashInterpretation": "杀/闪按组合资源AoZhanShaShan_png处理；普通杀、闪与元素杀单独按实际实体花色处理"
+  }
+}

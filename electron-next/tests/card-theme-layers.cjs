@@ -99,14 +99,14 @@ function assertContentHidden(ui) {
     await h.feature.setMode('tarot'); assertContentHidden(heart);
   });
   await check('unlisted cards keep their complete native illustration and title', () => {
-    const sha = h.view('Sha', 1); h.feature.refresh();
+    const sha = h.view('WuXieKeJi', 1); h.feature.refresh();
     assert.equal(sha.bmpFace.texture.id, 'cardFace_0'); assert.equal(sha.bmpFace2.visible, true);
     assert.equal(sha.bmpNormalName.visible, true); assert.equal(sha.bmpNumber.texture.id, 'red_2');
   });
   await check('reusing a themed UI for another native card restores the original composition', () => {
-    diamond.clear(); diamond.theCard = { ResName: 'Sha', CardFlower: 1, CardNumber: 7, CardBaseType: 1 };
+    diamond.clear(); diamond.theCard = { ResName: 'WuXieKeJi', CardFlower: 1, CardNumber: 7, CardBaseType: 1 };
     diamond.UpdateCardFace(); assert.equal(diamond.bmpFace2.visible, true);
-    assert.equal(diamond.bmpFace2.texture.id, 'face_Sha'); assert.equal(diamond.bmpNormalName.texture.id, 'name_Sha');
+    assert.equal(diamond.bmpFace2.texture.id, 'face_WuXieKeJi'); assert.equal(diamond.bmpNormalName.texture.id, 'name_WuXieKeJi');
   });
   await check('explicit native face override survives theme refresh until normal redraw', () => {
     heart.UpdateCardFaceRes('face_JunZi_1', 'name_JunZi'); h.feature.refresh();

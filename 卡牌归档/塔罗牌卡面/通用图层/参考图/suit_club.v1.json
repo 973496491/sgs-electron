@@ -1,0 +1,20 @@
+{
+  "taskId": "suit_club",
+  "attempt": 1,
+  "tag": "[TAROT-UI:suit_club:v1]",
+  "preparedAt": "2026-10-21T07:25:22.271869+00:00",
+  "referenceSource": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\来源原图\\suit_heart_native.png",
+  "reference": {
+    "path": "C:\\Users\\97349\\Downloads\\electron\\卡牌归档\\塔罗牌卡面\\通用图层\\参考图\\suit_club.v1.jpg",
+    "bytes": 8502,
+    "sha256": "2c2d1703b3119848d76d7fa951d7568d735ef2aaa3725177412644e6540a23e2",
+    "rgbaSha256": "8dbee7e8aa4058e58f4a702370b839f7a47d86599eebe651fc392f49566e6df8",
+    "size": [
+      228,
+      204
+    ],
+    "mode": "RGB",
+    "format": "JPEG"
+  },
+  "prompt": "[TAROT-UI:suit_club:v1]\nUse case: stylized-concept. Output exactly ONE standalone functional game UI sprite as a PNG with genuinely transparent alpha background.\nThe one small reference image is a MATERIAL AND STYLE reference only; its dark preview matte must NOT appear in the output.\nTransparent outside the contour and inside all holes. Clean antialiased alpha, no baked checkerboard, no white/gray/black background, no card fragment or rectangular panel.\nLandscape canvas aspect 19:17. Leave generous clear padding, keep the complete subject inside the canvas. Legible when downscaled to 19x17 UI units.\nSubject: a single CLUB suit, three round connected lobes (one top and two sides) with a short centered flared stem. Only this one standard playing-card suit silhouette.\nMaterial: deep black obsidian / black enamel with restrained cool gray reflections, a very fine champagne-gold beveled contour matching the reference heart. Keep reflections subtle and the body solid and readily recognized at tiny size.\nCenter naturally on the canvas, visible height around 76% of canvas; preserve the normal suit's natural width and silhouette, generous transparent border on every side.\nNo outer ring, medallion, plaque, rays, stars, glow, cast shadow, leaves, text other than the requested rank, extra symbols, watermark, contact sheet or mockup.\nThe first bracketed tag is metadata only; never draw it."
+}

@@ -1,0 +1,22 @@
+{
+  "suit": "club",
+  "label": "梅花",
+  "tool": "OpenAI Responses native image_generation",
+  "generationId": "ig_099a8ec0cf87cc35016ad79b5bb3bc87d094f76d3c4dabd70f",
+  "generatedAt": "2026-10-20T16:49:32.578Z",
+  "reference": "Soft heart brightness reference + original v5 club target, 930x650 JPEG",
+  "nativeSize": [
+    1061,
+    1482
+  ],
+  "largeFile": "大图/梅花.png",
+  "gameFile": "186x260/Shan_club.png",
+  "promptFile": "提示词/梅花.txt",
+  "gameSize": [
+    186,
+    260
+  ],
+  "postprocess": "Native PNG preserved; high quality bicubic opaque 186x260 PNG; JPEG preview only",
+  "largeSha256": "6c2953dfbbdf7c39a5f2c3b9eab76116dedd6135252d73673ef45f2e35c41984",
+  "gameSha256": "8f80f52048cbeaa28e7021bb92532620d60157bc2058a735301950b5047a2098"
+}
