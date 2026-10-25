@@ -33320,11 +33320,37 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "工程和实际Roaming入口的模型/logic/镜像三个区块相同。33项既有回归通过；额外真实浮层函数的3项模拟断言覆盖20顶+未知+20底、暗取底45/44后移除、空牌堆清理。仅检查和文档记录，未修业务、未验证游戏内/浏览器布局/全部技能，详细复现和回归边界见架构表同名小节。"
     ]
   },
+  deckSearchAudit: {
+    "title": "定向检索修复与待确认红框：具体ID、历史顺序隔离及双方手牌候选",
+    "verifiedAt": "2026-10-25",
+    "sourceFile": "electron-next/resources/daxiaochao.user.js + electron-next/src/features/deck-visibility.js",
+    "searchKeywords": ["定向检索", "随机检索", "POS_RANDOM", "POS_NEEDLESS", "65281", "65282", "牌顶残留", "源数量不变", "New Card Moved", "候选位置歧义", "Card.pack", "11104", "3488", "862", "待确认", "待确定", "红色边框", "pendingDeckOrder", "rememberDeckOrder", "reconcileDeckOrder", "readDeckView", "resetDeckOrder", "markRecordedCardUncertain", "uncertainKeys", "归属待确认", "同名牌不同ID", "deck-retrieval.cjs"],
+    "decodedIndexes": {
+      "_0x3911": { "188": "remove", "215": "plot", "218": "head", "222": "count", "240": "cards", "255": "splice", "275": "identify", "300": "number", "311": "pack", "392": "name", "428": "length", "441": "_renderZone", "532": "type", "594": "pos" },
+      "_0x497b": { "554": "add", "652": "PubGsCMoveCard", "674": "remove", "805": "pos" }
+    },
+    "chain": [
+      "初次核查发现原问题，后续已按用户要求实施：暗检索保留历史可见顺序，红框标待确认并禁用于暗摸推断；双方记牌中的候选手牌同样红框。未得到具体技能实战通知，不能外推全部技能。",
+      "FromPosition65282等于小抄RAND。无技能专属改位的明牌取牌经Card.findKZ匹配->splice(index,1)，看顶[7,14,22,?,?]取7变[14,22,?,?]、取22变[7,14,?,?]，源五减四，目标正确；多张明牌及已知/未知混排通过。",
+      "修改前：原生POS_RANDOM65281不同于POS_NEEDLESS65282，小抄remove将前者当数组下标splice(65281,count)，越界补新Card而旧牌仍在源。现unorderedDeck分支识别两个无确定数组位置标记，不改构造器或全局RAND，不扩展目标随机插入语义。",
+      "修改前合成SpellID0/MoveType8/CardCount1/CardIDs[7]/FromZone1/ToZone5/FromPosition65281，原牌堆仍五槽，座位2和下一次暗摸的座位3都记7。现实际源减为四槽，后续从真正剩余牌顶摸；同名同花点数ID2/15的闪也按ID分别处理。",
+      "修改前65282空牌号取1会pack整组并把全明牌降为负key，源数四，顶牌不再确定。类别筛选11104/3488/862分别按type3、属性杀、number6缩小候选，仅对身份pack不足以保证其它牌的位置；当前追加剩余模型pack并用红框历史显示。",
+      "旧代码人工候选{7,22}的[7,14,22,48,93]暗取一张后把14确定为顶；若实际取22则14仍在第二位。当前不再保留这个确定位置，原脸作为待确认历史。这不是实际卡牌配置或技能规则核验。",
+      "当前Zone.remove对无序且无法精确定位的移除先rememberDeckOrder，仅捕获原正key的ID和0占位；原候选路径实际减数量，随后pack剩余实际模型使不可靠顺序不再推断暗摸。无序暗取即使选择key0节点也pack候选集合，保留已移走候选与源明牌的识别关系，避免半明半暗来源后来show(7)失败。顶底/数字偏移/原强制边缘分支不变。",
+      "Zone.pendingDeckOrder属于当局显示历史，不是真实牌堆，不进入cards/paidui/shoupai/remove。readDeckView返回uncertain副本供浮层；历史数量/index不是确定的当前数量/下标。reconcileDeckOrder按head===自身、正key、非牌堆区域的实体ID永久剔除历史，排除候选祖先；仅手牌披露也刷新deck，之后再暗移不会复活已经剔除的ID。",
+      "明确牌堆show、add回牌、set/洗牌、空堆、已知历史耗尽、Zone.init和Exit.resetDeckOrder清理历史，以新模型重新建立位置，避免把旧相对顺序拼入新牌堆。无新增定时器/原生挂钩，显示开关关闭仍由模型维护历史。",
+      "浮层data-uncertain=true用常驻border:1px solid #ff4d4f!important，不加问号角标，悬停提示位置/是否仍在牌堆不确定；签名含uncertain状态。历史脸从allCard配置绘制，不new Card或改模型key。公共markRecordedCardUncertain对负key候选及嵌套.shoupai递归标红和归属待确认title，确认后解除，主/座位镜像克隆标记；CSS由document级幂等style维护，未改Laya原生手牌标签。",
+      "常驻1px红框修正：原outline+offset超出牌盒，被.sorder-body的overflow:hidden裁剪，仅hover的overflow:visible时露出。两处待确认样式改用牌自身border，牌宽高和折叠规则不变，无新增鼠标挂钩。现代Chromium/隔离Electron10.4.5各13项通过，旧内核sendInputEvent移入/移出三阶段计算样式及截图红像素一致；确认恢复黑框，未游戏内实测。证据xc-pending-border-vd62jz/native-result.json；回退两处CSS并装配即可，不回退模型。",
+      "位置字段是位置或协议哨兵，CardIDs是具体ID；本地配置顺手ID3/4为方块3/4，同为方块2闪的ID2/15也不同，不能按名字/花色点数合并。新增remove:random-position/deck:order-pending走原调试窗口，render快照uncertainKeys解释历史脸与模型确定牌的区别。",
+      "14项检索/候选专项、30项模型浮层、33项原可见牌、Exit相邻9项通过；现代Chromium/隔离Electron10.4.5各13项验证红框及原布局。已定向同步实际主脚本模型/日志/宿主/Exit/deck块及配套模块，备份.before-deck-pending-2026-10-24T18-35-28-802Z.bak；实际--source14+30+33项、语法和装配通过，无发布路径/asar变化。需dom-ready重载及新局验证，未实战；回退必须成组恢复历史接口、显示宿主与Exit清理，细节见架构表。"
+    ]
+  },
   deckVisibilityFloatingPanel: {
-    "title": "牌顶 / 牌底独立可拖动浮层：上下按钮、逐槽问号与双向取牌",
-    "verifiedAt": "2026-10-23",
+    "title": "牌堆记录浮层：顶底弃起始按钮直接显示、设置显隐与最新弃牌index0",
+    "verifiedAt": "2026-10-25",
+    "followUp": "弃牌模型见discardVisibilityAudit，检索/待确认红框见deckSearchAudit。当前顶底弃起始按钮仅拖动、设置控显隐，弃牌最新index0；顶底readCards改读Zone.readDeckView以显示红框历史，历史不参与真实移牌。",
     "sourceFile": "electron-next/src/features/deck-visibility.js + electron-next/resources/daxiaochao.user.js",
-    "searchKeywords": ["牌顶", "牌底", "独立浮层", "可拖动", "上下按钮", "顶部卡牌", "底部卡牌", "问号占位", "去掉下标", "统一缩放", "floatSize", "resizeGrip", "xc-deck-origin", "顶底起始标记", "第0张左侧", "createDeckVisibilityPanel", "deckMixedVisibleIDs", "deckTopEdge", "deckBottomEdge", "xc-deck-slot", "getRanges"],
+    "searchKeywords": ["牌顶", "牌底", "独立浮层", "可拖动", "上下按钮", "顶部卡牌", "底部卡牌", "问号占位", "去掉下标", "统一缩放", "floatSize", "resizeGrip", "xc-deck-origin", "顶底起始标记", "第0张左侧", "createDeckVisibilityPanel", "deckMixedVisibleIDs", "deckTopEdge", "deckBottomEdge", "xc-deck-slot", "getRanges", "牌堆记录设置", "三个开关", "xcDeckRegionVisible", "getRegionVisibility", "setRegionVisible", "discardLimit", "弃牌记录上限", "最新20张", "regionInputs", "全部关闭", "开关文字没对齐", "区域显示文案", "xc-deck-slider", "inset不支持", "Chromium85", "2x2", "56x26", "顶底弃按钮", "取消折叠", "直接显示", "弃牌反序", "最新index0", "sourceIndex"],
     "decodedIndexes": {
       "_0x3911": { "188": "remove", "222": "count", "240": "cards", "326": "show", "488": "slice", "594": "pos" },
       "_0x497b": { "554": "add", "652": "PubGsCMoveCard", "674": "remove", "751": "show", "805": "pos" },
@@ -33333,9 +33359,9 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     "chain": [
       "唯一源码features/deck-visibility.js通过既有构建器装配deck-visibility区块，并映射modules/features/deck-visibility.js。Card/Zone继续拥有牌堆，模块注入readCards/renderKnownCard/log，不复制可变牌模型。",
       "Zone._renderZone(1-255)优先drawDeckEdgeUI->_0x2f6cfa->refresh；不依赖paiduiCards DOM。模块在document.body创建fixed的deckEdgeUI，不挂主/座位面板；删除_0x188d85中的旧seatUI子浮层及_0x380c88等合并缓存。UI.seatUIs非空是场景门槛，seatUISwitch不再隐藏新浮层。",
-      "顶部卡牌/底部卡牌两个按钮上下排列，初始均关闭，文字+▸/▾。getRanges按设置上限分别取靠近两端的窗口，到窗口内最后已知牌为止，可重叠；key>0/id>0才显示牌，其余每张显示？，数组下标仅保留内部dataset，不显示数字。未知候选id不泄露，上限内列表完整渲染，共用70vh滚动区；无旧48px悬停限制。",
+      "旧布局为顶部/底部长标题按钮点击展开；2026-10-25最新已移除折叠，开启对应设置后直接显示，顶/底/弃起始按钮拖动。getRanges顶底仍按各自上限截窗、裁掉末端未知，可重叠；key>0/id>0才显示牌，未知逐槽？，无可见下标，共用滚动区。弃牌窗口和显示index另见最新规则。",
       "普通牌堆移动的CardIDs与CardCount对齐且含0时保存deckMixedVisibleIDs，进入最终通用remove/add或同区show；不改特殊技能计数/移牌分支的旧输入。Zone.remove对有序槽逐个识别，随机源先明牌后未知、按原通知索引重组并恢复count；show使用slice(pos,pos+length)、0只跳过识别。原消息不改写，非对齐消息不猜位置。",
-      "expanded和position是页面内状态；按钮拖动5px起步，拖后250ms抑制点击，resize夹取坐标。reset/离场/DOM重建释放根节点与所有拖动/resize监听，旧按钮校验root/entry；addFrame.start和Exit.dispose管理启停，dispose后迟到刷新无效。Zone.init清旧视图并排队新牌堆刷新。",
+      "当前页面内布局状态为position/floatSize，expanded和suppressClickUntil已删除。顶底弃origin按钮拖动5px起步，无折叠onclick，resize夹边。reset/离场/DOM重建释放节点和监听，旧pointerdown校验root/entry；start/dispose及Zone.init清理沿原链。",
       "模型/集成12项、真实Chromium8项、原可见牌33项、手牌装配8项、弹幕生命周期9项通过。实际Roaming脚本已按区域同步（保留已安装版本和其它模块），--source的33+12项通过；备份/回退和范围限制见架构表，尚未游戏内实测，不生成asar。",
       "历史缩放阶段（已被统一缩放替代）：标题按钮inline-flex/width:auto随文字图标大小，仍上下排列；原先每侧xc-deck-viewport各自包含把手，viewSizes.top/bottom单独保存尺寸。该双把手/双滚动区方案已删除，当前见链末统一缩放说明。",
       "viewSizes仅页面内记忆，关闭/取牌/换局/DOM重建保留，各方向独立；resize按视口夹取。release解绑把手及既有pointer/resize监听并清旧click抑制，旧回调检查root/entry。缩放后模型/生命周期13项、真实Chromium10项、实际入口--source13项通过；只替换实际生成模块和模块文件并保存before-deck-resize备份，未生成asar，尚未实战。详见架构表显示区独立缩放追加。",
@@ -33344,12 +33370,45 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "齿轮click/键盘->openSettings，在body创建xcDeckVisibilitySettings非模态框，手填顶部/底部上限后保存；按原生按钮视口矩形就近定位，空间不足上翻、夹边并兼容主面板缩放。外点/Escape/再次点齿轮/关闭按钮/主设置折叠关闭，释放临时document/window监听和ResizeObserver；模板重建清理旧owner，dispose清理入口和设置，reset不删除持久偏好。",
       "总开关/上限验证：模型集成16项、原生模板位置与设置浏览器9项、原浮层浏览器10项、弹幕模块9项、手牌装配8项通过；实际Roaming定向同步模块/依赖注入及addFrame接线，--source16项通过，before-deck-settings备份和回退范围见架构表。未生成asar、未游戏内实测，需dom-ready重载。",
       "2026-10-23统一缩放：仅#deckEdgeUI直属的单一xc-deck-resize，和滚动panel并列，滚动不带走把手。beginDrag(event,true)->moveDrag->floatSize->layout统一设置外层宽高、两列同宽；通常最小160x100，最大视口宽减16/70vh，保留页面内尺寸和旧回调清理。删除双viewSizes状态，标题按钮仍紧凑并可拖动整体。",
-      "去掉可见下标：删除xc-deck-index和槽位数字title，内部dataset.index仍用于同步。renderList先放xc-deck-origin，top为顶、bottom为底，再显示真实首牌；标记没有card key、不属于slot、不占记录上限、不参与移牌，空牌也保留。两列显式LTR/row，底部只逆序数据，两端第0张均从左侧开始。模型17项、浮层浏览器10项、设置浏览器9项及实际入口--source17项通过，before-deck-unified备份/回退见架构表；未实战、未生成asar。"
+      "去掉可见下标：删除xc-deck-index和槽位数字title，内部dataset.index仍用于同步。renderList先放xc-deck-origin，top为顶、bottom为底，再显示真实首牌；标记没有card key、不属于slot、不占记录上限、不参与移牌，空牌也保留。两列显式LTR/row，底部只逆序数据，两端第0张均从左侧开始。模型17项、浮层浏览器10项、设置浏览器9项及实际入口--source17项通过，before-deck-unified备份/回退见架构表；未实战、未生成asar。",
+      "2026-10-25位置纠正：三个switch改放xcDeckVisibilitySettings自身的fieldset，ID xcDeckRegionVisible-top/bottom/discard；下面三个number为topLimit/bottomLimit/discardLimit。用户最终确认仍是三个开关，删除多余的区域显示可见legend。switch即时保存，上限提交保存；整理手牌恢复原设置，移除pileVisibility宿主注入。",
+      "deck拥有regions={top:true,bottom:true,discard:true}与discardLimit=20。旧regions保留，缺失/非法项默认true，明确false才隐藏；discardLimit只认正安全整数，旧值缺失回落20。getRegionVisibility/getSettings().regions返回副本；setLimits三参数整体校验，旧两参数保留当前discardLimit。",
+      "弃牌当前用getSlots(readDiscardCards()).slice(-discardLimit).reverse()取最新N槽，默认20，最新在最左。副本映射index=0..N-1，原位置另存sourceIndex，DOM dataset.index/sourceIndex不显示数字。未知照常占数且不裁尾，共享模型不倒排不裁剪；签名sourceIndex+可见key保证全暗窗口刷新，调大上限可显示更早记录。",
+      "开关关闭移除对应origin按钮及列表，全关无根节点，仍受master/场景门槛。开启直接显示、无额外展开状态；隐藏仍记牌，release/rebuild保留位置/尺寸。popup regionInputs、change/removers/node-owner检查及存储失败反馈不变。",
+      "当前deck模型29项、设置浏览器13项、浮层11项、恢复手牌110项和装配宿主8项通过，语法/装配及设置截图已核对，未游戏内实测。已同步Roaming主脚本两个模块/移除hand注入及两个配套文件，保留版本/文案/旧选择；三文件备份.before-deck-settings-move-2026-10-24T17-03-55-015Z.bak，实际--source29项及语法通过。路径不变无发布映射调整、不生成asar，需dom-ready重载。",
+      "同日开关错位：实际安装程序隔离副本Electron10.4.5/Chromium85.0.4183.121不支持inset，CSS.supports为false；xc-deck-slider实际底框2x2而父为56x26。改显式top/right/bottom/left四边0后恢复56x26，开/关/缩放三状态文字中心误差<1px。仅样式与legend变化，不增加状态或改事件。现代设置回归现14项，原内核仅作专项几何验证，非游戏内实测。证据路径见架构表。",
+      "对齐修复仅同步实际主脚本deck生成块和配套模块，两文件备份.before-deck-switch-alignment-2026-10-24T17-17-07-780Z.bak；保留其他正文、版本及选择，无发布映射变化、不生成asar。只恢复标题时可改legend，但四边定位应保留，不能再用旧内核不支持的inset单独定位。",
+      "最新直接显示：mount将button.xc-deck-origin放每行最左，替代长标题与旧span标记；无onclick/箭头/aria-expanded，仅pointerdown拖整个浮层，统一resize保留。renderList只清origin后的卡牌节点，拖动中刷新保留同一按钮；release解绑pointerdown，旧闭包root/entry校验仍有效，不新增状态缓存或挂钩。",
+      "直接显示/反序回归：模型29项、现代浮层11项、设置14项通过；实际Electron10.4.5/Chromium85隔离副本同一浮层11项全通过且看过截图，非游戏内实测。定向同步实际主脚本deck区块及模块，备份.before-deck-direct-newest-2026-10-24T17-33-20-687Z.bak，实际--source29项、语法和装配通过；无版本/映射/asar改动，需dom-ready重载。仅回退排序需同时处理index/sourceIndex，详见架构表。"
+    ]
+  },
+  discardVisibilityAudit: {
+    "title": "弃牌堆区域显示：完整模型、最新优先逐槽问号、独立刷新与洗牌边界",
+    "verifiedAt": "2026-10-24",
+    "sourceFile": "electron-next/resources/daxiaochao.user.js + electron-next/src/features/deck-visibility.js",
+    "searchKeywords": ["弃牌堆", "区域显示", "Zone.qipai", "2-255", "qipaiCards", "本回合弃牌", "readDiscardCards", "discardPileEdge", "expanded.discard", "getSlots", "regionDefinitions", "按记录进入顺序", "问号占位", "暗牌尾部", "处理区", "ZONE_DISCARD_BUFFER", "混合明暗漏牌", "非空洗牌", "MoveType=255", "候选ID", "deckMixedVisibleIDs"],
+    "decodedIndexes": {
+      "_0x3911": { "188": "remove", "214": "qipaiCards", "224": "turn", "240": "cards", "291": "key", "295": "destroy", "316": "flushRender", "329": "init", "340": "qipai", "361": "draw", "406": "2-255", "407": "move", "441": "_renderZone", "451": "round", "467": "add", "496": "弃牌堆", "544": "set" },
+      "_0x497b": { "454": "set", "554": "add", "563": "destroy", "589": "isPassed", "636": "isGameStart", "651": "cards", "652": "PubGsCMoveCard", "674": "remove", "827": "pack" }
+    },
+    "chain": [
+      "初次核查确认可复用createDeckVisibilityPanel新增弃牌堆；同日按用户漏记明牌可作暗牌、优先保序的要求实施。当前为该模块第三个区域，实际入口已备份同步，未游戏内实测。",
+      "PubGsCMoveCard -> source/target Zone -> target.add(source.remove(...)) -> Card.move写zone/turn/round/phase -> Zone.draw/flushRender。Zone.obj[2-255]保存当前弃牌；Zone.qipai只过滤key>0，旧_renderZone->qipaiCards另按当前turn/round过滤并排序，不可直接克隆成全量区域。",
+      "官方2026-10-08快照pq：2弃牌堆、3处理区、9洗牌区、11弃牌缓存区。小抄ToZone11早退；官方toDiscardBufferFunc/processTempDiscardCardIds是缓存动画去重链，不可把11与正式2各加一次。",
+      "已模拟明牌入堆、处理区结算入堆、从弃牌取走/回顶、缺主DOM、换turn/round保留模型、新局清空。FromZone2/ToZone9/MoveType255走target.set/source.set([])；空牌堆洗回两张时isPassed两状态均清空弃牌并留下两个key0。",
+      "暗取弃牌未下发ID时，剩余节点可为负key候选，正id不代表确定；建议新区域逐槽以key>0 && id>0画牌，未知为问号，不另建牌缓存。",
+      "已复现非牌堆混合明暗缺口：未知手牌收CardCount2/CardIDs[7,0]/FromZone5/ToZone2，deckMixedVisibleIDs不适用，dn清空，两张弃牌没有保留明牌7。用户明确接受作暗牌，本次不改识别算法，区域保留两个独立问号，后续入堆追加不挤占槽位。",
+      "合成非空洗牌额外断言失败：原牌堆未知22/48+弃牌7/14，经Card.get(0).destroy()->pack(...,false,1)后原两张key变正，洗回7/14为key0；弃牌正确清空。实际通知顺序/洗牌范围尚待日志，不能外推全部实战洗牌正确或错误。",
+      "宿主注入readDiscardCards直接读Zone.obj[2-255]；_renderZone(2-255)在旧DOM判断前刷新，syncZoneMirrors(zone2)同样进入drawDeckEdgeUI。当前签名含弃牌sourceIndex+可见key，不再有expanded.discard；traceVisibleCardRender镜像读反序后的discardPileEdge槽位，旧DOM缺失/抛错也更新。",
+      "当前区域由设置直接控制，左侧弃标记为拖动按钮且不占槽位，无点击展开。getSlots取模型副本，discardLimit默认20，截尾后reverse并映射显示index从0起，最新在最左，原位置另存sourceIndex。不按回合过滤、不裁窗口暗牌，key>0且id>0才画牌，其余问号；不改共享模型。当前设置/顺序与验证见deckVisibilityFloatingPanel。",
+      "Card/Zone继续拥有牌归属，原expanded.discard已移除；共享总开关/区域偏好、UI.seatUIs场景门槛、拖动/统一缩放、start/reset/dispose。origin旧pointerdown校验root/entry，关闭重开读当前模型，换局清旧DOM，不新增轮询/原生挂钩。",
+      "当前模型集成24项、可见牌33项、真实Chromium浮层11项、主面板设置9项通过。含跨回合、无DOM/旧DOM异常、处理区结算、取牌回顶、混合明暗占位、候选暗取、空堆洗牌、新局迟到回调、150全暗槽位和三列统一宽度。非空洗牌边界保留，未修改对应算法，未游戏内实测。",
+      "已定向同步Roaming主脚本的deck模块/注入参数/刷新与诊断接线及配套模块文件，保留版本/文案/无关正文；两文件备份后缀.before-discard-region-2026-10-24T15-35-04-306Z.bak，实际--source24+33项及语法通过。路径未变无须改发布映射，不生成asar，需dom-ready重载。回退范围见架构表弃牌堆区域显示核查与实现。"
     ]
   },
   handSortFloatingPanel: {
     "title": "整理手牌 / 独立模块装配与生命周期",
-    "verifiedAt": "2026-10-17",
+    "verifiedAt": "2026-10-25",
     "sourceFile": "electron-next/resources/daxiaochao.user.js",
     "searchKeywords": [
       "整理手牌",
@@ -33468,7 +33527,9 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "getControls.settings",
       "positionHandSortSettings",
       "滚动跟随",
-      "边缘避让"
+      "边缘避让",
+      "牌堆开关位置纠正", "xcHandPileVisibilitySettings移除",
+      "pileVisibility移除", "牌堆记录设置", "110项"
     ],
     "decodedIndexes": {
       "_0x3911": {
@@ -33516,12 +33577,15 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "已验证任务前后除本功能两区块/状态声明/指定挂点外，userscript正文逐字一致；同步真实userData/三国杀打小抄.js保留CRLF，备份before-hand-cards-module-2026-10-17T10-27-41-111Z.bak。单脚本加载入口不变，重载生效，无热注入/asar生成。",
       "2026-10-17 设置入口对齐原生UI：宿主getControls.settings优先wallpaperContainer、回退blockEffectContainer；模块使用expandable-switch/explanation原生齿轮伪元素，读取参考caption字体/宽度/相对开关偏移并换算缩放。保留role=button、Enter/Space和aria-expanded，其他设置入口不变。",
       "原生dialog全局CSS margin:0/inset:auto导致没有left/top的整理设置落在左侧。positionHandSortSettings在showModal后按整理开关anchor视口坐标定位：默认下方8px，空间不足翻上方并按视口8px夹住；无主开关时回退可见浮窗/中心。settingsScope管理resize/scroll/close，主入口重排也重定位；参考节点加入原ResizeObserver，退出清理所有自有回调。",
-      "已仅同步实际主脚本hand-cards生成段及host参考字段，并更新Roaming的modules/features/hand-cards.js，其他代码保留；备份before-hand-settings-anchor-2026-10-17T14-28-35-369Z.bak。版本仍1.0.0且与version.json一致，发布路径不变。"
+      "2026-10-17历史同步：实际主脚本hand-cards生成段及host参考字段，并更新Roaming的modules/features/hand-cards.js，其他代码保留；备份before-hand-settings-anchor-2026-10-17T14-28-35-369Z.bak。当时版本1.0.0且与version.json一致，发布路径不变。",
+      "2026-10-25用户纠正位置：此前放在整理手牌的三区开关已移至牌堆记录齿轮。hand-cards恢复原花色开关/布局设置，删除xcHandPileVisibilitySettings、xcHandPileVisible和pileVisibility宿主注入，不保留跨模块依赖。regions旧选择仍由deck沿用，另加最新20张discardLimit，详见deckVisibilityFloatingPanel。",
+      "当前手牌浏览器110项（含不再出现牌堆开关）和装配宿主8项通过，原排序/选牌/布局/生命周期不变。主脚本hand/deck两个生成块及hand宿主、两个配套模块已定向同步，三文件备份.before-deck-settings-move-2026-10-24T17-03-55-015Z.bak；保留实际版本/文案/其余代码，不生成asar，需dom-ready重载。未游戏内实测。"
     ],
     "regressionNotes": [
       "原生CSS下先复现设置弹窗定位失败，修后手牌DOM/模拟检查109项通过；原生两入口UI对照、缩放/滚动/边缘避让及键盘操作覆盖。装配/宿主8项、版本7项通过，未游戏内实测。之前模块化阶段相邻功能34/52项为历史验证，本次公共助手未改。",
       "回退需恢复before-hand-cards-module中的两原实现区块、状态声明及addFrame/Exit/共享等待挂点，并同步测试、文档、停用生成步骤。保留原存储键及共享DOM助手，不可只删模块文件而留下调用。",
-      "回退本次UI/定位恢复模块的设置入口与openSettings/positionHandSortSettings段，并移除host getControls.settings后重新装配；保留模块化和既有选牌/偏好规则。"
+      "回退UI/定位恢复模块的设置入口与openSettings/positionHandSortSettings段，并移除host getControls.settings后重新装配；保留模块化和既有选牌/偏好规则。",
+      "回退2026-10-25位置纠正可恢复before-deck-settings-move三文件备份，会回到整理手牌含三区开关的旧布局；当前新入口及discardLimit回退范围统一见架构表牌堆记录设置章节。"
     ],
     "moduleFile": "electron-next/src/features/hand-cards.js",
     "adapterFile": "electron-next/src/adapters/hand-cards-client.js",

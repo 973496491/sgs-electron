@@ -202,6 +202,7 @@ async function browserChecks() {
     checkNativeCaption("caption width, typography and switch-relative placement match the native settings entry");
     gear.click();
     const settingsDialog = document.getElementById("xcHandSortSettingsDialog");
+    check(settingsDialog.querySelectorAll('input[type="checkbox"]').length === 1 && !settingsDialog.textContent.includes("顶部卡牌"), "hand settings keep only hand options after pile controls move to deck settings");
     const suitToggle = document.getElementById("xcHandSuitSelectionToggle");
     const horizontal = settingsDialog.querySelector('input[value="horizontal"]');
     const vertical = settingsDialog.querySelector('input[value="vertical"]');

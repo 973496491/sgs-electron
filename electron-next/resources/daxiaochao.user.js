@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         三国杀打小抄
 // @namespace    https://xxxxxxxxxxxxxx/scripts/448004
-// @version      1.0.3
+// @version      1.0.5
 // @author       小麦 孤独尊
 // @description  打小抄支持网页版和微端，微端文件请加群 830137048
 // @icon         https://xxxxxxxxxxxx/bfs/new_dyn/17ec41a0ca79633b77399065ab80da3f2138912.png
@@ -27,7 +27,7 @@
   "use strict";
 
   // Synchronized from electron-next/version.json by npm run build:userscript.
-  const XIAOCHAO_VERSION = "1.0.3";
+  const XIAOCHAO_VERSION = "1.0.5";
 
   // Hand off once to the installed main-process module; navigation leaves no renderer callbacks behind.
   function bootstrapLocalReleaseUpdates() {
@@ -23528,16 +23528,18 @@
       if (!primaryID && !error) return;
       const read = id => {
         const element = id && document.getElementById(id);
+        const nodes = element ? Array.from(element.querySelectorAll(
+          id === "deckTopEdge" || id === "deckBottomEdge" || id === "discardPileEdge" ? ":scope>.xc-deck-slot" : ":scope>.shoupai"
+        )) : [];
         return { id, present: !!element,
           hidden: element ? !!element.hidden : undefined,
-          keys: element ? Array.from(element.querySelectorAll(
-            id === "deckTopEdge" || id === "deckBottomEdge" ? ":scope>.xc-deck-slot" : ":scope>.shoupai"
-          ), node => node.dataset.key) : [] };
+          keys: nodes.map(node => node.dataset.key),
+          uncertainKeys: nodes.filter(node => node.dataset.uncertain === "true").map(node => node.dataset.key) };
       };
       logVisibleCardTrace(error ? "render:error" : "render:after", {
         seq: cause, spellName: visibleCardTraceSpellNames.get(cause),
         model: snapshotVisibleCardZone(zoneID), main: read(primaryID),
-        mirror: read(area === 5 ? "s" + seatDiv : area === 4 ? "smark" + zoneID : area === 1 ? "deckBottomEdge" : null),
+        mirror: read(area === 5 ? "s" + seatDiv : area === 4 ? "smark" + zoneID : area === 1 ? "deckBottomEdge" : area === 2 ? "discardPileEdge" : null),
         deckTop: area === 1 ? read("deckTopEdge") : undefined,
         error: error ? String(error.stack || error).slice(0, 1200) : undefined,
       });
@@ -23558,6 +23560,25 @@
       stepVisibleCardTrace("ui:skip", null, null, String(error));
     }
     return false;
+  }
+  function markRecordedCardUncertain(node, pending, reason = "归属待确认") {
+    if (!node) return node;
+    node.classList[pending ? "add" : "remove"]("xc-recorded-card-pending");
+    const title = String(node.title || "").replace(/^(?:归属|位置)待确认：/, "");
+    node.title = pending ? reason + "：" + title : title;
+    if (pending) node.dataset.uncertain = "true";
+    else delete node.dataset.uncertain;
+    Array.from(node.querySelectorAll(":scope>.shoupai"))
+      .forEach(child => markRecordedCardUncertain(child, pending, reason));
+    // Shared recorder styling is document-owned, independent of the deck switch.
+    if (pending && document.head && !document.getElementById("xcRecordedCardUncertaintyStyle")) {
+      const style = document.createElement("style");
+      style.id = "xcRecordedCardUncertaintyStyle";
+      // Seat rows clip overflow until hover; use the existing card border, not an external outline.
+      style.textContent = ".xc-recorded-card-pending,.xc-recorded-card-pending .shoupai{border:1px solid #ff4d4f!important}";
+      document.head.appendChild(style);
+    }
+    return node;
   }
   const _Card = class n {
     static [((_c = _0x4efae6(291)),
@@ -23946,6 +23967,29 @@
     );
   let Card = _Card;
   const _Zone = class n {
+    static resetDeckOrder() { n.pendingDeckOrder = null; }
+    static rememberDeckOrder() {
+      if (n.pendingDeckOrder) return;
+      const slots = (n.obj["1-255"] || []).map(card => ({ id: card.key > 0 && card.id > 0 ? card.id : 0 }));
+      if (slots.some(slot => slot.id > 0)) n.pendingDeckOrder = slots;
+    }
+    static reconcileDeckOrder() {
+      if (!n.pendingDeckOrder) return;
+      const current = n.obj["1-255"] || [];
+      if (!current.length || current.every(card => card.key > 0 && card.id > 0)) {
+        n.pendingDeckOrder = null;
+        return;
+      }
+      const outside = new Set(Card.filter(card => card.head === card && card.key > 0 &&
+        card.zone !== "1-255" && card.zone !== "unknown").map(card => card.id));
+      n.pendingDeckOrder = n.pendingDeckOrder.filter(slot => !slot.id || !outside.has(slot.id));
+      if (!n.pendingDeckOrder.some(slot => slot.id > 0)) n.pendingDeckOrder = null;
+    }
+    static readDeckView() {
+      // History is presentation-only. Never expose it through cards/paidui/shoupai.
+      if (!n.pendingDeckOrder) return n.obj["1-255"] || [];
+      return n.pendingDeckOrder.map(slot => ({ id: slot.id, key: slot.id, uncertain: slot.id > 0 }));
+    }
     static get [((_g = _0x4efae6(599)), _0x4efae6(437))]() {
       const t = _0x4efae6;
       return Array[t(571)](
@@ -24012,7 +24056,7 @@
         i = this[e(240)]
           [e(488)](-t[e(428)])
           [e(294)](identifyVisibleSlot);
-      else if (this[e(594)] != RAND)
+      else if (this[e(594)] != RAND && !(this.zone == 1 && this.pos === 65281))
         i = this[e(240)]
           [e(488)](this[e(594)], this[e(594)] + t[e(428)])
           [e(294)](identifyVisibleSlot);
@@ -24065,6 +24109,7 @@
             }
           });
       }
+      if (this.zone == 1 && this.id == 255 && i.some(card => card && card.key > 0)) n.resetDeckOrder();
       stepVisibleCardTrace("show:after", this, i);
       return n[e(361)](this[e(486)]), i;
     }
@@ -24073,12 +24118,23 @@
       stepVisibleCardTrace("remove:before", this, t);
       if (isNaN(Card[a(291)])) return [];
       Array[a(235)](t) || (t = [t]), i && (this[a(222)] = i);
+      // POS_RANDOM (65281) is a protocol marker, never a deck array offset.
+      // Keep it distinct from POS_NEEDLESS/RAND in the constructor and other zones.
+      const unorderedDeck = this.zone == 1 && (this.pos === 65281 || this.pos === RAND);
+      const exactDeckIDs = t.length === this.count && new Set(t).size === t.length &&
+        t.every(id => Number.isInteger(id) && id > 0 &&
+          this.cards.filter(card => card.key > 0 && card.id === id).length === 1);
+      const wholeHiddenDeck = this.count === this.cards.length && !t.some(id => id > 0);
+      const pendingDeckRemoval = unorderedDeck && this.count > 0 && !exactDeckIDs && !wholeHiddenDeck;
+      if (pendingDeckRemoval && this.id == 255) n.rememberDeckOrder();
+      if (unorderedDeck && this.pos === 65281)
+        stepVisibleCardTrace("remove:random-position", this, t, "protocol-pos=65281");
       let r = [],
         l = t[a(488)]();
       if (this[a(594)] == DING)
         (r = this[a(240)][a(255)](-this[a(222)])),
           1 == this[a(206)] && (r = r[a(389)]());
-      else if (this[a(594)] != RAND)
+      else if (this[a(594)] != RAND && !unorderedDeck)
         (r = this[a(240)][a(255)](this[a(594)], this[a(222)])),
           1 == this[a(206)] &&
             [3208, 7011, 987, 988, 3903][a(550)](e) &&
@@ -24194,7 +24250,7 @@
             (o = o[a(478)]((n) => c[a(306)](n[a(291)])));
         }
         (r = o[a(488)](0, this[a(222)])),
-          r[a(371)]((n) => n[a(291)] > 0 || n[a(291)] % 2) &&
+          (unorderedDeck || r[a(371)]((n) => n[a(291)] > 0 || n[a(291)] % 2)) &&
             Card[a(311)](o, !0),
           r[a(302)]((n) => this[a(240)][a(255)](this[a(240)][a(364)](n), 1));
       } else
@@ -24217,6 +24273,10 @@
             r[a(302)](({ id: n }, e) => {
               t[e] = n;
             }),
+        pendingDeckRemoval && (
+          Card.pack(this.cards.slice(), true),
+          stepVisibleCardTrace("deck:order-pending", this, t, "retain-history-without-draw-inference")
+        ),
         stepVisibleCardTrace("remove:after", this, r),
         n[a(361)](this[a(486)]),
         r
@@ -24226,6 +24286,7 @@
       const e = _0x4efae6;
       stepVisibleCardTrace("add:before", this, t);
       if (isNaN(Card[e(291)])) return;
+      if (this.zone == 1 && this.id == 255) n.resetDeckOrder();
       let i = Card[e(407)](t, this[e(486)])[e(488)]();
       return (
         this[e(594)] == RAND || this[e(594)] == DING
@@ -24238,6 +24299,7 @@
     }
     [_0x4efae6(544)](t) {
       const e = _0x4efae6;
+      if (this.zone == 1 && this.id == 255) n.resetDeckOrder();
       isNaN(Card[e(291)]) ||
         ((n[e(599)][this[e(486)]] = Card[e(407)](t, this[e(486)])),
         n[e(361)](this[e(486)]));
@@ -24262,6 +24324,7 @@
     static [_0x4efae6(329)](t, e) {
       const i = _0x4efae6;
       visibleCardRenderCauses.clear();
+      n.resetDeckOrder();
       (n[i(599)] = { unknown: new Set() }), (n[i(599)][e] = Card[i(329)](t, e));
       deckVisibilityPanel.reset();
       n.draw("1-255");
@@ -24299,8 +24362,10 @@
       var e, i;
       const a = _0x4efae6;
       if (isNaN(Card[a(291)])) return;
-      // Read ordered slots even if the main recorder DOM is absent or fails.
-      if (t === "1-255") drawDeckEdgeUI();
+      // Read current slots even if the main recorder DOM is absent or fails.
+      const hadPendingDeckOrder = !!n.pendingDeckOrder;
+      n.reconcileDeckOrder();
+      if (t === "1-255" || t === "2-255" || hadPendingDeckOrder) drawDeckEdgeUI();
       let r = null,
         l = null,
         [o, c, u] =
@@ -24400,6 +24465,7 @@
                     );
                   })[u(309)]("")));
             }
+            markRecordedCardUncertain(n, e < 0, o === 1 ? "位置待确认" : "归属待确认");
             4 == o ? l[u(476)](u(603), n) : l[u(476)](u(474), n),
               s[u(442)](n),
               (v = 1);
@@ -25393,10 +25459,15 @@
   const createDeckVisibilityPanel = function createDeckVisibilityPanel(options) {
     const doc = options.document;
     const win = options.window;
-    const expanded = { top: false, bottom: false };
+    const regionDefinitions = [
+      ["top", "顶部卡牌", "deckTopEdge", "顶"],
+      ["bottom", "底部卡牌", "deckBottomEdge", "底"],
+      ["discard", "弃牌堆", "discardPileEdge", "弃"],
+    ];
     let floatSize = null, resizeGrip = null;
     const storageKey = "xcDeckVisibilitySettings";
-    let preferences = { visible: false, topLimit: 20, bottomLimit: 20 };
+    let preferences = { visible: false, topLimit: 20, bottomLimit: 20, discardLimit: 20,
+      regions: { top: true, bottom: true, discard: true } };
     let preferenceSaved = true;
     let sceneActive = false, controls = null, settingsPopup = null;
     function validLimit(value) { return Number.isSafeInteger(value) && value > 0; }
@@ -25409,10 +25480,16 @@
         visible: saved.visible === true,
         topLimit: validLimit(saved.topLimit) ? saved.topLimit : 20,
         bottomLimit: validLimit(saved.bottomLimit) ? saved.bottomLimit : 20,
+        discardLimit: validLimit(saved.discardLimit) ? saved.discardLimit : 20,
+        regions: {
+          top: saved.regions?.top !== false,
+          bottom: saved.regions?.bottom !== false,
+          discard: saved.regions?.discard !== false,
+        },
       };
     } catch (error) { log("读取设置失败：" + String(error)); }
     let root = null, panel = null, signature = null;
-    let position = null, drag = null, suppressClickUntil = 0;
+    let position = null, drag = null;
     let enabled = true;
     const sections = new Map();
     const styles = `
@@ -25421,19 +25498,11 @@
         border-radius:8px;background:rgba(24,22,19,.94);color:#f2de9c;box-shadow:0 4px 14px #0007;
         font:13px/1.4 "Microsoft YaHei",sans-serif;pointer-events:auto;user-select:none;
         max-height:70vh;overflow:auto;overscroll-behavior:contain;}
-      .xc-deck-panel .xc-deck-toggle{box-sizing:border-box;display:inline-flex;align-items:center;
-        gap:8px;width:auto;white-space:nowrap;padding:6px 8px;margin:0;border:0;border-radius:4px;
-        background:#453b2b;color:#f2de9c;font:inherit;cursor:grab;text-align:left;touch-action:none;}
-      .xc-deck-floating[data-dragging="true"] .xc-deck-toggle{cursor:grabbing;}
-      .xc-deck-panel .xc-deck-toggle:hover{background:#615039;}
-      .xc-deck-panel .xc-deck-toggle:focus-visible{outline:2px solid #ead49b;outline-offset:-2px;}
       .xc-deck-panel .xc-deck-section+.xc-deck-section{margin-top:6px;}
       .xc-deck-panel .xc-deck-viewport{box-sizing:border-box;width:266px;max-width:calc(100vw - 30px);}
-      .xc-deck-panel .xc-deck-viewport[hidden]{display:none;}
       .xc-deck-panel .xc-deck-list{display:flex;flex-direction:row;direction:ltr;flex-wrap:wrap;
         justify-content:flex-start;gap:5px;padding:7px 2px 2px;align-content:flex-start;
         box-sizing:border-box;max-height:none;overflow:visible;}
-      .xc-deck-panel .xc-deck-list[hidden]{display:none;}
       .xc-deck-floating>.xc-deck-resize{position:absolute;right:3px;bottom:3px;width:16px;height:16px;
         cursor:nwse-resize;touch-action:none;border-radius:2px;
         background:repeating-linear-gradient(135deg,transparent 0 3px,#b7a174 3px 5px);
@@ -25442,19 +25511,28 @@
       .xc-deck-panel .xc-deck-slot{display:flex;align-items:center;}
       .xc-deck-panel .xc-deck-origin{display:inline-flex;align-items:center;justify-content:center;
         box-sizing:border-box;min-width:30px;min-height:24px;flex-shrink:0;border:1px solid #b7a174;
-        border-radius:3px;background:#615039;color:#f2de9c;font-weight:bold;}
+        border-radius:3px;background:#615039;color:#f2de9c;font:inherit;font-weight:bold;
+        padding:0 5px;margin:0;cursor:grab;touch-action:none;}
+      .xc-deck-floating[data-dragging="true"] .xc-deck-origin{cursor:grabbing;}
+      .xc-deck-panel .xc-deck-origin:hover{background:#756047;}
+      .xc-deck-panel .xc-deck-origin:focus-visible{outline:2px solid #ead49b;outline-offset:2px;}
       .xc-deck-panel .xc-deck-slot>.shoupai{display:inline-block!important;margin:0;float:none;}
+      .xc-deck-panel .xc-deck-slot[data-uncertain="true"]>.shoupai{border:1px solid #ff4d4f!important;}
       .xc-deck-panel .xc-deck-unknown{display:inline-flex;align-items:center;justify-content:center;
         box-sizing:border-box;min-width:30px;height:24px;border:1px dashed #8c8169;border-radius:3px;
         color:#c5bba6;background:#353127;font-size:16px;}
       .xc-deck-panel .xc-deck-empty{padding:4px;color:#b6ab95;font-size:12px;}
     `;
 
-    function getRanges(cards) {
+    function getSlots(cards) {
       // Unknown node IDs are bookkeeping candidates, not visible card identities.
-      const slots = Array.from(cards || [], (card, index) => ({
+      return Array.from(cards || [], (card, index) => ({
         index, card, known: !!card && card.key > 0 && card.id > 0,
       }));
+    }
+
+    function getRanges(cards) {
+      const slots = getSlots(cards);
       function trimUnknownTail(window) {
         let last = window.length - 1;
         while (last >= 0 && !window[last].known) last--;
@@ -25482,12 +25560,30 @@
       return true;
     }
 
-    function setLimits(topLimit, bottomLimit) {
-      if (!enabled || !validLimit(topLimit) || !validLimit(bottomLimit)) return false;
+    function setLimits(topLimit, bottomLimit, discardLimit = preferences.discardLimit) {
+      if (!enabled || !validLimit(topLimit) || !validLimit(bottomLimit) || !validLimit(discardLimit)) return false;
       preferences.topLimit = topLimit;
       preferences.bottomLimit = bottomLimit;
+      preferences.discardLimit = discardLimit;
       signature = null;
       preferenceSaved = savePreferences();
+      refresh(sceneActive);
+      return true;
+    }
+
+    function getRegionVisibility() { return { ...preferences.regions }; }
+
+    function setRegionVisible(side, visible) {
+      if (!enabled || typeof visible !== "boolean" || !regionDefinitions.some(([key]) => key === side)) return false;
+      if (preferences.regions[side] === visible) return true;
+      preferences.regions[side] = visible;
+      preferenceSaved = savePreferences();
+      if (settingsPopup) settingsPopup.regionInputs.forEach(input => {
+        input.checked = preferences.regions[input.dataset.region];
+      });
+      // Rebuild only this feature's DOM, keeping position and size.
+      // Removing a region also invalidates its saved button/drag callbacks.
+      release();
       refresh(sceneActive);
       return true;
     }
@@ -25510,21 +25606,42 @@
       node.id = "xcDeckVisibilitySettings";
       node.setAttribute("role", "dialog");
       node.setAttribute("aria-label", "牌堆记录设置");
-      node.style.cssText = "position:fixed;z-index:2147483647;width:240px;max-width:calc(100vw - 16px);box-sizing:border-box;padding:12px;border:1px solid #a78b54;border-radius:8px;background:#211e19;color:#f2de9c;box-shadow:0 4px 16px #0008;font:13px/1.5 Microsoft YaHei,sans-serif";
+      node.style.cssText = "position:fixed;z-index:2147483647;width:260px;max-width:calc(100vw - 16px);max-height:calc(100vh - 16px);overflow:auto;box-sizing:border-box;padding:12px;border:1px solid #a78b54;border-radius:8px;background:#211e19;color:#f2de9c;box-shadow:0 4px 16px #0008;font:13px/1.5 Microsoft YaHei,sans-serif";
       node.innerHTML = `<style>
         #xcDeckVisibilitySettings label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:10px 0;}
-        #xcDeckVisibilitySettings input{box-sizing:border-box;width:82px;padding:4px;color:#f2de9c;background:#353127;border:1px solid #887955;border-radius:3px;}
+        #xcDeckVisibilitySettings input[type="number"]{box-sizing:border-box;width:82px;padding:4px;color:#f2de9c;background:#353127;border:1px solid #887955;border-radius:3px;}
+        #xcDeckVisibilitySettings fieldset{border:0;border-bottom:1px solid #a78b5455;padding:0 0 4px;margin:10px 0;min-width:0;}
+        #xcDeckVisibilitySettings .xc-deck-switch{position:relative;display:inline-block;width:56px;height:26px;flex:0 0 56px;}
+        #xcDeckVisibilitySettings .xc-deck-switch input{opacity:0;width:0;height:0;position:absolute;}
+        #xcDeckVisibilitySettings .xc-deck-slider{position:absolute;top:0;right:0;bottom:0;left:0;border:1px solid #f2de9c;border-radius:34px;background:#23201d;cursor:pointer;}
+        #xcDeckVisibilitySettings .xc-deck-slider:before{position:absolute;content:'';height:20px;width:20px;left:2px;bottom:2px;background:#f2de9c;border-radius:50%;}
+        #xcDeckVisibilitySettings input:checked+.xc-deck-slider{background:#ff7b54;}
+        #xcDeckVisibilitySettings input:checked+.xc-deck-slider:before{transform:translateX(30px);}
+        #xcDeckVisibilitySettings input:focus-visible+.xc-deck-slider{outline:2px solid #fff;outline-offset:2px;}
+        #xcDeckVisibilitySettings .xc-deck-switch-status{position:absolute;top:50%;left:5px;transform:translateY(-50%);color:#555;pointer-events:none;}
+        #xcDeckVisibilitySettings input+.xc-deck-slider+.xc-deck-switch-status:before{content:'关';}
+        #xcDeckVisibilitySettings input:checked+.xc-deck-slider+.xc-deck-switch-status:before{content:'开';}
         #xcDeckVisibilitySettings button{padding:4px 9px;color:#f2de9c;background:#453b2b;border:1px solid #887955;border-radius:4px;cursor:pointer;}
         #xcDeckVisibilitySettings .xc-deck-settings-head{display:flex;align-items:center;justify-content:space-between;}
         #xcDeckVisibilitySettings p{margin:8px 0;font-size:12px;color:#b6ab95;}
       </style><div class="xc-deck-settings-head"><strong>牌堆记录设置</strong><button type="button" data-close aria-label="关闭设置">×</button></div>
+      <fieldset aria-label="显示区域">${regionDefinitions.map(([side, text]) =>
+        `<label>${text}<span class="xc-deck-switch"><input id="xcDeckRegionVisible-${side}" data-region="${side}" type="checkbox"><span class="xc-deck-slider" aria-hidden="true"></span><span class="xc-deck-switch-status" aria-hidden="true"></span></span></label>`
+      ).join("")}</fieldset>
       <form><label>顶部记录上限（张）<input name="topLimit" type="number" min="1" step="1" required></label>
       <label>底部记录上限（张）<input name="bottomLimit" type="number" min="1" step="1" required></label>
-      <p>从牌顶或牌底起计数，问号也占一张。</p><p data-feedback role="status"></p><button type="submit">保存</button></form>`;
-      const top = node.querySelector('[name="topLimit"]'), bottom = node.querySelector('[name="bottomLimit"]');
+      <label>弃牌记录上限（张）<input name="discardLimit" type="number" min="1" step="1" required></label>
+      <p>顶底从对应端起计数；弃牌最新的排在最前。问号也占一张。</p>
+      <p>显示开关即时保存；仍需开启“牌堆记录”总开关，隐藏期间继续记录。</p>
+      <p data-feedback role="status"></p><button type="submit">保存</button></form>`;
+      const top = node.querySelector('[name="topLimit"]'), bottom = node.querySelector('[name="bottomLimit"]'),
+        discard = node.querySelector('[name="discardLimit"]');
+      const regionInputs = Array.from(node.querySelectorAll('input[data-region]'));
       const form = node.querySelector("form"), close = node.querySelector("[data-close]");
       top.value = String(preferences.topLimit);
       bottom.value = String(preferences.bottomLimit);
+      discard.value = String(preferences.discardLimit);
+      regionInputs.forEach(input => { input.checked = preferences.regions[input.dataset.region]; });
       const removers = [];
       function listen(target, type, callback, capture) {
         target.addEventListener(type, callback, capture);
@@ -25544,12 +25661,19 @@
       listen(form, "submit", event => {
         event.preventDefault();
         if (!settingsPopup || settingsPopup.node !== node || controls !== owner) return;
-        const ok = setLimits(Number(top.value), Number(bottom.value));
+        const ok = setLimits(Number(top.value), Number(bottom.value), Number(discard.value));
         node.querySelector("[data-feedback]").textContent = ok
           ? preferenceSaved ? "已保存" : "已生效，未能保存到本机"
           : "请填写大于 0 的整数";
         positionSettings();
       });
+      regionInputs.forEach(input => listen(input, "change", () => {
+        if (!settingsPopup || settingsPopup.node !== node || controls !== owner) return;
+        setRegionVisible(input.dataset.region, input.checked);
+        input.checked = preferences.regions[input.dataset.region];
+        node.querySelector("[data-feedback]").textContent = preferenceSaved ? "已保存" : "已生效，未能保存到本机";
+        positionSettings();
+      }));
       listen(close, "click", () => closeSettings(true));
       listen(doc, "pointerdown", event => {
         if (!node.contains(event.target) && !owner.container.contains(event.target)) closeSettings(false);
@@ -25559,7 +25683,7 @@
       listen(win, "scroll", positionSettings, true);
       const observer = win.ResizeObserver ? new win.ResizeObserver(positionSettings) : null;
       if (observer) { observer.observe(owner.caption); removers.push(() => observer.disconnect()); }
-      settingsPopup = { node, owner, cleanup() { removers.splice(0).forEach(remove => remove()); } };
+      settingsPopup = { node, owner, regionInputs, cleanup() { removers.splice(0).forEach(remove => remove()); } };
       doc.body.appendChild(node);
       owner.caption.setAttribute("aria-expanded", "true");
       positionSettings();
@@ -25593,7 +25717,7 @@
       const input = container.querySelector("input"), caption = container.querySelector(".explanation");
       if (!input || !caption) return false;
       container.id = "xcDeckVisibilityControl";
-      container.setAttribute("data-tooltip", "开启牌顶、牌底浮层；点击齿轮设置记录上限");
+      container.setAttribute("data-tooltip", "开启牌顶、牌底、弃牌堆浮层；点击齿轮设置各区域显示和记录上限");
       input.id = "xcDeckVisibilityToggle"; // Avoid the native input[id$=Switch] binder.
       input.name = "";
       input.checked = preferences.visible;
@@ -25620,8 +25744,8 @@
     function release() {
       stopDrag();
       win.removeEventListener("resize", layout);
-      for (const { button } of sections.values()) {
-        button.onclick = button.onpointerdown = null;
+      for (const { origin } of sections.values()) {
+        origin.onpointerdown = null;
       }
       if (resizeGrip) resizeGrip.onpointerdown = resizeGrip.onkeydown = null;
       resizeGrip = null;
@@ -25629,7 +25753,6 @@
       if (root) root.remove();
       root = panel = null;
       signature = null;
-      suppressClickUntil = 0;
     }
 
     function clampPosition() {
@@ -25709,7 +25832,6 @@
 
     function endDrag(event) {
       if (!drag || event.pointerId !== drag.pointer) return;
-      if (drag.moved) suppressClickUntil = Date.now() + 250;
       stopDrag();
     }
 
@@ -25727,42 +25849,33 @@
       const style = doc.createElement("style");
       style.textContent = styles;
       panel.appendChild(style);
-      for (const [side, text] of [["top", "顶部卡牌"], ["bottom", "底部卡牌"]]) {
+      for (const [side, text, listID, originText] of regionDefinitions) {
+        if (!preferences.regions[side]) continue;
         const section = doc.createElement("div");
         section.className = "xc-deck-section";
-        const button = doc.createElement("button");
-        button.type = "button";
-        button.className = "xc-deck-toggle";
-        button.dataset.side = side;
-        const label = doc.createElement("span");
-        label.textContent = text;
-        const icon = doc.createElement("span");
-        icon.setAttribute("aria-hidden", "true");
-        button.appendChild(label);
-        button.appendChild(icon);
+        section.dataset.side = side;
         const list = doc.createElement("div");
-        list.id = side === "top" ? "deckTopEdge" : "deckBottomEdge";
+        list.id = listID;
         list.className = "xc-deck-list";
+        list.hidden = false;
+        list.setAttribute("aria-label", side === "discard" ? "弃牌堆，最新弃牌在最左侧" : text);
         const viewport = doc.createElement("div");
         viewport.className = "xc-deck-viewport";
         viewport.dataset.side = side;
-        button.setAttribute("aria-controls", list.id);
-        const entry = { button, icon, list, text, viewport };
+        viewport.hidden = false;
+        const origin = doc.createElement("button");
+        origin.type = "button";
+        origin.className = "xc-deck-origin";
+        origin.textContent = originText;
+        origin.dataset.side = side;
+        origin.title = text + "（拖动移动浮层）";
+        origin.setAttribute("aria-label", text + "，拖动移动浮层");
+        const entry = { origin, list, viewport };
         sections.set(side, entry);
-        button.onclick = event => {
-          event.preventDefault();
-          event.stopPropagation();
-          // A handler saved from an old scene must not change the replacement panel.
-          if (root !== host || sections.get(side) !== entry) return;
-          if (Date.now() < suppressClickUntil) return;
-          expanded[side] = !expanded[side];
-          refresh(true);
-        };
-        button.onpointerdown = event => {
+        origin.onpointerdown = event => {
           if (root === host && sections.get(side) === entry) beginDrag(event);
         };
-        button.setAttribute("aria-description", "单击展开或关闭，拖动移动浮层");
-        section.appendChild(button);
+        list.appendChild(origin);
         viewport.appendChild(list);
         section.appendChild(viewport);
         panel.appendChild(section);
@@ -25794,33 +25907,28 @@
     }
 
     function renderList(side, slots) {
-      const { button, icon, list, text, viewport } = sections.get(side);
-      const open = expanded[side];
-      button.setAttribute("aria-expanded", String(open));
-      button.title = (open ? "关闭" : "展开") + text + "（可拖动）";
-      icon.textContent = open ? "▾" : "▸";
-      list.hidden = !open;
-      viewport.hidden = !open;
-      while (list.firstChild) list.removeChild(list.firstChild);
-      if (!open) return;
-      // Direction labels are presentation-only and never consume a card position or limit.
-      const origin = doc.createElement("span");
-      origin.className = "xc-deck-origin";
-      origin.textContent = side === "top" ? "顶" : "底";
-      list.appendChild(origin);
+      if (!sections.has(side)) return;
+      const { list } = sections.get(side);
+      // Keep the drag handle stable across live card refreshes; it is not a card slot.
+      while (list.children.length > 1) list.removeChild(list.children[list.children.length - 1]);
       if (!slots.length) {
         const empty = doc.createElement("span");
         empty.className = "xc-deck-empty";
-        empty.textContent = "暂无已记录的可见牌";
+        empty.textContent = side === "discard" ? "暂无已记录的弃牌" : "暂无已记录的可见牌";
         list.appendChild(empty);
         return;
       }
       const fragment = doc.createDocumentFragment();
-      slots.forEach(({ index, card, known }) => {
+      slots.forEach(({ index, sourceIndex, card, known }) => {
         const slot = doc.createElement("span");
         slot.className = "xc-deck-slot";
         slot.dataset.index = String(index);
+        if (sourceIndex !== undefined) slot.dataset.sourceIndex = String(sourceIndex);
         slot.dataset.key = String(known ? card.id : 0);
+        if (known && card.uncertain) {
+          slot.dataset.uncertain = "true";
+          slot.title = "待确认：这张牌是否仍在牌堆及当前位置尚不确定";
+        }
         let face = null;
         if (known) {
           try { face = options.renderKnownCard(card); }
@@ -25842,24 +25950,33 @@
     function refresh(active) {
       if (!enabled) return;
       sceneActive = !!active;
-      if (!preferences.visible || !sceneActive || !doc.body) { release(); return; }
+      if (!preferences.visible || !sceneActive || !doc.body ||
+          !Object.values(preferences.regions).some(Boolean)) { release(); return; }
       mount();
       const cards = options.readCards() || [];
-      const nextSignature = cards.map(card => card && card.key > 0 ? card.id : 0).join(",") +
-        "|" + expanded.top + "|" + expanded.bottom;
+      // Reverse a view copy only: newest discard is display index zero.
+      // Keep original model positions separately; hidden slots still occupy a position.
+      const discardSlots = getSlots(options.readDiscardCards ? options.readDiscardCards() : [])
+        .slice(-preferences.discardLimit).reverse()
+        .map((slot, index) => ({ ...slot, sourceIndex: slot.index, index }));
+      const nextSignature = cards.map(card => card && card.key > 0 && card.id > 0 ?
+        (card.uncertain ? "?" : "") + card.id : 0).join(",") +
+        "|" + discardSlots.map(slot => slot.sourceIndex + ":" + (slot.known ? slot.card.id : 0)).join(",");
       if (signature !== nextSignature) {
         const ranges = getRanges(cards);
         renderList("top", ranges.top);
         renderList("bottom", ranges.bottom);
+        renderList("discard", discardSlots);
         signature = nextSignature;
       }
       layout();
     }
 
-    // Keep expansion, position and the unified float size for this page; discard scene DOM/data.
+    // Keep position and the unified float size for this page; discard scene DOM/data.
     return {
       refresh, reset: release, getRanges, setVisible, setLimits, mountControls,
-      getSettings: () => ({ ...preferences }),
+      getRegionVisibility, setRegionVisible,
+      getSettings: () => ({ ...preferences, regions: getRegionVisibility() }),
       start() { enabled = true; },
       dispose() { enabled = false; sceneActive = false; release(); cleanupControls(); },
     };
@@ -25872,8 +25989,17 @@
       getItem: key => localStorage.getItem(key),
       setItem: (key, value) => localStorage.setItem(key, value),
     },
-    readCards: () => isNaN(Card.key) ? [] : Zone.obj["1-255"] || [],
-    renderKnownCard: card => _0x226fc5(card.plot()),
+    readCards: () => isNaN(Card.key) ? [] : Zone.readDeckView(),
+    readDiscardCards: () => isNaN(Card.key) ? [] : Zone.obj["2-255"] || [],
+    renderKnownCard: card => {
+      if (!card.uncertain) return _0x226fc5(card.plot());
+      // Render a historical face without registering a new Card or changing a model key.
+      const face = document.createElement("button"), info = _0x5984e1[card.id];
+      face.className = "shoupai" + (info.color > 0 && info.color <= 2 ? " R" : "");
+      face.dataset.key = String(card.id);
+      face.innerHTML = _0x4b1bae(info);
+      return face;
+    },
     log: text => appendLocalSkinDebugLine("[牌堆面板] " + text, false),
   });
   function _0x226fc5(n) {
@@ -25939,7 +26065,7 @@
     markerText: a = "",
   }) {
     const r = _0xcbf83c;
-    if (1 == t) {
+    if (1 == t || 2 == t) {
       return void drawDeckEdgeUI();
     }
     if (5 != t) {
@@ -28534,7 +28660,7 @@
     _0x46e1d4 = C3rHCNrFDgLTzq();
   let _0x2cfc9b = null;
   const _0x378fb5 =
-      "·修复自动任务不自动领取·"
+      "添加观看弃牌堆功能"
         [_0x41a3d0(555)](/；/g, _0x41a3d0(526))
         [_0x41a3d0(555)](/;/g, _0x41a3d0(526));
   function Init() {
@@ -28577,6 +28703,7 @@
     handCards.dispose();
     topMarquee.dispose();
     deckVisibilityPanel.dispose();
+    Zone.resetDeckOrder();
     cleanupSkinEffectBlocker();
     if (typeof window.__xcCleanupSkinEffectButton === "function")
       window.__xcCleanupSkinEffectButton();

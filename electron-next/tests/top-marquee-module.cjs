@@ -148,6 +148,7 @@ check("failed persistence or logging does not break the toggle", () => {
 check("actual core and second-IIFE host wiring share the same instance", () => {
   const h = harness("true");
   let deckDisposals = 0;
+  let deckOrderResets = 0;
   const sandbox = {
     window: h.window, document: h.document, laya: h.laya, Laya: { timer: h.options.getTimer() },
     localStorage: h.options.storage, appendLocalSkinDebugLine: (text, force) => {
@@ -158,6 +159,7 @@ check("actual core and second-IIFE host wiring share the same instance", () => {
     cardThemeFeature: { dispose() {} },
     autoTasks: { dispose() {} },
     deckVisibilityPanel: { dispose() { deckDisposals++; } },
+    Zone: { resetDeckOrder() { deckOrderResets++; } },
   };
   const context = vm.createContext(sandbox);
   vm.runInContext(slice("  // 顶部跑马灯：", "  async function setProto()"), context);
@@ -170,6 +172,7 @@ check("actual core and second-IIFE host wiring share the same instance", () => {
   assert.equal(h.manager.ended, 1); assert.equal(h.layer.calls.length, 0);
   vm.runInContext(slice("  function Exit() {", "    cleanupSkinEffectBlocker();") + "\n  }\nExit();", context);
   assert.equal(deckDisposals, 1);
+  assert.equal(deckOrderResets, 1);
   assert.equal(h.jobs.size, 0); assert.equal(h.layer.ShowMarquee, h.nativeShow);
   assert.equal(h.window.__xcInstallTopMarqueeButton(), false);
   assert.equal(h.window.__xcSetTopMarqueeBlocked(false), false);

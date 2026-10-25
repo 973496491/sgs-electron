@@ -27,7 +27,8 @@ async function browserChecks(){
   const marquee=createTopMarqueeModule({window,document,storage,getLaya:()=>null,getTimer:()=>null});
   marquee.start();marquee.attachMainPanel({findSwitchContainer,clearDuplicateIds,getAnchor:getHandSortSwitchAnchor});
   let cards=Array.from({length:50},(_,i)=>({id:i+1,key:i+1}));
-  const options={document,window,storage,readCards:()=>cards,renderKnownCard:card=>{
+  let discardCards=[];
+  const options={document,window,storage,readCards:()=>cards,readDiscardCards:()=>discardCards,renderKnownCard:card=>{
     const node=document.createElement('button');node.className='shoupai';node.textContent=String(card.id);return node;
   }};
   const api=createDeckVisibilityPanel(options);
@@ -36,8 +37,10 @@ async function browserChecks(){
   const input=()=>document.getElementById('xcDeckVisibilityToggle');
   const caption=()=>control().querySelector('.explanation');
   const popup=()=>document.getElementById('xcDeckVisibilitySettings');
+  const region=side=>popup().querySelector('[data-region="'+side+'"]');
   const center=node=>{const r=node.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};};
-  function submit(top,bottom){popup().querySelector('[name="topLimit"]').value=top;popup().querySelector('[name="bottomLimit"]').value=bottom;
+  function submit(top,bottom,discard){popup().querySelector('[name="topLimit"]').value=top;popup().querySelector('[name="bottomLimit"]').value=bottom;
+    if(discard!==undefined)popup().querySelector('[name="discardLimit"]').value=discard;
     popup().querySelector('form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));}
   function alignment(){
     const own=center(control().querySelector('.slider')),general=center(getHandSortSwitchAnchor(document.getElementById('generalSwitch')));
@@ -55,10 +58,26 @@ async function browserChecks(){
     caption().click();assert(popup());
     assert(popup().querySelector('[name="topLimit"]').value==='20');
     assert(popup().querySelector('[name="bottomLimit"]').value==='20');
+    assert(popup().querySelector('[name="discardLimit"]').value==='20');
+    assert(popup().querySelectorAll('input[data-region]').length===3&&['top','bottom','discard'].every(side=>region(side).checked));
     const box=popup().getBoundingClientRect(),anchor=caption().getBoundingClientRect();
     assert(Math.abs(box.left-anchor.left)<20,'popup anchored to caption');
     assert(box.top>=0&&box.bottom<=innerHeight&&box.right<=innerWidth);
     assert(!document.getElementById('deckEdgeUI'));
+  });
+  check('three switches have full tracks aligned with their text and no extra visible heading',()=>{
+    assert(!popup().querySelector('legend')&&!popup().textContent.includes('区域显示'));
+    assert(popup().querySelectorAll('input[data-region]').length===3);
+    const rows=['top','bottom','discard'].map(side=>{
+      const input=region(side),label=input.closest('label'),box=input.parentNode.getBoundingClientRect();
+      const slider=input.parentNode.querySelector('.xc-deck-slider').getBoundingClientRect();
+      const range=document.createRange();range.selectNode(label.firstChild);const text=range.getBoundingClientRect();
+      assert(Math.abs(slider.width-56)<1&&Math.abs(slider.height-26)<1,'full 56x26 track for '+side);
+      assert(Math.abs(slider.left-box.left)<1&&Math.abs(slider.top-box.top)<1,'track fills switch bounds for '+side);
+      assert(Math.abs(text.top+text.height/2-slider.top-slider.height/2)<1,'text vertically centered for '+side);
+      return {text,slider};
+    });
+    assert(rows.every(row=>Math.abs(row.text.left-rows[0].text.left)<1&&Math.abs(row.slider.left-rows[0].slider.left)<1),'shared text and switch columns');
   });
   check('invalid limits do not save; positive limits persist without enabling the float',()=>{
     submit('0','2.5');assert(api.getSettings().topLimit===20&&api.getSettings().bottomLimit===20);
@@ -67,10 +86,11 @@ async function browserChecks(){
     assert(!api.getSettings().visible&&!document.getElementById('deckEdgeUI'));
     popup().querySelector('[data-close]').click();assert(!popup());
   });
-  check('only enabling master reveals both buttons and saved limits bound the live views',()=>{
+  check('enabling master directly shows three regions and saved limits bound the views',()=>{
     input().checked=true;input().dispatchEvent(new Event('change',{bubbles:true}));
-    const buttons=document.querySelectorAll('#deckEdgeUI .xc-deck-toggle');assert(buttons.length===2);
-    buttons.forEach(button=>button.click());
+    const handles=document.querySelectorAll('#deckEdgeUI .xc-deck-origin');assert(handles.length===3);
+    assert(!document.querySelector('#deckEdgeUI .xc-deck-toggle'));
+    handles.forEach(button=>button.click());
     assert(document.querySelectorAll('#deckTopEdge .xc-deck-slot').length===7);
     assert(document.querySelectorAll('#deckBottomEdge .xc-deck-slot').length===11);
     caption().click();submit('4','6');
@@ -82,7 +102,46 @@ async function browserChecks(){
     input().checked=false;input().dispatchEvent(new Event('change',{bubbles:true}));api.refresh(true);
     assert(!document.getElementById('deckEdgeUI'));
     const fresh=createDeckVisibilityPanel(options);
-    assert(JSON.stringify(fresh.getSettings())===JSON.stringify({visible:false,topLimit:4,bottomLimit:6}));fresh.dispose();
+    assert(JSON.stringify(fresh.getSettings())===JSON.stringify({visible:false,topLimit:4,bottomLimit:6,discardLimit:20,regions:{top:true,bottom:true,discard:true}}));fresh.dispose();
+  });
+  check('deck gear owns immediate independent switches and preserves choices with the master off',()=>{
+    caption().click();region('top').click();region('bottom').click();
+    assert(!api.getRegionVisibility().top&&!api.getRegionVisibility().bottom&&api.getRegionVisibility().discard);
+    assert(!document.getElementById('deckEdgeUI')&&!input().checked);
+    assert(JSON.stringify(JSON.parse(saved.get('xcDeckVisibilitySettings')).regions)===JSON.stringify({top:false,bottom:false,discard:true}));
+    const fresh=createDeckVisibilityPanel(options);assert(!fresh.getRegionVisibility().top&&fresh.getRegionVisibility().discard);fresh.dispose();
+    api.setRegionVisible('top',true);api.setRegionVisible('bottom',true);
+    assert(region('top').checked&&region('bottom').checked,'open switches follow explicit setters');
+    popup().querySelector('[data-close]').click();
+  });
+  check('all regions off removes the frame and reenabled discard immediately shows newest first',()=>{
+    api.setVisible(true);caption().click();['top','bottom','discard'].forEach(side=>region(side).click());
+    assert(!document.getElementById('deckEdgeUI')&&api.getSettings().visible);
+    discardCards=Array.from({length:25},(_,i)=>({id:100+i,key:i===23?0:100+i}));api.refresh(true);
+    assert(!document.getElementById('deckEdgeUI'));region('discard').click();
+    assert([...document.querySelectorAll('#deckEdgeUI .xc-deck-origin')].map(x=>x.dataset.side).join(',')==='discard');
+    const slots=[...document.querySelectorAll('#discardPileEdge .xc-deck-slot')];
+    assert(slots.length===20&&slots[0].dataset.index==='0'&&slots[0].dataset.key==='124'&&slots[19].dataset.key==='105');
+    assert(slots[1].dataset.key==='0','unknown slot counts toward newest window');
+    assert(discardCards.length===25&&discardCards[0].id===100,'view must not cut history');
+  });
+  check('discard limit saves independently, rejects invalid submissions and preserves switch state',()=>{
+    submit('4','6','5');assert(api.getSettings().discardLimit===5);
+    assert([...document.querySelectorAll('#discardPileEdge .xc-deck-slot')].map(x=>x.dataset.key).join(',')==='124,0,122,121,120');
+    submit('2','3','0');assert(api.getSettings().topLimit===4&&api.getSettings().bottomLimit===6&&api.getSettings().discardLimit===5);
+    assert(popup().querySelector('[data-feedback]').textContent.includes('整数'));
+    region('top').click();assert(api.getSettings().discardLimit===5,'visibility must not submit invalid draft limits');
+    const fresh=createDeckVisibilityPanel(options);assert(fresh.getSettings().discardLimit===5&&fresh.getRegionVisibility().top);fresh.dispose();
+    submit('4','6','20');api.setRegionVisible('bottom',true);api.setVisible(false);
+    popup().querySelector('[data-close]').click();
+  });
+  check('closed switch callbacks cannot write and storage failures report only temporary effects',()=>{
+    caption().click();const stale=region('top');popup().querySelector('[data-close]').click();
+    const before=saved.get('xcDeckVisibilitySettings');stale.click();assert(saved.get('xcDeckVisibilitySettings')===before);
+    caption().click();const setter=storage.setItem;storage.setItem=()=>{throw Error('denied');};region('top').click();
+    assert(!api.getRegionVisibility().top&&popup().querySelector('[data-feedback]').textContent.includes('未能保存'));
+    storage.setItem=setter;region('top').click();assert(api.getRegionVisibility().top);
+    popup().querySelector('[data-close]').click();
   });
   check('native layout and anchored popup also work with a scaled main panel',()=>{
     document.getElementById('createIframe').style.transform='scale(.8)';marquee.requestMainPanel();alignment();caption().click();
@@ -106,7 +165,8 @@ async function browserChecks(){
     assert(!input().checked);
   });
   check('dispose removes controls, settings and float; late setters cannot restore them',()=>{
-    caption().click();api.dispose();assert(!popup()&&!control()&&!document.getElementById('deckEdgeUI'));
+    caption().click();const stale=region('top'),before=saved.get('xcDeckVisibilitySettings');api.dispose();assert(!popup()&&!control()&&!document.getElementById('deckEdgeUI'));
+    stale.click();assert(saved.get('xcDeckVisibilitySettings')===before);
     assert(api.setVisible(true)===false&&api.mountControls()===false);
     api.start();api.mountControls();assert(control());
   });

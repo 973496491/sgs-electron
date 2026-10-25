@@ -66,6 +66,14 @@
 
 小抄模型和真实镜像函数的模拟结果、48px折叠显示、明暗混合信息丢失及非零位置 `slice(pos,length)` 漏记详见 [代码架构表](代码架构表.md)“牌顶 / 牌底可见牌完整性核对”，手工索引 `manualLookupNotes.deckVisibilityAudit`；该节保留修改前基线。随后按用户要求实现的独立可拖动浮层及普通牌堆混合明暗/非零位置修复见同表“独立可拖动浮层”和 `manualLookupNotes.deckVisibilityFloatingPanel`。未游戏内实测，也没有证明所有技能消息覆盖；不改变上述官方快照协议结论。
 
+2026-10-25定向检索补充：复用上述仍存在的快照，`O$t`（约11084546）确认位置常量及 `dealSetData` 直接读取两个unsigned-short位置，`Mode_Take=8`。小抄已修复65281误作数组下标；无法定位的检索会正确减数量，将实际模型的顺序降为候选，另保留历史可见顺序并画红色待确认框，不用于暗摸推断。确认实体ID在非牌堆区域后剔除历史；两人手牌记录中的候选也用红框标归属不明。入口、清理与验证见 [代码架构表](代码架构表.md)“定向检索 / 随机位置与待确认红框”和 `manualLookupNotes.deckSearchAudit`。无重新下载客户端，未取得具体技能实战日志，不宣称所有技能覆盖。
+
+### 已落地的专项查询：弃牌堆区域显示可行性（2026-10-24）
+
+复用已核实仍存在的 `C:/Users/97349/AppData/Local/Temp/codex-ol-zuifeng-qJebR9/sgsGame.main.js`，未重新下载在线客户端。该ES6快照 `pq`（字符偏移约3116838）确认 `ZONE_DISCARDPILE=2`、`ZONE_STACK=3`、`ZONE_SHUFFLE=9`、`ZONE_DISCARD_BUFFER=11`。`toDiscardBufferFunc`（约1813638）记录 `tempDisCards` 并调用弃牌动画，`processTempDiscardCardIds`（约1804594）从后续正式动画列表去掉缓存ID；缓存区不能与正式弃牌重复累计。`toShuffleFunc`（约1813753）将 `CardCount` 交给 `UpdateCardPileCardCount(...,true)`；仅凭此方法不能推断完整服务端洗牌范围和消息顺序。
+
+小抄已有 `Zone.obj["2-255"]/Zone.qipai` 当前弃牌模型，旧 `qipaiCards` 仅筛选当前turn/round。同日后续已按用户“漏记明牌可当暗牌，优先保序”要求，复用牌顶牌底浮层加入第三个弃牌堆区；2026-10-25增加默认最新20张上限，三个区域开关与上限统一在“牌堆记录”设置。最新调整移除点击折叠，顶/底/弃起始按钮仅供拖动，区域启用后直接显示；弃牌临时窗口倒序，最新在最左、显示index0，底层历史仍保持原顺序。未知占位计数，不裁窗口暗牌，不猜暗取位置。移牌、空堆洗牌和生命周期验证，以及保留的非牌堆 `[7,0]` 漏记、非空洗牌边界，见 [代码架构表](代码架构表.md)的弃牌核查与牌堆记录设置章节、`manualLookupNotes.discardVisibilityAudit/deckVisibilityFloatingPanel`。未游戏内实测、未验证全部特殊技能或重连补全，不改变客户端完整归档状态。
+
 ### 已落地的专项查询：武将攻击动效
 
 2026-10-15 复用仍存在的 2026-10-08 ES6 主程序和普通配置快照，定向解密 `cha_gs_dbs_fs_skininfo.sgs`，确认 `PubGsCUseCard -> ShowUseCardAni -> USE_CARD -> useCardAniPlay -> onPlayNewSpEffect(3) -> xingxiang.json/GongJi`。已核对皮肤/形态选路、`skinEffectNew/Small/Big`、Spine 加载、出框/震屏/全屏/声音标签与停止恢复。详见 [武将攻击动效链路](武将攻击动效链路.md)，彩虹表入口 `manualLookupNotes.generalAttackAnimation`；31 项抽取方法模拟验证通过，未游戏内实测或下载动画依赖，不改变全量归档及 WASM 分支的未完成状态。
@@ -82,6 +90,8 @@
 | 14 | 诸葛连弩 | 方块 A | `ZhuGeLianNu` | `ZhuGeLianNu_png` |
 | 25 | 桃 | 方块 Q | `Tao` | `Tao_png` |
 | 136 / 149 | 藤甲 | 黑桃 2 / 梅花 2 | `TengJia` | `TengJia_png` |
+
+2026-10-25复核上述 `card-face-index.json` 仍存在：同名“顺手牵羊”ID3/4分别为方块3/4；同为方块2“闪”的ID2和15也不同。因此名称、花色、点数乃至相同牌面资源都不足以唯一标识实体卡牌，移牌CardIDs和记牌候选应按具体ID匹配，不能按牌名合并。此处是本地普通配置快照核对，不把配置存在当作当前持有证据。
 
 - **默认卡面链**：快照 `Yx.initCardsByClassName/initCardJson -> GetCardById -> L$t.CardId/CardInfo -> resName=t.res -> zzt.UpdateCardFace/SetCardFace -> fwt.GetRes(Card.ResName+"_png") -> bmpFace.texture`。`imageId` 是另一配置字段，本次确认的 H5 默认显示链实际使用 `res`。`iVi.UpdateCardFace` 再单独设置 `bmpFlower/bmpNumber`，花色点数不必烘焙在底图里；普通三国杀 `_q` 为 `1=红桃、2=方块、3=黑桃、4=梅花`，不要套用扑克牌斗地主的花色编码。`bF.NORMAL_SIZE=93×130` 是 UI 显示尺寸，不是原图分辨率。
 - **皮肤与例外**：`sys_appearance.CardsShow` 的 `id=0`、`type=1/2` 标题为“经典卡牌”；`jV` 将 type 2 用作 FaceVO、type 1 用作 BackVo，拼接 `card/kamian/<id>.png`、`card/kabei/<id>.png`、`card/icon/<id>.png`（均相对资源根）。普通 UI 先画卡牌自身底图，再经 `SetCardFaceEffect` 加装饰；这不是每种牌插画的路径表。此入口要求本人座位及 `Bottom_CardFace` 开放，实际装饰绘制还排除 `IsMatchOB`。空牌走 `EmptyCard_png` 等卡背，易牌可用 `WuTianWuJie_png`，扑克牌显示与技能变牌还有独立分支，不能把当前 `bmpFace.texture` 无条件当作原始卡面。
