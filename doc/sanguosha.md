@@ -23,6 +23,12 @@
 
 本文只针对 **OL**。
 
+## 非国战场上势力数核验（2026-11-04，仅调查）
+
+此前临时目录仍存在，但其中主程序文件已缺失；本次仅定向下载 `https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs`，按普通 ZIP 解出 `sgsGame_a.sgs` 明文 JS，无需配置 AES 解密，也未涉及 `_w` WASM 分支。抓取时间为 `2026-11-03T16:09:26Z`（北京时间11月4日00:09），原包 SHA-256 为 `c4843fbdc49adfa966688112fc9b5a82884e543b9ed6605d616bd3a86734842f`；解出文件本次位于 `C:/Users/97349/AppData/Local/Temp/xc-faction-check-wnk21qd9/sgsGame_a.sgs`。临时文件可被清理，使用前需重新确认存在。
+
+已核实原生 `V2t.CountryCount()` 按 `IsLegalOperable` 座位的当前 `Country` 去重，死亡链为 `ServerProxy_Dead -> seat.Dead -> IsDead=true -> qk.DEAD`，开局原生 `gameStartTurn` 派发 `GAME_START_TURN`。关键字符偏移：`CountryCount=11541083`、`ServerProxy_Dead=9060626`、`IsLegalOperable=20779228`、`IsDead=20803180`、座位 `Country=20830839`；符号及偏移只适用于本快照。`Country` 会考虑改势力、化身及模式势力，不能只按原武将配置；开局 Country=0 未就绪时原生计数会包含0。抽取真实计数方法及存活条件的6项模拟通过，未修改小抄运行代码或做游戏内验证。具体接入候选、时序边界和非国战范围见 [架构表](代码架构表.md)“非国战场上势力数”及 `manualLookupNotes.aliveCountryCount`。
+
 ## 2026-10-08 实际核验
 
 - **结论：可以作为本项目的开发和排查指南，但配套工具、索引文件需要补齐。** 本次直接下载公开资源，在内存中完成 ZIP 解包、AES 解密和 JSON 解析，没有修改游戏脚本。

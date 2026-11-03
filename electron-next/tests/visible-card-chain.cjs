@@ -126,6 +126,8 @@ function fixture() {
   globalThis._0x537542 = () => {};
   globalThis.drawDeckEdgeUI = () => {};
   globalThis.deckVisibilityPanel = { reset() {} };
+  // 势力面板有独立生命周期检查；可见牌用例只保留相邻接口。
+  globalThis.aliveCountrySummary = { start() {}, onMessage() {} };
   globalThis._0x3e4c06 = nodes => nodes.map(node => node.dataset.key).join(",");
   globalThis.DI = 0; globalThis.DING = 65280; globalThis.RAND = 65282;
   globalThis.__publicField = (object, key, value) => { object[key] = value; };

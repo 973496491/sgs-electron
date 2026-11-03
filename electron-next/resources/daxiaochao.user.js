@@ -22182,6 +22182,112 @@
         i.call(e, r, 0)),
       refreshTavernTaskStatus(globalState, timer, a(267));
   }
+  // 非国战场上势力数；独立拥有显示、就绪等待和当前对局任务。
+  const aliveCountrySummary = (() => {
+    let active = false, scene = null, timer = null, generation = 0;
+    let attempts = 0, text = "场上势力数：—";
+    const pendingDeaths = new Set();
+    function mount() {
+      const host = document.getElementById("result")?.parentElement;
+      if (!host) return;
+      let node = document.getElementById("xcAliveCountrySummary");
+      if (!node) {
+        node = document.createElement("div");
+        node.id = "xcAliveCountrySummary";
+        node.style.cssText = "clear:both;float:left;width:100%;box-sizing:border-box;margin-top:6px;padding:4px 0;text-align:center;color:inherit;font-size:13px;";
+      }
+      if (host.lastElementChild !== node) host.appendChild(node);
+      node.hidden = !!room.isGuoZhan;
+      node.textContent = text;
+    }
+    function cancel() {
+      generation++;
+      if (timer !== null) clearTimeout(timer);
+      timer = null;
+    }
+    function stop() {
+      cancel();
+      active = false;
+      scene = null;
+      pendingDeaths.clear();
+      text = "场上势力数：—";
+      mount();
+    }
+    function read() {
+      const currentScene = laya.gamescene;
+      if (!currentScene) return { ready: false };
+      if (scene && scene !== currentScene) return { changed: true };
+      scene = currentScene;
+      const context = laya.class("GameContext");
+      if (room.isGuoZhan || context?.IsCountryWar) return { excluded: true };
+      const models = Array.isArray(context?.Seats) ? context.Seats :
+        (currentScene.seatContainer?.seatUIs || []).map(ui => ui?.seat);
+      const seats = new Map();
+      for (const seat of models) {
+        if (seat && seat.IsFull && seat.Index != null) seats.set(seat.Index, seat);
+      }
+      if (!seats.size || (room.size > 0 && seats.size < room.size)) return { ready: false };
+      for (const id of pendingDeaths) {
+        const seat = seats.get(id);
+        if (!seat || !seat.IsDead) return { ready: false };
+      }
+      const countries = new Set();
+      for (const seat of seats.values()) {
+        if (!seat.IsLegalOperable) continue;
+        const country = Number(seat.Country);
+        if (!Number.isInteger(country) || country <= 0) return { ready: false };
+        countries.add(country);
+      }
+      return { ready: true, count: countries.size };
+    }
+    function run(token) {
+      if (!active || token !== generation) return;
+      timer = null;
+      let result;
+      try { result = read(); }
+      catch (error) { result = { ready: false, error: String(error?.message || error) }; }
+      if (result.changed) return stop();
+      if (result.excluded) {
+        stop();
+        const node = document.getElementById("xcAliveCountrySummary");
+        if (node) node.hidden = true;
+        return;
+      }
+      if (result.ready) {
+        pendingDeaths.clear();
+        const next = "场上势力数：" + result.count;
+        if (text !== next) appendLocalSkinDebugLine("[势力统计] " + next, false);
+        text = next;
+        mount();
+        return;
+      }
+      text = "场上势力数：等待数据";
+      mount();
+      if (++attempts < 40) timer = setTimeout(() => run(token), 250);
+      else appendLocalSkinDebugLine("[势力统计] 数据未就绪，等待后续对局事件" + (result.error ? "：" + result.error : ""), false);
+    }
+    function request(deadSeatID) {
+      if (!active) return;
+      if (deadSeatID != null && Number.isInteger(Number(deadSeatID))) pendingDeaths.add(Number(deadSeatID));
+      // 合并同一批消息；离开当前调用栈后才读取原生模型。
+      if (timer !== null) return;
+      attempts = 0;
+      const token = generation;
+      timer = setTimeout(() => run(token), 0);
+    }
+    function start() {
+      if (active && scene && laya.gamescene !== scene) stop();
+      active = true;
+      mount();
+      request();
+    }
+    function onMessage(name, seatID) {
+      if (name === "SmsgGamePlayerDead") request(seatID);
+      else if (["SmsgGameSetCharacter", "MsgGameDealCharacter", "SmsgSetCharacterCountry",
+        "SmsgGamePlayerRest", "MsgReconnectGame", "GsCUpdateRoleDataNtf", "MsgEnterGameStageNtf"].includes(name)) request();
+    }
+    return { mount, start, stop, onMessage };
+  })();
   const game = new Proxy(
       {
         turn: 0,
@@ -22201,6 +22307,7 @@
         ][_0x4efae6(376)]((n, t, e) => ((n[t] = n[e] = []), n), {}),
         end(n) {
           const t = _0x4efae6;
+          aliveCountrySummary.stop();
           (!this[t(370)] && n) ||
             this[t(624)] ||
             ((this[t(370)] = !1),
@@ -22288,6 +22395,7 @@
           if (window.XC && window.XC.isDebug) logEightIdentity("game-start", roomStartData);
           scheduleEightPveFigureOut("game.start");
           scheduleAutoShouQiFallback("game.start", 300);
+          aliveCountrySummary.start();
           !this[n(370)] &&
             room[n(339)] &&
             ((this[n(370)] = !0),
@@ -28702,6 +28810,7 @@
     cardThemeFeature.dispose();
     handCards.dispose();
     topMarquee.dispose();
+    aliveCountrySummary.stop();
     deckVisibilityPanel.dispose();
     Zone.resetDeckOrder();
     cleanupSkinEffectBlocker();
@@ -29893,6 +30002,8 @@
     if (typeof window.__xcInstallSkinEffectButton === "function")
       window.__xcInstallSkinEffectButton();
     deckVisibilityPanel.mountControls();
+    aliveCountrySummary.mount();
+    if (game.isGameStart && !game.isPassed && laya.gamescene) aliveCountrySummary.start();
   }
   function _0x4484c9() {
     const n = _0x41a3d0;
@@ -33192,6 +33303,7 @@
       } = n;
       if (
         (rn || (rn = n[J(583)] || n[J(417)]()),
+        aliveCountrySummary.onMessage(rn, ln),
         logLightRoomDispatchProbe(n, an, rn),
         logLightRoomDispatch(n, an, rn),
         n[J(633)] &&

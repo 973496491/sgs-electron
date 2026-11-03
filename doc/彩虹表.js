@@ -32724,6 +32724,27 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  aliveCountryCount: {
+    title: "非国战场上势力数：严教/糜竺区域底部显示与死亡后刷新",
+    verifiedAt: "2026-11-04",
+    sourceFile: "electron-next/resources/daxiaochao.user.js；官方 ES6 主程序定向快照",
+    docFile: "doc/代码架构表.md；doc/sanguosha.md",
+    searchKeywords: ["场上势力数", "非国战", "严教", "糜竺", "xcAliveCountrySummary", "aliveCountrySummary", "CountryCount", "IsLegalOperable", "SmsgGamePlayerDead", "ServerProxy_Dead", "GAME_START_TURN", "changedCountry", "最后一人死亡", "Country=0"],
+    decodedIndexes: {
+      _0x3812: { "447": "seat", "620": "Country", "801": "seatUIs", "967": "Index", "1021": "seatContainer", "1221": "isDead", "1322": "gamescene", "1342": "FaceUpCountry", "1389": "IsHide" },
+      _0x497b: { "470": "SmsgGamePlayerDead", "471": "SeatID", "541": "myID", "783": "SelfSeatUi" },
+      _0x3911: { "191": "start", "370": "isGameStart" }
+    },
+    chain: [
+      "官方快照V2t.CountryCount遍历seats，以IsLegalOperable过滤并对Country去重；IsLegalOperable=IsFull&&isDead==0&&isHide==0，IsFull为playerInfo非空。V2t仅为快照混淆符号，不假设全局可调用。",
+      "非国战Country优先changedCountry，其次模式势力/化身/武将；不要按配置原始势力或只限1..4。CountryCount不排除0，开局必须等待座位/武将/势力数据就绪。",
+      "原生导出Laya.Browser.window.GameContext=V2t已确认。aliveCountrySummary从laya.class(GameContext).Seats读取，缺席回退gamescene.seatContainer.seatUIs->ui.seat；按Index去重，对IsLegalOperable座位当前Country去重，0/缺位显示等待数据。",
+      "addFrame->mount在result父列末尾创建xcAliveCountrySummary，位于严教/糜竺小抄结果样式下方，显示场上势力数：N；不写原result。game.start->start；logic解析类名后onMessage观察任意死者SeatID，不沿用本人死亡门槛。",
+      "原生ServerProxy_Dead->seat.Dead先置IsDead=true再派发qk.DEAD；控制器setTimeout离开调用栈并等pendingDeaths全部IsDead后重算。角色/势力/数据/休整/重连/阶段事件亦刷新。国战汇总未复用，国战隐藏新行。",
+      "闭包拥有active/scene/generation/timer/attempts/pendingDeaths/text，单任务最多40次250ms等待，成功无常驻轮询；game.end及Exit清理，代次阻止旧回调污染新局，面板重建幂等恢复。日志只走appendLocalSkinDebugLine(false)，无新配置或发布文件。",
+      "前期原生6项模拟、实现后alive-country-summary.cjs 15项及入口检查、可见牌33项、语法和模块版本检查通过；Chrome实际模板/CSS截图核对位置。核对Roaming与HEAD同源后持安装锁原子同步并备份，安装文件语法/15项通过，详情见架构表；待重新加载，未游戏内实测或生成asar。回滚同步移除闭包及start/end/addFrame/Exit/logic接线。来源哈希和字符偏移见OL指南。"
+    ]
+  },
   autoTaskChain: {
     title: "自动任务：TASK_VIP 无监听、虚假每日完成标记与本地执行链修复",
     verifiedAt: "2026-10-21",
