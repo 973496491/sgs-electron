@@ -202,8 +202,14 @@ async function browserChecks() {
     checkNativeCaption("caption width, typography and switch-relative placement match the native settings entry");
     gear.click();
     const settingsDialog = document.getElementById("xcHandSortSettingsDialog");
-    check(settingsDialog.querySelectorAll('input[type="checkbox"]').length === 1 && !settingsDialog.textContent.includes("顶部卡牌"), "hand settings keep only hand options after pile controls move to deck settings");
+    check(settingsDialog.querySelectorAll('input[type="checkbox"]').length === 2 && !settingsDialog.textContent.includes("顶部卡牌"), "hand settings contain suit selection and automatic checkbox reset only");
     const suitToggle = document.getElementById("xcHandSuitSelectionToggle");
+    const autoClearToggle = document.getElementById("xcHandAutoClearSuitSelectionToggle");
+    const suitRow = suitToggle.closest(".switch").parentElement;
+    const autoClearRow = autoClearToggle.closest(".switch").parentElement;
+    check(!autoClearToggle.checked && !handCards.getOptions().autoClearSuitSelection &&
+      suitRow.nextElementSibling === autoClearRow && autoClearRow.textContent.includes("选牌后自动取消反选"),
+      "automatic checkbox reset defaults off directly below the suit selection row");
     const horizontal = settingsDialog.querySelector('input[value="horizontal"]');
     const vertical = settingsDialog.querySelector('input[value="vertical"]');
     check(settingsDialog.open && toggle.checked && panel.style.display === "block", "gear opens configuration without toggling the floating panel");
@@ -446,6 +452,40 @@ async function browserChecks() {
     laya.class = originalClass;
     check(sortLogs.some(line => line.includes("suit:select")) && !sortLogs.some(line => line.includes("suit:error")), "selection diagnostics use the existing debug window bridge");
 
+    const autoClearHand = makeSelectableHand();
+    laya.gamescene = { SelfSeatUi: { cardContainer: autoClearHand } };
+    handCards.mount();
+    handCards.openSettings();
+    const autoClearOption = document.getElementById("xcHandAutoClearSuitSelectionToggle");
+    const beforeAutoClearOption = autoClearHand.operations.length;
+    autoClearOption.click();
+    check(handCards.getOptions().autoClearSuitSelection &&
+      JSON.parse(localStorage.getItem("xcHandSortFloatingPanel")).autoClearSuitSelection === true &&
+      autoClearHand.operations.length === beforeAutoClearOption,
+      "automatic reset switch persists without changing the native card selection");
+    handCards.closeSettings();
+    setSuits([1]);
+    check(chosen(autoClearHand) === "14" && state.suitInputs.every(input => !input.checked),
+      "all selects the requested cards then clears only the suit checkboxes");
+    setSuits([1], true);
+    check(chosen(autoClearHand) === "023" && state.suitInputs.every(input => !input.checked),
+      "inverse selects the complement then clears only the suit checkboxes");
+    state.selectionButtons[1].click();
+    check(chosen(autoClearHand) === "01234", "next inverse uses the cleared filter state rather than the old suits");
+    autoClearHand.areChoosingCard = false;
+    configureSuits([1]);
+    state.selectionButtons[0].dispatchEvent(new Event("click"));
+    check(suitInput(1).checked && chosen(autoClearHand) === "01234", "unavailable selection retains checked filters for the next valid action");
+    autoClearHand.areChoosingCard = true;
+    autoClearHand.afterClick = () => { laya.gamescene = { SelfSeatUi: { cardContainer: makeSelectableHand() } }; };
+    state.selectionButtons[0].click();
+    check(suitInput(1).checked, "scene replacement interrupts selection without clearing the configured filters");
+    delete autoClearHand.afterClick;
+    laya.gamescene = { SelfSeatUi: { cardContainer: autoClearHand } };
+    handCards.setOptions({ autoClearSuitSelection: false });
+    setSuits([1]);
+    check(suitInput(1).checked && chosen(autoClearHand) === "14", "turning reset off restores retained filter behavior");
+    handCards.setOptions({ autoClearSuitSelection: true });
     const latestPanelPreferences = JSON.parse(localStorage.getItem("xcHandSortFloatingPanel"));
     state.panel.remove();
     handCards.mount();
@@ -456,14 +496,16 @@ async function browserChecks() {
     handCards.setOptions({ suitSelection: false, orientation: "vertical" });
     recreateHandCards();
     handCards.mount();
-    check(!panelView.suitSelection && panelView.orientation === "vertical", "rebuilt panel restores both feature and orientation preferences");
+    check(!panelView.suitSelection && panelView.orientation === "vertical" && handCards.getOptions().autoClearSuitSelection,
+      "rebuilt panel restores feature, orientation and automatic reset preferences");
     handCards.setOptions({ suitSelection: true });
     check(panelView.orientation === "vertical", "enabling the feature preserves the chosen orientation");
     recreateHandCards();
     localStorage.setItem("xcHandSortFloatingPanel", "malformed-json");
     handCards.mount();
     check(!!panelView.panel.isConnected && panelView.hidden, "invalid preferences default to a hidden panel");
-    check(panelView.suitSelection && panelView.orientation === "horizontal", "missing or invalid options retain enhanced horizontal defaults");
+    check(panelView.suitSelection && panelView.orientation === "horizontal" && !handCards.getOptions().autoClearSuitSelection,
+      "missing or invalid options retain enhanced horizontal defaults with automatic reset off");
     handCards.setVisible(true);
     check(toggle.checked, "core visibility bridge synchronizes the settings switch");
     document.getElementById("xcHandSortSwitchRow").remove();

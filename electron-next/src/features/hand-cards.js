@@ -32,6 +32,7 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
         top: Number.isFinite(saved.top) ? saved.top : 80,
         hidden: saved.visible !== true,
         suitSelection: saved.suitSelection !== false,
+        autoClearSuitSelection: saved.autoClearSuitSelection === true,
         orientation: saved.orientation === "vertical" ? "vertical" : "horizontal",
         timer: null, cleanup: null, suits: [], selecting: false,
       };
@@ -83,6 +84,10 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
         if (stopped) break;
       }
       logHandSortPanel("suit:select", { suits: [...suits], inverse, changed, stopped });
+      if (!stopped && state.autoClearSuitSelection && stillCurrent()) {
+        state.suits = [];
+        state.suitInputs.forEach(input => { input.checked = false; });
+      }
       return !stopped;
     } catch (error) {
       logHandSortPanel("suit:error", { message: String(error.message || error) });
@@ -112,6 +117,7 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
       storage.setItem("xcHandSortFloatingPanel", JSON.stringify({
         left: state.left, top: state.top, visible: !state.hidden,
         suitSelection: state.suitSelection, orientation: state.orientation,
+        autoClearSuitSelection: state.autoClearSuitSelection,
       }));
     } catch (error) {
       logHandSortPanel("position:save-error", { message: String(error.message || error) });
@@ -160,23 +166,27 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
     const settings = handSortSettingsState, state = handSortPanelState;
     if (!settings?.dialog.isConnected || !state) return;
     settings.toggle.checked = state.suitSelection;
+    settings.autoClearToggle.checked = state.autoClearSuitSelection;
     settings.radios.forEach(input => { input.checked = input.value === state.orientation; });
   }
   function getOptions() {
     ensureState();
     return { suitSelection: handSortPanelState?.suitSelection !== false,
+      autoClearSuitSelection: handSortPanelState?.autoClearSuitSelection === true,
       orientation: handSortPanelState?.orientation || "horizontal" };
   };
   function setOptions(options) {
     if (!ensureHandSortFloatingPanel()) return false;
     const state = handSortPanelState;
     if (typeof options?.suitSelection === "boolean") state.suitSelection = options.suitSelection;
+    if (typeof options?.autoClearSuitSelection === "boolean") state.autoClearSuitSelection = options.autoClearSuitSelection;
     if (options?.orientation === "horizontal" || options?.orientation === "vertical")
       state.orientation = options.orientation;
     applyHandSortPanelLayout();
     syncHandSortSettings();
     saveHandSortPanelPosition();
-    logHandSortPanel("panel:options", { suitSelection: state.suitSelection, orientation: state.orientation });
+    logHandSortPanel("panel:options", { suitSelection: state.suitSelection, orientation: state.orientation,
+      autoClearSuitSelection: state.autoClearSuitSelection });
     return true;
   };
   function closeSettings() {
@@ -253,6 +263,23 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
       first.append(caption, toggleLabel);
       content.appendChild(first);
       settingsScope.listen(toggle, "change", () => setOptions({ suitSelection: toggle.checked }));
+      const autoClearRow = document.createElement("div");
+      autoClearRow.style.cssText = first.style.cssText;
+      const autoClearCaption = document.createElement("label");
+      autoClearCaption.htmlFor = "xcHandAutoClearSuitSelectionToggle";
+      autoClearCaption.textContent = "选牌后自动取消反选";
+      autoClearCaption.style.cursor = "pointer";
+      const autoClearLabel = document.createElement("label");
+      autoClearLabel.className = "switch";
+      const autoClearToggle = document.createElement("input");
+      autoClearToggle.id = autoClearCaption.htmlFor;
+      autoClearToggle.type = "checkbox";
+      const autoClearSlider = document.createElement("span"), autoClearStatus = document.createElement("span");
+      autoClearSlider.className = "slider"; autoClearStatus.className = "status";
+      autoClearLabel.append(autoClearToggle, autoClearSlider, autoClearStatus);
+      autoClearRow.append(autoClearCaption, autoClearLabel);
+      content.appendChild(autoClearRow);
+      settingsScope.listen(autoClearToggle, "change", () => setOptions({ autoClearSuitSelection: autoClearToggle.checked }));
       const second = document.createElement("fieldset");
       second.style.cssText = "display:flex;align-items:center;gap:14px;border:0;padding:0;margin:0;min-width:0";
       const heading = document.createElement("span");
@@ -284,7 +311,7 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
       settingsScope.listen(window, "resize", positionHandSortSettings);
       settingsScope.listen(window, "scroll", positionHandSortSettings, true);
       document.body.appendChild(dialog);
-      handSortSettingsState = { dialog, toggle, radios, scope: settingsScope };
+      handSortSettingsState = { dialog, toggle, autoClearToggle, radios, scope: settingsScope };
     }
     syncHandSortSettings();
     const dialog = handSortSettingsState.dialog;

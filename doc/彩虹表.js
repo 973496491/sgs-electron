@@ -33429,9 +33429,10 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
   },
   handSortFloatingPanel: {
     "title": "整理手牌 / 独立模块装配与生命周期",
-    "verifiedAt": "2026-10-25",
+    "verifiedAt": "2026-11-04",
     "sourceFile": "electron-next/resources/daxiaochao.user.js",
     "searchKeywords": [
+      "选牌后自动取消反选", "autoClearSuitSelection", "xcHandAutoClearSuitSelectionToggle", "清空花色勾选", "118项",
       "整理手牌",
       "独立浮动面板",
       "reorderFlower",
@@ -33587,6 +33588,9 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       }
     },
     "chain": [
+      "2026-11-04新增选牌后自动取消反选：openSettings中xcHandAutoClearSuitSelectionToggle放在花色选中下一行、UI样式上一行；autoClearSuitSelection默认false，严格true启用，复用xcHandSortFloatingPanel存储、get/setOptions和设置同步，状态归属handCards模块。",
+      "全选/反选完成且未中断、stillCurrent通过后，开启自动清除才将state.suits=[]并令四个suitInputs.checked=false；不改刚选好的原生手牌。下一次动作读空筛选；无上下文/基本模式/异常/换场/卸载不清，关闭保留旧行为。无新增挂钩、定时器或发布文件，settingsScope/dispose统一清理；改模块源后build:userscript装配。",
+      "新增行为及现有整理手牌Chrome真实DOM/模拟服务共118项通过，装配宿主8项、版本7项及语法通过，设置截图确认新开关在花色选中正下方。未游戏内实测；回退模块状态/UI/完成后清理并重新装配，已有新字段可忽略。",
       "唯一维护源为src/features/hand-cards.js和src/adapters/hand-cards-client.js，导出无全局副作用的工厂；build-userscript-modules.cjs把工厂装配入userscript两个GENERATED MODULE区块，只替换区块。npm run build:userscript生成、npm run check:userscript检查过期，不改现有单脚本加载器/asar。",
       "核心创建handCards时显式注入真实闭包laya getter、可用性getter、storage和调试log；不使用页面同名laya。start注册DOM-ready/零延时启动，addFrame执行start/mount。第二IIFE经__xcAttachHandCardsMainPanel注入动态getControls和公共DOM助手。旧reorderCard及所有原__xc HandSort桥只转发模块接口。",
       "模块私有维护panel/settings/main状态、scope和generation；对外冻结start/mount/dispose/attachMainPanel/requestMainPanel/sort/selectBySuit/setVisible/isVisible/getOptions/setOptions/openSettings/closeSettings接口。isVisible/getOptions不建DOM，getOptions返回副本；dispose后仅显式start能重启。",
