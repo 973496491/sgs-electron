@@ -50,46 +50,47 @@ test('panel appends once below result without changing existing output', h => {
   assert.equal(h.host.lastElementChild.id, 'xcAliveCountrySummary');
   assert.equal(h.result.textContent, '原严教/糜竺结果');
 });
-test('start waits for callback and counts distinct countries', h => {
-  h.feature.start(); assert.equal(h.text(), '场上势力数：—'); h.tick();
-  assert.equal(h.text(), '场上势力数：2'); assert.equal(h.tasks.size, 0);
+test('start waits for callback and lists distinct countries in stable order', h => {
+  h.context.Seats.reverse();
+  h.feature.start(); assert.equal(h.text(), '场上势力数[—]'); h.tick();
+  assert.equal(h.text(), '场上势力数[2] 魏, 蜀'); assert.equal(h.tasks.size, 0);
 });
 test('non-self death waits until model updates and retains surviving faction', h => {
   h.feature.start(); h.tick(); h.feature.onMessage('SmsgGamePlayerDead', 1); h.tick();
-  assert.equal(h.text(), '场上势力数：等待数据');
-  h.seats[1].IsDead = true; h.tick(); assert.equal(h.text(), '场上势力数：2');
+  assert.equal(h.text(), '场上势力数[—] 等待数据');
+  h.seats[1].IsDead = true; h.tick(); assert.equal(h.text(), '场上势力数[2] 魏, 蜀');
 });
 test('last member death reduces count', h => {
   h.feature.start(); h.tick(); h.feature.onMessage('SmsgGamePlayerDead', 0);
-  h.seats[0].IsDead = true; h.tick(); assert.equal(h.text(), '场上势力数：1');
+  h.seats[0].IsDead = true; h.tick(); assert.equal(h.text(), '场上势力数[1] 蜀');
 });
 test('multiple pending deaths are coalesced and both must finish', h => {
   h.feature.start(); h.tick();
   h.feature.onMessage('SmsgGamePlayerDead', 1); h.feature.onMessage('SmsgGamePlayerDead', 2);
   assert.equal(h.tasks.size, 1); h.seats[1].IsDead = true; h.tick();
-  assert.equal(h.text(), '场上势力数：等待数据');
-  h.seats[2].IsDead = true; h.tick(); assert.equal(h.text(), '场上势力数：1');
+  assert.equal(h.text(), '场上势力数[—] 等待数据');
+  h.seats[2].IsDead = true; h.tick(); assert.equal(h.text(), '场上势力数[1] 魏');
 });
 test('unknown country is not counted as a faction and can become ready', h => {
-  h.seats[0].Country = 0; h.feature.start(); h.tick(); assert.equal(h.text(), '场上势力数：等待数据');
-  h.seats[0].Country = 6; h.tick(); assert.equal(h.text(), '场上势力数：2');
+  h.seats[0].Country = 0; h.feature.start(); h.tick(); assert.equal(h.text(), '场上势力数[—] 等待数据');
+  h.seats[0].Country = 6; h.tick(); assert.equal(h.text(), '场上势力数[2] 蜀, 晋');
 });
 test('missing seat delays initial count', h => {
   h.seats[2].IsFull = false; h.feature.start(); h.tick();
-  assert.equal(h.text(), '场上势力数：等待数据');
-  h.seats[2].IsFull = true; h.tick(); assert.equal(h.text(), '场上势力数：2');
+  assert.equal(h.text(), '场上势力数[—] 等待数据');
+  h.seats[2].IsFull = true; h.tick(); assert.equal(h.text(), '场上势力数[2] 魏, 蜀');
 });
 test('current changed faction and hidden/dead seats use native model', h => {
   h.feature.start(); h.tick(); h.seats[0].Country = 6;
   h.seats[1].IsHide = true; h.seats[2].IsDead = true;
-  h.feature.onMessage('SmsgSetCharacterCountry'); h.tick(); assert.equal(h.text(), '场上势力数：1');
+  h.feature.onMessage('SmsgSetCharacterCountry'); h.tick(); assert.equal(h.text(), '场上势力数[1] 晋');
 });
 test('all dead yields zero', h => {
-  h.seats.forEach(s => s.IsDead = true); h.feature.start(); h.tick(); assert.equal(h.text(), '场上势力数：0');
+  h.seats.forEach(s => s.IsDead = true); h.feature.start(); h.tick(); assert.equal(h.text(), '场上势力数[0]');
 });
 test('seat UI fallback deduplicates models', h => {
   delete h.context.Seats; h.scene.seatContainer.seatUIs.push({ seat: h.seats[0] });
-  h.feature.start(); h.tick(); assert.equal(h.text(), '场上势力数：2');
+  h.feature.start(); h.tick(); assert.equal(h.text(), '场上势力数[2] 魏, 蜀');
 });
 test('national war is excluded', h => {
   h.context.IsCountryWar = true; h.feature.start(); h.tick();
@@ -98,23 +99,23 @@ test('national war is excluded', h => {
 test('stop cancels callbacks including an already queued stale callback', h => {
   h.feature.start(); const old = [...h.tasks.values()][0].fn;
   h.feature.stop(); h.feature.start(); old(); assert.equal(h.tasks.size, 1);
-  h.tick(); assert.equal(h.text(), '场上势力数：2');
-  h.feature.stop(); assert.equal(h.tasks.size, 0); assert.equal(h.text(), '场上势力数：—');
+  h.tick(); assert.equal(h.text(), '场上势力数[2] 魏, 蜀');
+  h.feature.stop(); assert.equal(h.tasks.size, 0); assert.equal(h.text(), '场上势力数[—]');
 });
 test('scene replacement stops old work', h => {
   h.feature.start(); h.tick(); h.feature.onMessage('SmsgGamePlayerDead', 0);
-  h.laya.gamescene = {}; h.tick(); assert.equal(h.text(), '场上势力数：—'); assert.equal(h.tasks.size, 0);
+  h.laya.gamescene = {}; h.tick(); assert.equal(h.text(), '场上势力数[—]'); assert.equal(h.tasks.size, 0);
 });
 test('retry budget is bounded and later model event can recover', h => {
   h.seats[0].Country = 0; h.feature.start();
   for (let i = 0; i < 40; i++) { h.feature.start(); h.tick(); }
   assert.equal(h.tasks.size, 0); assert(h.logs.some(s => s.includes('数据未就绪')));
   h.seats[0].Country = 1; h.feature.onMessage('SmsgGameSetCharacter'); h.tick();
-  assert.equal(h.text(), '场上势力数：2');
+  assert.equal(h.text(), '场上势力数[2] 魏, 蜀');
 });
 test('panel reconstruction restores last result in new host', h => {
   h.feature.start(); h.tick(); h.nodes.delete('xcAliveCountrySummary'); h.feature.mount();
-  assert.equal(h.host.lastElementChild.id, 'xcAliveCountrySummary'); assert.equal(h.text(), '场上势力数：2');
+  assert.equal(h.host.lastElementChild.id, 'xcAliveCountrySummary'); assert.equal(h.text(), '场上势力数[2] 魏, 蜀');
 });
 // Reachability at the actual lifecycle and message entry points.
 assert(source.slice(source.indexOf('        start() {'), source.indexOf('        enter(n, t, e) {')).includes('aliveCountrySummary.start()'));

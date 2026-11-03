@@ -22185,7 +22185,8 @@
   // 非国战场上势力数；独立拥有显示、就绪等待和当前对局任务。
   const aliveCountrySummary = (() => {
     let active = false, scene = null, timer = null, generation = 0;
-    let attempts = 0, text = "场上势力数：—";
+    let attempts = 0, text = "场上势力数[—]";
+    const countryNames = { 1: "魏", 2: "蜀", 3: "吴", 4: "群", 5: "神", 6: "晋", 7: "妖", 8: "邪" };
     const pendingDeaths = new Set();
     function mount() {
       const host = document.getElementById("result")?.parentElement;
@@ -22210,7 +22211,7 @@
       active = false;
       scene = null;
       pendingDeaths.clear();
-      text = "场上势力数：—";
+      text = "场上势力数[—]";
       mount();
     }
     function read() {
@@ -22238,7 +22239,7 @@
         if (!Number.isInteger(country) || country <= 0) return { ready: false };
         countries.add(country);
       }
-      return { ready: true, count: countries.size };
+      return { ready: true, countries: [...countries].sort((a, b) => a - b) };
     }
     function run(token) {
       if (!active || token !== generation) return;
@@ -22255,13 +22256,14 @@
       }
       if (result.ready) {
         pendingDeaths.clear();
-        const next = "场上势力数：" + result.count;
+        const names = result.countries.map(id => countryNames[id] || "势力" + id);
+        const next = "场上势力数[" + names.length + "]" + (names.length ? " " + names.join(", ") : "");
         if (text !== next) appendLocalSkinDebugLine("[势力统计] " + next, false);
         text = next;
         mount();
         return;
       }
-      text = "场上势力数：等待数据";
+      text = "场上势力数[—] 等待数据";
       mount();
       if (++attempts < 40) timer = setTimeout(() => run(token), 250);
       else appendLocalSkinDebugLine("[势力统计] 数据未就绪，等待后续对局事件" + (result.error ? "：" + result.error : ""), false);
