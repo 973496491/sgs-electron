@@ -9047,6 +9047,7 @@
     avatar: i = null,
     text: a = "",
     getText: r = null,
+    getLines = null,
   } = {}) {
     const l = _0x4eef;
     if (!n) return;
@@ -9056,7 +9057,9 @@
       if (e && (null == t ? void 0 : t[i(324)]) != e) return;
       const c = null == t ? void 0 : t[i(360)];
       if (!c) return;
-      const u = o ? (typeof r == i(329) ? r(t) : a) : "",
+      const lines = o && typeof getLines === "function" ? getLines(t) : null;
+      const u = lines ? lines.map((line) => line.text).join("\n")
+          : o ? (typeof r == i(329) ? r(t) : a) : "",
         f = u ? String(u) : "";
       f && notifyAdvancedFeatureTrial(n);
       const x = i(356) + n;
@@ -9077,8 +9080,38 @@
           v[i(321)](Math[i(354)](0, c[i(336)] - v[i(336)] - 15), 40),
           (c[x] = v),
           c[i(359)](v)),
-        v[i(349)] != f && (v[i(349)] = f),
+        v[i(349)] != (lines ? "" : f) && (v[i(349)] = lines ? "" : f),
         (v[i(355)] = Boolean(f)));
+      if (!v) return;
+      // 分行颜色由调用方提供；头像拥有这些文本节点，重画复用，不缓存局内历史。
+      const rows = v.__xcGeneralTipLines || [];
+      if (lines && f) {
+        v.__xcGeneralTipLines = rows;
+        lines.forEach((line, index) => {
+          let row = rows[index];
+          if (!row) {
+            row = rows[index] = new Laya.Text();
+            row.fontSize = 12;
+            row.stroke = 2;
+            row.strokeColor = "#000000";
+            row.align = "right";
+            row.mouseEnabled = false;
+            row.width = 70;
+            row.height = 14;
+            row.pos(0, index * 14);
+            v.addChild(row);
+          }
+          row.text = line.text;
+          row.color = line.color || "#FFFFFF";
+          row.visible = true;
+        });
+      }
+      rows.forEach((row, index) => {
+        if (!lines || !f || index >= lines.length) {
+          row.text = "";
+          row.visible = false;
+        }
+      });
     });
   }
   _0x3fc3ca();
@@ -17013,6 +17046,73 @@
       _0x47c207(961),
       _0x47c207(216),
     ];
+  // 权御显示偏好和面板控件由本闭包维护；原生模型仍是效果状态的唯一来源。
+  const quanYuDisplay = (() => {
+    const storageKey = "xcQuanYuAllSelected";
+    let allSelected = true, control = null;
+    try { allSelected = localStorage.getItem(storageKey) !== "false"; } catch (_) {}
+    function cleanupControls() {
+      if (!control) return;
+      control.input.onchange = control.container.onclick = null;
+      control.container.remove();
+      control = null;
+    }
+    function setAllSelected(value) {
+      allSelected = !!value;
+      try { localStorage.setItem(storageKey, String(allSelected)); } catch (_) {}
+      if (control) control.input.checked = allSelected;
+      _0x43fd79({ seatUis: laya.gamescene?.seatContainer?.seatUIs || [] });
+      appendLocalSkinDebugLine("[权御显示] " + (allSelected ? "全部已选" : "原显示链"), false);
+    }
+    function mountControls() {
+      const deck = document.getElementById("xcDeckVisibilityControl");
+      const reference = document.getElementById("wallpaperContainer");
+      if (!deck?.parentNode || !reference) { cleanupControls(); return false; }
+      if (control?.container.isConnected && control.container.previousElementSibling === deck) {
+        control.input.checked = allSelected;
+        return true;
+      }
+      cleanupControls();
+      document.getElementById("xcQuanYuDisplayControl")?.remove();
+      const container = reference.cloneNode(true);
+      for (const node of [container, ...container.querySelectorAll("*")]) {
+        node.removeAttribute("id");
+        for (const attribute of Array.from(node.attributes))
+          if (/^on/i.test(attribute.name) || /^data-/.test(attribute.name) || attribute.name === "title")
+            node.removeAttribute(attribute.name);
+      }
+      const input = container.querySelector("input"), oldCaption = container.querySelector(".explanation");
+      if (!input || !oldCaption) return false;
+      const caption = document.createElement("label");
+      caption.className = oldCaption.className;
+      caption.style.cssText = oldCaption.style.cssText;
+      oldCaption.replaceWith(caption);
+      container.id = "xcQuanYuDisplayControl";
+      container.setAttribute("data-tooltip", "打开按钮后，显示目标所有选择过的权御效果");
+      input.id = "xcQuanYuDisplayToggle";
+      input.type = "checkbox";
+      input.name = "";
+      input.disabled = false;
+      input.checked = allSelected;
+      input.setAttribute("aria-label", "权御全显");
+      for (const node of container.querySelectorAll("[for]")) node.setAttribute("for", input.id);
+      caption.textContent = "权御全显";
+      caption.setAttribute("for", input.id);
+      const style = document.createElement("style");
+      style.textContent = "#xcQuanYuDisplayControl .explanation::after{content:none!important}";
+      container.appendChild(style);
+      const owner = { container, input };
+      control = owner;
+      input.onchange = (event) => {
+        event.stopPropagation();
+        if (control === owner) setAllSelected(input.checked);
+      };
+      container.onclick = (event) => event.stopPropagation();
+      deck.parentNode.insertBefore(container, deck.nextSibling);
+      return true;
+    }
+    return { get allSelected() { return allSelected; }, setAllSelected, mountControls, cleanupControls };
+  })();
   function _0x43fd79({
     seatUis: n = [],
     seat: t = null,
@@ -17024,24 +17124,24 @@
       seatUis: n,
       seat: t,
       avatar: e,
-      getText: (n) => {
-        var t, e, a, r;
-        const l = i,
-          o =
-            null == (e = null == (t = n[l(447)]) ? void 0 : t[l(1063)])
-              ? void 0
-              : e.call(t, _0x287c73),
-          c = (
-            null == (r = null == (a = n[l(447)]) ? void 0 : a[l(1563)])
-              ? void 0
-              : r.call(a, _0x287c73)
-          )
-            ? Number((null == o ? void 0 : o[0]) || 0)
-            : 0;
-        return c
-          ? _0x2cbd20[l(1557)]((n, t) => c & (1 << (t + 1)))[l(1560)]("\n")
-          : "";
+      // 关闭时复用修改前按官方掩码过滤的显示链，普通/入魔条件由原生维护。
+      getText: ({ seat }) => {
+        const mask = Number(seat?.GetSkillBuffInfo?.(_0x287c73)?.[0]) & 126;
+        return _0x2cbd20.filter((_, index) => mask & (1 << (index + 1))).join("\n");
       },
+      getLines: quanYuDisplay.allSelected ? ({ seat }) => {
+        // 官方先更新当前编号(Datas[2])，再保存已选掩码(Datas[3])。
+        const selectedMask = Number(seat?.GetSkillBuffInfo?.(_0x287c73)?.[0]) & 126;
+        const current = Number(seat?.GetStateValue?.(_0x287c73)) || 0;
+        const hasCurrent = Number.isInteger(current) && current >= 1 && current <= 6;
+        if (!selectedMask && !hasCurrent) return [];
+        return _0x2cbd20.map((text, index) => ({
+          text,
+          color: hasCurrent && current === index + 1 ? "#FFFFFF"
+            : "#00FF00",
+          selected: (hasCurrent && current === index + 1) || !!(selectedMask & (1 << (index + 1))),
+        })).filter((line) => line.selected);
+      } : null,
     });
   }
   const _0x1a2190 = (() => {
@@ -28845,6 +28945,7 @@
     cleanupSkinEffectBlocker();
     if (typeof window.__xcCleanupSkinEffectButton === "function")
       window.__xcCleanupSkinEffectButton();
+    quanYuDisplay.cleanupControls();
     return (
       window[a(439)](a(657), _0x3e479a),
       window[a(439)](a(657), _0x5e4f94),
@@ -30031,6 +30132,7 @@
     if (typeof window.__xcInstallSkinEffectButton === "function")
       window.__xcInstallSkinEffectButton();
     deckVisibilityPanel.mountControls();
+    quanYuDisplay.mountControls();
     aliveCountrySummary.mount();
     if (game.isGameStart && !game.isPassed && laya.gamescene) aliveCountrySummary.start();
   }

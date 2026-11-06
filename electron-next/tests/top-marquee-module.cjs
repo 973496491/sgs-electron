@@ -158,6 +158,7 @@ check("actual core and second-IIFE host wiring share the same instance", () => {
     _0x41a3d0: () => "", handCards: { start() {}, mount() {}, dispose() {} },
     cardThemeFeature: { dispose() {} },
     autoTasks: { dispose() {} },
+    aliveCountrySummary: { stop() {} },
     deckVisibilityPanel: { dispose() { deckDisposals++; } },
     Zone: { resetDeckOrder() { deckOrderResets++; } },
   };

@@ -32724,6 +32724,26 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  moSunQuanQuanYuBuff: {
+    title: "魔孙权权御全显：已选分色/原链两模式，未选不显示",
+    verifiedAt: "2026-11-06",
+    sourceFile: "electron-next/resources/daxiaochao.user.js；本地2026-11-04官方ES6快照",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: ["魔孙权", "权御", "buff", "权御全显", "全部已选", "当前效果", "历史已选", "未选不显示", "原显示链", "quanYuDisplay", "xcQuanYuAllSelected", "xcQuanYuDisplayToggle", "getLines", "quanyu", "3793", "GetStateValue", "SetSkillBuffInfo", "GetSkillBuffInfo", "setGeneralTip", "__xcGeneralTip_quanyu", "QuanYuWindow"],
+    decodedIndexes: {
+      _0x2362: { "133": "权御小抄" },
+      _0x3812: { "239": "quanyu", "472": "伤害+1", "1730": "目标+1", "377": "无视防具", "768": "不可响应", "961": "额外结算", "216": "无次数", "618": "__SetSkillBuffInfo", "744": "SetSkillBuffInfo", "1063": "GetSkillBuffInfo" }
+    },
+    chain: [
+      "权御全显悬浮描述：xcQuanYuDisplayControl[data-tooltip]=打开按钮后，显示目标所有选择过的权御效果；复用面板_0x47344d->_0x96bf04委托提示，仅文案变更。",
+      "官方GsCUpdateRoleDataExNtf(IsSpell=false,DataID=8添加/9移除)->ServerProxy_GsCUpdateRoleDataExNtf->按Datas[0]找QuanYu(3793)->UpdateRoleDataResponse；Datas[2]更新DATA_QUANYU，Datas[3]位掩码写入seat.SetSkillBuffInfo(3793,[e])。移除写[0]。",
+      "laya.init->_0x1a2190安装SetSkillBuffInfo与seatAvatar.SetGeneralCard包装；先调原生方法，再触发_0x43fd79->setGeneralTip(key=quanyu)。前者仅ID3793刷新目标座位，后者按当前头像补画。",
+      "现从GetStateValue(3793)读当前编号1..6，GetSkillBuffInfo(3793)[0]读已选掩码，按2/4/8/16/32/64映射伤害+1、目标+1、无视防具、不可响应、额外结算、无次数。权御全显开启时只显示当前及历史已选：当前#FFFFFF优先、历史#00FF00，未选不显示；均0隐藏。关闭使用原getText按官方掩码筛选链，普通单项/入魔多项由原生提供。移除旧GetSeatState存在判断，不缓存历史、不写原生模型。",
+      "hasAdvancedFeature(quanyu)保留高级权限/本局试用；setGeneralTip新增getLines可选接口，头像__xcGeneralTip_quanyu根Text拥有__xcGeneralTipLines分行Text，字号12/行高14/黑描边/右对齐，重画复用。空数据或无权限清空隐藏，头像重建重新读模型；灼魂getText纯文本不变。官方另有zg.ShowText子状态标签和Xg.ClickCallback->QuanYuWindow。",
+      "quanYuDisplay闭包拥有localStorage.xcQuanYuAllSelected偏好（默认true）和面板控件；addFrame在deckVisibilityPanel.mountControls后mountControls，克隆原生开关并放在牌堆记录后面、皮肤屏蔽下面。xcQuanYuDisplayToggle变化即时存储并刷新全部座位；Exit清处理器/DOM，重建幂等、旧owner回调失效，无新增计时器/事件订阅。",
+      "quanyu-buff模拟、deck-visibility-controls真实浏览器17项、皮肤屏蔽52项、弹幕模块9项、语法/模块版本检查通过；持安装锁备份并原子同步Roaming，哈希及运行文件语法通过，待用户重载测试。未游戏内实测或生成asar；备份路径、快照哈希/偏移与回退见架构表。"
+    ]
+  },
   aliveCountryCount: {
     title: "非国战场上势力数：严教/糜竺区域底部显示与死亡后刷新",
     verifiedAt: "2026-11-04",
