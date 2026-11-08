@@ -32724,24 +32724,57 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
-  moSunQuanQuanYuBuff: {
-    title: "魔孙权权御全显：已选分色/原链两模式，未选不显示",
+  panelQuickActionsCleanup: {
+    title: "浮层面板：任务领取与更新内容移入快捷操作，精简旧按钮和页尾链接",
+    verifiedAt: "2026-11-09",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: ["浮层面板", "快捷操作", "一键领取任务奖励", "task", "layaDiv", "整理手牌", "reorderFlower", "reorderNumber", "handSortPanelSwitch", "关闭百胜武将", "closeBaiShengGenerals", "移除按钮", "保留浮窗", "点击查看最新更新内容", "updateLog", "goutuo", "我要当狗托", "春联收集公式", "加群一起玩", "提需求", "三国秀搭配搜索神器", "关于我们", "external-link", "_0x318e37"],
+    decodedIndexes: { _0x871b: { "569": "task", "407": "closeBaiShengGenerals", "483": "reorderFlower", "622": "reorderNumber", "582": "CardFlower", "291": "CardNumber", "596": "updateLog", "272": ".external-link", "259": "getElementById", "593": "onclick" } },
+    chain: [
+      "山河图手册同日移除：D模板store/panel-content删除无ID external-link、calRes外层按钮及专属div，无初始化依赖，不需要隐藏。ID集合与全部可执行逻辑不变，地图/对白/结局/集市/商品列表和折叠结构保留。两轮真实DOM20项、语法和模块检查通过；01:25持锁备份同步Roaming，备份before-panel-manual-20261109-012552-610.bak，最新源目标SHA256=00568ac0497250c31cf3d706c80d475b370d44f942eeea0cf54275393021a732。版本仍1.0.7，待重载，回退只恢复模板按钮行。",
+      "页尾精简已于2026-11-09 01:16持安装锁备份并原子同步Roaming；备份before-panel-footer-20261109-011649-915.bak，最新源目标SHA256=53e9eaec971606af8bc400f5c05844d993be3a0384bdb57a7e18722cc3936738，版本1.0.7，实际脚本语法通过。未热注入，需重载。",
+      "同日后续：updateLog原按钮从页尾移至layaDiv的goutuo下一行，addFrame的onclick仍调_0x327542(统一版本+_0x378fb5,acTooltip,30000,绿色)。物理删除春联收集公式/加群一起玩/提需求/三国秀搭配搜索神器/关于我们五个无ID静态a及专属width间隔；原绑定为内联提示或_0x318e37通用external-link遍历，不依赖这些节点存在。所有ID及可执行逻辑不变，AC兼容节点保留，无需隐藏；首次/重建28项浏览器及更新版本7项验证通过。回退仅恢复模板，详见架构表。",
+      "后续用户明确要求同步：2026-11-09 01:10持安装独占锁、无待恢复事务、File.Replace原子同步Roaming主脚本；备份before-panel-actions-20261109-011038-488.bak，源目标SHA256=22d2c249e52715a5b54ffc74613a177a857484093f6624d476199ffb623f6f8e，实际语法通过，版本仍1.0.7。覆盖下方工程完成时未同步状态；未热注入/重启，待重载。",
+      "D编码HTML中task原节点从设置底部移到快捷操作layaDiv首项，保留权限和onmousedown -> autoTasks.request(button)；领取业务/过滤/自动开关不改。",
+      "删除reorderFlower/reorderNumber/closeBaiShengGenerals三个按钮及_0x408e48.vip三项绑定，清理原位置br；handSortPanelSwitch开启浮窗及模块排序/选牌/设置/生命周期全部保留，旧reorderCard薄桥仍转发handCards.sort。",
+      "关闭百胜仅移除面板按钮，laya.autoH(9)的closeBaiShengGenerals自动调用保留。无新状态、模块或发布文件；回退恢复模板与三项绑定。",
+      "真实模板DOM10项、手牌浮窗118项、自动任务13项、装配宿主8项、语法与模块版本检查通过；任务前后仅模板和三项绑定变化。未游戏内实测、未同步Roaming、无asar。此前jieFeaturesInSettings/handSortFloatingPanel中旧按钮保留记录为历史基线，以本条为准。"
+    ]
+  },
+  jieFeaturesInSettings: {
+    title: "界小抄移入设置底部：用户澄清误判后已恢复迁移版",
     verifiedAt: "2026-11-06",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: ["界小抄", "移入设置", "设置底部", "移除独立分区", "已恢复", "异常反馈误判", "jie-xiaochao", "jie-header", "_0x3f649d", "setting", "ACSubmit"],
+    decodedIndexes: { _0x871b: { "363": ".jie-header" } },
+    chain: [
+      "用户澄清先前故障反馈为看错并要求恢复；当前为完整迁移版，旧异常/根因未定位描述不属于已确认缺陷。",
+      "addFrame->D()模板：原jie-xiaochao内panel-content原样移入setting panel-content末尾，移除旧wrapper/jie-header，保留19个控件ID、权限/配置及隐藏AC/ACSubmit；日常自动化/秒杀连点器小标题保留。",
+      "_0x3f649d只对已展开设置面板刷新高度，不再使用旧decoder363(.jie-header)；设置原header->nextElementSibling及原click/MutationObserver负责展开。业务状态和绑定仍由各原功能负责，无新增运行状态或发布文件。",
+      "恢复版与原迁移版SHA-256一致为5e4fcaeb3eff4380ed45aaf994e67cf0a5195539e220798f20a45c9c35bd1c03；持安装锁备份并同步工程/Roaming，语法及模块版本检查通过。沿用原DOM98项及相关模拟结果，未游戏内完整验收；恢复路径/回退范围见架构表。"
+    ]
+  },
+  moSunQuanQuanYuBuff: {
+    title: "魔孙权权御全显：开启已选分色、关闭直接隐藏",
+    verifiedAt: "2026-11-07",
     sourceFile: "electron-next/resources/daxiaochao.user.js；本地2026-11-04官方ES6快照",
     docFile: "doc/代码架构表.md",
-    searchKeywords: ["魔孙权", "权御", "buff", "权御全显", "全部已选", "当前效果", "历史已选", "未选不显示", "原显示链", "quanYuDisplay", "xcQuanYuAllSelected", "xcQuanYuDisplayToggle", "getLines", "quanyu", "3793", "GetStateValue", "SetSkillBuffInfo", "GetSkillBuffInfo", "setGeneralTip", "__xcGeneralTip_quanyu", "QuanYuWindow"],
+    searchKeywords: ["魔孙权", "权御", "buff", "权御全显", "全部已选", "当前效果", "当前回合绿色", "历史灰色", "颜色互换", "历史已选", "未选不显示", "关闭隐藏", "无原链回退", "quanYuDisplay", "xcQuanYuAllSelected", "xcQuanYuDisplayToggle", "getLines", "quanyu", "3793", "GetStateValue", "SetSkillBuffInfo", "GetSkillBuffInfo", "setGeneralTip", "__xcGeneralTip_quanyu", "QuanYuWindow"],
     decodedIndexes: {
       _0x2362: { "133": "权御小抄" },
       _0x3812: { "239": "quanyu", "472": "伤害+1", "1730": "目标+1", "377": "无视防具", "768": "不可响应", "961": "额外结算", "216": "无次数", "618": "__SetSkillBuffInfo", "744": "SetSkillBuffInfo", "1063": "GetSkillBuffInfo" }
     },
     chain: [
-      "权御全显悬浮描述：xcQuanYuDisplayControl[data-tooltip]=打开按钮后，显示目标所有选择过的权御效果；复用面板_0x47344d->_0x96bf04委托提示，仅文案变更。",
+      "2026-11-07颜色调整：当前回合绿色#00FF00，以前选过灰色#808080；已选过滤和关闭隐藏不变。专项模拟、语法通过；已备份同步Roaming并核对哈希，详情见架构表。",
+      "权御全显悬浮描述：xcQuanYuDisplayControl[data-tooltip]=打开按钮后，显示目标所有选择过的权御效果；关闭后隐藏权御效果。复用面板_0x47344d->_0x96bf04委托提示。",
       "官方GsCUpdateRoleDataExNtf(IsSpell=false,DataID=8添加/9移除)->ServerProxy_GsCUpdateRoleDataExNtf->按Datas[0]找QuanYu(3793)->UpdateRoleDataResponse；Datas[2]更新DATA_QUANYU，Datas[3]位掩码写入seat.SetSkillBuffInfo(3793,[e])。移除写[0]。",
       "laya.init->_0x1a2190安装SetSkillBuffInfo与seatAvatar.SetGeneralCard包装；先调原生方法，再触发_0x43fd79->setGeneralTip(key=quanyu)。前者仅ID3793刷新目标座位，后者按当前头像补画。",
-      "现从GetStateValue(3793)读当前编号1..6，GetSkillBuffInfo(3793)[0]读已选掩码，按2/4/8/16/32/64映射伤害+1、目标+1、无视防具、不可响应、额外结算、无次数。权御全显开启时只显示当前及历史已选：当前#FFFFFF优先、历史#00FF00，未选不显示；均0隐藏。关闭使用原getText按官方掩码筛选链，普通单项/入魔多项由原生提供。移除旧GetSeatState存在判断，不缓存历史、不写原生模型。",
+      "现从GetStateValue(3793)读当前编号1..6，GetSkillBuffInfo(3793)[0]读已选掩码，按2/4/8/16/32/64映射伤害+1、目标+1、无视防具、不可响应、额外结算、无次数。权御全显开启时只显示当前及历史已选：当前#00FF00绿色优先、历史#808080灰色，未选不显示；均0隐藏。关闭直接隐藏小抄权御叠字：getLines=null且无权御getText回退，公共渲染器默认空文本清理根文本及分行；单/多掩码更新和头像重建仍隐藏，重开从原生模型恢复。移除旧GetSeatState存在判断，不缓存历史、不写原生模型。",
       "hasAdvancedFeature(quanyu)保留高级权限/本局试用；setGeneralTip新增getLines可选接口，头像__xcGeneralTip_quanyu根Text拥有__xcGeneralTipLines分行Text，字号12/行高14/黑描边/右对齐，重画复用。空数据或无权限清空隐藏，头像重建重新读模型；灼魂getText纯文本不变。官方另有zg.ShowText子状态标签和Xg.ClickCallback->QuanYuWindow。",
       "quanYuDisplay闭包拥有localStorage.xcQuanYuAllSelected偏好（默认true）和面板控件；addFrame在deckVisibilityPanel.mountControls后mountControls，克隆原生开关并放在牌堆记录后面、皮肤屏蔽下面。xcQuanYuDisplayToggle变化即时存储并刷新全部座位；Exit清处理器/DOM，重建幂等、旧owner回调失效，无新增计时器/事件订阅。",
-      "quanyu-buff模拟、deck-visibility-controls真实浏览器17项、皮肤屏蔽52项、弹幕模块9项、语法/模块版本检查通过；持安装锁备份并原子同步Roaming，哈希及运行文件语法通过，待用户重载测试。未游戏内实测或生成asar；备份路径、快照哈希/偏移与回退见架构表。"
+      "本轮quanyu-buff模拟覆盖关闭后的单/多效果更新、头像重建保持隐藏及重开恢复；deck-visibility-controls真实浏览器17项、皮肤屏蔽52项、弹幕模块9项、语法/模块版本检查通过；持安装锁备份并原子同步Roaming，哈希及运行文件语法通过，待用户重载测试。未游戏内实测或生成asar；备份路径、快照哈希/偏移与回退见架构表。"
     ]
   },
   aliveCountryCount: {
@@ -32778,6 +32811,8 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       _0x497b: { "420": "lastTaskDate", "566": "小抄正在执行自动签到每日三敲领武将包等每日任务", "613": "TASK_VIP", "791": "autoTaskSwitch" }
     },
     chain: [
+      "2026-11-09用户收窄至冲消返利/充消返利Node：REBATE_NEW/2/3=39/49/50，sys_h5_task.TaskNode.quest_id经k加入taskIds；当前11月7～14日Node1001/1005共40条有配置任务。1363801为通用抵价券（满7000抵2000），原生TaskRewardItem合并Rewards与ExtraRewards，故附加券也命中抵价券名称过滤并跳过整项任务。本期11项169678、169680～169684、169690～169694在真实控制器+原生getter/类型方法+公开配置模拟中全部不提交，其它29项在统一可领奖假设下提交。此Node直接券已有隔离，不能套用其它活动分支结论；未账号实测、无运行代码修改，来源见sanguosha.md充消返利Node定向核查。",
+      "2026-11-09仅核查一键领取/活动奖励优惠券隔离：task按钮直达autoTasks.request(button)，同轮领取71/72节日签到、军典和启程福利等。普通任务仅按TaskRewardItem的CheckHasPropItem或goodsID.name含抵价券跳过整项；优惠券/折扣券名称、描述/类型标志及礼包内奖励无统一筛选，签到/军典/启程福利分支也未复用筛选。GetTaskItemType<=1不代表排除活动，11月4日本地ES6快照10305788按任务条件分类。真实控制器模拟证实抵价券任务跳过、优惠券/折扣券任务和附抵价券信息签到仍提交；未发账号请求、未改运行代码，详见架构表同名核查。",
       "修前开关/按钮、game.end 和 decodeClientSecretInfoRep 只有 TASK_VIP 派发，没有本地注册；laya.task 未被接通。登录处无条件写 lastTaskDate 并提示执行，与是否真正运行脱节；动态eval存在不等于已验证安装监听。",
       "initAllButtons -> autoTasks.start 使用 ged.on/off 只管理自身 TASK_VIP 监听；四处本地触发直达 request，laya.task保留兼容委托。active/dispatcher/current与可取消等待由闭包拥有；多入口合并，关闭及Exit取消，重建总线移除旧订阅，迟到回调核对任务身份。",
       "TaskManager/ActivityManager及必要方法最多等待10次/500ms。原任务/军典/节日签到/点灯/图鉴筛选保留；可选NewFuLiManager缺失和单项错误隔离并写既有调试窗口。仅无本地错误轮次写每日日期，不将请求发送当成服务器到账。",

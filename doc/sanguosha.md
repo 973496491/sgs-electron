@@ -23,6 +23,13 @@
 
 本文只针对 **OL**。
 
+## 充消返利Node定向核查（2026-11-09，仅调查）
+
+- 范围为用户所称“冲消返利”，沿 `WelfareRebateActivityView -> GetRebateActivityListType -> GetQuest -> TaskManager.D/J` 核对一键领取，不扩展其它活动。复用仍存在的11月4日ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-faction-check-wnk21qd9/sgsGame_a.sgs`：返利类型 `REBATE_NEW/2/3=39/49/50`；`GetTaskItemType=10305788`，新任务 `TaskRewardItem=11397484`，返利视图 `13581998`，领取 `J=10409883`，字符偏移只对本快照有效。
+- 旧临时Config.sgs已缺失，本次定向读取官方普通 `https://web.sanguosha.com/220/h5_2/res/config/Config.sgs`，抓取时间 `2026-11-08T16:59:35.412293+00:00`（北京时间11月9日00:59），SHA256 `68d0e2eb7e3bdbbb8a1b451a20298904488762a397bbf0333d07ccfbc7444a90`。两次读取包哈希一致，仅提取 `sys_h5_task.sgs/sys_h5_quest.sgs/sys_gs_dbs_fs_goodsbaseinfo.sgs`，按本文普通AES-CFB/gzip解析；另定向解析h5_global_conf，但其中未检出“充消返利”标签，未以此证明当前页面按钮文案。没有涉及 `_w`，没有重新归档全客户端。
+- 当前期11月7～14日返利任务Node1001“充值福利”、1005“消费福利”，40条有配置任务；1363801原始道具字段 `a=1363801,b=通用抵价券（满7000抵2000）`。原生getter将 `Rewards/Count` 和 `ExtraRewards` 合并为 `TaskRewardItem`，小抄按奖励道具名含“抵价券”跳过整项任务，含附加券的11项均被隔离。与主脚本真实控制器及原生getter/任务类型方法抽取合用公开配置模拟，11项不提交、其余29项在统一CanAward=true且无持有阻挡假设下提交；不证明账号已满足条件或实际到账。任务号及完整边界见架构表同名补充。
+- 临时目录 `C:/Users/97349/AppData/Local/Temp/xc-rebate-audit-4us0o7bg/` 保存定向密文/JSON、source.json、coupon-goods.json与verification.json；模拟脚本仅本轮内存执行，未声称已落地可复用工具。主程序较配置早5天，是静态跨快照核对，未运行当前在线UI或发送账号请求。无运行脚本、配置开关、asar或安装文件修改。
+
 ## 非国战场上势力数核验（2026-11-04，仅调查）
 
 此前临时目录仍存在，但其中主程序文件已缺失；本次仅定向下载 `https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs`，按普通 ZIP 解出 `sgsGame_a.sgs` 明文 JS，无需配置 AES 解密，也未涉及 `_w` WASM 分支。抓取时间为 `2026-11-03T16:09:26Z`（北京时间11月4日00:09），原包 SHA-256 为 `c4843fbdc49adfa966688112fc9b5a82884e543b9ed6605d616bd3a86734842f`；解出文件本次位于 `C:/Users/97349/AppData/Local/Temp/xc-faction-check-wnk21qd9/sgsGame_a.sgs`。临时文件可被清理，使用前需重新确认存在。

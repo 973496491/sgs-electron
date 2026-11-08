@@ -72,29 +72,35 @@ for (let current = 1; current <= 6; current++) {
   assert.equal(rows.length, current, "unselected effects omitted");
   assert.deepEqual(Array.from(rows, (r) => r.text), ["伤害+1", "目标+1", "无视防具", "不可响应", "额外结算", "无次数"].slice(0, current));
   assert.deepEqual(colors(), Array.from({ length: current }, (_, i) =>
-    i + 1 === current ? "#FFFFFF" : "#00FF00"));
+    i + 1 === current ? "#00FF00" : "#808080"));
   assert.equal(uis[0].seatAvatar.children.length, 1, "root reused");
   assert.equal(root().children.length, current, "rows allocated only as needed");
 }
 assert.equal(uis[1].seatAvatar.__xcGeneralTip_quanyu, undefined, "other seats untouched");
 seats[0].current = 0;
 seats[0].SetSkillBuffInfo(3793, [126]);
-assert(colors().every((color) => color === "#00FF00"), "history without current effect");
+assert(colors().every((color) => color === "#808080"), "history without current effect");
 seats[0].current = 3;
 seats[0].SetSkillBuffInfo(3793, [0]);
-assert.deepEqual(colors(), ["#FFFFFF"], "current independent of mask; old row slots hidden");
+assert.deepEqual(colors(), ["#00FF00"], "current independent of mask; old row slots hidden");
 assert.equal(root().children.length, 6, "reduced selection reuses existing nodes");
 vm.runInContext("quanYuDisplay.setAllSelected(false)", ctx);
 assert.equal(saved.get("xcQuanYuAllSelected"), "false");
-assert.equal(root().visible, false, "original path follows mask without inventing current entries");
+assert.equal(root().visible, false, "off immediately hides overlay");
 seats[0].SetSkillBuffInfo(3793, [8]);
-assert.equal(root().text, "无视防具", "original single selection");
-assert(visibleRows().length === 0, "switching to original text hides colored rows");
+assert.equal(root().visible, false, "off stays hidden after single-effect update");
+assert.equal(root().text, "");
+assert(visibleRows().length === 0, "off clears colored rows");
 seats[0].SetSkillBuffInfo(3793, [126]);
-assert.equal(root().text.split("\n").length, 6, "original multiple-selection/rumo mask retained");
+assert.equal(root().visible, false, "off stays hidden after multiple-effect/rumo update");
+assert.equal(root().text, "");
+const hiddenAvatar = new Avatar(seats[0]);
+assert.equal(hiddenAvatar.SetGeneralCard(99), "native-avatar");
+assert.equal(hiddenAvatar.__xcGeneralTip_quanyu, undefined, "off remains hidden on avatar rebuild");
+assert.equal(seats[0].mask, 126, "off does not clear native effect state");
 vm.runInContext("quanYuDisplay.setAllSelected(true)", ctx);
 assert.equal(saved.get("xcQuanYuAllSelected"), "true");
-assert.equal(root().text, "", "switch back removes old plain text");
+assert.equal(root().text, "", "enabled display uses colored rows");
 assert.equal(colors().length, 6);
 seats[0].SetSkillBuffInfo(3793, [0]);
 enabled = false;
@@ -112,7 +118,7 @@ seats[0].mask = 6;
 const avatar = new Avatar(seats[0]);
 assert.equal(avatar.SetGeneralCard(123), "native-avatar");
 assert.equal(avatar.general, 123);
-assert.equal(avatar.__xcGeneralTip_quanyu.__xcGeneralTipLines[1].color, "#FFFFFF", "avatar rebuild reads live model");
+assert.equal(avatar.__xcGeneralTip_quanyu.__xcGeneralTipLines[1].color, "#00FF00", "avatar rebuild reads live model");
 const nextGame = new Avatar(new Seat());
 nextGame.SetGeneralCard(456);
 assert.equal(nextGame.__xcGeneralTip_quanyu, undefined, "new seat has no history cache");
@@ -128,4 +134,4 @@ for (const [raw, expected] of [[null,true],["false",false],["true",true],["broke
 }
 assert(source.includes("    quanYuDisplay.mountControls();"), "real panel entry");
 assert(source.includes("    quanYuDisplay.cleanupControls();"), "Exit cleanup");
-process.stdout.write("quanyu buff: selected-only colors, both modes, persistence, removal, permissions, avatar rebuild, seat isolation, native calls and plain-text regression passed\n");
+process.stdout.write("quanyu buff: selected-only colors, off hides through effect updates/avatar rebuild, reenable restores live state, persistence and plain-text regression passed\n");
