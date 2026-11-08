@@ -32724,6 +32724,21 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  secKillPanelVisibility: {
+    title: "秒杀连点器显示开关：卡牌美化下方、默认关闭、保留原商品连点链",
+    verifiedAt: "2026-11-09",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: ["秒杀连点器", "卡牌美化下面", "默认关闭", "secKillPanel", "xcSecKillControlRow", "xcSecKillPanelToggle", "xcSecKillPanel", "secKillList", "_0x1804b1", "_0x4484c9", "_0x3f649d", "seckill-panel.cjs"],
+    decodedIndexes: { _0x871b: { "304": "secKillList", "354": "secKillBound", "381": "seckill", "540": "input[type=\"checkbox\"][data-seckill=\"true\"]", "556": "secKillEnabled", "561": ".switch" } },
+    chain: [
+      "已于2026-11-09 01:39持安装锁备份原子同步Roaming主脚本，备份before-seckill-display-20261109-013943-733.bak；源目标SHA256=98fb6989115cc71563141d383852dc2864c5f24ef10bbc0e5c003351f572e95c，实际语法通过，版本1.0.7。未热注入，待重载。",
+      "D模板cardThemeContainer行后插入独立显示开关xcSecKillPanelToggle；原标题和secKillList保留在默认hidden/display:none的xcSecKillPanel。不开启连点、不改原任务状态或商品权限；显示选择仅本会话内存，首次加载/Exit默认false，DOM重建保留。",
+      "独立secKillPanel闭包拥有visible/input/panel/handler，addFrame在原绑定后mount，Exit dispose。幂等挂载、更换解绑、handler和节点身份/isConnected防旧回调，dispose隐藏/复位/解绑；无新增定时器或持久配置。",
+      "input change stopPropagation避免原_0x4484c9的.switch配置监听写globalConfig；不带data-seckill，原_0x1804b1商品委托仍可用。render后_0x3f649d仅刷新已展开父设置高度。",
+      "真实模板/控制器/高度函数Chromium12项与真实addFrame/Exit接线检查通过；手牌118、牌堆权御17、自动任务13及语法/模块版本通过。回退恢复模板并删除控制器和两个调用，不动原secKill购买链；未游戏内实测。"
+    ]
+  },
   panelQuickActionsCleanup: {
     title: "浮层面板：任务领取与更新内容移入快捷操作，精简旧按钮和页尾链接",
     verifiedAt: "2026-11-09",
