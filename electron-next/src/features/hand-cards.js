@@ -509,6 +509,10 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
   function layoutHandSortPanelButton() {
     var state = handSortSwitchLayout;
     if (!state?.row.isConnected) return;
+    if (mainHost.placeControl?.(state.row, state.label)) {
+      positionHandSortSettings();
+      return;
+    }
     // 兑换码同一行（Y），打开调试同一列（X）；不用隐藏 input 的零尺寸坐标。
     var exchange = mainHost.getAnchor(state.exchange);
     var debug = mainHost.getAnchor(state.debug);

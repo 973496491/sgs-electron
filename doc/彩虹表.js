@@ -32724,6 +32724,25 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  settingsAutomaticGrid: {
+    title: "设置/屏蔽设置/日常自动化：每行三项自动列表，移出后补位",
+    verifiedAt: "2026-11-09",
+    sourceFile: "electron-next/resources/daxiaochao.user.js；src/features/hand-cards.js；top-marquee.js；deck-visibility.js",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: ["设置", "屏蔽设置", "日常自动化", "三列列表", "自动补位", "屏蔽弹幕", "皮肤屏蔽", "五阶特效", "权御全显", "settingsLayout", "placeControl", "__xcPlaceSettingsControl", "xcSettingsGeneral", "xcSettingsBlocking", "xcSettingsDaily", "xc-settings-flow-item", "settings-grid.cjs", "正常文档流"],
+    decodedIndexes: { _0x871b: { "145": "effectBlockSwitch", "305": "seatUISwitch", "498": "skinPaperSwitch", "551": "cardBackThemeSwitch" } },
+    chain: [
+      "屏蔽弹窗居中02:28已持锁备份原子同步主脚本；备份before-block-dialog-center-20261109-022801-521.bak，源目标SHA256=7a19e630baf8b5184a169caa1b63cea5c36e4b0da42923a83b3c6dc1b9a1c67d，实际语法通过，版本仍1.0.7。未热注入，待重载。",
+      "屏蔽设置弹窗居中：blockEffectContainer.explanation -> _0x5fdac7的o原按入口right+10/top定位，网格移位后仍跟随按钮。现blockEffectDialog的--dialog-left/top固定50%，复用fixed/translate居中游戏视口，maxWidth/maxHeight=视口减32px且overflowY:auto。原勾选/汇总/100ms手动入口/resize/关闭按钮/遮罩链保留，无新生命周期状态。修前居中断言失败，修后常规/小窗口各19项（含主面板缩放、重开、可见边界）通过；未游戏内实测。回退仅o函数，不回退列表/齿轮。",
+      "行距/齿轮补正02:15已持锁备份原子同步主脚本，备份before-grid-gears-20261109-021509-970.bak，源目标SHA256=c38ff90e4f5b6f1ec7516287c51c41180bde417471352a25373a6d24b98800f7，实际语法通过。配套模块未变，版本仍1.0.7；待重载。",
+      "同日行距/齿轮补正：三组grid的row-gap由12px改8px；用户客户端反馈CSS伪元素emoji齿轮不可见，改由place给壁纸/卡牌/屏蔽/整理/牌堆五个既有设置caption幂等追加12px SVG(.xc-settings-gear)，仅该caption关闭原伪元素避免重复，不替换节点/监听，不切换checkbox，无新状态或外部资源。settings-grid扩至18项，覆盖五图标尺寸/唯一、原三个静态弹窗绑定及手牌/牌堆齿轮点击、重挂/重建；未游戏内实测，回退只恢复gap和图标追加段。",
+      "02:05已按release-files映射持安装锁备份原子同步3个原配套模块后再同步主脚本，备份后缀before-settings-grid-20261109-020510-882.bak，源目标哈希/实际语法通过；最新主脚本SHA256=103fcc78d823ebed3bb29e06385cececc41afd0b2573cad47b2eb5eabf99844e，版本仍1.0.7。待重载，未热注入/游戏内实测。",
+      "D模板静态控件分入xcSettingsGeneral/Blocking/Daily三个CSS Grid列表，每行3项自动补位。新增与日常自动化相同jie-group-title的屏蔽设置标题在其上方；屏蔽列表顺序为弹幕、皮肤、五阶 / 权御、屏蔽设置。原ID/权限/配置不变，旧坐标排列说明以本条为准。",
+      "主IIFE settingsLayout只声明分组/顺序并提供place/mount布局，无业务状态或新监听。addFrame在原绑定前mount；__xcPlaceSettingsControl为跨IIFE桥，hand/top主面板host和deck构造选项显式注入placeControl，本地皮肤/调试/皮肤屏蔽和权御也沿同一接口。新模板正常流，旧模板无网格时保留坐标fallback。",
+      "动态label.switch使用按input.id复用的flow-item包裹，将旧浮动caption/齿轮移入同格，空包装隐藏不占位；owner仍负责原事件/清理。写DOM前比较避免观察器循环；拒绝detached节点，layoutClonedSwitchButton防旧100/500ms回调挪走新文字。无新持久偏好、场景或发布文件，3个原模块重新装配并按原映射交付。",
+      "真实模板及动态owner浏览器集成15项通过，覆盖3列/3+2/标题、填空位、原ID/事件/齿轮、移除补位、重复/缩放/折叠/重建/旧回调/dispose；相邻手牌118、弹幕39、皮肤52、牌堆权御17、秒杀12、调试10、自动任务13及装配检查通过。回退同时恢复模板、接口/bridge/host、三个模块后装配，不改业务偏好；未游戏内实测。"
+    ]
+  },
   secKillPanelVisibility: {
     title: "秒杀连点器显示开关：卡牌美化下方、默认关闭、保留原商品连点链",
     verifiedAt: "2026-11-09",

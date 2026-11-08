@@ -177,6 +177,7 @@ module.exports = function createTopMarqueeModule({ window, document, getLaya, ge
   function layoutTopMarqueeButton() {
     var state = topMarqueeSwitchLayout;
     if (!active || !state || !state.row.isConnected) return;
+    if (mainHost.placeControl?.(state.row)) return;
     var anchor = mainHost.getAnchor(state.seat);
     var wallpaper = mainHost.getAnchor(state.wallpaper);
     var own = state.row.querySelector(".slider");

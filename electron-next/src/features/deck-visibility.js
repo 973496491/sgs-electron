@@ -244,7 +244,7 @@ module.exports = function createDeckVisibilityPanel(options) {
   function mountControls() {
     if (!enabled) return false;
     const general = doc.getElementById("generalSwitch"), reference = doc.getElementById("wallpaperContainer");
-    const row = general && general.closest(".switch-container-row");
+    const row = doc.getElementById("xcSettingsGeneral") || general && general.closest(".switch-container-row");
     if (!row || !reference) { cleanupControls(); return false; }
     if (controls && controls.container.parentNode === row && controls.container.isConnected) {
       controls.input.checked = preferences.visible;
@@ -281,6 +281,7 @@ module.exports = function createDeckVisibilityPanel(options) {
     caption.onkeydown = event => { if (event.key === "Enter" || event.key === " ") caption.onclick(event); };
     container.onclick = event => event.stopPropagation();
     row.appendChild(container);
+    options.placeControl?.(container);
     return true;
   }
 

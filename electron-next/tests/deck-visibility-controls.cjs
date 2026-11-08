@@ -14,7 +14,8 @@ const template=data.filter(x=>x.length>3000).map(decode).find(x=>x.includes('id=
 assert(template);
 const htmlTemplate=template.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/url\([^)]*\)/g,'none').replace(/\bsrc="https?:[^\"]*"/g,'');
 const helpers=slice('  function findSwitchContainer(','  function setLocalSkinSwitchState(')+
-  slice('  function getHandSortSwitchAnchor(','  // Hand-card main-panel host.');
+  slice('  function getHandSortSwitchAnchor(','  // Hand-card main-panel host.')+
+  slice('  const settingsLayout = (() => {','  // 仅拥有秒杀区域');
 const quanyu=slice('  const quanYuDisplay =','  function _0x43fd79({');
 const skinButton=slice('  // 皮肤屏蔽按钮：','  // 顶部广播按钮：');
 async function browserChecks(){
@@ -26,11 +27,12 @@ async function browserChecks(){
   const settings=document.getElementById('generalSwitch').closest('.setting.panel-content');
   settings.style.maxHeight='5000px';
   settings.previousElementSibling.classList.add('active');
+  settingsLayout.mount();
   const marquee=createTopMarqueeModule({window,document,storage,getLaya:()=>null,getTimer:()=>null});
-  marquee.start();marquee.attachMainPanel({findSwitchContainer,clearDuplicateIds,getAnchor:getHandSortSwitchAnchor});
+  marquee.start();marquee.attachMainPanel({findSwitchContainer,clearDuplicateIds,getAnchor:getHandSortSwitchAnchor,placeControl:settingsLayout.place});
   let cards=Array.from({length:50},(_,i)=>({id:i+1,key:i+1}));
   let discardCards=[];
-  const options={document,window,storage,readCards:()=>cards,readDiscardCards:()=>discardCards,renderKnownCard:card=>{
+  const options={document,window,storage,placeControl:settingsLayout.place,readCards:()=>cards,readDiscardCards:()=>discardCards,renderKnownCard:card=>{
     const node=document.createElement('button');node.className='shoupai';node.textContent=String(card.id);return node;
   }};
   const api=createDeckVisibilityPanel(options);
@@ -46,22 +48,21 @@ async function browserChecks(){
     if(discard!==undefined)popup().querySelector('[name="discardLimit"]').value=discard;
     popup().querySelector('form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));}
   function alignment(){
-    const own=center(control().querySelector('.slider')),general=center(getHandSortSwitchAnchor(document.getElementById('generalSwitch')));
-    const top=center(document.querySelector('#xcTopMarqueeSwitchRow .slider'));
-    assert(Math.abs(own.x-top.x)<1,'deck column '+JSON.stringify({own,top,general}));
-    assert(Math.abs(own.y-general.y)<1&&own.x>general.x&&own.y>top.y,'general row and below marquee');
+    assert(control().parentNode.id==='xcSettingsGeneral','deck belongs to general settings');
+    assert(getComputedStyle(control()).position==='static'&&control().getBoundingClientRect().height>30,'deck uses normal flow');
   }
   function quanyuAlignment(){
     const own=center(document.querySelector('#xcQuanYuDisplayControl .slider'));
     const skin=center(document.querySelector('#xcSkinEffectSwitchRow .slider'));
     const deck=center(control().querySelector('.slider'));
-    assert(Math.abs(own.x-skin.x)<1&&Math.abs(own.y-deck.y)<1&&own.x>deck.x&&own.y>skin.y,
-      'quanyu after deck, below skin '+JSON.stringify({own,skin,deck}));
+    const marquee=center(document.querySelector('#xcTopMarqueeSwitchRow .slider'));
+    assert(Math.abs(own.x-marquee.x)<1&&own.y>skin.y&&own.y>deck.y,
+      'quanyu starts second blocking row '+JSON.stringify({own,skin,deck}));
   }
-  check('quanyu toggle mounts after deck below skin with native layout and no gear',()=>{
+  check('quanyu toggle starts second blocking row with native layout and no gear',()=>{
     quanyuAlignment();
     const node=document.getElementById('xcQuanYuDisplayControl');
-    assert(node.previousElementSibling===control());
+    assert(node.parentNode.id==='xcSettingsBlocking');
     assert(node.querySelector('input').checked&&node.querySelector('.explanation').textContent==='权御全显');
     assert(getComputedStyle(node.querySelector('.explanation'),'::after').content==='none');
     quanYuDisplay.mountControls();assert(document.querySelectorAll('#xcQuanYuDisplayControl').length===1);
@@ -72,10 +73,10 @@ async function browserChecks(){
     assert(!input.checked&&!quanYuDisplay.allSelected&&localStorage.getItem('xcQuanYuAllSelected')==='false');
     input.click();assert(input.checked&&quanYuDisplay.allSelected&&window.quanYuRefreshes===2);
   });
-  check('new master switch is default off and matches exact requested native grid position',()=>{
+  check('deck master switch is default off and joins general settings list',()=>{
     assert(!input().checked&&!document.getElementById('deckEdgeUI'));alignment();
     assert(caption().textContent==='牌堆记录');
-    assert(getComputedStyle(caption(),'::after').content!=='none','native gear icon present');
+    assert(caption().querySelector('.xc-settings-gear svg'),'explicit gear icon present');
     assert(!input().id.endsWith('Switch'),'avoid native config binding');
   });
   check('gear opens nearby settings while off with default 20 and valid viewport bounds',()=>{

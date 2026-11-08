@@ -25,7 +25,8 @@ for (const [saved, expected] of [["true", true], ["false", false], ["broken", fa
 }
 const button = slice("  // 顶部广播按钮：", "  function waitForCardBackSwitch(");
 const helpers = slice("  function findSwitchContainer(", "  function setLocalSkinSwitchState(") +
-  slice("  function getHandSortSwitchAnchor(", "  // Hand-card main-panel host.");
+  slice("  function getHandSortSwitchAnchor(", "  // Hand-card main-panel host.") +
+  slice("  const settingsLayout = (() => {", "  // 仅拥有秒杀区域");
 assert(!source.includes('redefine(laya[i(671)](i(996)), i(1128), { value: function () {} })'), "old permanent block removed");
 assert(source.includes("      installTopMarqueeBlocker(),"), "login patch installs the controller");
 assert(source.includes("      window.__xcInstallTopMarqueeButton();"), "panel rebuild reinstalls button");
@@ -153,6 +154,7 @@ async function checks() {
   const header = settings.previousElementSibling;
   settings.style.maxHeight = "5000px";
   header.classList.add("active");
+  settingsLayout.mount();
   let headerClicks = 0;
   header.addEventListener("click", () => headerClicks++);
   function alignment(label) {
@@ -160,15 +162,15 @@ async function checks() {
     const target = center(document.querySelector("#xcTopMarqueeSwitchRow .slider"));
     const column = center(getHandSortSwitchAnchor(document.getElementById("seatUISwitch")));
     const row = center(getHandSortSwitchAnchor(document.getElementById("skinPaperSwitch")));
-    check(Math.abs(target.x - column.x) < 1 && Math.abs(target.y - row.y) < 1,
-      label + " wallpaper row and visible-card column " + JSON.stringify({ target, column, row }));
+    check(document.getElementById('xcTopMarqueeSwitchRow').parentNode.id === 'xcSettingsBlocking' &&
+      getComputedStyle(document.getElementById('xcTopMarqueeSwitchRow')).position === 'static',
+      label + " marquee uses blocking list normal flow");
     const captionNode = document.querySelector('#xcTopMarqueeSwitchRow > label[for="xcTopMarqueeToggle"]');
     const nativeCaption = document.querySelector("#wallpaperContainer .explanation");
     const caption = captionNode.getBoundingClientRect();
     const nativeRect = nativeCaption.getBoundingClientRect();
     const slider = document.querySelector("#xcTopMarqueeSwitchRow .slider").getBoundingClientRect();
-    check(caption.bottom <= slider.top + 1 && Math.abs(caption.top - nativeRect.top) < 1 &&
-      Math.abs(caption.left - slider.left - (nativeRect.left - getHandSortSwitchAnchor(document.getElementById("skinPaperSwitch")).getBoundingClientRect().left)) < 1 &&
+    check(caption.bottom <= slider.top + 1 && Math.abs(caption.left + caption.width / 2 - target.x) < 1 &&
       ["fontSize", "fontFamily", "fontWeight", "lineHeight", "color"].every(key => getComputedStyle(captionNode)[key] === getComputedStyle(nativeCaption)[key]),
       label + " caption above switch matches native position and typography");
   }
