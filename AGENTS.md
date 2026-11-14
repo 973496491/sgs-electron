@@ -17,6 +17,7 @@ This workspace contains a patched Electron wrapper and the `daxiaochao.user.js` 
 - 日志输出规则：不要使用 `console.log`、`debug` 或其他仅输出到开发者控制台的调试输出；userscript 调试日志统一通过 `appendLocalSkinDebugLine()` 写入调试窗口。只有用户明确要求开发者控制台日志时才允许例外。
 - 打包规则：不要编译或重新生成 `asar` 文件；只修改源码和必要文档，除非用户明确要求编译 `asar`。
 - 排查规则：不要默认怀疑代码新旧或要求用户反复确认文件版本；应优先检查并修复实际运行链路、调用条件和日志出口。
+- 同步规则：小抄修改完成、相关验证和文档更新通过后，默认同步到实际游戏加载环境，不必等待用户再次要求。按 [rules.md](rules.md) 的“修改后同步游戏环境”核对实际入口及发布映射，持安装锁、备份并原子替换，校验部署内容；保留账号和用户配置。用户明确要求仅调查、只改源码或暂不同步时遵从该次要求；不自动重启客户端、热注入或生成 asar。
 
 ## Architecture and AI Development
 

@@ -32724,14 +32724,90 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  xuShaoSkillChain: {
+    title: "许劭757：世论3911评鉴连字 / 濯名3912技能选择（仅调查）",
+    verifiedAt: "2026-11-13",
+    sourceFile: "官方ES6主程序2026-11-10快照及2026-11-13普通配置；详见doc/sanguosha.md",
+    searchKeywords: ["许劭", "XuShao", "世论", "ShiLun", "濯名", "ZhuoMing", "评鉴", "PingJianWindow", "XSPJ", "OPT_PINGJIAN_DATAS", "DATA_SHILUN"],
+    decodedIndexes: {},
+    chain: [
+      "配置character.GameCharacters.character经abbreviation展开：757/XuShao，spellId1=3911/世论/ShiLun、spellId2=3912/濯名/ZhuoMing；不要按其他版本的评荐技能套用。无新增userscript decoder映射。",
+      "GsCRoleOptTargetNtf -> skillResponseManager.Response -> ShiLun(Pai).GetResponser -> uQt.Response -> PingJianWindow(Zds).enterWindow/initDatas；使用SrcSeatID确定许劭座位，Param作随机种子，Params解析棋盘。",
+      "cha_spellextend.XSPJ为战功名称到技能spell的映射（本次79项）；6x6格索引0..35，initDatas按[数量,起点,终点,XSPJ.id,占位,...,散字数量,格号*100+字序,XSPJ.id,...]解析；XSPJ.id不是技能ID。",
+      "checkSelectIds核对同一行或列、战功文字和gridSkillIdArr一致后，SendRoleSpellOptRep(SelfSeatIndex,3911,[起点,终点])；不是提交所获技能ID。服务端结果Type=82/OPT_PINGJIAN_DATAS走optPingJianDatasFunc，窗口已开则UpdateWindow/changeData，未开由技能缓存，空Datas关闭。",
+      "濯名3912在OPT_SKILL_FLAG1=28时打开ZhuoMingWindow(Xds)，Params为候选技能ID，点击提交SendRoleSpellOptRep(SelfSeatIndex,3912,[技能ID])；另有GetMultiSelectDatas/onSelectCallback按钮选择分支。",
+      "世论UpdateRoleDataResponse只在!IsSpell分支写DATA_SHILUN=3911，Targets来自Datas.slice(2)；添加/移除技能效果走GsCUpdateRoleDataExNtf分发。ClearActionData清静态缓存，窗口destroy清定时器及局部数组/特效。仅静态源码核对，未发送操作、未改脚本或游戏内实测。"
+    ]
+  },
+  xuShaoPingJianBoard: {
+    title: "许劭世论 / 评鉴：6×6文字连线棋盘（仅调查）",
+    verifiedAt: "2026-11-13",
+    docFile: "doc/代码架构表.md；doc/sanguosha.md",
+    searchKeywords: ["许劭", "世论", "评鉴", "棋盘", "濯名", "757", "3911", "3912", "ShiLun", "PingJianWindow", "XSPJ", "WordsStr", "gridSkillIdArr", "OPT_PINGJIAN_DATAS", "108016", "棋盘操作可行性", "可连技能识别", "横竖限定", "干扰鸡蛋", "eggHideSps", "eggHideEffs", "clearEggs"],
+    decodedIndexes: {},
+    chain: [
+      "最新实现为只读提示：设置许劭辅助xcXuShaoToggle仍在自动签到前，移除方式选择/等待时间/保存弹窗/齿轮，开关只显示/隐藏当前横竖组合；旧mode=auto/delay配置被忽略，不再存在自动分支。历史原生连线研究不代表运行功能仍调用提交。",
+      "xushao-client导出read/combinations/bounds及视觉highlight/clearHighlights和hideEggs/clearEggs，删除connect及动作签名/校验API；xushao-assist拥有enabled/position偏好、自有DOM、200ms启用期轮询和generation，addFrame.start/mount、Exit.dispose，显式注入闭包laya/Laya及原调试桥。路径和发布映射不变。",
+      "xcXuShaoDragHandle标题拖动自有提示面板，window捕获阶段pointermove/up/cancel+blur有明确清理；3px门槛/四边8px夹住，结束存position，刷新/换棋盘/重开保留。34项Chrome+真实原生棋盘/格子UI检查及零提交/旧auto偏好/拖动生命周期通过，未实战。详见架构表最新实施节。",
+      "2026-11-14闪动修复：UpdateUI4与native type5拉锯重启playInEff；现只设置蓝色topTxt.color/labelColors，不写ui.type或调用UpdateUI4。updateItemUI原循环后立即重染，轮询兜底；颜色租约按当前状态恢复，选中/完成优先。",
+      "辅助开启拦截鸡蛋和帮助表现：preHideIds只作渲染缓存对齐，跳过鸡蛋新建/动画声音分支；playEggEff/onEggEffStoped不新建Tween/延迟回调，hideIds对应格直接维持Hide。三层alpha隐藏覆盖已排队旧回调。帮助playGrayEff仅type3拦截，playMultiGridEff仅helpDatas来源且无matchedDatas时拦截；数据/协议/手动连线/真实完成动画保留。",
+      "eggScope拥有window/cell包装器、alpha及preHideIds缓存租约。关闭按wrapper身份卸载、不覆盖后装包装器，遗留wrapper原调用透传；恢复自身缓存/alpha和高亮字色。34项含100次帮助干扰连续刷新无动画重启/新Tween/新延迟任务通过，未实战。",
+      "2026-11-14帮助动画恢复缺口已修复：UpdateUI(3)同type会提前返回，不能靠重调它恢复灰色循环。eggScope.skippedHelp按ui记录被跳过playGrayEff的index/spEff；clearEggs停用/卸载包装器及恢复alpha后，验证当前scene/board/WordsStr、原位活格子/同效果身份与nativeType/ui.type3，调用当前playGrayEff补回gezi_hui_loop并清Map，保留后装包装器。选中/完成、换局/离场/销毁、格子或效果替换不补播，既有帮助循环只还原alpha。归档真实Cell.playGrayEff浏览器回归修前失败、修后39项通过；部署状态以架构表最新记录为准。",
+      "2026-11-14战功分色第一版：用户确认每战功只有一个可连选项；combinations返回tuple[0]的arcId及color，adapter.boardColors WeakMap按窗口/scene/WordsStr拥有战功配色，九色+hex扩展，候选消失不重排，同棋盘开关稳定。highlight按格保留row.color并写topTxt/labelColors，租约appliedColor/appliedLabels识别自身写入并恢复原生色，nativeFirstColor独立保留原生蓝。feature技能名/战功文字与棋盘同色，签名含color；不改ui.type或动画/协议。44项含多色、刷新、选中完成优先、关闭恢复/后写者保留、代次隔离通过，未实战；模块路径及发布映射不变。",
+      "2026-11-14鸡蛋不隐藏文字，仅许劭辅助开启：原生onEggEffStoped的200ms回调通过P3t.Hide=true同时隐藏topTxt；旧finalizeHidden主动Hide=true也会藏字。现eggScope.hideHooks/revealed拥有格子实例Hide setter和揭示记录，原setter后只为当前scope/window/scene/WordsStr/格子且hideIds内未完成字恢复topTxt.visible，textField=false避免重复；finalizeHidden/suppressEggNodes共用revealEggText，补回开启前已隐藏文字及旧排队回调。关闭clearEggs按accessor身份卸载，仍受干扰且未完成格恢复原生Hide，完成/干扰移除保持可见，后装setter保留/失效wrapper透传；不改hideIds或协议。49项包含真实原生timer、开关门槛及换代隔离通过，未实战。此前不揭开文字是历史策略。",
+      "官方原生字面名，无新增小抄decoder索引。character:757/XuShao,j3911/k3912；cha_spell:3911/世论/ShiLun,3912/濯名/ZhuoMing。复用11月10日ES6，11月13日普通Config定向解四JSON；来源哈希见sanguosha同节。",
+      "GsCRoleOptTargetNtf -> ServerProxy_GsCRoleOptTargetNtf -> skillResponseManager -> ShiLun(Pai).GetResponser -> uQt.Response -> PingJianWindow(Zds).enterWindow/initDatas/createItems。操作t.Seat.IsSelf时组装来源GetSeat(SrcSeatID)；窗口来源seat.IsSelf区分本人棋盘/他人帮助妨碍。本次未取得真实开窗Type，不套用Type28或82。",
+      "cha_spellextend.XSPJ共79项 -> AW.initPingJianData/GetPingJianDataById：id战功ID/name词条/spell技能ID，unmber与triggerID另列。110年轻的贤君->872制衡；190高贵的名门->102乱击；497街亭之殇->236散谣。",
+      "Param给lr.Init，3911扩展str1分号词库随机铺36格；Params=[N,N组(begin,end,arcId,初始化忽略项),M,M组(encodedCellChar,arcId)]。干扰字格号floor(code/100)，词中字序code%100；主词条同行/同列。WordsStr文字/gridSkillIdArr技能，格号0..35，不是牌号。",
+      "拖动 -> refreshSelectIdx/checkSelectIds -> 同行同列+CheckStringChars字符计数匹配+非零同技能ID -> 排序 -> y1t.SendRoleSpellOptRep(SelfSeatIndex,3911,[begin,end])，默认Type0。CGsRoleSpellOptRep旧21220/新108016；帮助[1]/妨碍[0]；本人关闭Seat_Cancel。发送不是获得技能成功证据。",
+      "用户后续限定只考虑横竖连续区间，不考虑斜线/拐弯/跳格；确认可复用原生拖动链或完整selectIds检查生成提交，onItemClick为空。只读WordsStr/gridSkillIdArr+XSPJ/cha_spell可输出当前可连技能名/说明/战功词条/横竖位置；排除已匹配和被覆盖词条，识别不能调用会发送的checkSelectIds。",
+      "P3t.Hide只控制文字可见，鼠标处理显式排除type1已匹配；不能把遮挡等同禁选或据本地检查推断服务器接受。实际动作重取本人活动窗口，核对操作期、清旧选择，逐条等待82回包重算。14项真实原生方法离线检查通过，发送被拦截，构造棋盘验证横竖提交与候选映射；报告及边界见架构表同节。未改功能代码或发真实操作。",
+      "CGsRoleSpellOptRep.Type82/OPT_PINGJIAN_DATAS -> optPingJianDatasFunc：已开窗UpdateWindow/changeData/updateItemUI，未开窗Pai.pingJianDatas缓存，空Datas关闭。本人Datas=[成功数,成功四元组,帮助数,帮助四元组,遮挡数,格号...]，四元组begin/end/arcId/spellId；他人result1后四元组，否则读遮挡位。",
+      "窗口拥有选择/匹配/帮助/遮挡/动画，技能列表最多6个；destroy清计时器与UI。ClearActionData清静态缓存。ShiLun.UpdateRoleDataResponse非IsSpell另以Datas.slice(2)写DATA_SHILUN/Pg状态，动态技能增删链未完整追完。仅调查和文档，无运行文件变更、实战或请求。"
+    ]
+  },
+  newMonthWeekCards: {
+    title: "新月卡 / 新周卡：自动月卡已迁移新协议，旧版废弃",
+    verifiedAt: "2026-11-10",
+    docFile: "doc/代码架构表.md；doc/sanguosha.md",
+    searchKeywords: ["新月卡", "新周卡", "新特权卡", "NewWelfarePrivilegeViewCtrl", "new_card_content", "N0t", "160118", "160119", "160120", "160121", "160122", "card_id", "goodsId", "58538", "WelfareManger", "yueka"],
+    decodedIndexes: { _0x3812: { "1678": "WelfareManger", "1027": "GetCardDataByType", "347": "bActive", "297": "bReward", "522": "rewardDays", "832": "SendClientPrivilegeRewardReq", "988": "days", "1639": "AddAwardsCanAwardList", "989": "CanShowPrivilegeDaliyReward", "865": "PrivilegeCardDaliyRewardReq" } },
+    chain: [
+      "同日后续按用户要求已迁移：autoYueKaSwitch -> yueka -> autoMonthCards.request；newMonthCardClient经laya.caller.NewPrivilegeCardManager=[decodeServerNewPrivilegeCardDataResp]强制重取真正监听caller，不依赖N0t类名。Self重取隔离账号，TimerManager.LocalStaticServerTime按原生+28800分日。",
+      "内部controller拥有订阅/单次Promise/取消及当日提交Set。先160118，再串行160120(card_id=1/2)，按160121的ID/result匹配，成功后160118回查IsClaimedToday才记confirmed。8秒超时，同日已尝试不重放；没有旧领奖/累计/PrivilegeCardDaliyRewardReq回退，不触发购买。",
+      "独立58538任务经TaskManager查询后1秒、原生CanShowNewPrivilegeDaliyReward及CanAward判断提交，日志仅task-submitted。普通autoTasks永久排除旧58530/58531；autoYueKaSwitch开启时让渡58538，避免两个owner并发。",
+      "开关/初始化与原生DATA/ACTIVATE通知可达，关闭和Exit取消/清自身监听，旧账号回包不重启新账号任务；同日重挂保留防重，次日清旧记录。日志统一[自动月卡]。专项15项/相邻自动任务14项通过；未游戏内实测。细节/同步记录见架构表同节。下列旧调用说明仅为迁移前基线。",
+      "01:10已按映射持锁备份原子同步实际主脚本及version.json，沿用工程1.0.8；备份后缀before-new-month-cards-20261110-011023-326.bak，实际与工程主脚本SHA256=29312c57464ddf8f8fbebd9b170c2301e8c008a3eecf2d959e5aa7dcf004245f。实际语法/专项15/相邻任务14通过，未热注入，待重载。",
+      "当前公开普通ES6/Config定向核查：NEW_PRIVILEGE=79 -> NewWelfarePrivilegeViewCtrl(j2t) -> jNt -> $Nt.onClickGetDaily -> N0t.SendNewPrivilegeCardDailyRewardReq。旧NewMonthCardView/NewWeekCardView不等于此新特权卡入口。",
+      "ff_dbs_pay_gift.root.new_card.new_card_content -> vU.initNewCardData -> oY -> GetNewCardByType(1/2)；月卡ID=1/type=1/goodsId=12980101/30天，周卡ID=2/type=2/goodsId=12980201/7天。160120的card_id用1或2，不用购买商品ID。CanOpen含时间/等级12/平台/open，激活与已领判断由N0t及服务器时间负责。",
+      "登录安装监听并查160118，160119(result=1,cards)替换N0t.cards；状态含card_id/start_time/expire_time/last_daily_reward_time/first_activated/activation_count。领取160120({card_id}) -> 160121(result,card_id,rewards) -> 成功事件；该回包处理不更新缓存的已领时间，后续自动化须回查状态并防重。160122为激活通知。日期变化延迟0～4秒查询，ClearData清状态，UI destroy移除自身监听。",
+      "两卡配置questid均58538，但jNt从周卡CardVo.QuestId展示独立每日任务；TaskManager.D(58538).CanAward -> J(58538)，sys_h5_quest名周卡每日奖励，Rewards=100011/Count=140。不是旧58530/58531，也不是160120奖励。",
+      "小抄yueka只取旧WelfareManger并遍历[2,3]走旧领奖/累计/每日任务接口，未接新卡160118/160120。普通任务是否实际入列58538仍待运行确认。N0t为局部混淆类名，后续须用现有适配定位实例，不保证laya.class('N0t')可用。主按钮共用购买/续费/领取，不可盲点用于自动领取。",
+      "来源与本次字符偏移见sanguosha.md；仅调查及索引，无运行代码/配置/安装变更，未发账号请求或游戏内实测。"
+    ]
+  },
+  mainPanelScrollbar: {
+    title: "主面板区域滚动模式：隐藏滚动条，保留滚轮滚动",
+    verifiedAt: "2026-11-10",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    docFile: "doc/代码架构表.md",
+    searchKeywords: ["面板区域", "滚动模式", "隐藏滚动条", "保留滚轮", "iframe-source", "scrollbar-width", "::-webkit-scrollbar", "addFrame"],
+    decodedIndexes: { _0x871b: { "288": "iframe-source", "591": "overflow-y: auto;", "416": "overflow-x: hidden;" } },
+    chain: [
+      "2026-11-10 00:16按用户要求持安装锁、确认无待恢复事务后备份原子同步Roaming主脚本；备份before-panel-scrollbar-20261110-001545-369.bak，备份哈希7a19e630baf8b5184a169caa1b63cea5c36e4b0da42923a83b3c6dc1b9a1c67d，源目标SHA256同为4a81533c82af4d955b27fc8813e068170418a6f48d2bc50c34c092d5e9cbf953，1472484字节，实际语法通过。模块/版本未变，未热注入，重载后生效。",
+      "addFrame在createIframe中创建iframe-source，保留overflow-y:auto/overflow-x:hidden，再插入window.XC.iframe。D编码模板当前索引16，新增规则只作用于主容器：#iframe-source{scrollbar-width:none}及#iframe-source::-webkit-scrollbar{display:none;width:0;height:0}；全局其它滚动条规则保留。",
+      "仅CSS无新增状态/配置/事件/异步资源，生命周期仍归原主面板；DOM重建随模板恢复。回退删除两条带iframe-source的隐藏规则，勿改为overflow:hidden。未游戏内实测。"
+    ]
+  },
   settingsAutomaticGrid: {
     title: "设置/屏蔽设置/日常自动化：每行三项自动列表，移出后补位",
-    verifiedAt: "2026-11-09",
+    verifiedAt: "2026-11-10",
     sourceFile: "electron-next/resources/daxiaochao.user.js；src/features/hand-cards.js；top-marquee.js；deck-visibility.js",
     docFile: "doc/代码架构表.md",
-    searchKeywords: ["设置", "屏蔽设置", "日常自动化", "三列列表", "自动补位", "屏蔽弹幕", "皮肤屏蔽", "五阶特效", "权御全显", "settingsLayout", "placeControl", "__xcPlaceSettingsControl", "xcSettingsGeneral", "xcSettingsBlocking", "xcSettingsDaily", "xc-settings-flow-item", "settings-grid.cjs", "正常文档流"],
+    searchKeywords: ["设置", "屏蔽设置", "日常自动化", "三列列表", "自动补位", "屏蔽弹幕", "皮肤屏蔽", "五阶特效", "权御全显", "settingsLayout", "placeControl", "__xcPlaceSettingsControl", "xcSettingsGeneral", "xcSettingsBlocking", "xcSettingsDaily", "xc-settings-flow-item", "settings-grid.cjs", "正常文档流", "水平间距减3px", "两侧留白", "4.5px", "垂直间距不变"],
     decodedIndexes: { _0x871b: { "145": "effectBlockSwitch", "305": "seatUISwitch", "498": "skinPaperSwitch", "551": "cardBackThemeSwitch" } },
     chain: [
+      "2026-11-10按用户最终更正，仅水平间距减3px，非垂直：D模板16 .xc-settings-grid原column-gap=0、三等分；横向padding由0改两侧各4.5px，总内容宽少9px，相邻按钮中心距离少3px、左右外列各内移3px增加边框留白。row-gap8px、上下padding8/12px及全部事件/状态/生命周期保持。settings-grid真实Chromium20项通过，含三组实际几何对照与原缩放/补位/齿轮/弹窗/重建；仅编码模板该属性变化，未游戏内实测。回退padding为8px 0 12px即可。",
       "屏蔽弹窗居中02:28已持锁备份原子同步主脚本；备份before-block-dialog-center-20261109-022801-521.bak，源目标SHA256=7a19e630baf8b5184a169caa1b63cea5c36e4b0da42923a83b3c6dc1b9a1c67d，实际语法通过，版本仍1.0.7。未热注入，待重载。",
       "屏蔽设置弹窗居中：blockEffectContainer.explanation -> _0x5fdac7的o原按入口right+10/top定位，网格移位后仍跟随按钮。现blockEffectDialog的--dialog-left/top固定50%，复用fixed/translate居中游戏视口，maxWidth/maxHeight=视口减32px且overflowY:auto。原勾选/汇总/100ms手动入口/resize/关闭按钮/遮罩链保留，无新生命周期状态。修前居中断言失败，修后常规/小窗口各19项（含主面板缩放、重开、可见边界）通过；未游戏内实测。回退仅o函数，不回退列表/齿轮。",
       "行距/齿轮补正02:15已持锁备份原子同步主脚本，备份before-grid-gears-20261109-021509-970.bak，源目标SHA256=c38ff90e4f5b6f1ec7516287c51c41180bde417471352a25373a6d24b98800f7，实际语法通过。配套模块未变，版本仍1.0.7；待重载。",
@@ -33242,7 +33318,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
   },
   cardFaceMarks: {
     title: "牌面标记 / 族荀攸百出与小抄已有标签挂钩",
-    verifiedAt: "2026-10-08",
+    verifiedAt: "2026-11-14",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
     docFile: "doc/牌面标记链路.md",
     searchKeywords: [
@@ -33251,7 +33327,13 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "SkillCardRemark", "SetCardUIRemark", "__SetCardUIRemark", "TagArr1", "UpdateTag",
       "AddCardTag", "DelCardTag", "tempCardTag", "cardTagBtn3", "SEAT_CARD_ADD_TAG",
       "AddShunJiCardTags", "cardLabelSwitch", "PrivateUpdateCardUis", "skillOrStateDataChange",
-      "顺机", "弹雀", "炁", "DuoQi", "刷新后补回", "对象复用"
+      "顺机", "弹雀", "炁", "DuoQi", "刷新后补回", "对象复用",
+      "全部卡牌标记", "多标记叠加", "xcAllCardMarks", "xcAllCardMarksToggle", "createCardMarkStack", "layoutTagUI", "关闭恢复原生", "card-mark-stack.cjs",
+      "卡牌标签齿轮", "卡牌标签设置", "xcCardLabelSettings", "openSettings", "closeSettings",
+      "标签背景", "背景缩小", "行高", "占位", "resizeTagBox", "tagMetrics", "rowMetrics", "sizeGrid",
+      "具体px", "像素字号", "xcCardLabelFontSize", "setFontSize", "百分比迁移",
+      "标签字号", "动态字号", "自动保存", "xcCardLabelFontScale", "setFontScale", "rowBases", "nativeFonts", "恢复默认",
+      "重复标记", "全部标记接管", "跨数组去重", "字号减2px", "labelSize", "14→12"
     ],
     decodedIndexes: {
       _0x3812: {
@@ -33263,6 +33345,14 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       }
     },
     chain: [
+      "2026-11-14背景随字号缩放：原生resetTagSize仅改max(labelWidth+20,48)，getCardTagBtn背景高固定、sizeGrid四边10。resizeTagBox按目标字号/原字号缩背景height、留白20/最小宽48和九宫格，宽度包含实际labelWidth，按钮size同时更新背景和文字布局；原生及全部标记都用，布局以新height排紧，图形标记不缩。tagMetrics/rowMetrics首次存原font/height不累缩，优先TextField.fontSize因labelSize为setter；Clear/dispose及原生恢复重置高度/九宫格，px偏好/生产链/挂钩不变。部署前新背景断言复现失败，修后50项含Chromium及卡面分层12/语法/装配通过，未游戏内实测背景。回退只移除尺寸辅助及两处调用，不动字号保存和标记链。无新增混淆索引或发布路径。",
+      "2026-11-13后续按用户要求改为具体px：xcCardLabelFontSize滑块6～24/步长1，output直接显示实际px，无百分比文案；setFontSize保存同名localStorage键，显式值直接用于原生及全部标记labelSize，切换模式不改变显式字号。缺失/非法/恢复默认回null（落盘空字符串），沿用原12/14默认。新键缺失时才从旧xcCardLabelFontScale按已保存显示模式基准换算px，写新键，默认空值阻止旧偏好复活；旧100维持默认。fontSize/rowBases/nativeFonts及安装清理归createCardMarkStack，原生产/场景链不变；45项专项含Chromium及迁移检查通过，未游戏实测。恢复默认即可回退字号，下条百分比实现为历史。",
+      "2026-11-13字号设置：卡牌标签齿轮dialog#xcCardLabelSettings新增xcCardLabelFontScale滑块50%～150%/步长5和恢复默认；input->setFontScale保存localStorage同名键并即时refresh，以当前字号100%为基准（全部12/原生14）。createCardMarkStack拥有fontScale/rowBases/nativeFonts，基准字号不累乘；未开启全部标记亦按比例调原生2+1，保持原数组及顺机弹雀炁。启用全部或非100%才安装既有挂钩；Clear/dispose恢复原生字号，偏好保留，面板重建回填、旧滑块监听清理。缺失/非法默认100%，数字夹取边界；44项专项含Chromium面板通过，未游戏实测；回退字号可恢复默认，不改全部标记开关。无新增混淆索引或发布文件路径。",
+      "2026-11-10显示优化：用户确认保留逐行、去掉原生与全部标记重复的一份。开启xcAllCardMarks时layout隐藏原cardTagBtn/2/3，仅自有节点画全部技能/临时文字；技能优先、来源在后，跨数组按剥除U+200B/U+FEFF及首尾空白的文字去重，原数组/原生label/CardLabelDesc不改。resize创建时labelSize减2（14→12），重复刷新不累减。关闭/dispose原生重画恢复2+1与14px，适配失败回退原生，原图形标记/生产链/齿轮入口/偏好保持。新原生槽隐藏断言部署前失败、修后38项专项及相邻链通过，未游戏实测；早期仅补溢出描述为历史基线，以此条及专项当前显示为准。",
+      "2026-11-10后续UI迁移：常规列表独立全部卡牌标记移入cardLabelSwitch说明文字/SVG齿轮打开的原生dialog#xcCardLabelSettings。mountControls/cleanupControls仍属于createCardMarkStack，原caption/input保留；settingsLayout在cardLabelSwitch上绘制唯一齿轮，删除xcAllCardMarksToggle列表排序。面板内同ID开关仍调原setEnabled，xcAllCardMarks不重置，渲染/原生恢复链不改。×/Esc/背景关闭只收起面板；Enter/Space可打开，焦点/ARIA恢复，重建解绑旧监听防旧事件改状态。专项33项含11项真实Chromium模板/业务集成，设置19/手牌装配8/弹幕生命周期9通过；未游戏内实测。旧独立入口描述作为历史记录，以本条及专项文档当前入口为准。",
+      "2026-11-10实现默认关闭的全部卡牌标记：addFrame -> cardMarkStack.start/mountControls，常规设置cardLabelSwitch后xcAllCardMarksToggle，偏好xcAllCardMarks；Exit dispose。createCardMarkStack封装自有额外节点/配置/重试/挂钩，明确注入真实客户端、已注册/本人卡牌、设置布局和调试日志；无新全局桥。",
+      "NormalCardUi在11月10日快照主要经pool/flatPool暴露，不能假设类注册必定可解析；失败时沿实际已注册/本人卡牌原型找拥有UpdateTag的原型。原AddShunJiCardTags刷新后链调用cardMarkStack.start幂等安装，保证大厅60次重试耗尽后新对局仍可接入；保留原顺机生产与清理，不新增常驻轮询。",
+      "原生UpdateTag/drawTempCardTag/layoutTagUI/Draw后为TagArr1.slice(2)、tempCardTag.slice(1)补原生样式按钮，图形/全部技能/全部来源从牌底逐行向上；原三槽/CardLabelDesc保持原语义，不改数组/生产链/SetCardUIRemark/顺机弹雀炁。关闭清自有节点并原生刷新恢复2+1；Clear/clear/destroy抑制清理中重建，Card身份变化防复用残留，flat经addDrawChild。dispose协作卸载不覆盖后装方法，60次500ms重试按代次取消。专项26项含4项实际模板Chromium设置检查及相邻链通过；未游戏实测。细节/回退见牌面标记链路，油猴交付同步，无Roaming部署/asar。",
       "官方配置确认族荀攸573、百出3338/BaiChu。GsCUpdateRoleDataExNtf用IsSpell/DataID/SeatID/Datas分发；百出RetainRoleDataExLastParams=false，分发器先pop末尾项，再回调。技能从下标1按三元记录[牌名技能ID,原始类型,花色]更新markSkills，不是实体牌号。",
       "牌面刷新PrivateUpdateCardUis或skillOrStateDataChange -> skillCardLabelChange -> seat.SetCardUIRemark -> BaiChu.SkillCardRemark -> Card.AddCardTag/TagArr1 -> IsSkillChangeStatus/UpdateTag。百出逐组先查FirstSkillId、再查CardOriginTypeWithAvatar与FlowerOnSeat，首次命中break，返回百出/空/新组合。",
       "SetCardUIRemark先清空TagArr1再收集座位状态、主副将技能文字；Card.AddCardTag去重并中文排序，UpdateTag只显示前两项。ui.AddCardTag/DelCardTag操作独立tempCardTag，只首项画cardTagBtn3；ui.Clear清空临时标记。不可把模型与UI的同名API混用。",

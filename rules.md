@@ -124,6 +124,16 @@
 
 检索关键词：`发布映射`、`文件增删`、`release-files.json`、`sourceRoot`、`source`、`target`、`remove`、`Roaming加载文件`、`打包安装`、`同步映射`、`绝对定位`、`桌面打包`、`Python打包`、`极限压缩`、`7-Zip`、`compresslevel=9`、`package_release.py`、`cos_upload.py`、`cos-upload.local.json`、`COS自动上传`、`固定密钥`、`PutObject`、`upload-only`、`no-upload`、`release_upload.py`。
 
+### 修改后同步游戏环境
+
+- **默认执行**：用户已明确要求修改完成后同步游戏环境。后续小抄功能、UI、配置、修复和模块修改，在装配、相关验证与文档更新完成后，自动同步到实际游戏加载位置；不需要用户每次再说“同步”，不以“仅改了工程源码”作为交付完成。仅调查/文档任务无需部署；用户该次明确要求只改源码、暂不同步或指定其它环境时以该次要求为准。
+- **确定目标与范围**：先核对实际客户端的 `read-local-script -> scriptPath` 及模块加载入口，结合唯一 `electron-next/release-files.json` 的 `files/remove` 定位此次涉及的文件。本机已确认实际 `F:/Game/SGSOL/resources/app/main.js` 从 `%APPDATA%/SGSOL/三国杀打小抄.js` 读取，`script/electron_frame.js` 在 `dom-ready` 注入；这些是本机事实，迁移环境时重新核对，不把开发路径写入发布映射。比较源/目标内容，只同步本次改动需要的文件；模块改动须同步装配主脚本及相关配套源，版本变化同步版本记录并最后提交。不要盲目覆盖目标中无关的用户改动、账号配置或缓存。
+- **同步步骤**：使用目标目录 `.xiaochao-install.lock` 的系统独占文件锁，锁内重新检查差异及 `.xiaochao-install-state.json`；存在未恢复事务时先沿现有安装恢复链处理，不能绕过事务覆盖。写入前保留可定位的备份，以同目录临时文件和原子替换写入；失败恢复已修改文件。多文件变更遵守现有安装顺序和事务机制：其它业务文件、废弃文件、主脚本、最后版本记录。只处理明确映射文件，不清空目录。
+- **部署验收与记录**：同步后核对源/目标 SHA-256，主脚本执行 `node --check`，按风险验证实际部署副本与必要相关链；记录实际目标、变更范围、备份位置及验证结果到对应功能文档。明确区分“已写入游戏环境”与“当前页面已重新加载/游戏内实测”，不要把文件同步当作当前对局已生效。
+- **生效边界**：默认不重启/关闭客户端、不热注入当前页面、不发布云端、不打包或生成 asar；告诉用户重载游戏页面或退出重开客户端后加载。无法同步时如实说明具体原因与未完成部分，不能宣称已部署，也不要默认归因代码新旧或要求用户反复确认版本。
+
+检索关键词：`修改后同步游戏环境`、`默认同步`、`无需再次要求同步`、`实际加载位置`、`安装锁`、`原子替换`、`部署验收`。
+
 ### 验收、回归与文档
 
 - 已落地的局部装配：整理手牌的唯一源码为 `electron-next/src/features/hand-cards.js` 和 `electron-next/src/adapters/hand-cards-client.js`，屏蔽弹幕的唯一源码为 `electron-next/src/features/top-marquee.js`。修改后在 `electron-next` 执行 `npm run build:userscript`，以 `npm run check:userscript` 检查交付脚本是否同步；不要手改主脚本的三个 `GENERATED MODULE` 区块。装配只更新登记区块及上述两处版本值，不生成 asar，其余手写内容保留。版本同步验证为 `node tests/userscript-version.cjs` 和 `python tests/release_version.py`；各业务模块验证入口见架构表。

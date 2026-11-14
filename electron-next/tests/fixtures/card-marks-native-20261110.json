@@ -1,0 +1,13 @@
+{
+  "source": "C:/Users/97349/AppData/Local/Temp/xc-new-cards-audit-phdf4rol/sgsGame_a.sgs",
+  "sha256": "52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63",
+  "methods": {
+    "UpdateTag": "UpdateTag(){if(!this.Card||!this.Card.TagArr1||this.Card.TagArr1.length<1)return this.cardTagBtn&&(this.cardTagBtn.visible=!1),this.cardTagBtn2&&(this.cardTagBtn2.visible=!1),void this.layoutTagUI();let t=this.Card.TagArr1;this.cardTagBtn||(this.cardTagBtn=this.getCardTagBtn(),this.addDrawChild(this.cardTagBtn)),this.cardTagBtn.visible=!0,this.cardTagBtn.label=t[0],this.resetTagSize(this.cardTagBtn),t[1]?(this.cardTagBtn2||(this.cardTagBtn2=this.getCardTagBtn(),this.addDrawChild(this.cardTagBtn2)),this.cardTagBtn2.label=t[1],this.cardTagBtn2.visible=!0,this.resetTagSize(this.cardTagBtn2)):this.cardTagBtn2&&(this.cardTagBtn2.visible=!1),this.layoutTagUI()}",
+    "drawTempCardTag": "drawTempCardTag(){if(this.tempCardTag.length){let t=this.tempCardTag[0];this.cardTagBtn3||(this.cardTagBtn3=this.getCardTagBtn(),this.addDrawChild(this.cardTagBtn3)),this.cardTagBtn3.label=t,this.cardTagBtn3.visible=!0,this.resetTagSize(this.cardTagBtn3)}else this.cardTagBtn3&&(this.cardTagBtn3.visible=!1);this.layoutTagUI()}",
+    "layoutTagUI": "layoutTagUI(){let t=this.height-5;this.macthCardTagTex&&this.macthCardTagTex.visible&&(t-=this.macthCardTagTex.height-5,this.macthCardTagTex.y=t),this.macthCardTagTex2&&this.macthCardTagTex2.visible&&(t-=this.macthCardTagTex2.height-5,this.macthCardTagTex2.y=t),this.cardTagBtn&&this.cardTagBtn.visible&&(t-=this.cardTagBtn.height,this.cardTagBtn.y=t),this.cardTagBtn2&&this.cardTagBtn2.visible&&(t-=this.cardTagBtn2.height,this.cardTagBtn2.y=t),this.cardTagBtn3&&this.cardTagBtn3.visible&&(t-=this.cardTagBtn3.height,this.cardTagBtn3.y=t)}",
+    "AddCardTag": "AddCardTag(t){t?this.tempCardTag.indexOf(t)<0&&this.tempCardTag.push(t):this.tempCardTag.length=0,this.drawTempCardTag()}",
+    "DelCardTag": "DelCardTag(t){if(!t)return;let i=this.tempCardTag.indexOf(t);i>=0&&this.tempCardTag.splice(i,1),this.drawTempCardTag()}",
+    "resetTagSize": "resetTagSize(t){let i=t.labelWidth+20;i<48&&(i=48),t.width=i}",
+    "IsSkillChangeStatus": "IsSkillChangeStatus(t,i){this.isSkillChangeStatus=t,this.UpdateTag(),i&&this.Card&&this.Card.TagArr1.indexOf(i)<0&&this.AddCardTag(i)}"
+  }
+}

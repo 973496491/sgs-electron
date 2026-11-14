@@ -54,6 +54,18 @@ async function browserChecks() {
   check('all three lists use the reduced eight-pixel row gap',()=>{
     for(const id of ['xcSettingsGeneral','xcSettingsBlocking','xcSettingsDaily'])assert(getComputedStyle(document.getElementById(id)).rowGap==='8px',id);
   });
+  check('horizontal button spacing shrinks by three pixels with extra edge inset',()=>{
+    for(const id of ['xcSettingsGeneral','xcSettingsBlocking','xcSettingsDaily']){
+      const grid=document.getElementById(id),style=getComputedStyle(grid),items=ordered(grid).slice(0,3);
+      assert(style.paddingLeft==='4.5px'&&style.paddingRight==='4.5px','symmetric inset '+id);
+      const centers=()=>items.map(item=>{const rect=item.querySelector('.switch').getBoundingClientRect();return rect.left+rect.width/2});
+      const after=centers(),oldStyle=grid.getAttribute('style');
+      grid.style.paddingLeft=grid.style.paddingRight='0px';const before=centers();
+      if(oldStyle===null)grid.removeAttribute('style');else grid.setAttribute('style',oldStyle);
+      for(let i=1;i<3;i++)assert(Math.abs((before[i]-before[i-1])-(after[i]-after[i-1])-3)<0.05,'button spacing reduced by 3px '+id);
+      assert(Math.abs(after[0]-before[0]-3)<0.05&&Math.abs(before[2]-after[2]-3)<0.05,'outer buttons move inward 3px '+id);
+    }
+  });
   const gearIds=['skinPaperSwitch','cardBackThemeSwitch','effectBlockSwitch','handSortPanelSwitch','xcDeckVisibilityToggle'];
   function assertGears(hitTest=false){
     for(const id of gearIds){

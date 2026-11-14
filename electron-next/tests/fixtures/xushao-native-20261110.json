@@ -1,0 +1,575 @@
+{
+  "source": {
+    "url": "https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs",
+    "snapshot": "2026-11-10",
+    "sha256": "52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63",
+    "config": {
+      "url": "https://web.sanguosha.com/220/h5_2/res/config/Config.sgs",
+      "utc": "2026-11-13T11:32:39.485758+00:00",
+      "bytes": 4179564,
+      "sha256": "d694fc743b205d99518c267dbe8e1bbdc1995672f44ca04dab3bbdde8a4489b9"
+    }
+  },
+  "board": "class Zds extends l_s{eggHideEffs=[];eggHideSps=[];matchedDatas=[];helpDatas=[];preSelectIds=[];selectIds=[];matchedIds=[];preHideIds=[];hideIds=[];helpIds=[];items=[];row=6;WordsStr=[];isDraging=!1;clickSelIdx=-1;gridSkillIdArr=[];hasThroughIdxs=[];isHelpOrHinder=0;skillItems=[];movingSkillItems=[];maxSkillCount=6;constructor(){super(),this.resName=\"pingjian\",this.isFightWindow=!0,this.needHideSelfSeatTimer=!0,this.items=[],this.matchTexList=[],this.preSelectIds=[],this.selectIds=[],this.firstIds=[],this.matchedDatas=[],this.helpDatas=[],this.matchedIds=[],this.helpIds=[],this.preHideIds=[],this.hideIds=[],this.modal=!0,this.modalAlpha=.7,this.isDraging=!1,this.gridSkillIdArr=[],this.hasThroughIdxs=[],this.eggHideEffs=[],this.eggHideSps=[],this.clickSelIdx=-1,this.roleEffPath=\"res/assets/animate/game/skill/pingjian/FX_xushao_skill_ban.sk\",this.lightEffPath=\"res/assets/animate/game/skill/pingjian/FX_xushao_skill_qianjing.sk\",this.multiGridEffPath=\"res/assets/animate/game/skill/pingjian/FX_xushao_skill_45_success.sk\",this.skillItemEffPath=\"res/assets/animate/game/skill/pingjian/FX_xushao_skill_huode.sk\",this.eggEffPath=\"res/assets/animate/game/skill/pingjian/Ol_DaoJu_jidan.sk\"}Init(){super.Init(),this.bgFrameRes=\"\",this.initBg(795,420,0),this.initUI()}initUI(){this.itemBg=new fO(mNt.GetRes(\"pingjian_bg\")),this.contentSprite.addDrawChild(this.itemBg),this.itemBg.posInteger(this.width-this.itemBg.width>>1,0),this.itemBg.visible=!1,this.confirm_btn=new uQi,this.addChild(this.confirm_btn),this.confirm_btn.UseColorFilter=!0,this.confirm_btn.InitSkin(\"pingjian_close\",\"pingjian_close\",\"pingjian_close\",\"pingjian_close\"),this.confirm_btn.on(Laya.Event.CLICK,this,this.confirmClick),this.confirm_btn.pos(this.itemBg.x+650,50),this.helpBtn=new uQi,this.addChild(this.helpBtn),this.helpBtn.UseColorFilter=!0,this.helpBtn.InitSkin(\"pingjian_btn_help\",\"pingjian_btn_help\",\"pingjian_btn_help\",\"pingjian_btn_help\"),this.helpBtn.on(Laya.Event.CLICK,this,this.onHelpClick),this.helpBtn.pos(this.itemBg.x+640,280),this.hinderBtn=new uQi,this.addChild(this.hinderBtn),this.hinderBtn.UseColorFilter=!0,this.hinderBtn.InitSkin(\"pingjian_btn_hide\"),this.hinderBtn.on(Laya.Event.CLICK,this,this.onHinderClick),this.hinderBtn.pos(this.itemBg.x+640,180),this.skillListBg=new fO(mNt.GetRes(\"window_bg2\")),this.skillListBg.name=\"skillListBg\",this.bgGrid&&(this.skillListBg.sizeGrid=this.bgGrid),this.skillListBg.size(102,270),this.contentSprite.addDrawChild(this.skillListBg),this.skillListBg.posInteger(this.itemBg.x+650,80),this.skillListTitle=CO.Create(this.contentSprite,gNt.SKILL_PINGJIAN_SKILL,20,\"#FFD800\",this.skillListBg.width,20,AM.LISHU,!1),this.skillListTitle.align=\"center\",this.skillListTitle.posInteger(this.skillListBg.x,this.skillListBg.y+5),this.lightSpEff=new E$t,this.lightSpEff.name=\"lightSpEff\",this.addChild(this.lightSpEff),this.lightSpEff.pos(600,200),this.roleSpEff=new E$t,this.roleSpEff.name=\"roleSpEff\",this.addChild(this.roleSpEff),this.roleSpEff.pos(454,204),this.roleSpEff.scaleX=.57,this.roleSpEff.scaleY=.57,this.roleSpEff.zOrder=-1,this.multiGridSpEff=new E$t,this.multiGridSpEff.name=\"multiGridSpEff\",this.multiGridSpEff.scaleX=this.multiGridSpEff.scaleY=.57,this.addChild(this.multiGridSpEff),this.skillItemSpEff=new E$t,this.skillItemSpEff.name=\"skillItemSpEff\",this.skillItemSpEff.scaleX=this.skillItemSpEff.scaleY=.6,this.addChild(this.skillItemSpEff)}enterWindow(t,i){if(super.enterWindow(),!i)return void this.Close();let s=i.seat,e=i.Skill;if(this.seat=s,!this.seat)return void this.Close();this.seat.IsSelf?(this.confirm_btn.visible=this.skillListBg.visible=this.skillListTitle.visible=!0,this.helpBtn.visible=this.hinderBtn.visible=!1):(this.confirm_btn.visible=this.skillListBg.visible=this.skillListTitle.visible=!1,this.helpBtn.visible=this.hinderBtn.visible=!0),i.pingJianDatas&&(this.updateData=i.pingJianDatas),this.Skill=e;let h=(e?e.ActiveTip:\"\").split(\"|\"),r=this.createTxt();r.text=h&&this.seat.IsSelf?h[0]:e.DefensiveTip,r.posInteger(this.width-r.width>>1,this.height-50),this.tipTxt=r;let n=this.createTxt();n.text=e?e.UseTip:\"\",n.fontSize=22,n.posInteger(this.width+220-n.width>>1,60),this.initDatas(i.param,i.params),this.createItems(),this.ShowCountdownTimer(i.timeOut,!1,263,11,this.seat.Index),this.updateData&&this.changeData(this.updateData),this.updateItemUI(),this.initLightEff(),this.initRoleEff(),this.playSound(1)}initDatas(t,i){if(!i||!i.length)return;lr.Init(t||0);let s=AW.I().GetGameSpellsExtendsVoByIdDif(Xmt.SHILUN),e=s&&s.Str?s.Str.split(\";\"):[];this.WordsStr=e.length?lr.RandomArrSync(e,36):new Array(36).fill(\"\"),console.log(\"随机字符：\"+this.WordsStr),this.items=new Array(36).fill(null),this.gridSkillIdArr=new Array(36).fill(0),this.eggHideEffs=new Array(36).fill(null),this.eggHideSps=new Array(36).fill(null);let h=0,r=i[h++];console.log(\"可选择技能个数：\"+r);for(let t=0;t<r;t++){let t=i[h++],s=i[h++],e=i[h++];if(i[h++],null!=t&&null!=s&&null!=e){let i=AW.I().GetPingJianDataById(e);if(i&&i.name){let e=Array.from(i.name)||[];if(Math.floor(t/this.row)==Math.floor(s/this.row))for(let h=0,r=Math.abs(s-t)+1;h<r;h++)this.WordsStr[t+h]=e[h]||\"\",this.gridSkillIdArr[t+h]=i.spell,0==this.firstIds.length&&this.firstIds.push(t+h);else if(t%this.row==s%this.row){for(let h=0,r=Math.abs(s-t)/this.row+1;h<r;h++)this.WordsStr[t+h*this.row]=e[h]||\"\",this.gridSkillIdArr[t+h*this.row]=i.spell,0==this.firstIds.length&&this.firstIds.push(t+h*this.row)}}}}let n=i[h++];console.log(\"随机字数：\"+n);for(let t=0;t<n;t++){let t=i[h++],s=i[h++],e=Math.floor(t/100),r=t%100;if(null!=e&&null!=r&&null!=s){let t=AW.I().GetPingJianDataById(s);if(t&&t.name){let i=Array.from(t.name)||[];r<i.length&&(this.WordsStr[e]=i[r]||\"\",this.gridSkillIdArr[e]=t.spell)}}}this.seat.IsSelf||(this.firstIds.length=0),console.log(\"最终字符：\"+this.WordsStr)}createItems(){let t=this.itemBg.x+380,i=this.itemBg.y+100;for(let s=0,e=this.WordsStr.length;s<e;s++){let e=this.WordsStr[s];if(e){let h=new P3t(s);h.Text=e,h.posInteger(t+s%this.row*(h.width+1),i+Math.floor(s/this.row)*(h.height+1)),this.seat.IsSelf&&(h.on(Laya.Event.CLICK,this,this.onItemClick,[s]),h.AddMouseEvent(this)),this.contentSprite.addDrawChild(h),this.items[s]=h,h.name=\"grid_btn_\"+s;let r=new E$t;r.name=\"gridSpEff_\"+s,this.contentSprite.addChild(r),r.pos(h.x+P3t.ITEM_WIDTH/2,h.y+P3t.ITEM_HEIGHT/2),r.scaleX=r.scaleY=.57,h.AddEff(r);let n=22,a=new SO;a.name=\"wordTxt_\"+s,a.text=e,a.fontFamily=AM.SIMSUN,a.fontSize=n,a.align=\"center\",a.valign=\"middle\",a.size(n,n),this.contentSprite.addChild(a),a.pos(h.x+(h.width-n>>1),h.y+(h.height-n>>1)),h.AddHtmlTxt(a)}}}createTxt(){let t=CO.Create(this.contentSprite,\"\",16,\"#FFFFFF\",this.width,26,AM.SIMSUN,!1,2,\"#0E1633\");return t.align=\"center\",t.valign=\"middle\",t}layout(){super.layout()}onItemClick(t){}onItemDragStart(t){this.isDraging=!0,this.matchedIds.indexOf(t)>-1||(this.clickSelIdx=this.selectIds.includes(t)?t:-1,this.hasThroughIdxs.length=0,this.hasThroughIdxs.push(t),this.refreshSelectIdx(t),console.log(\"PingJianWindow mouse drag start\"))}onItemDragEnd(t){if(this.isDraging=!1,1==this.hasThroughIdxs.length){this.hasThroughIdxs.length=0;let i=this.selectIds.indexOf(t);this.clickSelIdx>-1?i>-1&&this.selectIds.splice(i,1):-1==i&&this.selectIds.push(t)}this.checkSelectIds(),this.updateItemUI(),this.items.forEach(((t,i)=>{t&&(t.IsDraging=!1)})),console.log(\"PingJianWindow mouse drag end\")}onItemMouseIn(t){this.isDraging&&(-1==this.hasThroughIdxs.indexOf(t)&&this.hasThroughIdxs.push(t),this.refreshSelectIdx(t),console.log(\"PingJianWindow mouse in\"))}refreshSelectIdx(t){this.selectIds.indexOf(t)<0&&(this.selectIds.push(t),this.checkSelectIds(),this.updateItemUI())}checkSelectIds(){if(this.selectIds.length>=1){let t,i=this.selectIds[0],s=!1,e=!1,h=this.WordsStr[i]||\"\",r=AW.I().GetPingJianDatas(),n=Math.floor(i/this.row),a=i%this.row,l=!0,o=!0;for(let t=1,i=this.selectIds.length;t<i;t++){let i=this.selectIds[t];if(h+=this.WordsStr[i]||\"\",Math.floor(i/this.row)!==n&&(l=!1),i%this.row!==a&&(o=!1),!l&&!o){s=!0;break}}if(!s&&r){let i=!1;r.breakForEach(((s,e)=>{if(e&&e.name){let s=le.CheckStringChars(h,e.name);if(s.isExactMatch)return i=!0,t=e.id,!0;if(s.isSubset)return i=!0,!0}})),e=!i}if(!e&&t){let i=[];this.selectIds.forEach(((t,s)=>{i.push(this.gridSkillIdArr[t])}));let s=Math.min(...i),h=Math.max(...i);s&&h&&s==h||(e=!0,t=null)}t?(console.log(\"评鉴连线成功\"),this.selectIds.sort(((t,i)=>t-i)),y1t.SendRoleSpellOptRep(V2t.SelfSeatIndex,Xmt.SHILUN,[this.selectIds[0],this.selectIds[this.selectIds.length-1]]),console.log(\"PingJianWindow 评鉴连线成功 \"+this.selectIds[0]+\", \"+this.selectIds[this.selectIds.length-1]),this.selectIds.length=0,this.isDraging=!1,this.clickSelIdx=-1,this.hasThroughIdxs.length=0):(s||e&&this.selectIds.length>=5)&&(console.log(\"评鉴连线失败\"),this.selectIds=[this.selectIds[this.selectIds.length-1]],this.clickSelIdx=-1,this.hasThroughIdxs=[this.selectIds[0]])}}confirmClick(t,i=!1){V2t.CanOperationInGame()&&(this.seat&&this.seat.IsSelf?(V2t.Seat_Cancel(V2t.SelfSeatIndex),this.Close()):y1t.SendRoleSpellOptRep(V2t.SelfSeatIndex,Xmt.SHILUN,[0]))}onHelpClick(t){V2t.CanOperationInGame()&&(this.helpBtn.visible=this.hinderBtn.visible=!1,y1t.SendRoleSpellOptRep(V2t.SelfSeatIndex,Xmt.SHILUN,[1]))}onHinderClick(t){V2t.CanOperationInGame()&&(this.helpBtn.visible=this.hinderBtn.visible=!1,y1t.SendRoleSpellOptRep(V2t.SelfSeatIndex,Xmt.SHILUN,[0]))}updateSkillList(t){let i=[];if(this.skillItems.length!=t.length){let s=[];this.skillItems.forEach((t=>{s.push(t.Skill.ID)})),i=t.filter((t=>!s.includes(t)))}if(!i||0===i.length)return;i.forEach(((i,s)=>{let e=t.indexOf(i);e>-1&&t.splice(e,1)})),(t=i.concat(t)).length>this.maxSkillCount&&t.splice(this.maxSkillCount,t.length-this.maxSkillCount);let s=Math.min(t.length,this.maxSkillCount),e=this.skillListTitle.y+this.skillListTitle.height+5;for(let i=0;i<s;i++){let s=t[i],h=fKt.GetInstance(s);if(!h)continue;let r=this.skillItems[i];r||(r=new Rls,this.addChild(r),this.skillItems.push(r)),r.Skill=h,r.pos(this.skillListBg.x+(this.skillListBg.width-r.width>>1),e+37*i)}for(let t=0;t<i.length;t++){let s=i[t];this.skillItems.breakForEach(((t,i)=>t.Skill.ID==s&&(this.playMultiGridEff(s),this.playSound(3),!0)))}}UpdateWindow(t){this.updateData=t,this.inited&&(this.changeData(this.updateData),this.updateItemUI())}changeData(t){if(!t||0==t.length)return;this.result=null,this.matchedDatas.length=0,this.helpDatas.length=0,this.matchedIds.length=0,this.helpIds.length=0,this.preHideIds=this.hideIds.slice(),this.hideIds.length=0;let i=[];if(this.seat&&this.seat.IsSelf){let s=t[0]||0,e=4*s+1,h=t[e]||0,r=e+4*h+1,n=t[r]||0,a=r+n+1;t.length<a&&console.log(\"评鉴数据错误\");for(let e=0,h=s;e<h;e++){let s=t[4*e+1],h=t[4*e+2],r=t[4*e+3],n=t[4*e+4];if(r){let t=new Jds(s,h,r,n);this.matchedDatas.push(t);let e=t.IndexArr;n&&i.push(n),e&&e.length>0&&(this.matchedIds=this.matchedIds.concat(e))}}for(let i=0,s=h;i<s;i++){let s=t[e+4*i+1],h=t[e+4*i+2],r=t[e+4*i+3],n=t[e+4*i+4];if(r){let t=new Jds(s,h,r,n);this.helpDatas.push(t);let i=t.IndexArr;i&&i.length>0&&(this.helpIds=this.helpIds.concat(i))}}for(let i=0,s=n;i<s;i++){let s=t[r+i+1];s&&this.hideIds.push(s)}this.updateSkillList(i)}else if(this.result=t[0]||0,this.confirm_btn.enabled=!1,this.selectIds.length=0,1==this.result){t.length<5&&console.log(\"评鉴数据错误\");let i=t[1],s=t[2],e=t[3],h=t[4];if(e){let t=new Jds(i,s,e,h);this.matchedDatas.push(t);let r=t.IndexArr;r&&r.length>0&&(this.matchedIds=this.matchedIds.concat(r))}}else null!=t[1]&&this.hideIds.push(t[1])}updateItemUI(){if(this.items.length){let t=this.hideIds.filter((t=>!this.preHideIds.includes(t)));if(t.length>0){let i=[],s=[],e=[];for(let t=0,h=this.eggHideEffs.length;t<h;++t){let h=this.eggHideSps[t],r=this.eggHideEffs[t];r&&-1==this.hideIds.indexOf(t)&&(i.push(h),s.push(r),e.push(t),h.visible=!1,r.visible=!1)}for(let h=0,r=t.length;h<r;++h){let r=t[h],n=null,a=null;if(i.length){n=i.pop();let t=e.pop();this.eggHideSps[t]=null}else n=new gO,this.contentSprite.addChild(n),n.texture=mNt.GetRes(\"pingjian_item_hide\");if(this.eggHideSps[r]=n,n.name=\"eggSp_\"+r,n.visible=!1,s.length){a=s.pop();let t=e.pop();this.eggHideEffs[t]=null}else a=new E$t,this.contentSprite.addChild(a);a.name=\"eggEff_\"+r,this.eggHideEffs[r]=a,a.visible=!0,this.playEggEff(r,a)}this.playSound(2),this.preHideIds=this.hideIds.slice()}for(let t=0,i=this.items.length;t<i;t++){let i=this.items[t];i&&(this.matchedIds.indexOf(i.Index)>-1?i.UpdateUI(1):this.selectIds.indexOf(i.Index)>-1?(i.UpdateUI(2),this.selectIds.length>=4&&i.playMulSlcEff()):this.helpIds.indexOf(i.Index)>-1?i.UpdateUI(3):this.firstIds.indexOf(i.Index)>-1?i.UpdateUI(4):i.UpdateUI(5))}let i=this.selectIds.filter((t=>!this.preSelectIds.includes(t)));this.preSelectIds=this.selectIds.slice(),console.log(\"newSelectIdxs.length = \"+i.length),i.forEach(((t,i)=>{let s=this.items[t];s&&s.playSelectInEff()}))}}initRoleEff(){this.roleSpEff.InitEffect(this.roleEffPath,\"in\",!1,!1),this.roleSpEff.playEffect(),this.roleSpEff.on(Laya.Event.STOPPED,this,this.onRoleEffStopped)}onRoleEffStopped(){this.roleSpEff.off(Laya.Event.STOPPED,this,this.onRoleEffStopped),this.roleSpEff.InitEffect(this.roleEffPath,\"loop\",!0,!1),this.roleSpEff.playEffect()}initLightEff(){this.lightSpEff.InitEffect(this.lightEffPath,\"in\",!1,!1),this.lightSpEff.playEffect(),this.lightSpEff.on(Laya.Event.STOPPED,this,this.onLightEffStopped)}onLightEffStopped(){this.lightSpEff.off(Laya.Event.STOPPED,this,this.onLightEffStopped),this.lightSpEff.InitEffect(this.lightEffPath,\"loop\",!0,!1),this.lightSpEff.playEffect()}playMultiGridEff(t){let i=[],s=this.row*this.row,e=-1;if(this.gridSkillIdArr.forEach(((h,r)=>{h==t&&(i.push(this.items[r]),s=Math.min(s,r),e=Math.max(e,r))})),i.length){let h=null;this.movingSkillItems.length?h=this.movingSkillItems.pop():(h=new Rls,this.addChild(h));let r=fKt.GetInstance(t);h.Skill=r,h.visible=!0;let n=4==i.length?4:5,a=Math.abs(e-s)<this.row,l=Number.MAX_SAFE_INTEGER,o=Number.MAX_SAFE_INTEGER,u=Number.MIN_SAFE_INTEGER,c=Number.MIN_SAFE_INTEGER;i.forEach(((t,i)=>{t&&(l=Math.min(l,t.x),o=Math.min(o,t.y),u=Math.max(u,t.x),c=Math.max(c,t.y))}));let _=l+u>>1,d=o+c>>1;this.removeChild(h),this.contentSprite.addChild(h),h.pos(_-14,d+3),this.contentSprite.removeChild(h),this.addChild(h);let f=le.F(\"{0}_{1}\",n,a?\"heng\":\"shu\");this.multiGridSpEff.pos(_+P3t.ITEM_WIDTH/2,d+P3t.ITEM_HEIGHT/2),this.multiGridSpEff.InitEffect(this.multiGridEffPath,f,!1,!1),this.multiGridSpEff.playEffect(),this.skillItemSpEff.pos(_+P3t.ITEM_WIDTH/2,d+P3t.ITEM_HEIGHT/2),this.skillItemSpEff.InitEffect(this.skillItemEffPath,\"in\",!1,!1),this.skillItemSpEff.playEffect();let g=null;this.skillItems.breakForEach(((i,s)=>i.Skill.ID==t&&(g=i,!0))),Laya.Tween.to(h,{x:g.x,y:g.y},200,null,Laya.Handler.create(this,this.onSkillItemMoveEnd,[h]),500)}}onSkillItemMoveEnd(t){t.visible=!1,this.movingSkillItems.push(t),this.skillItemSpEff.pos(t.x+t.width/2,t.y+t.height/2),this.skillItemSpEff.InitEffect(this.skillItemEffPath,\"out\",!1,!1),this.skillItemSpEff.playEffect()}playEggEff(t,i){i.pos(this.contentSprite.width/2,this.contentSprite.height/2),i.InitEffect(this.eggEffPath,\"fly1\",!0,!1),i.playEffect();let s=this.items[t];Laya.Tween.to(i,{x:s.x+s.width/2,y:s.y+s.height/2},300,null,Laya.Handler.create(this,this.onEggEffStoped,[t,i]))}onEggEffStoped(t,i){i.InitEffect(this.eggEffPath,\"hit1\",!1,!1),i.playEffect(),Laya.timer.once(200,this,(()=>{this.items[t].Hide=!0;let i=this.items[t],s=this.eggHideSps[t];s.pos(i.x+3,i.y+3),s.visible=!0}))}playSound(t){let i=\"Skill_XuShao_3911_\"+t;if(console.log(\"PingJianWindow playSound \"+i),i){let t=FH.I().GetNormalSkillEffectSound(i+\".ogg\");ID.PlayEffectSound(t)}}destroy(){Laya.timer.clearAll(this),this.selectIds.length=0,this.matchedIds.length=0,this.firstIds.length=0,this.hideIds.length=0,this.items.length=0,this.helpIds.length=0,this.matchTexList.length=0,this.matchedDatas.length=0,this.helpDatas.length=0,this.hasThroughIdxs.length=0,this.updateData=null,this.result=null,this.skillItems.forEach((t=>{t.destroy()})),this.skillItems.length=0,this.movingSkillItems.forEach((t=>{t.destroy()})),this.eggHideEffs.forEach((t=>{t?.destroy()})),this.eggHideSps.forEach((t=>{t?.destroy()})),this.isDraging=!1,this.gridSkillIdArr.length=0,super.destroy()}}",
+  "random": "class lr{static seed=0;static maxNumber=Math.pow(2,32)-1;static Init(t){this.seed=t}static Random(){const t=(1103515245*this.seed+123456789)%this.maxNumber;return this.seed=t,t/this.maxNumber}static RandomFromSync(t,i){return Math.floor(this.Random()*(i-t+1)+t)}static RandomFrom(t,i){return Math.floor(Math.random()*(i-t+1)+t)}static RandomFloat(t,i){return parseFloat((Math.random()*(i-t)+t).toFixed(2))}static RandomCount(t,i,s){const e=[];if(i-t+1<=s){for(let s=t;s<=i;s++)e.push(s);return e}do{const s=this.RandomFrom(t,i);e.includes(s)||e.push(s)}while(e.length<s);return e}static RandomArr(t,i,s=!1){if(t.length<=i)return t;const e=[];for(;e.length<i;){const i=this.RandomFrom(0,t.length-1);(s||!e.includes(i))&&e.push(i)}return e.map((i=>t[i]))}static RandomArrSync(t,i,s=!1){if(t.length<=i)return t;const e=[];for(;e.length<i;){const i=this.RandomFromSync(0,t.length-1);(s||!e.includes(i))&&e.push(i)}return e.map((i=>t[i]))}static WeightRandomCount(t,i,s=!0){if(!s&&t.length<i)return Array.from({length:t.length},((t,i)=>i));const e=[].concat(t),h=[];let r=e.reduce(((t,i)=>t+i),0);for(;h.length<i;){let t=0;const i=this.RandomFrom(0,r);for(let n=0;n<e.length;n++)if(t+=e[n],0!==e[n]&&i<=t){h.push(n),s||(r-=e[n],e[n]=0);break}}return h}static Probability(t,i=100){return this.RandomFrom(1,i)<=t}static GetRandomArbitrary(t,i){return Math.random()*(i-t)+t}static SplitNumber(t,i,s=!1){const e=[];for(let h=0;h<i;h++){const r=this.GetRandomMoney(t,i-h,s);e.push(r),t-=r}return e}static GetRandomMoney(t,i,s=!1){if(1===i)return Math.round(t);const e=(s?this.Random():Math.random())*Math.floor(t/i*2);return e<=1?1:Math.floor(e)}}",
+  "match": "class le{static countChars(t){const i={};for(let s=0;s<t.length;s++){const e=t.charAt(s);i[e]=(i[e]||0)+1}return i}static CheckStringChars(t,i){if(0===t.length)return{isSubset:!0,isExactMatch:0===i.length};if(0===i.length)return{isSubset:!1,isExactMatch:!1};if(t===i)return{isSubset:!0,isExactMatch:!0};const s=this.countChars(t),e=this.countChars(i);let h=!0;for(const t in s)if(s.hasOwnProperty(t)){s[t]>(e[t]||0)&&(h=!1)}let r=!1;if(h&&t.length===i.length){r=!0;for(const t in s)if(s.hasOwnProperty(t)&&s[t]!==e[t]){r=!1;break}if(r)for(const t in e)if(e.hasOwnProperty(t)&&!s[t]){r=!1;break}}return{isSubset:h,isExactMatch:r}}}",
+  "result": "class Jds{row=6;constructor(t,i,s,e){this.Begin=t,this.End=i,this.ArcId=s,this.SpellId=e}get IndexArr(){if(null!=this.Begin&&null!=this.End){let t=[];if(Math.floor(this.Begin/this.row)==Math.floor(this.End/this.row))for(let i=0,s=Math.abs(this.End-this.Begin)+1;i<s;i++)t.push(this.Begin+i);else if(this.Begin%this.row==this.End%this.row){for(let i=0,s=Math.abs(this.End-this.Begin)/this.row+1;i<s;i++)t.push(this.Begin+i*this.row)}return t}}}",
+  "entries": [
+    {
+      "id": 110,
+      "name": "年轻的贤君",
+      "unmber": 5,
+      "spell": 872,
+      "triggerID": 1
+    },
+    {
+      "id": 760,
+      "name": "江表之力牧",
+      "unmber": 5,
+      "spell": 921,
+      "triggerID": 1
+    },
+    {
+      "id": 190,
+      "name": "高贵的名门",
+      "unmber": 5,
+      "spell": 102,
+      "triggerID": 1
+    },
+    {
+      "id": 497,
+      "name": "街亭之殇",
+      "unmber": 4,
+      "spell": 236,
+      "triggerID": 1
+    },
+    {
+      "id": 284,
+      "name": "曹魏的谋主",
+      "unmber": 5,
+      "spell": 423,
+      "triggerID": 1
+    },
+    {
+      "id": 1023,
+      "name": "慨然永怀",
+      "unmber": 4,
+      "spell": 3266,
+      "triggerID": 1
+    },
+    {
+      "id": 720,
+      "name": "虎豹骑首",
+      "unmber": 4,
+      "spell": 3691,
+      "triggerID": 1
+    },
+    {
+      "id": 682,
+      "name": "北地枪王",
+      "unmber": 4,
+      "spell": 830,
+      "triggerID": 1
+    },
+    {
+      "id": 1014,
+      "name": "双剑化龙",
+      "unmber": 4,
+      "spell": 3253,
+      "triggerID": 1
+    },
+    {
+      "id": 1205,
+      "name": "乱世谋焚",
+      "unmber": 4,
+      "spell": 3510,
+      "triggerID": 1
+    },
+    {
+      "id": 862,
+      "name": "洞悉先机者",
+      "unmber": 5,
+      "spell": 3190,
+      "triggerID": 1
+    },
+    {
+      "id": 1192,
+      "name": "瀚海鲸波",
+      "unmber": 4,
+      "spell": 3503,
+      "triggerID": 1
+    },
+    {
+      "id": 931,
+      "name": "勒格诗惹",
+      "unmber": 4,
+      "spell": 3107,
+      "triggerID": 1
+    },
+    {
+      "id": 1382,
+      "name": "坚朴的忠相",
+      "unmber": 5,
+      "spell": 3672,
+      "triggerID": 1
+    },
+    {
+      "id": 1457,
+      "name": "火神的祝佑",
+      "unmber": 5,
+      "spell": 4009,
+      "triggerID": 1
+    },
+    {
+      "id": 592,
+      "name": "螳臂当车",
+      "unmber": 4,
+      "spell": 280,
+      "triggerID": 1
+    },
+    {
+      "id": 1392,
+      "name": "利刃风骑",
+      "unmber": 4,
+      "spell": 3804,
+      "triggerID": 1
+    },
+    {
+      "id": 1375,
+      "name": "以时进讨",
+      "unmber": 4,
+      "spell": 3772,
+      "triggerID": 1
+    },
+    {
+      "id": 1364,
+      "name": "帷幄擎炬",
+      "unmber": 4,
+      "spell": 3750,
+      "triggerID": 1
+    },
+    {
+      "id": 1245,
+      "name": "一战天下定",
+      "unmber": 5,
+      "spell": 3564,
+      "triggerID": 1
+    },
+    {
+      "id": 1098,
+      "name": "社稷之器",
+      "unmber": 4,
+      "spell": 3352,
+      "triggerID": 1
+    },
+    {
+      "id": 961,
+      "name": "朗朗日月",
+      "unmber": 4,
+      "spell": 3157,
+      "triggerID": 1
+    },
+    {
+      "id": 940,
+      "name": "鬼斧神工",
+      "unmber": 4,
+      "spell": 11003,
+      "triggerID": 1
+    },
+    {
+      "id": 1149,
+      "name": "相机而动",
+      "unmber": 4,
+      "spell": 3408,
+      "triggerID": 1
+    },
+    {
+      "id": 851,
+      "name": "花俏蛮娇",
+      "unmber": 4,
+      "spell": 9010,
+      "triggerID": 1
+    },
+    {
+      "id": 1398,
+      "name": "天阶登志",
+      "unmber": 4,
+      "spell": 3822,
+      "triggerID": 1
+    },
+    {
+      "id": 1468,
+      "name": "雅量之魁英",
+      "unmber": 5,
+      "spell": 4025,
+      "triggerID": 1
+    },
+    {
+      "id": 1046,
+      "name": "中才之相",
+      "unmber": 4,
+      "spell": 3328,
+      "triggerID": 1
+    },
+    {
+      "id": 1246,
+      "name": "踌躇的孤雁",
+      "unmber": 5,
+      "spell": 3566,
+      "triggerID": 1
+    },
+    {
+      "id": 1229,
+      "name": "地载十六州",
+      "unmber": 5,
+      "spell": 4023,
+      "triggerID": 1
+    },
+    {
+      "id": 1288,
+      "name": "万夫之勇",
+      "unmber": 4,
+      "spell": 3622,
+      "triggerID": 1
+    },
+    {
+      "id": 1252,
+      "name": "良平之奇",
+      "unmber": 4,
+      "spell": 3574,
+      "triggerID": 1
+    },
+    {
+      "id": 1416,
+      "name": "伊侍佐佑",
+      "unmber": 4,
+      "spell": 3854,
+      "triggerID": 1
+    },
+    {
+      "id": 1344,
+      "name": "狂才傲世",
+      "unmber": 4,
+      "spell": 3707,
+      "triggerID": 1
+    },
+    {
+      "id": 620,
+      "name": "社稷的先驱",
+      "unmber": 5,
+      "spell": 377,
+      "triggerID": 2
+    },
+    {
+      "id": 90,
+      "name": "早终的先知",
+      "unmber": 5,
+      "spell": 52,
+      "triggerID": 2
+    },
+    {
+      "id": 412,
+      "name": "治世之能臣",
+      "unmber": 5,
+      "spell": 717,
+      "triggerID": 2
+    },
+    {
+      "id": 235,
+      "name": "天下归心",
+      "unmber": 4,
+      "spell": 310,
+      "triggerID": 2
+    },
+    {
+      "id": 354,
+      "name": "法不容情",
+      "unmber": 4,
+      "spell": 445,
+      "triggerID": 2
+    },
+    {
+      "id": 1059,
+      "name": "机捷谈笑",
+      "unmber": 4,
+      "spell": 3321,
+      "triggerID": 2
+    },
+    {
+      "id": 1225,
+      "name": "委蛇两端",
+      "unmber": 4,
+      "spell": 3539,
+      "triggerID": 2
+    },
+    {
+      "id": 204,
+      "name": "霸业继承者",
+      "unmber": 5,
+      "spell": 106,
+      "triggerID": 2
+    },
+    {
+      "id": 1256,
+      "name": "无愆垣下",
+      "unmber": 4,
+      "spell": 3581,
+      "triggerID": 2
+    },
+    {
+      "id": 181,
+      "name": "驱虎吞狼",
+      "unmber": 4,
+      "spell": 93,
+      "triggerID": 2
+    },
+    {
+      "id": 923,
+      "name": "慧眼识君",
+      "unmber": 4,
+      "spell": 3098,
+      "triggerID": 2
+    },
+    {
+      "id": 1177,
+      "name": "神通妙算",
+      "unmber": 4,
+      "spell": 3492,
+      "triggerID": 2
+    },
+    {
+      "id": 557,
+      "name": "天资的明君",
+      "unmber": 5,
+      "spell": 730,
+      "triggerID": 2
+    },
+    {
+      "id": 1378,
+      "name": "垂宪后叶",
+      "unmber": 4,
+      "spell": 763,
+      "triggerID": 2
+    },
+    {
+      "id": 1032,
+      "name": "魁立倾厦",
+      "unmber": 4,
+      "spell": 3273,
+      "triggerID": 2
+    },
+    {
+      "id": 1233,
+      "name": "尔卜尔筮",
+      "unmber": 4,
+      "spell": 3547,
+      "triggerID": 2
+    },
+    {
+      "id": 1156,
+      "name": "才惠双绝",
+      "unmber": 4,
+      "spell": 3845,
+      "triggerID": 2
+    },
+    {
+      "id": 783,
+      "name": "省身明德",
+      "unmber": 4,
+      "spell": 946,
+      "triggerID": 2
+    },
+    {
+      "id": 1230,
+      "name": "红烛垂泪",
+      "unmber": 4,
+      "spell": 3543,
+      "triggerID": 2
+    },
+    {
+      "id": 841,
+      "name": "仰观太虚",
+      "unmber": 4,
+      "spell": 988,
+      "triggerID": 2
+    },
+    {
+      "id": 435,
+      "name": "恃才放旷",
+      "unmber": 4,
+      "spell": 206,
+      "triggerID": 2
+    },
+    {
+      "id": 420,
+      "name": "心吞三国",
+      "unmber": 4,
+      "spell": 718,
+      "triggerID": 2
+    },
+    {
+      "id": 1394,
+      "name": "环佩解君",
+      "unmber": 4,
+      "spell": 3810,
+      "triggerID": 2
+    },
+    {
+      "id": 120,
+      "name": "绝世的舞姬",
+      "unmber": 5,
+      "spell": 67,
+      "triggerID": 3
+    },
+    {
+      "id": 133,
+      "name": "固若金汤",
+      "unmber": 4,
+      "spell": 370,
+      "triggerID": 3
+    },
+    {
+      "id": 298,
+      "name": "归汉的才女",
+      "unmber": 5,
+      "spell": 265,
+      "triggerID": 3
+    },
+    {
+      "id": 296,
+      "name": "鬼神之勇",
+      "unmber": 4,
+      "spell": 373,
+      "triggerID": 3
+    },
+    {
+      "id": 361,
+      "name": "狂直之士",
+      "unmber": 4,
+      "spell": 453,
+      "triggerID": 3
+    },
+    {
+      "id": 674,
+      "name": "临难死义",
+      "unmber": 4,
+      "spell": 818,
+      "triggerID": 3
+    },
+    {
+      "id": 1181,
+      "name": "意前笔启",
+      "unmber": 4,
+      "spell": 3483,
+      "triggerID": 3
+    },
+    {
+      "id": 1102,
+      "name": "炎志灼心",
+      "unmber": 4,
+      "spell": 3395,
+      "triggerID": 3
+    },
+    {
+      "id": 1332,
+      "name": "歧路也汤汤",
+      "unmber": 5,
+      "spell": 3693,
+      "triggerID": 3
+    },
+    {
+      "id": 401,
+      "name": "大义不惜",
+      "unmber": 4,
+      "spell": 472,
+      "triggerID": 3
+    },
+    {
+      "id": 1363,
+      "name": "烛照官渡",
+      "unmber": 4,
+      "spell": 3752,
+      "triggerID": 3
+    },
+    {
+      "id": 1477,
+      "name": "后后嘉荣",
+      "unmber": 4,
+      "spell": 4039,
+      "triggerID": 3
+    },
+    {
+      "id": 678,
+      "name": "扣弦的豪将",
+      "unmber": 5,
+      "spell": 826,
+      "triggerID": 3
+    },
+    {
+      "id": 1325,
+      "name": "坚争抗壮",
+      "unmber": 4,
+      "spell": 3684,
+      "triggerID": 3
+    },
+    {
+      "id": 765,
+      "name": "小家碧玉",
+      "unmber": 4,
+      "spell": 958,
+      "triggerID": 3
+    },
+    {
+      "id": 1090,
+      "name": "遐雁归迩",
+      "unmber": 4,
+      "spell": 3511,
+      "triggerID": 3
+    },
+    {
+      "id": 1011,
+      "name": "详阴阳之妙",
+      "unmber": 5,
+      "spell": 3903,
+      "triggerID": 3
+    },
+    {
+      "id": 893,
+      "name": "制霸南中",
+      "unmber": 4,
+      "spell": 3066,
+      "triggerID": 3
+    },
+    {
+      "id": 884,
+      "name": "武侯长史",
+      "unmber": 4,
+      "spell": 3053,
+      "triggerID": 3
+    },
+    {
+      "id": 1003,
+      "name": "天行有常",
+      "unmber": 4,
+      "spell": 3233,
+      "triggerID": 3
+    },
+    {
+      "id": 965,
+      "name": "冠宇啸北",
+      "unmber": 4,
+      "spell": 3165,
+      "triggerID": 3
+    },
+    {
+      "id": 539,
+      "name": "雄长百越",
+      "unmber": 4,
+      "spell": 262,
+      "triggerID": 3
+    }
+  ],
+  "background": "囧;恏;怣;擘;昇;兜;嘎;瞭;辐;酮;瞳;粳;烷;糠;蔷;磕;醚;酝;臃;闷;淆;舀;瘴;缀;砧;绦;骡;礁;氟;铬;喆;赫;兢;圭;烫;镗;坣;骞;蒨;氰;鲭;甠;箬;蒻;叒;叕;汋;钡;桮;氮;柦;泹",
+  "cell": "class P3t extends $jt{static ITEM_WIDTH=40;static ITEM_HEIGHT=40;constructor(t){super(),this.idx=t,this.isdraging=!1,this.size(P3t.ITEM_WIDTH,P3t.ITEM_HEIGHT),this.labelSize=22,this.labelColors=\"#87624D,#87624D,#87624D,#87624D,#87624D\",this.InitSkin(\"pingjian_item_bg\",\"pingjian_item_bg\",\"pingjian_item_bg\",\"pingjian_item_bg\",\"pingjian_item_bg\"),this.effPath=\"res/assets/animate/game/skill/pingjian/FX_xushao_skill_gezi.sk\"}createChildren(){super.createChildren(),this.hideTex=new fO(mNt.GetRes(\"pingjian_item_hide\")),this.hideTex.Anchors(.5,.5),this.hideTex.posInteger(P3t.ITEM_WIDTH>>1,P3t.ITEM_HEIGHT>>1),this.hideTex.visible=!1,this.addDrawChild(this.hideTex),this.selectBg=new fO(mNt.GetRes(\"pingjian_item_select\")),this.selectBg.Anchors(.5,.5),this.selectBg.posInteger(P3t.ITEM_WIDTH>>1,P3t.ITEM_HEIGHT>>1),this.selectBg.visible=!1,this.addDrawChild(this.selectBg)}AddMouseEvent(t){this.parent=t,this.on(Laya.Event.MOUSE_DOWN,this,this.onItemDragStart.bind(this)),this.on(Laya.Event.MOUSE_OVER,this,this.onMouseIn.bind(this)),this.on(Laya.Event.MOUSE_UP,this,this.onItemDragEnd.bind(this))}onItemDragStart(){!this.isdraging&&1!=this.type&&this.parent&&(this.parent.onItemDragStart(this.idx),this.isdraging=!0,console.log(\"PingJianItem mouse down \"+this.isdraging))}onItemDragEnd(){this.isdraging=!1,console.log(\"PingJianItem mouse up \"+this.isdraging),1!=this.type&&this.parent&&this.parent.onItemDragEnd(this.idx)}onMouseIn(){console.log(\"PingJianItem mouse in \"+this.idx+\", \"+(this.isdraging&&1!=this.type&&this.parent)),1!=this.type&&this.parent&&this.parent.onItemMouseIn(this.idx)}set IsDraging(t){this.isdraging=t}set Text(t){this.label=t}get Index(){return this.idx}set Hide(t){this.hideTex.visible=t,this.textField.visible=!t,this.topTxt.visible=!t}AddEff(t){this.spEff=t}AddHtmlTxt(t){this.topTxt=t}UpdateUI(t){if(!t||this.type==t)return;this.selectBg.visible=!1;let i=\"pingjian_item_bg\";this.textField.visible=!1,this.labelColors=\"#665973,#665973,#665973,#665973,#665973\",1==t?(this.Hide=!1,this.labelColors=\"#8B701D,#8B701D,#8B701D,#8B701D,#8B701D\",i=\"pingjian_item_bg_link\",this.playGrayEff(),this.topTxt.color=\"#8B701D\"):2==t?(this.selectBg.visible=!0,this.labelColors=\"#8B701D,#8B701D,#8B701D,#8B701D,#8B701D\",this.topTxt.color=\"#8B701D\"):3==t?(i=\"pingjian_item_bg_help\",this.labelColors=\"#5D5B60,#5D5B60,#5D5B60,#5D5B60,#5D5B60\",this.topTxt.color=\"#5D5B60\",this.playGrayEff()):4==t?(this.labelColors=\"#60C5FF,#60C5FF,#60C5FF,#60C5FF,#60C5FF\",this.playInEff(),this.topTxt.color=\"#60C5FF\"):5==t&&(this.playInEff(),this.topTxt.color=\"#665973\"),this.InitSkin(i,i,i,i,i),this.type=t}playInEff(){this.spEff.offAll(Laya.Event.STOPPED),this.spEff.InitEffect(this.effPath,\"in\",!1,!1),this.spEff.playEffect(),this.spEff.on(Laya.Event.STOPPED,this,this.onEffInStopped)}onEffInStopped(){this.spEff.offAll(Laya.Event.STOPPED),this.spEff.InitEffect(this.effPath,\"gezi_normal_loop\",!0,!1),this.spEff.playEffect()}playSelectInEff(){this.spEff.offAll(Laya.Event.STOPPED),this.spEff.InitEffect(this.effPath,\"gezi_slc_in\",!1,!1),this.spEff.playEffect(),this.spEff.on(Laya.Event.STOPPED,this,this.onEffSelectInStopped)}onEffSelectInStopped(){this.spEff.offAll(Laya.Event.STOPPED),this.spEff.InitEffect(this.effPath,\"gezi_slc_loop\",!0,!1),this.spEff.playEffect()}playGrayEff(){this.spEff.offAll(Laya.Event.STOPPED),this.spEff.InitEffect(this.effPath,\"gezi_hui_loop\",!0,!1),this.spEff.playEffect()}playMulSlcEff(){this.spEff.offAll(Laya.Event.STOPPED),this.spEff.InitEffect(this.effPath,\"gezi_slc_45_in\",!1,!1),this.spEff.playEffect(),this.spEff.on(Laya.Event.STOPPED,this,this.onEffMulSlcInStopped)}onEffMulSlcInStopped(){this.spEff.InitEffect(this.effPath,\"gezi_slc_loop\",!0,!1),this.spEff.playEffect()}}",
+  "cellOffset": 11806376
+}

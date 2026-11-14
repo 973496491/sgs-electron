@@ -204,5 +204,15 @@ async function test(name, fn) { await fn(); process.stdout.write('ok ' + (++pass
     const exit = slice('  function Exit()', '  function _0x3e479a()');
     assert(exit.includes('autoTasks.dispose()'));
   });
+  await test('废弃月周卡任务永久跳过；新周卡任务在自动月卡开启时让渡', async () => {
+    for (const enabled of [true, false]) {
+      const f = fixture(); f.globalConfig.autoYueKaSwitch = enabled; f.globalConfig.yuekaRemindSwitch = false;
+      for (const id of [58530, 58531, 58538]) f.addTask(id);
+      f.initButtons();
+      const p = f.api.request(true, 'button'); await f.advance(6000); await p;
+      const ids = f.calls.filter(c => c[0] === 'award').map(c => c[1]);
+      assert(!ids.includes(58530)); assert(!ids.includes(58531)); assert.equal(ids.includes(58538), !enabled);
+    }
+  });
   process.stdout.write(passed + ' auto-task checks passed\n');
 })().catch(error => { process.stderr.write(error.stack + '\n'); process.exitCode = 1; });

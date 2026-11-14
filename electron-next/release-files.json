@@ -340,6 +340,16 @@
       "sourceRoot": "repo",
       "source": "electron-next/resources/card-themes/tarot/faces/JueYing_spade.png",
       "target": "card-themes/tarot/faces/JueYing_spade.png"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/adapters/xushao-client.js",
+      "target": "modules/adapters/xushao-client.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/xushao-assist.js",
+      "target": "modules/features/xushao-assist.js"
     }
   ],
   "packageFiles": [

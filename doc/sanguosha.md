@@ -23,6 +23,36 @@
 
 本文只针对 **OL**。
 
+## 许劭世论 / 评鉴棋盘定向核查（2026-11-13，仅调查）
+
+后续已实现“许劭辅助”，用户最新要求改为只读连线提示、允许拖动，自动提交链路和方式/延时设置已移除。当前行为与34项浏览器/显示验证见架构表“许劭辅助：只读连线提示与可拖动面板”；下文“未改代码”仅描述最初调查。运行时通过WindowInstanceDict或laya.win只读定位已有窗口，不能使用可能构造弹窗的GetWindowByName；官方快照约5136890处明确暴露Laya.Browser.window.GameContext。79项XSPJ+技能名内嵌adapter，今后增删需更新；归档原生源码保存在tests/fixtures/xushao-native-20261110.json作为构造数据与不调用原生操作的验证依据。
+
+- 2026-11-14闪动修复：原UpdateUI(4)辅助高亮与native type5来回切换会重复启动playInEff；已改为静态字色，不改ui.type。鸡蛋分支通过仅对齐preHideIds渲染缓存跳过新建/播放，窗口playEggEff/onEggEffStoped有效期内不再排Tween/计时器。帮助格playGrayEff和仅帮助来源的playMultiGridEff被拦截，保留changeData/帮助结果/选中完成显示/真实获得技能的播放，不屏蔽协议；旧alpha隐藏作为接管前回调的兜底。34项真实原生摘录/浏览器检查含连续100次刷新、零新Tween和延迟任务通过；未游戏内验证卡顿已完全消失。详见架构表“静态高亮与闪动修复/鸡蛋与帮助表现拦截”。
+
+- 原生高亮补充：同一快照 `P3t` 字符偏移11806376，`UpdateUI(4)` 为蓝色起始格提示（字色#60C5FF），1/2/3/5分别为已完成/选中/帮助/普通。已复用到所有可连横竖组合的格子，并保留选中/完成优先、帮助底纹和遮挡可见性，关闭时按当前原生状态释放显示租约。P3t源码已补入同一native fixture的cell字段，未重新下载资源。没有调用原生连线或发协议，详见架构表“复用原生格子高亮”。
+
+- 用户指定带棋盘的许劭技能，已核实 `757/XuShao -> 3911/世论/ShiLun -> PingJianWindow` 六行六列文字连线界面，相邻技能为 `3912/濯名/ZhuoMing`。本次不是“评荐”旧名推断；配置明确把3911的效果称为“评鉴”。配置词库 `cha_spellextend.XSPJ` 共79项，记录战功词条ID、文字、获得技能ID和triggerID；棋盘初始化Params直接下发主词条起止位置和词条ID，另有干扰字，Param用于随机铺底。选中后 `CGsRoleSpellOptRep(3911,Type=0,Datas=[begin,end])` 提交；`Type=82/OPT_PINGJIAN_DATAS` 回到窗口更新成功/帮助/遮挡结果。开窗操作与增量通知是两条入口，不能把82当作开窗Type。
+- 复用仍存在的11月10日ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-new-cards-audit-phdf4rol/sgsGame_a.sgs`，SHA256 `52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63`。字符偏移：`Pai/ShiLun=14805096`、`Zds/PingJianWindow=22086840`、`y1t/CGsRoleSpellOptRep=11396297`、`AW=2623528`、`Jds=22086397`、`Pg=1025661`、`optPingJianDatasFunc=1641849`；符号和偏移仅对该快照有效，不作运行时类名依赖。
+- 定向取得普通 [Config.sgs](https://web.sanguosha.com/220/h5_2/res/config/Config.sgs)，UTC `2026-11-13T11:32:39.485758+00:00`，4,179,564字节，SHA256 `d694fc743b205d99518c267dbe8e1bbdc1995672f44ca04dab3bbdde8a4489b9`；只保留 `character/cha_spell/cha_spellextend/sys_h5_text` 四份密文与AES-CFB/gzip解码JSON，均解析成功。来源记录、查询脚本和原生类摘录在 `C:/Users/97349/AppData/Local/Temp/xc-xushao-audit-20261113/`；临时目录可清理，不作为仓库必需工具。没有涉及WASM `_w`、全量素材或账号接口；新配置与11月10日主程序为不同日期快照，不宣称已验证当前在线完整行为。
+- 调用链、Params/Datas布局、帮助/妨碍、状态归属与清理细节见 [代码架构表](代码架构表.md)“许劭世论 / 评鉴棋盘”，手工索引 `manualLookupNotes.xuShaoPingJianBoard`。本次未改userscript、未注入/同步运行环境、未生成asar、未发游戏操作；未取得实战开窗Type，也未追完获得技能后的座位模型增删链。
+
+- 后续按用户“只考虑横竖、不改代码”要求核对可行性：可复用原生拖动方法/选择检查生成端点提交，也可只读当前棋盘与XSPJ/cha_spell列出可连技能、词条和横竖格序。候选须排除已完成或被覆盖区间，区分帮助/遮挡状态，识别阶段不得调用可能发送请求的checkSelectIds。原生onItemClick为空；遮挡只隐藏文字，本地未显式禁选，不推断服务端接受结果。上述临时目录新增 `verify-board.cjs/board-verification.json`，抽取真实原生方法、拦截发送的14项离线模拟通过；不含游戏内验证，未改任何运行代码。完整操作门槛、状态刷新与验证范围见架构表“棋盘操作可行性 / 可连技能识别（横竖限定）”。
+
+关键词：许劭、世论、评鉴、棋盘、濯名、757、3911、3912、PingJianWindow、XSPJ、OPT_PINGJIAN_DATAS、108016、棋盘操作可行性、可连技能识别、横竖限定。
+
+## 新月卡 / 新周卡定向核查（2026-11-10，仅调查）
+
+同日后续已按用户要求把自动月卡迁移到新协议，原生查询结论保持本节快照范围；实际控制器/caller接入、旧协议废弃、生命周期与验证见架构表“新月卡 / 新周卡领取链路与自动月卡迁移”及manualLookupNotes.newMonthWeekCards。以下“未改运行代码/旧WelfareManger”只描述最初调查阶段，不表示后续未实施。
+
+- 先复用仍存在的11月4日ES6快照定位，再定向取得当前公开普通 `sgsGame_a.sgs` 与 `res/config/Config.sgs`，未涉及 `_w`、全量素材或账号接口。当前明文保存于 `C:/Users/97349/AppData/Local/Temp/xc-new-cards-audit-phdf4rol/sgsGame_a.sgs`，原主程序ZIP SHA256 `f82d928b09a43a82082e0d06dba259e08800c3a46b100d00168c24faa92bc16d`、5,406,286字节，明文SHA256 `52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63`。实际UTC获取时间见该目录 `main-source.json`，北京时间为11月10日。
+- 普通Config获取UTC `2026-11-09T16:41:09.686642+00:00`，4,174,318字节、SHA256 `e4a9109f1efe72a74f28e0e04856764702f53b8bdadc404395254993b2f87aeb`，二次读取哈希一致；仅保留 `ff_dbs_pay_gift/sys_h5_task/sys_h5_quest` 密文与按本文AES-CFB/gzip解出的JSON，不保留全包。`source.json`初次提取记录为前两份，`sys_h5_quest`为同哈希二次读取补提取。
+- 已核实 `NEW_PRIVILEGE=79 -> NewWelfarePrivilegeViewCtrl(j2t) -> jNt -> $Nt -> N0t` 新特权卡链；配置 `new_card_content` 月卡 `ID=1/goodsId=12980101`、周卡 `ID=2/goodsId=12980201`。`160118/160119`查询状态，`160120({card_id})/160121`领取每日奖励，`160122`激活通知；周卡附加任务为58538“周卡每日奖励”，走TaskManager.D/J，与卡每日领奖协议独立。小抄 `yueka` 仍调用旧WelfareManger链。详细字段、门槛、状态所有权、生命周期、回查防重复与接入缺项见架构表同名章节、`manualLookupNotes.newMonthWeekCards`。
+- 本次主程序字符偏移：`N0t=11028140`、`SendNewPrivilegeCardDailyRewardReq=11030173`、`jNt=5478740`、`$Nt=5484964`、`oY=2767268`、`j2t=11650313`、`initNewCardData=2300990`、卡状态解码 `Ont=3646404`；仅对本次明文有效。相关类摘录保存在该临时目录，临时文件可能清理；并非仓库附带的通用工具。未改运行代码、安装文件、开关、版本或asar，未发账号请求、未游戏内实测。
+
+抽取当前真实N0t方法的9项隔离模拟通过，报告保存于上述临时目录verification.json，覆盖激活/到期、服务器日期、协议参数、成功事件与清理；依赖桩不代表真实账号或游戏内验证。彩虹表语法通过，三份文档相关关键词已用rg核对。
+
+关键词：新月卡、新周卡、新特权卡、new_card_content、NewWelfarePrivilegeViewCtrl、160118、160120、58538、card_id、goodsId。
+
 ## 充消返利Node定向核查（2026-11-09，仅调查）
 
 - 范围为用户所称“冲消返利”，沿 `WelfareRebateActivityView -> GetRebateActivityListType -> GetQuest -> TaskManager.D/J` 核对一键领取，不扩展其它活动。复用仍存在的11月4日ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-faction-check-wnk21qd9/sgsGame_a.sgs`：返利类型 `REBATE_NEW/2/3=39/49/50`；`GetTaskItemType=10305788`，新任务 `TaskRewardItem=11397484`，返利视图 `13581998`，领取 `J=10409883`，字符偏移只对本快照有效。
