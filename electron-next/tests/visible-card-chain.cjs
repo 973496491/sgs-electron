@@ -23,6 +23,8 @@ function slice(start, end) {
 }
 const modelSource = slice(source.includes("  // 可见牌诊断") ? "  // 可见牌诊断" : "  const _Card = class n {", "  function mergeGoodsList(");
 const logicSource = slice("  function logic(n)", "  function _0x1741(");
+const xinYouSource = source.includes("  function createXinYouCardTags(")
+  ? slice("  function createXinYouCardTags(", "  function logic(n)") : "";
 const gameStartSource = slice("        start() {", "        enter(n, t, e) {");
 const markSource = slice("        (this[r(526)] = ", "        this[r(648)]");
 const mirrorSource = slice("  function _0x226fc5(", "  function _0xe558(") +
@@ -98,6 +100,8 @@ function fixture() {
   globalThis.Qcard = { query: new Set(), name: {}, counter() {}, draw() {} };
   globalThis.room = { myID: 1, mySeats: [1], size: 3, getOrder: seat => seat, getSeatUI: () => null, name: seat => String(seat), dealCard() {} };
   globalThis.game = { turn: 1, round: 1, phase: 4, currentID: 1, isGameStart: true, isPassed: false, spellSpace: {}, record() {} };
+  game.enter = (turn, phase, seat) => { if (phase === 0) game.currentID = seat; };
+  globalThis._0xb32900 = () => {};
   globalThis.globalConfig = { cardLabelSwitch: false };
   globalThis.globalState = { configHandCards: [], configHandCardsRejected: false, autoBotSwitch: 0 };
   globalThis.laya = { mark() {}, init() {} };
@@ -109,10 +113,12 @@ function fixture() {
     cardUis: [],
     getCardUiBy(id, ignored, list) { return list.find(ui => ui.Card.CardId === id); },
   };
+  laya.gamescene = { SelfSeatUi: { cardContainer: handContainer } };
   globalThis.addHandUI = id => {
     const ui = {
       Card: { CardId: id, TagArr1: ["原生技能"] }, tempCardTag: [],
       AddCardTag(tag) { if (!this.tempCardTag.includes(tag)) this.tempCardTag.push(tag); },
+      DelCardTag(tag) { const index = this.tempCardTag.indexOf(tag); if (index >= 0) this.tempCardTag.splice(index, 1); },
     };
     handContainer.cardUis.push(ui);
     return ui;
@@ -147,7 +153,7 @@ function harness() {
       return actualMark(ids, tag, ...args);
     };
   `, context);
-  vm.runInContext("let _c,_d,_e,_f,_g,_h,_i,_0x380c88=[],_0x140c16='';\n" + modelSource + mirrorSource + logicSource +
+  vm.runInContext("let _c,_d,_e,_f,_g,_h,_i,_0x380c88=[],_0x140c16='';\n" + modelSource + mirrorSource + xinYouSource + logicSource +
     "\ngame.start=({" + gameStartSource + "}).start;\n" + `
     globalThis.Card = Card; globalThis.Zone = Zone;
     globalThis.setHand = (seat, ids) => {

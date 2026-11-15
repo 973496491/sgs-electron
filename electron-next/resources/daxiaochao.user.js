@@ -14181,9 +14181,10 @@
           null === this[w(260)](...t[w(378)](0, 1)) &&
             (this[w(447)](...n), this[w(260)](...t));
       }),
-        (this[r(526)] = (n, t, e = (n, t) => n == t, i = v) =>
+        (this[r(526)] = (n, t, e = (n, t) => n == t, i = v, canApply) =>
           0 != n &&
           setTimeout(() => {
+            if (canApply && !canApply()) return;
             const e = r;
             Array[e(508)](n) &&
               (i = n[e(884)]((n) => x[e(436)](n, !1, i))[e(1557)](Boolean)),
@@ -23453,6 +23454,7 @@
         ][_0x4efae6(376)]((n, t, e) => ((n[t] = n[e] = []), n), {}),
         end(n) {
           const t = _0x4efae6;
+          xinYouCardTags.reset();
           aliveCountrySummary.stop();
           (!this[t(370)] && n) ||
             this[t(624)] ||
@@ -29954,6 +29956,7 @@
   function Exit() {
     var n, t, e, i;
     const a = _0x41a3d0;
+    xinYouCardTags.reset();
     autoTasks.dispose();
     autoMonthCards.dispose();
     cardMarkStack.dispose();
@@ -34468,6 +34471,47 @@
           e.call(t, i(622) + l[i(704)] + i(569))),
       installNativeShadowBlacklist();
   }
+  // 心幽来源标签仅在当前回合有效；独占过期状态，不改其它来源及技能标签。
+  function createXinYouCardTags({ getContainer, getSeatId, getRoundSeat, mark }) {
+    const tag = "\u200b[心幽]";
+    let generation = 0, owner = null, closed = false;
+    function reset(expired = false) {
+      generation++;
+      owner = null;
+      closed = expired;
+      const container = getContainer();
+      const uis = new Set([...(container?.cardUis || []), ...(container?.tempHandCardUis || [])]);
+      for (const ui of uis) {
+        if (ui?.tempCardTag?.includes(tag)) ui.DelCardTag?.(tag);
+      }
+    }
+    return {
+      reset,
+      onPhase(phase, seat) {
+        if (!Number.isInteger(seat) || seat < 0 || seat >= 255 ||
+            !Number.isInteger(phase) || ![0, 1, 2, 3, 4, 5, 6, 7, 8, 255].includes(phase)) return;
+        // INIT/START 均兜底，兼容跳过阶段、连续本人额外回合及缺失清理通知。
+        if (phase === 0 || phase === 1 || (owner !== null && seat !== owner)) reset();
+        if ([7, 8, 255].includes(phase) && (seat === owner || seat === getSeatId())) reset(true);
+      },
+      queue(ids) {
+        const container = getContainer(), seat = getSeatId(), roundSeat = getRoundSeat();
+        if (closed || !container || !ids.length) return false;
+        owner = roundSeat;
+        const current = generation;
+        mark(ids, tag, undefined, undefined, () =>
+          current === generation && !closed && container === getContainer() &&
+          seat === getSeatId() && roundSeat === getRoundSeat());
+        return true;
+      },
+    };
+  }
+  const xinYouCardTags = createXinYouCardTags({
+    getContainer: () => laya.gamescene?.SelfSeatUi?.cardContainer,
+    getSeatId: () => room.myID,
+    getRoundSeat: () => game.currentID,
+    mark: (...args) => laya.mark(...args),
+  });
   function logic(n) {
     var t,
       e,
@@ -34595,7 +34639,7 @@
         let t = n[J(530)][0],
           e = room[J(559)](room[J(541)], null == t ? void 0 : t[J(856)], !0);
         globalConfig[J(745)] && !e && (t[J(721)] = 0);
-      } else if (rn == J(435)) (room[J(818)] = !0), _0xbbb545(J(552));
+      } else if (rn == J(435)) xinYouCardTags.reset(), (room[J(818)] = !0), _0xbbb545(J(552));
       else if (rn == J(707)) _0x58eae0[J(853)] = n[J(853)];
       else if (rn == J(773)) {
         if (!an) return;
@@ -34843,8 +34887,10 @@
             room[J(575)](ln, t, n);
           });
       else if (rn == J(826)) game[J(619)](n[J(453)]);
-      else if (rn == J(500))
+      else if (rn == J(500)) {
+        if (!n[J(605)]) xinYouCardTags.onPhase(n[J(606)], ln);
         game[J(619)](null, n[J(606)], ln), 0 == n[J(606)] && _0xb32900();
+      }
       else if (rn == J(424)) {
         if (game[J(616)] == ln && 1 == n[J(673)] && Array[J(668)](vn))
           document[J(596)](J(621))[J(802)] =
@@ -35554,9 +35600,10 @@
               ? dn.filter((id) => Number.isInteger(id) && id > 0)
               : dn;
             if (!xieLingYuDrawName || tagCardIDs.length) {
-              laya[J(609)](tagCardIDs, "​" + n + (e || ""), (n) => n[J(711)]("​"));
+              const queued = xieLingYuDrawName === "心幽" ? xinYouCardTags.queue(tagCardIDs)
+                : (laya[J(609)](tagCardIDs, "​" + n + (e || ""), (n) => n[J(711)]("​")), true);
               if (xieLingYuDrawName)
-                stepVisibleCardTrace("drawtag:queue", null, tagCardIDs, xieLingYuDrawName);
+                stepVisibleCardTrace(queued ? "drawtag:queue" : "drawtag:skip", null, tagCardIDs, xieLingYuDrawName);
             }
           }
           if (

@@ -48,6 +48,20 @@ check('extension drawing failure restores native slots rather than hiding all te
 check('repeated initialization reuses hooks and nodes',()=>{const method=Native.prototype.layoutTagUI,count=ui.children.length;feature.start();feature.start();ui.UpdateTag();assert.equal(Native.prototype.layoutTagUI,method);assert.equal(ui.children.length,count)});
 check('rendering does not mutate model or temporary arrays',()=>{assert.deepEqual(Array.from(ui.Card.TagArr1),['百出','顺机','弹雀','炁']);assert.deepEqual(Array.from(ui.tempCardTag),['心幽','元嫡','取得来源'])});
 check('native temporary addition deletion and dedup remain effective',()=>{ui.AddCardTag('新来源');ui.AddCardTag('新来源');assert.equal(labels(ui).filter(x=>x==='新来源').length,1);ui.DelCardTag('元嫡');assert(!labels(ui).includes('元嫡'))});
+check('XinYou expiry redraws both native and all-mark modes while preserving other tags',()=>{
+  const createExpiry=vm.runInNewContext('('+slice('  function createXinYouCardTags(', '  const xinYouCardTags =').trim()+')');
+  for(const enabled of [false,true]) {
+    feature.setEnabled(enabled);
+    const skill=['百出','顺机','弹雀','炁'], card=new Native(skill,['\u200b[心幽]','\u200b[元嫡]','其它来源']);
+    card.UpdateTag();card.drawTempCardTag();
+    const expiry=createExpiry({getContainer:()=>({cardUis:[card]}),getSeatId:()=>0,getRoundSeat:()=>0,mark(){}});
+    expiry.onPhase(7,0);
+    assert.deepEqual(Array.from(card.tempCardTag),['\u200b[元嫡]','其它来源']);assert.equal(card.Card.TagArr1,skill);
+    assert.deepEqual(labels(card),enabled?[...skill,'\u200b[元嫡]','其它来源']:['百出','顺机','\u200b[元嫡]']);
+    card.Clear();
+  }
+  feature.setEnabled(true);
+});
 check('native model rebuild removes stale overflow but preserves sources',()=>{ui.Card.TagArr1.splice(0,4,'新组合');ui.UpdateTag();assert.deepEqual(labels(ui),['新组合','心幽','取得来源','新来源'])});
 check('native skill-change status adds its temporary label',()=>{ui.IsSkillChangeStatus(true,'变化');assert(labels(ui).includes('变化'))});
 check('shrinking arrays destroys unused extra nodes',()=>{const old=ui.children.filter(n=>n.label==='新来源');ui.AddCardTag('');assert.deepEqual(labels(ui),['新组合']);assert(old.every(n=>n.destroyed))});
