@@ -33244,6 +33244,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       W: { 127: "localDel", 142: "setItem", 194: "getItem", 198: "removeItem", 236: "localGet", 250: "localSet" },
     },
     chain: [
+      "2026-11-17按钮UI：localWallpaper.mount中xcLocalWallpaperSelectBtn复用cardback-action-btn暗红金字圆角按钮样式，行容器复用wallpaper-settings-row；检查显示按钮hidden=true，不显示不占布局/焦点，保留诊断回调。仅UI，不改缓存、绘图、开关偏好及生命周期。",
       "2026-11-17游戏内验收：用户在Graphics.drawTexture普通绘图版本同步后确认“有了”，本地壁纸显示已获用户实测确认。先前尚待验收/未解决为历史排查边界；不据此认定特定GPU/滤镜内部根因或全玩法/缩放组合均已验收。",
       "2026-11-16现场完整链已证实root->_qt->Stage可见且alpha1，1920x1200/scale0.6944、父scale2.6186、Stage3492x2043。nativeBackgroundLayer fixture补全真实反应布局与背景层，零width/height在同款native层测试可画，不能据此判定裁切根因。当前改graphics.drawTexture+20%黑矩形暗化，texture=null/filters=null，避开快捷纹理与滤镜缓存；完整显示链增加renderType/cacheAs/scrollRect/commands/bitmap，检查显示增加背景与舞台像素和stage层列表。真实Electron/HTTPS/原生层/用户JPEG像素绘图隐藏恢复通过，当前游戏未实测，根因未确证。",
       "2026-11-16缓存改址与空白诊断：用户日志HallScene enabled/global=true、parent/texture=true仍空白，不能认定User目录是根因。当前缓存app.getAppPath()/local-wallpapers，既有宿主myprotocol:/local-wallpapers/SHA.ext读取；resolve先校验SHA/Image，协议失败回退字节Data URL，asar保持User回退。旧User缓存验证后原子复制，paperRes键不变，旧图保留。检查显示按钮及show输出完整显示链visible/alpha/scale/texture/stage，区分根节点挂载和父链可见。真实Electron10.4.5 HTTPS来源+同款协议+用户1920px JPEG绘制/遮挡/恢复通过，未当前对局验收，不称大厅空白已解决。",

@@ -16717,8 +16717,11 @@
       if (!dialog || dialog.querySelector("#xcLocalWallpaperRow")) return;
       const row = document.createElement("div");
       row.id = "xcLocalWallpaperRow";
-      row.style.cssText = "padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap";
+      row.className = "wallpaper-settings-row";
+      row.style.cssText = "align-items:center";
       const button = document.createElement("button"), input = document.createElement("input"), status = document.createElement("span");
+      button.id = "xcLocalWallpaperSelectBtn";
+      button.className = "cardback-action-btn";
       button.type = "button";
       button.textContent = "选择本地图片";
       input.type = "file";
@@ -16760,6 +16763,7 @@
       };
       const check = document.createElement("button");
       check.type = "button";
+      check.hidden = true;
       check.textContent = "检查显示";
       check.onclick = () => {
         const chain = diagnose(true);
