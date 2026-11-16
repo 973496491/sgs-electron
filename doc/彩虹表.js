@@ -33610,9 +33610,10 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
   },
   handSortFloatingPanel: {
     "title": "整理手牌 / 独立模块装配与生命周期",
-    "verifiedAt": "2026-11-04",
+    "verifiedAt": "2026-11-16",
     "sourceFile": "electron-next/resources/daxiaochao.user.js",
     "searchKeywords": [
+      "仅局内显示", "开局显示", "结束隐藏", "matchActive", "setMatchActive",
       "选牌后自动取消反选", "autoClearSuitSelection", "xcHandAutoClearSuitSelectionToggle", "清空花色勾选", "118项",
       "整理手牌",
       "独立浮动面板",
@@ -33769,6 +33770,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       }
     },
     "chain": [
+      "2026-11-16仅局内显示：hand-cards模块私有matchActive默认false，setMatchActive由game.ready完成和game.start实际启动分支置true、game.end入口置false；dispose清false。沿_0x4efae6已核实370=isGameStart、624=isPassed，复用现有ready/start/end而非按手牌数量判断开局。refreshHandSortPanel同时检查用户开关、matchActive和client.getScene；800ms既有刷新在开关开启期间保留，结束即时隐藏且轮询不重现。isVisible仍表示用户偏好，自动隐藏不关闭设置开关，下一局恢复；局内空手/非本人回合不隐藏。123项DOM/模拟与8项装配通过，未游戏内实测；回退须同时恢复模块和三处通知再装配，无新增发布文件。",
       "2026-11-04新增选牌后自动取消反选：openSettings中xcHandAutoClearSuitSelectionToggle放在花色选中下一行、UI样式上一行；autoClearSuitSelection默认false，严格true启用，复用xcHandSortFloatingPanel存储、get/setOptions和设置同步，状态归属handCards模块。",
       "全选/反选完成且未中断、stillCurrent通过后，开启自动清除才将state.suits=[]并令四个suitInputs.checked=false；不改刚选好的原生手牌。下一次动作读空筛选；无上下文/基本模式/异常/换场/卸载不清，关闭保留旧行为。无新增挂钩、定时器或发布文件，settingsScope/dispose统一清理；改模块源后build:userscript装配。",
       "新增行为及现有整理手牌Chrome真实DOM/模拟服务共118项通过，装配宿主8项、版本7项及语法通过，设置截图确认新开关在花色选中正下方。未游戏内实测；回退模块状态/UI/完成后清理并重新装配，已有新字段可忽略。",

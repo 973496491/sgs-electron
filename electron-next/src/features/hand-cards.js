@@ -6,7 +6,7 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
   const getComputedStyle = window.getComputedStyle.bind(window);
   const { ResizeObserver, MutationObserver, CustomEvent } = window;
   const HAND_SORT_SWITCH_ID = "handSortPanelSwitch", HAND_SORT_LABEL_ID = "handSortPanelLabel";
-  let active = false, generation = 0, mainHost = null, handSortSwitchLayout = null;
+  let active = false, matchActive = false, generation = 0, mainHost = null, handSortSwitchLayout = null;
   let bootTimer = null, retryTimer = null, retryAttempts = 0, readyListener = null;
   function scope() {
     let closed = false;
@@ -327,6 +327,8 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
     if (!active) return null;
     const state = handSortPanelState;
     if (!state?.panel?.isConnected) return ensureHandSortFloatingPanel();
+    state.panel.style.display = !state.hidden && matchActive && client.getScene() ? "block" : "none";
+    if (state.panel.style.display !== "none") positionHandSortPanel();
     const availability = getHandSortAvailability();
     state.buttons.forEach((button) => {
       button.disabled = !availability.ready;
@@ -351,7 +353,7 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
   }
   function updateHandSortPanelVisibility() {
     const state = handSortPanelState;
-    state.panel.style.display = state.hidden ? "none" : "block";
+    state.panel.style.display = "none";
     if (state.timer !== null) clearInterval(state.timer);
     state.timer = null;
     if (!state.hidden) {
@@ -493,6 +495,12 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
   function isVisible() {
     return active && !!handSortPanelState && !handSortPanelState.hidden;
   };
+  // 对局状态与用户显示偏好分开；结束后仍保留开关，下一局自动恢复。
+  function setMatchActive(value) {
+    if (!active) return;
+    matchActive = !!value;
+    if (handSortPanelState?.panel?.isConnected) refreshHandSortPanel();
+  }
   function syncHandSortPanelSwitch() {
     var input = document.getElementById(HAND_SORT_SWITCH_ID);
     if (!input) return;
@@ -737,7 +745,7 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
     } else bootTimer = setTimeout(boot, 0);
   }
   function dispose() {
-    active = false; generation++;
+    active = false; matchActive = false; generation++;
     if (bootTimer !== null) clearTimeout(bootTimer);
     if (retryTimer !== null) clearTimeout(retryTimer);
     if (readyListener) document.removeEventListener("DOMContentLoaded", readyListener);
@@ -754,6 +762,6 @@ module.exports = function createHandCardsModule({ window, document, storage, cli
   return Object.freeze({
     start, mount, dispose, attachMainPanel, requestMainPanel,
     sort: reorderCard, selectBySuit: selectHandCardsBySuit,
-    setVisible, isVisible, getOptions, setOptions, openSettings, closeSettings,
+    setVisible, isVisible, setMatchActive, getOptions, setOptions, openSettings, closeSettings,
   });
 };

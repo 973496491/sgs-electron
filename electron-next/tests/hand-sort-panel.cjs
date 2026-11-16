@@ -125,6 +125,7 @@ function moduleHarness() {
     window.handCards = createHandCardsModule({ window, document, client: handCardsClient, storage: localStorage,
       log: (event, data) => sortLogs.push("[整理手牌] " + event + " " + JSON.stringify(data)) });
     handCards.start();
+    handCards.setMatchActive(true);
     handCards.attachMainPanel(handCardsHost);
   };
   window.panelView = {
@@ -172,6 +173,20 @@ async function browserChecks() {
     check(document.querySelectorAll("#handSortPanelSwitch").length === 1 && document.querySelectorAll("#handSortPanelLabel").length === 1, "reinstall does not duplicate switch or caption");
     toggle.click();
     check(toggle.checked && panel.style.display === "block", "settings switch opens the compact panel");
+    handCards.setMatchActive(false);
+    check(panel.style.display === "none" && toggle.checked && handCards.isVisible(), "match end hides panel and preserves enabled preference");
+    handCards.setVisible(true);
+    check(panel.style.display === "none", "enabling in lobby cannot show panel");
+    await new Promise(resolve => setTimeout(resolve, 850));
+    check(panel.style.display === "none", "status polling after match end cannot reopen panel");
+    handCards.setMatchActive(true);
+    check(panel.style.display === "block", "next match restores enabled panel immediately");
+    const matchHand = laya.gamescene.SelfSeatUi.cardContainer;
+    laya.gamescene.SelfSeatUi.cardContainer = { cardUis: [] };
+    handCards.mount();
+    check(panel.style.display === "block", "empty hand during a match does not hide panel");
+    laya.gamescene.SelfSeatUi.cardContainer = matchHand;
+    handCards.mount();
     const allButtons = [...panelView.buttons, ...panelView.selectionButtons];
     const buttonRects = allButtons.map(button => button.getBoundingClientRect());
     const buttonRect = buttonRects[0];
@@ -302,7 +317,7 @@ async function browserChecks() {
     testFeatureEnabled.value = true;
     laya.gamescene = null;
     handCards.mount();
-    check(byMode("CardFlower").disabled && !handCards.sort(), "lobby never sorts a stale hand");
+    check(panel.style.display === "none" && byMode("CardFlower").disabled && !handCards.sort(), "lobby hides panel and never sorts a stale hand");
     const nextHand = makeHand();
     laya.gamescene = { fallbackHand: nextHand };
     handCards.mount();
