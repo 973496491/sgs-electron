@@ -23,6 +23,16 @@
 
 本文只针对 **OL**。
 
+## 本地皮肤首次打开 / 原生条目权限核查（2026-11-16）
+
+复用已核验存在的11月10日普通ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-new-cards-audit-phdf4rol/sgsGame_a.sgs`，SHA256 `52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63`，未下载或解密新包，不涉及 `_w`。`KPt.InitBaseData`（字符偏移7106669附近）把传入持有状态写入 `hasSkin/bg.mouseEnabled/blackbg.visible`，`HasSkin` getter直接返回hasSkin；选择视图 `itemClick`（7097730附近）在 `!item.HasSkin` 时提前返回。偏移仅对该快照有效，方法源码已固化 `electron-next/tests/fixtures/local-skin-native-20261110.json`，无需依赖临时明文才能运行测试。
+
+小抄首次发现窗口后只安装后续初始化钩子，漏补当前实例，解释再次打开才生效；修复及职责/状态/回归/部署见代码架构表“首次打开需重开修复”，索引 `manualLookupNotes.localSkinFirstOpen`。17项真实摘录与启动/发送链模拟及19项乱序响应/默认隔离模拟通过，未游戏内实测，不证明服务端赋予皮肤所有权或所有玩法可用。
+
+补充同快照：原生场景 `generalSkinUpdateRep`（9004685附近）遍历GeneralSkinList，按ClientID（Type5按座位号）匹配玩家，再 `SetGeneralSkin`；不存在“后到响应自动尊重本地选择”的保护。`sA`（1187940附近）的IsDynamic由state===1派生。`GetSelfUsingSkinID/SaveUsingSkinID`（8201639）是已用皮肤缓存，响应会更新它，不能在本地改写之后才当真实默认读取；`SendClientGeneralSkinReq`（8202150）将传入SkinID/State写入SkinItem。选择视图 `closeSelectSure`（7099935）按真实场景走原生请求选路，上述场景消费/选择提交/请求构造方法已补同一fixture，测试中的对应验证使用真实摘录（当前测试总计17+19=36个场景/行为组），而非仅比较自建请求对象。实现保存入站改写前值并在发送边界临时使用真实默认；无默认0。未实发请求，未游戏内验证。关键词：回传默认皮肤、真实皮肤覆盖、serverDefaults、SkinItem.State。
+
+动态丢失追加核查：同快照KPt.InitData（710万附近）在未拥有且非共享、非免费场景不设置dynamicState，条目默认0；`canUpdateDynamic`（4231236）仅查皮肤配置IsChuChangOnlyDySkin/IsClenitDynamic/skinlevel/CanUpdate，与账号持有没有等价关系。方法已补入同一native fixture。本地解锁需单独按配置和真实持有查询补动态状态，不能把原生未拥有条目0当作用户静态偏好；已有/共享偏好仍保留。新增6组动态检查对旧部署镜像复现失败，修后23+19=42组通过；修复/部署/回归见架构表“动态丢失修复”，未游戏内复测。
+
 ## 许劭世论 / 评鉴棋盘定向核查（2026-11-13，仅调查）
 
 后续已实现“许劭辅助”，用户最新要求改为只读连线提示、允许拖动，自动提交链路和方式/延时设置已移除。当前行为与34项浏览器/显示验证见架构表“许劭辅助：只读连线提示与可拖动面板”；下文“未改代码”仅描述最初调查。运行时通过WindowInstanceDict或laya.win只读定位已有窗口，不能使用可能构造弹窗的GetWindowByName；官方快照约5136890处明确暴露Laya.Browser.window.GameContext。79项XSPJ+技能名内嵌adapter，今后增删需更新；归档原生源码保存在tests/fixtures/xushao-native-20261110.json作为构造数据与不调用原生操作的验证依据。

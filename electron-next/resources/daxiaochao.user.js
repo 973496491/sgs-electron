@@ -23443,6 +23443,23 @@
     }
     return { mount, start, stop, onMessage };
   })();
+  window.__xcGetLocalSkinScene = () => {
+    const context = laya.class("GameContext");
+    return { scene: laya.gamescene, selfClientID: context?.SelfSeat?.PlayerInfo?.ClientId,
+      selfSeatIndex: context?.SelfSeatIndex };
+  };
+  window.__xcGetServerSkinDefault = generalID => {
+    const manager = laya.class("GeneralSkinManager");
+    const skinID = manager?.GetSelfUsingSkinID?.(generalID) || 0;
+    const owned = skinID && manager?.GetSkinListBySkinID?.(skinID)?.[0];
+    return { skinID: owned ? skinID : 0,
+      isDynamic: owned && owned.IsUpgrade > 0 && owned.IsUseStatic <= 0 ? 1 : 0 };
+  };
+  window.__xcIsLocalSkinUnowned = skinID => {
+    const manager = laya.class("GeneralSkinManager");
+    return !!manager && typeof manager.GetSkinListBySkinID === "function" &&
+      !manager.GetSkinListBySkinID(skinID)?.length;
+  };
   const game = new Proxy(
       {
         turn: 0,
@@ -23462,6 +23479,7 @@
         ][_0x4efae6(376)]((n, t, e) => ((n[t] = n[e] = []), n), {}),
         end(n) {
           const t = _0x4efae6;
+          window.__xcResetLocalSkinSelections?.();
           handCards.setMatchActive(false);
           xinYouCardTags.reset();
           aliveCountrySummary.stop();
@@ -29967,6 +29985,7 @@
   function Exit() {
     var n, t, e, i;
     const a = _0x41a3d0;
+    window.__xcResetLocalSkinSelections?.();
     xinYouCardTags.reset();
     autoTasks.dispose();
     autoMonthCards.dispose();
@@ -37863,6 +37882,106 @@
     return null;
   }
 
+  // Own the latest explicit selections for this scene, independently of one-shot diagnostics.
+  const localSkinSelections = (function () {
+    var scene, generation = 0, choices = new Map(), views = new WeakMap();
+    // Authoritative defaults survive match resets; keys include account/client identity.
+    var serverDefaults = new Map(), observedLists = new WeakSet();
+    function reset() {
+      generation++;
+      choices.clear();
+      getLocalSkinDebugState().pendingSkin = null;
+    }
+    function scope() {
+      var current;
+      try { current = window.__xcGetLocalSkinScene && window.__xcGetLocalSkinScene(); } catch (error) {}
+      if (!current) { reset(); return null; }
+      if (scene !== current.scene) { reset(); scene = current.scene; }
+      return current;
+    }
+    function attach(view) {
+      var current = scope();
+      if (current) views.set(view, { scene: current.scene, generation: generation });
+    }
+    function record(view) {
+      var current = scope();
+      var owner = views.get(view);
+      if (!current || !owner || owner.scene !== current.scene || owner.generation !== generation ||
+          view.clientID == null || !view.realGeneralID) return;
+      var skinID = Number(view.closeSelectSkinId);
+      if (!Number.isFinite(skinID) || skinID < 0) return;
+      var choice = { clientID: view.clientID, generalID: view.realGeneralID,
+        defaultGeneralID: view.defaultGeneralID, skinID: skinID,
+        isDynamic: view.closeSelectDynamicState ? 1 : 0 };
+      var key = String(choice.clientID) + ':' + choice.generalID;
+      if (!serverDefaults.has(key)) {
+        var fallback;
+        try { fallback = window.__xcGetServerSkinDefault && window.__xcGetServerSkinDefault(choice.generalID); } catch (error) {}
+        serverDefaults.set(key, fallback || { skinID: 0, isDynamic: 0 });
+      }
+      getLocalSkinDebugState().pendingSkin = null;
+      choices.set(key, choice);
+      return true;
+    }
+    function send(original, args) {
+      var current = scope(), owner = views.get(this);
+      if (!current || !owner || owner.scene !== current.scene || owner.generation !== generation)
+        return original.apply(this, args);
+      var key = String(this.clientID) + ':' + this.realGeneralID;
+      var choice = choices.get(key), fallback = serverDefaults.get(key);
+      if (!choice || !fallback) return original.apply(this, args);
+      var skinID = this.closeSelectSkinId, dynamic = this.closeSelectDynamicState;
+      this.closeSelectSkinId = fallback.skinID;
+      this.closeSelectDynamicState = fallback.isDynamic;
+      appendLocalSkinDebugLine('[本地皮肤] 本地sid=' + skinID + '，回传默认sid=' + fallback.skinID, false);
+      try { return original.apply(this, args); }
+      finally { this.closeSelectSkinId = skinID; this.closeSelectDynamicState = dynamic; }
+    }
+    function apply(first, list) {
+      var current = scope();
+      if (!current || !list || !list.length) return;
+      var candidates = [first, first.Protocol, first.protoObj, first.Data, first.data,
+        first.Protocol && first.Protocol.ProtoObj, first.protoObj && first.protoObj.ProtoObj, first.protoObjData];
+      var protocol = candidates.find(function (p) { return p && p.GeneralSkinList === list; });
+      // A bare list has no target identity; never alter another player's skin by general ID alone.
+      if (!protocol || protocol.ClientID == null) return;
+      if (!observedLists.has(list)) {
+        var clientID = protocol.Type === 5
+          ? (protocol.ClientID === current.selfSeatIndex ? current.selfClientID : null) : protocol.ClientID;
+        if (clientID != null) list.forEach(function (entry) {
+          if (!entry) return;
+          var fallback = { skinID: entry.SkinID, isDynamic: entry.state || 0 };
+          serverDefaults.set(String(clientID) + ':' + entry.GeneralID, fallback);
+          choices.forEach(function (choice, key) {
+            if (choice.clientID === clientID && choice.defaultGeneralID === entry.GeneralID)
+              serverDefaults.set(key, fallback);
+          });
+        });
+        observedLists.add(list);
+      }
+      var matched = false;
+      list.forEach(function (entry) {
+        if (!entry) return;
+        choices.forEach(function (choice) {
+          var sameClient = protocol.Type === 5
+            ? choice.clientID === current.selfClientID && protocol.ClientID === current.selfSeatIndex
+            : protocol.ClientID === choice.clientID;
+          if (!sameClient || (entry.GeneralID !== choice.generalID &&
+              entry.GeneralID !== choice.defaultGeneralID)) return;
+          matched = true;
+          if (entry.SkinID === choice.skinID && entry.state === choice.isDynamic) return;
+          appendLocalSkinDebugLine('[本地皮肤] 保留本次选择 gid=' + entry.GeneralID +
+            ' sid=' + entry.SkinID + '→' + choice.skinID, false);
+          entry.SkinID = choice.skinID;
+          entry.state = choice.isDynamic;
+        });
+      });
+      return matched;
+    }
+    return { attach: attach, record: record, send: send, apply: apply, reset: reset };
+  })();
+  window.__xcResetLocalSkinSelections = localSkinSelections.reset;
+
   function installLocalSkinDebugResponseHook(attempt) {
     var state = getLocalSkinDebugState();
     if (state.respHook && Array.isArray(window.SGSMODULE)) {
@@ -37890,6 +38009,7 @@
       if (!first || typeof first !== "object") return;
 
       var skinList = getLocalSkinDebugSkinList(first);
+      var selectionMatched = localSkinSelections.apply(first, skinList);
       var cn = getLocalSkinDebugResponseName(first);
       logEightIdentityInterfaceProbe(first, cn);
       if (!cn && !skinList) return;
@@ -37903,53 +38023,9 @@
       var hasPendingSkin =
         !!(state.pendingSkin && state.pendingSkin.skinID) && isSkinResponse;
 
-      if (hasPendingSkin) {
-        var age = Date.now() - (state.pendingSkin.ts || 0);
-        appendLocalSkinDebugLine(
-          "respHook: 皮肤响应 cn=" +
-            cn +
-            " gid=" +
-            state.pendingSkin.generalID +
-            " sid=" +
-            state.pendingSkin.skinID +
-            " age=" +
-            age +
-            "ms",
-        );
-        if (skinList && skinList.length > 0) {
-          var entry = skinList[0];
-          appendLocalSkinDebugLine(
-            "respHook: 响应数据 GeneralID=" +
-              entry.GeneralID +
-              " SkinID=" +
-              entry.SkinID +
-              " state=" +
-              entry.state,
-          );
-          if (
-            entry.SkinID === 0 &&
-            entry.GeneralID === state.pendingSkin.generalID
-          ) {
-            entry.SkinID = state.pendingSkin.skinID;
-            entry.state = 1;
-            appendLocalSkinDebugLine(
-              "respHook: 已修改响应 SkinID 0→" +
-                state.pendingSkin.skinID +
-                " state→1",
-            );
-            state.pendingSkin = null;
-          } else {
-            appendLocalSkinDebugLine(
-              "respHook: SkinID非0或GeneralID不匹配, 不修改响应",
-            );
-          }
-        } else {
-          appendLocalSkinDebugLine(
-            "respHook: 响应无GeneralSkinList, first keys=[" +
-              Object.keys(first).slice(0, 15).join(",") +
-              "]",
-          );
-        }
+      if (hasPendingSkin && selectionMatched) {
+        appendLocalSkinDebugLine("respHook: 本次选择已应用，结束单次等待并保留场景内选择", false);
+        state.pendingSkin = null;
       }
 
       if (state.printResp !== false && !ignoredForPrint && hasPendingSkin)
@@ -38849,7 +38925,7 @@
         }
       }
 
-      function hookMethod(target, name, before, after) {
+      function hookMethod(target, name, before, after, around) {
         if (!target || typeof target[name] !== "function") return false;
 
         var original = target[name];
@@ -38866,7 +38942,9 @@
             if (before) beforeData = before.apply(this, arguments);
           } catch (error) {}
 
-          var result = original.apply(this, arguments);
+          var result = around
+            ? around.call(this, original, arguments)
+            : original.apply(this, arguments);
 
           try {
             if (after) {
@@ -38889,6 +38967,12 @@
       function applyHasSkin(item) {
         if (!item) return;
 
+        // Unowned entries keep native DynamicState=0 even when their skin supports animation.
+        // Only unlock that state for local-only skins; retain owned/shared static preferences.
+        if (item.SkinID && !item.isShare && item.skinData &&
+            typeof item.skinData.canUpdateDynamic === "function" && item.skinData.canUpdateDynamic() &&
+            window.__xcIsLocalSkinUnowned && window.__xcIsLocalSkinUnowned(item.SkinID))
+          item.dynamicState = 1;
         item.hasSkin = true;
         if (item.bg) item.bg.mouseEnabled = true;
         if (item.blackbg) item.blackbg.visible = false;
@@ -38921,10 +39005,15 @@
           }
           return result;
         });
+
+        // First-open items were initialized before their prototype was discovered.
+        // Catch up their ownership/UI state now; hooks cover later initialization.
+        applyHasSkin(item);
       }
 
       function hookSelectView(view) {
         if (!view) return;
+        localSkinSelections.attach(view);
 
         var proto = Object.getPrototypeOf(view);
 
@@ -38958,6 +39047,7 @@
           proto,
           "closeSelectSure",
           function () {
+            if (!localSkinSelections.record(this)) return;
             var skinID = this.closeSelectSkinId;
             var generalID = this.realGeneralID;
             var dynamic = this.closeSelectDynamicState;
@@ -38972,7 +39062,7 @@
                 this.clientID,
             );
             if (!skinID) {
-              appendDebugLine("closeSelectSure: skinID为空, 跳过本地替换");
+              appendDebugLine("closeSelectSure: 已记录原始皮肤选择，不建立单次等待");
               return;
             }
             if (!generalID) {
@@ -38995,6 +39085,7 @@
             );
           },
           null,
+          localSkinSelections.send,
         );
 
         hookMethod(proto, "RefreshShareSkin", null, function () {
@@ -39237,6 +39328,7 @@
         return info;
       };
       state.stop = function () {
+        localSkinSelections.reset();
         state.timers.forEach(function (timer) {
           clearTimeout(timer);
           clearInterval(timer);

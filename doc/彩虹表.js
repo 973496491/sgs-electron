@@ -34229,8 +34229,36 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "bootstrapEightIdentityRecordRequest 在脚本重载已错过登录/room.ready 时，等待 userID、SevenDayResultWindow、sendReq 最多 30 秒，然后主动补发一次 getseven；日志为 bootstrap:wait/request/timeout/error。"
     ]
   },
+  localSkinFirstOpen: {
+    title: "本地皮肤首次打开需重开：现有条目漏补处理",
+    verifiedAt: "2026-11-16",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: ["本地皮肤", "首次打开", "二次打开", "皮肤选择器", "hookItem", "applyHasSkin", "InitBaseData", "bg.mouseEnabled", "local-skin-first-open.cjs"],
+    decodedIndexes: {},
+    chain: [
+      "本链位于第二IIFE非混淆内联模块，无新增decoder索引；开启按钮 -> runLocalSkinEnableInline -> bootstrapWindow/SGSMODULE -> patchChangeSkinWindow -> hookSelectView -> hookItems -> hookItem。",
+      "首次发现选择器时条目已执行原生InitData/InitBaseData，旧hookItem只安装原型后置钩子，没有立即解锁当前实例；hasSkin=false及bg.mouseEnabled=false导致首次不可选，再次初始化才生效。",
+      "修复在hookItem末尾applyHasSkin(item)，复用原规则补hasSkin/背景鼠标/黑罩/使用中显示，保留isUsing/dynamicState/skinId。原生HasSkin getter读取hasSkin，早绑定旧itemClick也能正确选择。",
+      "真实官方InitBaseData/getters/itemClick摘录固化tests/fixtures/local-skin-native-20261110.json，修前失败、修后17项行为检查通过；后续响应/发送隔离见localSkinSelectionOrder。未游戏内实测。"
+    ]
+  },
+  localSkinSelectionOrder: {
+    title: "本地皮肤后到覆盖与回传默认ID隔离",
+    verifiedAt: "2026-11-16",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: ["本地皮肤", "真实皮肤", "后到响应", "时序", "回传默认", "localSkinSelections", "serverDefaults", "__xcGetServerSkinDefault", "动态丢失", "__xcIsLocalSkinUnowned", "canUpdateDynamic", "closeSelectSure", "GeneralSkinList", "SendClientGeneralSkinReq"],
+    decodedIndexes: {},
+    chain: [
+      "非混淆增量，无新增decoder索引；原生快照方法摘录见tests/fixtures/local-skin-native-20261110.json。",
+      "用户实测回传/首次选择正常但动态丢失：原生未拥有条目dynamicState=0，之前固定响应state=1掩盖该问题。applyHasSkin现在按skinData.canUpdateDynamic及核心__xcIsLocalSkinUnowned只读持有查询，为非0非共享未拥有皮肤补dynamicState=1；保留已有/共享静态偏好和纯静态/默认0，服务器仍用默认真实状态。native canUpdateDynamic摘录及6组新检查修前失败、修后23+19共42组通过，未游戏内复测。",
+      "旧pendingSkin只用一次且仅GeneralSkinList[0].SkinID=0才替换，后到真实非零皮肤覆盖本地。现在attach绑定view场景/代次、record保存ClientID+武将最新选择、apply遍历全列表并保留SkinID和动静state；Type5按本人SeatIndex映射身份，缺身份不改他人。",
+      "serverDefaults保存改写前真实响应SkinID/state，observedLists防止同列表再次派发时把本地值当真实默认；首次记录可经核心桥__xcGetServerSkinDefault读取已拥有默认，缺省0。send around仅临时替换选择器字段调用原生closeSelectSure，再finally恢复，保持本地707/线上88（有默认）或0（无默认）。",
+      "核心__xcGetLocalSkinScene显式提供闭包laya场景及本人身份；game.end/Exit、state.stop、场景变更清选择并增加代次，拒绝旧view回调。真实默认按账号+武将运行期缓存跨局保留，无落盘/新定时器。",
+      "17项首次/真实发送链与19项乱序/默认隔离模拟通过，未游戏内实测、未发账号请求；不宣称覆盖脱离GeneralSkinList链的旧图片回调。详见架构表后到真实皮肤覆盖 / 回传默认ID隔离。"
+    ]
+  },
   localSkinRoleDataResponse: {
-    title: "本地皮肤角色数据通知响应链路",
+    title: "本地皮肤角色数据通知响应链路（单次pending历史，现见localSkinSelectionOrder）",
     verifiedAt: "2026-07-31",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
     searchKeywords: [
