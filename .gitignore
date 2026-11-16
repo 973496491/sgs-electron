@@ -1,3 +1,6 @@
 # Python bytecode is generated locally, including inside archived tool folders.
 __pycache__/
 *.py[cod]
+
+# Local Tampermonkey delivery snapshot.
+/三国杀打小抄-油猴.user.js
