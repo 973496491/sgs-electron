@@ -33233,8 +33233,8 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     ],
   },
   wallpaperLocalImage: {
-    title: "壁纸设置 / 本地图片入口与静态渲染可行性",
-    verifiedAt: "2026-10-08",
+    title: "壁纸设置 / 本地图片缓存与普通绘图",
+    verifiedAt: "2026-11-17",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
     searchKeywords: ["壁纸设置", "本地图片", "wallpaperContainer", "wallpaperDialog", "skinPaperDialogSwitch", "skinPaperSwitch", "allPaperSwitch", "paper.setBg", "paperRes", "SgsFlatImage", "BackgroundLayer", "FileReader", "readAsDataURL", "本地视频优先", "__SGS_LOCAL_VIDEO_BG_ACTIVE__", "居中裁切"],
     decodedIndexes: {
@@ -33244,7 +33244,13 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       W: { 127: "localDel", 142: "setItem", 194: "getItem", 198: "removeItem", 236: "localGet", 250: "localSet" },
     },
     chain: [
-      "addFrame -> _0x310ee8 为 wallpaperContainer .explanation 绑定 click -> _0x208a6c -> wallpaperDialog.showModal。模板只有皮肤壁纸和全局壁纸开关，没有本地图片选择入口；其中本地保存皮肤的提示是下载，cardBackLocalFileInput 是卡背专用。",
+      "2026-11-17游戏内验收：用户在Graphics.drawTexture普通绘图版本同步后确认“有了”，本地壁纸显示已获用户实测确认。先前尚待验收/未解决为历史排查边界；不据此认定特定GPU/滤镜内部根因或全玩法/缩放组合均已验收。",
+      "2026-11-16现场完整链已证实root->_qt->Stage可见且alpha1，1920x1200/scale0.6944、父scale2.6186、Stage3492x2043。nativeBackgroundLayer fixture补全真实反应布局与背景层，零width/height在同款native层测试可画，不能据此判定裁切根因。当前改graphics.drawTexture+20%黑矩形暗化，texture=null/filters=null，避开快捷纹理与滤镜缓存；完整显示链增加renderType/cacheAs/scrollRect/commands/bitmap，检查显示增加背景与舞台像素和stage层列表。真实Electron/HTTPS/原生层/用户JPEG像素绘图隐藏恢复通过，当前游戏未实测，根因未确证。",
+      "2026-11-16缓存改址与空白诊断：用户日志HallScene enabled/global=true、parent/texture=true仍空白，不能认定User目录是根因。当前缓存app.getAppPath()/local-wallpapers，既有宿主myprotocol:/local-wallpapers/SHA.ext读取；resolve先校验SHA/Image，协议失败回退字节Data URL，asar保持User回退。旧User缓存验证后原子复制，paperRes键不变，旧图保留。检查显示按钮及show输出完整显示链visible/alpha/scale/texture/stage，区分根节点挂载和父链可见。真实Electron10.4.5 HTTPS来源+同款协议+用户1920px JPEG绘制/遮挡/恢复通过，未当前对局验收，不称大厅空白已解决。",
+      "2026-11-16二次局内修复：旧laya.class(SgsFlatImage)在局内通过SelfSeatUi.getEffectType(4)推断，但4=ResType_Spine_AllBig，真实返回uO/Spine动画。localWallpaper.show现在直接new Laya.Sprite，texture赋给xcLocalWallpaper并挂BackgroundLayer，zOrder0.5高于背景0低于mask Lv1=10，保留0.8暗化。display/activeAsset归闭包，show挂载及代次校验、hide解绑stage.RESIZE并移除、dispose销毁释放，paper保存原res；不依赖旧类推断。日志可见背景节点/场景显示判断。原生摘录模拟+真实Electron/Laya背景树验证缓存JPEG，晚到原生蓝色背景不能覆盖，关闭蓝色再开恢复原像素；当前用户对局仍待验收。",
+      "2026-11-16局内未替换修复：SgsFlatImage原生p$t.skin调用mNt.GetResByUrl，data:image不含://而被getResourceUrl添加res/前缀，不能仅验证Image解码/skin字符串。localWallpaper.loadTexture改走Laya.loader.load显式Loader.IMAGE，再apply给bg.texture且skin=null；activeAsset负责复用与release/discard，paper.clear的keepLocalTexture参数防止同图重绘时销毁。原生fixture模拟修前texture=null、修后通过；Electron10.4.5+官方Laya对用户缓存1440px JPEG实际绘制读像素alpha=255通过，未当前游戏内实测。",
+      "2026-11-16已实现：_0x310ee8调用__xcMountLocalWallpaperSettings显式桥，核心IIFE localWallpaper闭包向wallpaperDialog幂等挂载xcLocalWallpaperRow。选择本地图片经FileReader/Image解码，原字节缓存userData/User/wallpapers/SHA256.ext，paperRes只存xc-local-wallpaper引用；paper.setBg恢复时校验SHA并解析Data URL供SgsFlatImage.skin。localRevision/账号/DOM检查隔离旧导入，开启skinPaperSwitch，保留allPaperSwitch、Rogue地图排除和视频优先。30MiB上限及格式检查，失败写行内状态和appendLocalSkinDebugLine。模拟及真实Electron10.4.5远程文件桥/图片解码通过，游戏可见效果待用户测试；以下为原核查基线。",
+      "addFrame -> _0x310ee8 为 wallpaperContainer .explanation 绑定 click -> _0x208a6c -> wallpaperDialog.showModal。原模板只有皮肤壁纸和全局壁纸开关，本次本地入口由localWallpaper.mount添加；其中本地保存皮肤的提示是下载，cardBackLocalFileInput 是卡背专用。",
       "ChangeSkinWindow 背景按钮 -> _0x495cfb / 皮肤详情设为壁纸 -> _0x333387 -> paper.setBg。type=0 将 url 写入 SgsFlatImage.skin，按真实宽高居中放大铺满裁切，RGB 0.8 压暗；渲染不要求 url 必须是皮肤资源，但本地 Data URL/Blob 尚未在实际游戏验证。",
       "paper.res 的 url/type/width/height 经 XC.localSet(userID+'::paperRes',res,true) 写 localStorage JSON，login 读回，SceneManager.executeSwitchScene 与面板 change 调 paper.switch。skinPaperSwitch 必需，allPaperSwitch 控制局外显示，保留 RogueLikeBigMapScene/RogueSmallMapScene 排除。",
       "__SGS_LOCAL_VIDEO_BG_ACTIVE__ 为真时纸面背景仅保存不显示；本次未定位该 flag 生产者。现有 setBg 不等待静态贴图加载成功，后续本地导入需先验证图片解码、尺寸及存储错误。",

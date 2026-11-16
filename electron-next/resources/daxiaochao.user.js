@@ -16478,6 +16478,303 @@
       t[n(1546)]();
   }
   null == (_b = laya[_0x47c207(1604)]) || _b.call(laya, clickCard);
+  // Local wallpaper owns import jobs and disk cache; paper retains rendering and account preference.
+  const localWallpaper = (() => {
+    const prefix = "xc-local-wallpaper:";
+    const limit = 30 * 1024 * 1024;
+    const formats = { png: "image/png", jpg: "image/jpeg", webp: "image/webp", gif: "image/gif", bmp: "image/bmp", avif: "image/avif" };
+    let busy = false;
+    let activeAsset = null;
+    let display = null;
+    function diagnose(capture = false) {
+      const chain = [];
+      for (let node = display && display.root; node && chain.length < 8; node = node.parent) {
+        const texture = node === display.root && activeAsset ? activeAsset.texture : node.texture;
+        chain.push({ name: node.name || "", type: node.constructor && node.constructor.name,
+          visible: node.visible, alpha: node.alpha, x: node.x, y: node.y,
+          width: node.width, height: node.height, scaleX: node.scaleX, scaleY: node.scaleY,
+          stage: node === Laya.stage, texture: !!texture,
+          destroyed: !!node.destroyed, renderType: node._renderType, cacheAs: node.cacheAs,
+          scrollRect: node.scrollRect && { x: node.scrollRect.x, y: node.scrollRect.y,
+            width: node.scrollRect.width, height: node.scrollRect.height },
+          commands: node.graphics && (node.graphics.cmds ? node.graphics.cmds.length : node.graphics._one ? 1 : 0),
+          bitmap: texture && texture.bitmap && {width:texture.bitmap.width,height:texture.bitmap.height,destroyed:!!texture.bitmap.destroyed} });
+      }
+      appendLocalSkinDebugLine("[本地壁纸] 完整显示链 " + JSON.stringify(chain));
+      if (capture && display && display.root.parent) {
+        try {
+          const sample = node => {
+            const canvas = node.drawToCanvas(1, 1, -Laya.stage.width / 2, -Laya.stage.height / 2);
+            try { return Array.from(canvas.getContext("2d").getImageData(0, 0, 1, 1).data); }
+            finally { if (typeof canvas.destroy === "function") canvas.destroy(); }
+          };
+          appendLocalSkinDebugLine("[本地壁纸] 背景与舞台像素 " + JSON.stringify({
+            background: sample(display.root.parent), stage: sample(Laya.stage),
+            layers: (Laya.stage._children || []).slice(0, 12).map(node => ({
+              type:node.constructor && node.constructor.name,layerOrder:node.layerOrder,
+              visible:node.visible,alpha:node.alpha,zOrder:node.zOrder,
+            })),
+          }));
+        } catch (error) { appendLocalSkinDebugLine("[本地壁纸] 舞台像素读取失败：" + error.message); }
+      }
+      return chain;
+    }
+    function hide() {
+      if (!display) return;
+      Laya.stage.off(Laya.Event.RESIZE, display, display.resize);
+      display.root.removeSelf();
+    }
+    function dispose() {
+      hide();
+      if (display) {
+        display.root.texture = null;
+        display.root.destroy(true);
+        display = null;
+      }
+      release();
+    }
+    async function show(asset, descriptor, isCurrent) {
+      const layer = await wait(() => laya.find("BackgroundLayer"));
+      if (!layer || !isCurrent()) { discard(asset); return false; }
+      if (!display || display.root.destroyed) {
+        if (display) hide();
+        const root = new Laya.Sprite();
+        root.name = "xcLocalWallpaper";
+        root.mouseEnabled = false;
+        root.zOrder = 0.5; // Native backgrounds/effects are 0; masks begin at Lv1.
+        const owner = { root, width: 0, height: 0 };
+        owner.resize = () => {
+          if (display !== owner || root.destroyed) return;
+          const context = window.SystemContext || {};
+          const parent = root.parent;
+          const width = Number(context.gameWidth) || (parent && parent.width) || Laya.stage.width;
+          const height = Number(context.gameHeight) || (parent && parent.height) || Laya.stage.height;
+          if (!width || !height || !owner.width || !owner.height) return;
+          const scale = Math.max(width / owner.width, height / owner.height);
+          root.pivot(owner.width / 2, owner.height / 2);
+          root.scale(scale, scale);
+          root.pos(width / 2, height / 2);
+        };
+        display = owner;
+      }
+      const owner = display;
+      owner.width = descriptor.width;
+      owner.height = descriptor.height;
+      // Use the same graphics command route as the client's flat images, without a filter render target.
+      owner.root.texture = null;
+      owner.root.filters = null;
+      owner.root.graphics.clear();
+      const drawCommand = owner.root.graphics.drawTexture(asset.texture, 0, 0, descriptor.width, descriptor.height);
+      if (!drawCommand) throw new Error("Laya 壁纸纹理尚未就绪，未生成绘图命令");
+      owner.root.graphics.drawRect(0, 0, descriptor.width, descriptor.height, "rgba(0,0,0,0.2)");
+      owner.root.size(descriptor.width, descriptor.height);
+      owner.root.visible = true;
+      layer.addChild(owner.root);
+      Laya.stage.off(Laya.Event.RESIZE, owner, owner.resize);
+      Laya.stage.on(Laya.Event.RESIZE, owner, owner.resize);
+      owner.resize();
+      release(asset.texture);
+      activeAsset = asset;
+      appendLocalSkinDebugLine("[本地壁纸] 可见背景节点 " + JSON.stringify({
+        scene: laya.scene && laya.scene.SceneName, parent: !!owner.root.parent,
+        texture: !!asset.texture, width: owner.width, height: owner.height,
+        scale: owner.root.scaleX, zOrder: owner.root.zOrder, renderRoute: "graphics",
+      }));
+      diagnose();
+      return true;
+    }
+    function discard(asset) {
+      if (!asset || (activeAsset && activeAsset.texture === asset.texture)) return;
+      try { Laya.loader.clearRes(asset.data); } catch (_) {}
+    }
+    function release(keepTexture) {
+      if (!activeAsset || activeAsset.texture === keepTexture) return;
+      const previous = activeAsset;
+      activeAsset = null;
+      discard(previous);
+    }
+    function loadTexture(data) {
+      if (activeAsset && activeAsset.data === data && !activeAsset.texture.destroyed)
+        return Promise.resolve(activeAsset);
+      return new Promise((resolve, reject) => {
+        let finished = false;
+        const timer = setTimeout(() => finish(new Error("Laya 壁纸纹理加载超时")), 15000);
+        function finish(error, texture) {
+          if (finished) return;
+          finished = true;
+          clearTimeout(timer);
+          if (error) reject(error);
+          else resolve({ data, texture });
+        }
+        try {
+          // Native RES.GetResByUrl prefixes data: URLs. Use the engine's explicit image loader.
+          Laya.loader.load(data, Laya.Handler.create(null, () => {
+            const texture = Laya.loader.getRes(data);
+            if (finished) { discard({ data, texture }); return; }
+            if (!texture || texture.destroyed || !texture.width || !texture.height ||
+                (typeof texture.getIsReady === "function" && !texture.getIsReady()))
+              finish(new Error("Laya 未生成有效壁纸纹理"));
+            else finish(null, texture);
+          }), null, Laya.Loader.IMAGE);
+        } catch (error) { finish(error); }
+      });
+    }
+    function storage() {
+      const remote = window.electron && window.electron.remote;
+      if (!remote || !remote.app || typeof remote.require !== "function")
+        throw new Error("当前环境无法写入 User 缓存，请使用微端");
+      const path = remote.require("path");
+      const appPath = typeof remote.app.getAppPath === "function" ? remote.app.getAppPath() : "";
+      const legacyRoot = path.join(remote.app.getPath("userData"), "User", "wallpapers");
+      // The installed host already serves files below appPath through myprotocol:/.
+      const nativeRoot = appPath && !/\.asar(?:[\\/]|$)/i.test(appPath)
+        ? path.join(appPath, "local-wallpapers") : null;
+      return { fs: remote.require("fs"), path,
+        crypto: remote.require("crypto"), Buffer: remote.require("buffer").Buffer,
+        root: nativeRoot || legacyRoot, nativeRoot, legacyRoot };
+    }
+    function decode(url) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        const timer = setTimeout(() => done(new Error("图片解码超时")), 15000);
+        function done(error) {
+          clearTimeout(timer);
+          image.onload = image.onerror = null;
+          if (error) reject(error);
+          else if (!image.naturalWidth || !image.naturalHeight) reject(new Error("图片尺寸无效"));
+          else resolve({ width: image.naturalWidth, height: image.naturalHeight });
+        }
+        image.onload = () => done();
+        image.onerror = () => done(new Error("图片无法解码，请选择有效图片"));
+        image.src = url;
+      });
+    }
+    function read(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reader.onabort = () => reject(new Error("读取图片失败"));
+        reader.readAsDataURL(file);
+      });
+    }
+    function save(data) {
+      const match = /^data:(image\/[a-z0-9.+-]+);base64,([a-z0-9+/=]+)$/i.exec(data);
+      if (!match) throw new Error("图片格式不支持");
+      const extension = Object.keys(formats).find(key => formats[key] === match[1].toLowerCase());
+      if (!extension) throw new Error("请选择 PNG、JPEG、WebP、GIF、BMP 或 AVIF 图片");
+      const s = storage(), bytes = s.Buffer.from(match[2], "base64");
+      const hash = s.crypto.createHash("sha256").update(bytes).digest("hex");
+      const name = hash + "." + extension, target = s.path.join(s.root, name);
+      s.fs.mkdirSync(s.root, { recursive: true });
+      // Copy the original image bytes; never depend on the selected source path.
+      const temp = target + "." + Date.now() + ".tmp";
+      try {
+        s.fs.writeFileSync(temp, bytes, { flag: "wx" });
+        s.fs.renameSync(temp, target);
+      } finally {
+        if (s.fs.existsSync(temp)) s.fs.unlinkSync(temp);
+      }
+      return prefix + name;
+    }
+    async function resolve(url) {
+      if (!url.startsWith(prefix)) return url;
+      const name = url.slice(prefix.length);
+      if (!/^[a-f0-9]{64}\.(png|jpg|webp|gif|bmp|avif)$/.test(name)) throw new Error("壁纸缓存名称无效");
+      const s = storage();
+      let file = s.path.join(s.root, name);
+      if (!s.fs.existsSync(file) && s.nativeRoot) {
+        const previous = s.path.join(s.legacyRoot, name);
+        if (s.fs.existsSync(previous)) {
+          const bytes = s.fs.readFileSync(previous);
+          const hash = s.crypto.createHash("sha256").update(bytes).digest("hex");
+          if (hash !== name.slice(0, 64)) throw new Error("旧壁纸缓存校验失败");
+          s.fs.mkdirSync(s.root, { recursive: true });
+          const temporary = file + "." + Date.now() + ".tmp";
+          try { s.fs.writeFileSync(temporary, bytes, { flag: "wx" }); s.fs.renameSync(temporary, file); }
+          finally { if (s.fs.existsSync(temporary)) s.fs.unlinkSync(temporary); }
+          appendLocalSkinDebugLine("[本地壁纸] 旧缓存已复制到 " + s.root);
+        }
+      }
+      if (s.fs.statSync(file).size > limit) throw new Error("壁纸缓存过大");
+      const bytes = s.fs.readFileSync(file);
+      const hash = s.crypto.createHash("sha256").update(bytes).digest("hex");
+      if (hash !== name.slice(0, 64)) throw new Error("壁纸缓存校验失败");
+      if (s.nativeRoot) {
+        const nativeUrl = "myprotocol:/local-wallpapers/" + name;
+        try {
+          await decode(nativeUrl);
+          appendLocalSkinDebugLine("[本地壁纸] 原生资源读取成功 " + nativeUrl);
+          return nativeUrl;
+        } catch (_) {
+          appendLocalSkinDebugLine("[本地壁纸] 本机原生资源协议不可用，回退字节读取 " + s.root);
+        }
+      }
+      const data = "data:" + formats[name.split(".")[1]] + ";base64," + bytes.toString("base64");
+      await decode(data);
+      return data;
+    }
+    function mount(dialog) {
+      if (!dialog || dialog.querySelector("#xcLocalWallpaperRow")) return;
+      const row = document.createElement("div");
+      row.id = "xcLocalWallpaperRow";
+      row.style.cssText = "padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap";
+      const button = document.createElement("button"), input = document.createElement("input"), status = document.createElement("span");
+      button.type = "button";
+      button.textContent = "选择本地图片";
+      input.type = "file";
+      input.accept = "image/*";
+      input.hidden = true;
+      status.textContent = "设置后缓存到客户端 local-wallpapers，移动原图不影响使用";
+      status.style.cssText = "font-size:12px;max-width:360px;overflow-wrap:anywhere";
+      button.onclick = () => { input.value = ""; input.click(); };
+      input.onchange = async () => {
+        const file = input.files && input.files[0];
+        if (!file || busy) return;
+        busy = true;
+        button.disabled = true;
+        const account = _0x11ab4e[_0x47c207(718)], revision = paper.localRevision || 0;
+        status.textContent = "正在读取并缓存图片…";
+        try {
+          if (!account) throw new Error("请先登录游戏");
+          if (!file.size || file.size > limit) throw new Error("请选择 30MB 以内的图片");
+          if (file.type && !file.type.startsWith("image/")) throw new Error("请选择图片文件");
+          const data = await read(file), size = await decode(data);
+          if (!row.isConnected || account !== _0x11ab4e[_0x47c207(718)] || revision !== (paper.localRevision || 0))
+            throw new Error("壁纸或账号已切换，请重新选择");
+          const url = save(data);
+          const ok = await paper.setBg({ url, type: 0, width: size.width, height: size.height });
+          if (ok === false || paper.res.url !== url) throw new Error("壁纸未能应用，请稍后重试");
+          const stored = _0x32d055(account + "::paperRes", {}, true);
+          if (stored.url !== url) throw new Error("壁纸偏好保存失败");
+          globalConfig.skinPaperSwitch = true;
+          document.querySelectorAll('#skinPaperSwitch,[data-config-key="skinPaperSwitch"]').forEach(node => { node.checked = true; });
+          await paper.switch(globalConfig.allPaperSwitch
+            ? ![_0x47c207(1056), _0x47c207(230)].includes(laya.scene && laya.scene.SceneName)
+            : laya[_0x47c207(1322)]);
+          status.textContent = "设置成功，图片已缓存；局外显示需开启全局壁纸";
+          appendLocalSkinDebugLine("[本地壁纸] 设置成功 " + storage().root + "/" + url.slice(prefix.length));
+        } catch (error) {
+          status.textContent = "设置失败：" + error.message;
+          appendLocalSkinDebugLine("[本地壁纸] " + status.textContent);
+        } finally { busy = false; button.disabled = false; input.value = ""; }
+      };
+      const check = document.createElement("button");
+      check.type = "button";
+      check.textContent = "检查显示";
+      check.onclick = () => {
+        const chain = diagnose(true);
+        const hidden = chain.find(node => node.visible === false || node.alpha === 0 || node.destroyed);
+        status.textContent = hidden ? "父层不可见：" + (hidden.name || hidden.type) + "，详情见调试窗口"
+          : !chain.some(node => node.stage) ? "壁纸尚未连接到游戏舞台，详情见调试窗口"
+          : "壁纸已连接游戏舞台，详情见调试窗口“完整显示链”";
+      };
+      row.append(button, input, status, check);
+      (dialog.querySelector(".dialog-content") || dialog).appendChild(row);
+    }
+    return { resolve, mount, loadTexture, show, hide, dispose, release, discard,
+      isLocal: url => typeof url === "string" && url.startsWith(prefix) };
+  })();
+  window.__xcMountLocalWallpaperSettings = dialog => localWallpaper.mount(dialog);
   const paper = {
     res: {},
     sprite: void 0,
@@ -16532,9 +16829,25 @@
     ) {
       var a, r, l;
       const o = _0x47c207;
+      const revision = this.localRevision = (this.localRevision || 0) + 1;
+      const account = _0x11ab4e[o(718)];
+      let localAsset = null;
+      if (localWallpaper.isLocal(n)) {
+        try { localAsset = await localWallpaper.loadTexture(await localWallpaper.resolve(n)); }
+        catch (error) {
+          appendLocalSkinDebugLine("[本地壁纸] 缓存/纹理加载失败：" + error.message);
+          return false;
+        }
+        if (revision !== this.localRevision || account !== _0x11ab4e[o(718)]) {
+          localWallpaper.discard(localAsset);
+          return false;
+        }
+      }
       if (n) {
         if (_0x5ad56d())
           return (
+            localWallpaper.hide(),
+            localWallpaper.discard(localAsset),
             Object[o(1090)](this[o(1120)], {
               url: n,
               type: t,
@@ -16546,14 +16859,32 @@
               r.call(a),
             !0
           );
+        if (localAsset) {
+          const descriptor = { url: n, type: t, width: e, height: i };
+          try {
+            const shown = await localWallpaper.show(localAsset, descriptor,
+              () => revision === this.localRevision && account === _0x11ab4e[o(718)]);
+            if (!shown) return false;
+            if (this.sprite) this.sprite.removeSelf();
+            Object.assign(this.res, descriptor);
+            await _0x40868d(account + "::paperRes", this.res, true);
+            return true;
+          } catch (error) {
+            localWallpaper.discard(localAsset);
+            appendLocalSkinDebugLine("[本地壁纸] 背景节点应用失败：" + error.message);
+            return false;
+          }
+        }
+        localWallpaper.dispose();
         if (
           ((null == (l = this[o(1404)]) ? void 0 : l[o(1749)]) ||
             (await wait(() => this[o(597)]())),
+          revision === this.localRevision && account === _0x11ab4e[o(718)] &&
           this[o(1404)] && this[o(1404)][o(342)] != n)
         ) {
           if (
             (Object[o(1090)](this[o(1404)], { width: e, height: i }),
-            this[o(457)](),
+            this[o(457)](false, localAsset && localAsset.texture),
             0 == t)
           )
             (this[o(1404)].bg[o(561)] = n),
@@ -16591,22 +16922,41 @@
               height: i,
             }),
             await _0x40868d(_0x11ab4e[o(718)] + o(558), this[o(1120)], !0);
+          if (localAsset) appendLocalSkinDebugLine("[本地壁纸] 原生纹理已应用 " + e + "x" + i);
+        } else if (localAsset) {
+          localWallpaper.discard(localAsset);
         }
       }
     },
     async switch(n) {
       var t, e;
       const i = _0x47c207;
+      if (localWallpaper.isLocal(this.res.url)) appendLocalSkinDebugLine("[本地壁纸] 场景显示判断 " + JSON.stringify({
+        scene: laya.scene && laya.scene.SceneName, show: !!n,
+        enabled: !!globalConfig.skinPaperSwitch, global: !!globalConfig.allPaperSwitch, video: _0x5ad56d(),
+      }));
+      if (!n || _0x5ad56d()) {
+        this.localRevision = (this.localRevision || 0) + 1;
+        localWallpaper.hide();
+      }
       return n && _0x5ad56d()
         ? (null == (t = this[i(1404)]) || t[i(1070)](), !1)
         : n
           ? this[i(232)]()
           : void (null == (e = this[i(1404)]) || e[i(1070)]());
     },
-    async clear(n) {
+    async clear(n, keepLocalTexture) {
       var t;
+      this.localRevision = (this.localRevision || 0) + 1;
+      localWallpaper.dispose();
       const e = _0x47c207;
-      if (!this[e(1404)]) return;
+      if (!this[e(1404)]) {
+        this.res = {};
+        if (n) _0x5a31d6(_0x11ab4e[e(718)] + e(558), true);
+        return;
+      }
+      this[e(1404)].bg.texture = null;
+      localWallpaper.release(keepLocalTexture);
       for (
         this[e(1120)] = {}, this[e(1404)].bg[e(561)] = null;
         this[e(1404)][e(464)];
@@ -30301,6 +30651,8 @@
     const e = _0x41a3d0,
       i = document[e(259)](e(344)),
       a = document[e(259)](e(345));
+    if (a && typeof window.__xcMountLocalWallpaperSettings === "function")
+      window.__xcMountLocalWallpaperSettings(a);
     i &&
       a &&
       i[e(122)][e(456)] != e(531) &&

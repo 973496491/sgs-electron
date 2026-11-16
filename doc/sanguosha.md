@@ -33,6 +33,20 @@
 
 动态丢失追加核查：同快照KPt.InitData（710万附近）在未拥有且非共享、非免费场景不设置dynamicState，条目默认0；`canUpdateDynamic`（4231236）仅查皮肤配置IsChuChangOnlyDySkin/IsClenitDynamic/skinlevel/CanUpdate，与账号持有没有等价关系。方法已补入同一native fixture。本地解锁需单独按配置和真实持有查询补动态状态，不能把原生未拥有条目0当作用户静态偏好；已有/共享偏好仍保留。新增6组动态检查对旧部署镜像复现失败，修后23+19=42组通过；修复/部署/回归见架构表“动态丢失修复”，未游戏内复测。
 
+## 本地壁纸 / SgsFlatImage纹理加载核查（2026-11-16）
+
+2026-11-17用户在最终普通Graphics绘图版本同步后确认“有了”，已确认本地壁纸可见。下文关于“当前游戏空白/未验收”的叙述保留为当时排查记录；本次未证明特定GPU或滤镜内部根因，最终实现和验收见架构表“游戏内验收”。
+
+现场显示链补充：用户完整日志证实壁纸经原生_qt连Stage且全部visible/alpha正常。已从同一明文追加 `hj/A$t/y$t/GD/bD/UZt/_qt` 到wallpaper-native fixture（不是手写重建父类），按Stage3492×2043、背景层width/height0、scale2.618556701、偏移y11、游戏1333.333×766.667复测，旧路径仍可画，不能把零尺寸当成已证实裁切故障。当前本地节点采用普通Graphics命令并去掉滤镜缓存；实际游戏空白仍须结合新增“背景与舞台像素”诊断，不把新的隔离渲染通过解释为已复现根因。
+
+宿主本地资源入口补充：已核对 `F:/Game/SGSOL/resources/app/interceptor.js` 存在 `protocol.registerFileProtocol('myprotocol')`，处理路径为 `request.url.substr(12) -> path.join(__dirname,url)`，原卡面/壁纸编号图使用该入口。当前本地壁纸缓存接到app根的local-wallpapers并用同款协议读取，回退仍从缓存字节解码。已在隔离Electron10.4.5的HTTPS来源页验证该协议和真实Laya绘制用户1920px JPEG；不是仅file://页面验证，也未修改宿主协议处理器或编号原图。用户实际日志只证明parent/texture=true，后续“完整显示链”诊断才可确认stage连接、父层visible/alpha；目录限制尚非已证实根因。详见架构表“当前缓存位置 / 原生资源协议”。
+
+同日二次排查补充：旧小抄静态图片适配并非总能取得p$t。`laya.class("SgsFlatImage")` 的局内优先链为 `SelfSeatUi.getEffectType(4).constructor`，而本快照 `ResType_Spine=3/ResType_Spine_AllBig=4`，getEffectType对3/4返回uO（Spine动画），其它值返回E$t。这条链不能作为静态图片类证据，方法已补入同一native fixture。当前本地壁纸直接使用Laya.Sprite挂BackgroundLayer并赋Texture，保留原生场景层次和遮罩，详见架构表“当前渲染链 / 二次局内修复”；完整背景树中的遮挡、隐藏/恢复和真实JPEG像素通过隔离Electron/Laya验证，不把单张Texture的离屏绘制等同于当前游戏可见。
+
+复用已确认存在的11月10日ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-new-cards-audit-phdf4rol/sgsGame_a.sgs`（SHA256 `52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63`），核实 `p$t.skin/loadImage -> mNt.GetResByUrl`（字符偏移9968561/5163373）：不含 `://` 的Data URL被当作相对路径，经配置 `getResourceUrl` 添加 `res/`，无法成为有效壁纸。原生类及两段资源解析方法已固化到 `electron-next/tests/fixtures/wallpaper-native-20261110.json`，不是仅靠模拟猜测。
+
+本次仅定向取得普通官方 `libs/min/laya_a.sgs`，ZIP SHA256 `ca0c4517cba02ae77ac758ce0f6c23e6b7601b6cd7616e050e258e39e7ff84db`，22个JS及source.json位于已核验目录 `C:/Users/97349/AppData/Local/Temp/xc-wallpaper-laya-xvz5io89`。不涉及AES配置或 `_w` 分支，不更新完整归档结论。`Laya.loader.load(data,Handler,null,Laya.Loader.IMAGE)` 可直接产生真实Texture，赋给 `SgsFlatImage.texture` 时应清空skin，业务负责复用/释放，不能只依赖普通Image成功判定游戏渲染成功。实际Electron10.4.5隔离验证1px PNG及用户缓存1440px JPEG：真实Laya.drawToCanvas读回alpha=255、原字节一致；原生父类及游戏背景层仍为测试替身，当前对局效果待用户验证。实现与部署见架构表“局内未替换修复”，不再重复下载包做同一映射调查。
+
 ## 许劭世论 / 评鉴棋盘定向核查（2026-11-13，仅调查）
 
 后续已实现“许劭辅助”，用户最新要求改为只读连线提示、允许拖动，自动提交链路和方式/延时设置已移除。当前行为与34项浏览器/显示验证见架构表“许劭辅助：只读连线提示与可拖动面板”；下文“未改代码”仅描述最初调查。运行时通过WindowInstanceDict或laya.win只读定位已有窗口，不能使用可能构造弹窗的GetWindowByName；官方快照约5136890处明确暴露Laya.Browser.window.GameContext。79项XSPJ+技能名内嵌adapter，今后增删需更新；归档原生源码保存在tests/fixtures/xushao-native-20261110.json作为构造数据与不调用原生操作的验证依据。
