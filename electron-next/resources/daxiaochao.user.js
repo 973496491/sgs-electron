@@ -30304,8 +30304,119 @@
       "1: 优化许劭战功在棋牌上的展示, 2: 卡牌标签添加手动设置字体大小选项"
         [_0x41a3d0(555)](/；/g, _0x41a3d0(526))
         [_0x41a3d0(555)](/;/g, _0x41a3d0(526));
+  // Owns only the fallback dimensions, resize listener and polling lifecycle.
+  function createSystemContextCompatibility() {
+    let SC = null, timer = null, active = false, generation = 0, remainingFast = 0;
+    let reported = false, reportedError = false;
+    function num(value, fallback) {
+      const result = Number(value);
+      return Number.isFinite(result) ? result : fallback;
+    }
+    function stop() {
+      active = false;
+      generation++;
+      if (timer !== null) window.clearTimeout(timer);
+      timer = null;
+      window.removeEventListener("resize", sync, true);
+    }
+    function sync() {
+      if (!active) return;
+      // A late native export takes ownership; never write into that object.
+      if (window.SystemContext !== SC) { stop(); return; }
+      try {
+        var L = window.Laya;
+        if (!L || !L.Browser) return;
+        var pr = num(L.Browser.pixelRatio, 0);
+        if (!(pr > 0)) return;
+        var t = num(L.Browser.clientWidth, 0), i = num(L.Browser.clientHeight, 0);
+        if (!(t > 0) || !(i > 0)) return;
+        var winSet = 2;
+        try { winSet = num(L.LocalStorage && L.LocalStorage.getItem("windowType"), 0) || 2; } catch (e) {}
+        var pcl = 1;
+        try { pcl = num(L.Browser.window.PclobbyEnlargeNumber, 0) || 1; } catch (e) {}
+        var MINW = 1220, MINH = 732, MIDW = 1600, MIDH = 920, MAXW = 1920;
+        var src = t, gw = t, gh = i, gs = 1;
+        function apply(a, b, sc) {
+          if (sc != 1) { var w = src; var px = (w * sc) | 0; px = 2 * (px >> 1); sc = px / w; }
+          gw = a; gh = b; gs = sc;
+        }
+        var s0 = MINW, e0 = MINH, h = 0;
+        if (t * pr < s0 || i * pr < e0) {
+          if (i * pr / e0 > t * pr / s0) { h = t * pr / s0; src = t; } else { h = i * pr / e0; src = i; }
+          h = Math.min(h, pr); apply(s0, e0, h);
+        } else if (winSet == 1) {
+          h = t * pr / MAXW;
+          if (h > 1) {
+            if (i * pr / e0 > t * pr / s0) { h = t * pr / s0; src = t; } else { h = i * pr / e0; src = i; }
+            h = Math.min(h, pr); apply(s0, e0, h);
+          } else apply(s0, e0, 1);
+        } else if (winSet == 2) {
+          s0 = MIDW; e0 = MIDH; h = t * pr / MAXW;
+          if (h > 1) {
+            if (i * pr / e0 > t * pr / s0) { h = t * pr / s0; src = t; } else { h = i * pr / e0; src = i; }
+            h = Math.min(h, pr); apply(s0 / pcl, e0 / pcl, h * pcl);
+          } else {
+            h = t * pr / MIDW;
+            if (h > 1) { src = t; apply(s0 / pcl, e0 / pcl, pcl); }
+            else apply(t, i, 1);
+          }
+        } else {
+          h = t * pr / MAXW;
+          if (h > 1) {
+            s0 = MIDW; e0 = MIDH;
+            if (i * pr / e0 > t * pr / s0) { h = t * pr / s0; src = t; } else { h = i * pr / e0; src = i; }
+            h = Math.min(h, h * pr); apply(s0 / pcl, e0 / pcl, h * pcl);
+          } else {
+            s0 = t; e0 = i;
+            if (t * pr > MIDW) apply(s0 / pcl, e0 / pcl, pcl * pr); else apply(s0, e0, pr);
+          }
+        }
+        var dimensionsChanged = SC.gameWidth !== gw || SC.gameHeight !== gh;
+        var scaleOrModeChanged = SC.gameScale !== gs || SC.gameScreenType !== winSet;
+        if (SC.gameWidth !== gw) SC.gameWidth = gw;
+        if (SC.gameHeight !== gh) SC.gameHeight = gh;
+        if (SC.gameScale !== gs) SC.gameScale = gs;
+        if (SC.gameScreenType !== winSet) SC.gameScreenType = winSet;
+        if (dimensionsChanged && !scaleOrModeChanged)
+          window.dispatchEvent(new Event("SGSresize"));
+      } catch (error) {
+        if (!reportedError) {
+          reportedError = true;
+          appendLocalSkinDebugLine("[启动兼容] 尺寸同步失败：" + error.message, true);
+        }
+      }
+    }
+    function start() {
+      if (window.SystemContext && window.SystemContext !== SC) return;
+      if (active) { sync(); return; }
+      if (!SC) SC = { gameWidth: 1220, gameHeight: 732, gameScale: 1, gameScreenType: 2 };
+      window.SystemContext = SC;
+      active = true;
+      remainingFast = 300;
+      const token = ++generation;
+      window.addEventListener("resize", sync, true);
+      sync();
+      function schedule() {
+        if (!active || token !== generation) return;
+        timer = window.setTimeout(() => {
+          if (!active || token !== generation) return;
+          timer = null;
+          sync();
+          schedule();
+        }, remainingFast-- > 0 ? 100 : 1000);
+      }
+      schedule();
+      if (!reported) {
+        reported = true;
+        appendLocalSkinDebugLine("[启动兼容] SystemContext 未导出，已启用尺寸兼容", true);
+      }
+    }
+    return { start, stop };
+  }
+  const systemContextCompatibility = createSystemContextCompatibility();
   function Init() {
     const n = _0x41a3d0;
+    systemContextCompatibility.start();
     return (
       (window[n(196)] = n(653)),
       (window[n(118)] = globalConfig[n(118)] || 0),
@@ -30337,6 +30448,7 @@
     );
   }
   function Exit() {
+    systemContextCompatibility.stop();
     var n, t, e, i;
     const a = _0x41a3d0;
     window.__xcResetLocalSkinSelections?.();

@@ -32724,6 +32724,17 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  systemContextStartupCompatibility: {
+    title: "小抄无法加载：SystemContext导出缺失与启动兼容",
+    verifiedAt: "2026-11-18",
+    searchKeywords: ["SystemContext", "regWindowclass", "新增.js", "Init", "initFrame", "createSystemContextCompatibility", "SGSresize"],
+    decodedIndexes: { _0x871b: { "132": "_gameScreenType", "191": "Ctr", "275": "gameScale", "308": "Ofb_Dec", "309": "_gameScale", "351": "gameWidth", "411": "undefined", "426": "gameHeight", "453": "SGSresize", "495": "bgDiv", "609": "gameScreenType" } },
+    chain: [
+      "11月18日原生regWindowclass仅导出ChannelUtils=qni，11月10日曾导出SystemContext=cAt；当前内部尺寸类_kt仍在。Init等待JSZipUtils/CtrUtil.Ctr.Ofb_Dec/SystemContext/bgDiv，否则每秒重试。",
+      "Init先启动createSystemContextCompatibility补齐尺寸，Exit先停止；闭包拥有对象/resize/单timeout/代次，30秒快轮询后每秒，原生晚到时退出；尺寸单独改变派发SGSresize，其余复用initFrame属性钩子。日志走现有调试桥，未用xf-log。",
+      "tests/system-context-compat.cjs的11项含720组当前原生类差分与真实Init/Exit接线通过；不是完整游戏内验收。实现和同步记录见代码架构表，官方来源见sanguosha.md。"
+    ]
+  },
   xuShaoSkillChain: {
     title: "许劭757：世论3911评鉴连字 / 濯名3912技能选择（仅调查）",
     verifiedAt: "2026-11-13",

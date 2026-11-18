@@ -23,6 +23,12 @@
 
 本文只针对 **OL**。
 
+## 小抄不加载 / SystemContext 导出缺失（2026-11-18）
+
+- 定向获取官方 `https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs`，UTC `2026-11-18T14:19:54.712682+00:00`，5,647,897字节，ZIP SHA256 `437f4a4540d8ae7ae0551a04f41168def85689d2a81c7b6eb6e510ded8f942a8`；按普通ZIP解出明文，无配置解密或WASM操作。临时证据目录 `C:/Users/97349/AppData/Local/Temp/xc-load-audit-c_7em4my/`。配套公开libs/after.js为29,952字节，SHA256 `99f1799a8cfc14d12c4c4deed9ed3ec438cd1016c3cde07c5c1a1fd7fafca773`。
+- 对照仍存在的11月10日明文：原 `regWindowclass(){Laya.Browser.window.ChannelUtils=Y2t,Laya.Browser.window.SystemContext=cAt}` 变为 `regWindowclass(){Laya.Browser.window.ChannelUtils=qni}`；当前内部尺寸类 `_kt` 仍存在（字符偏移5066785附近）。这解释依赖全局SystemContext的小抄Init一直等待；不证明当前运行页面仅此一处异常。本轮未连接在线账号、未取得当前页面运行状态。
+- 用户新增.js的尺寸计算与当天 `_kt.UpdateGameSize/updateGameAdaptation` 在720组对照中一致；补丁后部署原始Init进入initFrame，补丁前等待。随后按用户要求实现有启动/停止责任的兼容控制器；原生类摘录及差分测试固化在仓库tests/fixtures/system-context-native-20261118.json与tests/system-context-compat.cjs，11项通过。实现、生命周期、实际同步与回退见架构表同名节；未游戏内实测。
+
 ## 本地皮肤首次打开 / 原生条目权限核查（2026-11-16）
 
 复用已核验存在的11月10日普通ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-new-cards-audit-phdf4rol/sgsGame_a.sgs`，SHA256 `52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63`，未下载或解密新包，不涉及 `_w`。`KPt.InitBaseData`（字符偏移7106669附近）把传入持有状态写入 `hasSkin/bg.mouseEnabled/blackbg.visible`，`HasSkin` getter直接返回hasSkin；选择视图 `itemClick`（7097730附近）在 `!item.HasSkin` 时提前返回。偏移仅对该快照有效，方法源码已固化 `electron-next/tests/fixtures/local-skin-native-20261110.json`，无需依赖临时明文才能运行测试。
