@@ -1,0 +1,8 @@
+{
+  "source": "OL 2026-11-18 main snapshot",
+  "methods": [
+    "SkinBigUrl(t=1){let i=this.skinID.toString();return this.IsManyStateDyskin&&(i+=\"_\"+t),P.I().makeUpRootResouceToUrl(this.miniGamePath+\"general/big/static/\",i+\".png\")}",
+    "SkinMaxUrl(t=1){let i=this.skinID.toString();return this.IsManyStateDyskin&&(i+=\"_\"+t),P.I().makeUpRootResouceToUrl(this.miniGamePath+\"general/big/bigSkin/\",i+\".png\")}",
+    "get SkinSeatUrl(){return P.I().makeUpRootResouceToUrl(this.miniGamePath+Zni.SeatImgUrl,this.skinID+\".png\")}"
+  ]
+}

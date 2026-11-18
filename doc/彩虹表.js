@@ -32735,6 +32735,17 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "tests/system-context-compat.cjs的11项含720组当前原生类差分与真实Init/Exit接线通过；不是完整游戏内验收。实现和同步记录见代码架构表，官方来源见sanguosha.md。"
     ]
   },
+  generalPoolSearch: {
+    title: "禁将方案搜索：输入不筛选，现场断点待确认",
+    verifiedAt: "2026-11-17",
+    searchKeywords: ["禁将方案", "禁将搜索", "输入不筛选", "ModeGeneralPoolWindow", "_0x4e0b88", "searchPass"],
+    decodedIndexes: { _0x3812: { "328": "__generalPoolSearch", "1169": "updateItems", "647": "layout", "576": "tabGroup", "976": "SelectedValue", "1465": "updateList", "965": "INPUT", "864": "input", "475": "originalUpdateItems" } },
+    chain: [
+      "laya.get(ModeGeneralPoolWindow,null,0).__proto__.layout -> redefine -> _0x4e0b88(this) -> TextInput INPUT -> debounce100ms -> updateList(tabGroup.SelectedValue) -> 包装updateItems第二参 -> _0x4932cf。仅当前分类内名称子串匹配，不是服务端搜索。",
+      "2026-11-17用户确认能输入但不筛选。工程与部署相同，真实Laya DOM input隔离测试可筛选；最新公开U2i将池类与11月10日快照一致。尚未复现现场根因，不能宣称已修复。新增调试窗口[禁将搜索]安装/输入/刷新/异常日志，searchPass汇总groups/before/after和hookActive/hasVo/hasInfo；不记录账号或发禁将请求。",
+      "状态仍由窗口__generalPoolSearch拥有；searchPass仅单次刷新有效，finally清理。旧实例或输入已destroyed时回调跳过，原窗口销毁负责子节点和事件释放。保留原生列表调用、布局及过滤规则，回退删除诊断插桩即可。"
+    ]
+  },
   xuShaoSkillChain: {
     title: "许劭757：世论3911评鉴连字 / 濯名3912技能选择（仅调查）",
     verifiedAt: "2026-11-13",
@@ -34245,6 +34256,21 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "getseven 默认请求列表和 bootstrap 补请求列表加入 modeId=1，ClientGameRecordInfoRep 响应白名单同步加入 1；recordHTML 返回值兼容补丁同步把统计页 recordModes 加入 1，并补充 sfName[1]={0:'综合',1:'主公',2:'忠臣',3:'反贼',4:'内奸'}，覆盖八人标准界面选择、统计和导出。",
       "上游 getseven(uid,modes) 从 laya 获取 SevenDayResultWindow，设置 uuid 后逐个 sendReq(modeId)；request:prepare/request:blocked/request:send 用于区分窗口缺失、方法缺失和请求已发送。",
       "bootstrapEightIdentityRecordRequest 在脚本重载已错过登录/room.ready 时，等待 userID、SevenDayResultWindow、sendReq 最多 30 秒，然后主动补发一次 getseven；日志为 bootstrap:wait/request/timeout/error。"
+    ]
+  },
+  tenYearStaticSkins: {
+    title: "十周年静态素材接入OL吕玲绮",
+    verifiedAt: "2026-11-18",
+    sourceFile: "electron-next/src/features/ten-year-skins.js",
+    searchKeywords: ["十周年皮肤", "吕玲绮", "716", "ten-year-skins", "xcTenYearStaticSkins.v1", "xcTenYearSkinSize.v1", "SkinsizeType", "IsBanner", "显示框", "显示区域不一致", "横版竖版", "局内座位卡", "全身大图", "半身座位图", "loadSkinComplete", "getSeatAvatars", "syncSeatHooks", "SkinBigUrl", "SkinSeatUrl", "恢复原图"],
+    decodedIndexes: {},
+    chain: [
+      "非混淆独立模块，经现有构建器装配；waitForCardBackSwitch安装入口，hookItem及InitData后置observe读取原生条目skinData（VO直接位于这里，skinBaseVo仅兼容回退）。",
+      "仅generalID716，按OL SkinID映射十周年955组成对静态资源；包装VO图片getter/方法和本地动态可用性，映射条目UI dynamicState归零；不改localSkinSelections发送隔离。",
+      "显示区域由原生SkinsizeType决定（11-18快照skinImgComplete@7482756：VERTICAL2=350x464比0.754、BANNER1=536x380比1.41、SKIN_169=335x594比0.564），不是图片像素。十周年大图竖版574x761比0.754、横版876x632比1.386。apply按大图真实宽高比选最近框（>=1.15 BANNER、<=0.9 VERTICAL、否则SKIN_169），映射生效时覆盖SkinsizeType/IsBanner/Is169，恢复时回退原生。",
+      "本地映射持久化；xcTenYearStaticSkins.v1存OL SkinID→素材编号，xcTenYearSkinSize.v1存OL SkinID→框类型1/2/3，恢复原图一并删除；旧映射缺框类型时observe惰性加载大图补齐。预加载双图成功后提交，epoch阻止关闭/恢复/dispose后的旧请求写入；Exit恢复仍属于本模块的属性包装器。需重开原生选肤并确认目标才能刷新当前显示。",
+      "局内武将牌(座位卡yP类@2602135，框146x172)用SkinSeatUrl取座位图229x270半身动作图，用户要全身大图。映射生效时resolve(id,'seat')改返回十周年big大图；主脚本getSeatAvatars桥(SelfSeatUi+seatContainer.seatUIs的seatAvatar)，幂等包装loadSkinComplete(@2611993)，原生赋值后按min(146/sw,172/sh)等比skinTex.size并居中pos、scaleX/Y=1。apply/remove/observe/mount/场景切换调syncSeatHooks，Exit经releaseSeatHooks恢复；未映射座位不缩放。",
+      "单元测试原生图片getter、横图BANNER/竖图VERTICAL显示框、座位槽返回大图与146x172等比居中、挂钩恢复、持久化及重启恢复、恢复回退、持久化与异步/恢复通过，原选肤42项及真实DOM检查通过，游戏内效果待用户验证；范围与部署见架构表同名节。"
     ]
   },
   localSkinFirstOpen: {

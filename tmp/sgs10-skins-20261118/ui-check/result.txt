@@ -1,0 +1,1 @@
+PASS: real DOM controls, native target, gallery pagination/filter, apply, restore and cleanup

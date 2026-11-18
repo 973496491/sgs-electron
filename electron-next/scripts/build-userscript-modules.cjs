@@ -4,6 +4,8 @@ const path = require("node:path");
 const assert = require("node:assert/strict");
 const root = path.resolve(__dirname, "..");
 const definitions = [
+  { id: "ten-year-skin-catalog", file: "src/features/ten-year-skin-catalog.js", name: "getTenYearSkinCatalog" },
+  { id: "ten-year-skins", file: "src/features/ten-year-skins.js", name: "createTenYearSkins" },
   { id: "xushao-client", file: "src/adapters/xushao-client.js", name: "createXuShaoClient" },
   { id: "xushao-assist", file: "src/features/xushao-assist.js", name: "createXuShaoAssist" },
   { id: "deck-visibility", file: "src/features/deck-visibility.js", name: "createDeckVisibilityPanel" },

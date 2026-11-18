@@ -350,6 +350,16 @@
       "sourceRoot": "repo",
       "source": "electron-next/src/features/xushao-assist.js",
       "target": "modules/features/xushao-assist.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/ten-year-skins.js",
+      "target": "modules/features/ten-year-skins.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/ten-year-skin-catalog.js",
+      "target": "modules/features/ten-year-skin-catalog.js"
     }
   ],
   "packageFiles": [

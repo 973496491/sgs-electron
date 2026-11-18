@@ -640,3 +640,7 @@ rg -o ".{80}GsCRoleOptTargetNtf.{200}" code/sgsGame.main.js
 
 配置解决“有什么”；协议解决“怎么通信”；Window/Class 解决“对象在哪里”；Event 解决“什么时候发生”；主程序解决“官方是怎么实现的”。
 把这几部分结合起来，就能大幅提高脚本开发和排查效率。
+
+## 禁将方案搜索原生复核（2026-11-17）
+
+定向下载普通ES6 `https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs`，按ZIP读取内部同名文件，无AES或WASM解密。UTC抓取时间2026-11-16T17:26:04，压缩包SHA256 `413eda0733abb4fb01c2fc211b141ca6ed040480821aeea5dc1e5d1cea998518`，明文SHA256 `5c5ef52211598f842281dd842040026721f909ac0dbebfd8adcf377d4a988671`。临时证据`C:/Users/97349/AppData/Local/Temp/xc-general-native-pgx9qa1p/source.json`及主程序已保存；U2i/ModeGeneralPoolWindow整个类与11月10日明文相同，updateList仍走this.updateItems，tabGroup.SelectedValue仍为分类值。另定向读取当前libs/min/laya_a.sgs，核对DOM input -> Input._processInputting -> TextInput._onInput -> INPUT链仍存在；不表示完整引擎归档或游戏内复现。搜索当前分类、现场未筛选问题及诊断日志见架构表“禁将方案搜索诊断”，根因待现场确认。
