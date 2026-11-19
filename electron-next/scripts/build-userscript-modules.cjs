@@ -6,6 +6,10 @@ const root = path.resolve(__dirname, "..");
 const definitions = [
   { id: "ten-year-skin-catalog", file: "src/features/ten-year-skin-catalog.js", name: "getTenYearSkinCatalog" },
   { id: "ten-year-skins", file: "src/features/ten-year-skins.js", name: "createTenYearSkins" },
+  { id: "native-skin-groups", file: "src/features/native-skin-groups.js", name: "getNativeSkinGroups" },
+  { id: "native-skin-link", file: "src/features/native-skin-link.js", name: "createNativeSkinLink" },
+  { id: "native-skin-labels", file: "src/features/native-skin-labels.js", name: "getNativeSkinLabels" },
+  { id: "native-skin-tabs", file: "src/features/native-skin-tabs.js", name: "createNativeSkinTabs" },
   { id: "xushao-client", file: "src/adapters/xushao-client.js", name: "createXuShaoClient" },
   { id: "xushao-assist", file: "src/features/xushao-assist.js", name: "createXuShaoAssist" },
   { id: "deck-visibility", file: "src/features/deck-visibility.js", name: "createDeckVisibilityPanel" },

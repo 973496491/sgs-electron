@@ -15,7 +15,8 @@ async function fixture(visible = true) {
   const context = vm.createContext({
     setTimeout(fn) { tasks.set(++id, fn); return id; }, clearTimeout(i) { tasks.delete(i); },
     setInterval() { return ++id; }, clearInterval() {},
-    appendLocalSkinDebugLine() {}, ensureLocalSkinDebugPanel() {},
+    appendLocalSkinDebugLine() {}, appendLocalSkinTabDebugLine() {}, ensureLocalSkinDebugPanel() {},
+    nativeSkinTabs: { attach() { return true; } },
     installLocalSkinDebugResponseHook() {},
   });
   vm.runInContext(`

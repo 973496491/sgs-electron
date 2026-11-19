@@ -46,6 +46,12 @@ queueLocalSkinDebugResponseDump('HeartBeatRep', response);
 
 关键词：`默认屏蔽`、`日志分类规则`、`未分类日志`、`接口/心跳`、`debug-log-channels.cjs`、`getLocalSkinDebugLogChannel`、`canPrintLocalSkinDebugResponse`、`appendLocalSkinTabDebugLine`、`activeLogChannel`、`responseBody`、`responseLogGeneration`、`api`、`debug`。
 
+## 2026-11-19 皮肤Tab消失的普通诊断日志
+
+分页诊断由既有appendLocalSkinTabDebugLine归显式debug，行格式 `[皮肤Tab] #序号 事件 JSON`。总调试必须打开，接口打印可关闭。复现前先打开普通日志，再启用本地皮肤并开/关/重开马超选择器；复制取得窗口、视图登记结果、分页生成的桶数、Tab挂载完成、原生开窗完成、下一帧状态和释放分页日志。异常带阶段/message/短栈，不是接口原文。
+
+不缓存调试关闭时的行、不自动弹窗，不以打开接口打印作为必要条件。分页模块只有调试开启时每次开窗的一次RAF读数，关闭/卸载清理并按页身份拒绝旧回调；无心跳/巡检/补挂。详细诊断状态归属与回归见原生皮肤互通链路3.1.3，尚未取得本轮游戏内日志，未据此宣称修复。
+
 ## 2026-09-19 第 21 段：标题改名 + 接口拦截配置单行化
 
 - 用户要求：调试面板标题由 `皮肤调试日志` 改为 `调试日志`；`配置` 展开的 `接口拦截配置` 由“每条规则一行”改为一行、字段用逗号分割，方便一次性取出全部拦截配置；点击 `添加` 仍与现在一致（展开一个新的空行）；点击 `保存` 后把新增行追加到配置行末尾。本轮只改 `C:\Users\97349\Downloads\electron` 项目文件，不动用户目录 `C:\Users\97349\AppData\Roaming\SGSOL\三国杀打小抄.js`，也不编译 asar。

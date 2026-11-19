@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         三国杀打小抄
 // @namespace    https://xxxxxxxxxxxxxx/scripts/448004
-// @version      1.0.11
+// @version      1.0.13
 // @author       小麦 孤独尊
 // @description  打小抄支持网页版和微端，微端文件请加群 830137048
 // @icon         https://xxxxxxxxxxxx/bfs/new_dyn/17ec41a0ca79633b77399065ab80da3f2138912.png
@@ -27,7 +27,7 @@
   "use strict";
 
   // Synchronized from electron-next/version.json by npm run build:userscript.
-  const XIAOCHAO_VERSION = "1.0.11";
+  const XIAOCHAO_VERSION = "1.0.13";
 
   // Hand off once to the installed main-process module; navigation leaves no renderer callbacks behind.
   function bootstrapLocalReleaseUpdates() {
@@ -23848,6 +23848,12 @@
     return !!manager && typeof manager.GetSkinListBySkinID === "function" &&
       !manager.GetSkinListBySkinID(skinID)?.length;
   };
+  // Relays this scope's own laya facade so feature modules resolve managers exactly like the code
+  // above does. window.laya is the engine namespace: its class() only registers classes and cannot
+  // look a manager up by name, which is why the merge hook used to sit on nothing.
+  window.__xcLayaFacade = name => {
+    try { return laya.class(name); } catch (error) { return undefined; }
+  };
   const game = new Proxy(
       {
         turn: 0,
@@ -38536,13 +38542,19 @@
     }
     function attach(view) {
       var current = scope();
-      if (current) views.set(view, { scene: current.scene, generation: generation });
+      if (!current) return false;
+      views.set(view, { scene: current.scene, generation: generation });
+      return true;
     }
     function record(view) {
       var current = scope();
       var owner = views.get(view);
       if (!current || !owner || owner.scene !== current.scene || owner.generation !== generation ||
-          view.clientID == null || !view.realGeneralID) return;
+          view.clientID == null || !view.realGeneralID) {
+        appendLocalSkinDebugLine('[本地皮肤] 跳过选择：视图未登记或场景已失效 gid=' +
+          view.realGeneralID, false, 'debug');
+        return;
+      }
       var skinID = Number(view.closeSelectSkinId);
       if (!Number.isFinite(skinID) || skinID < 0) return;
       var choice = { clientID: view.clientID, generalID: view.realGeneralID,
@@ -38556,6 +38568,8 @@
       }
       getLocalSkinDebugState().pendingSkin = null;
       choices.set(key, choice);
+      appendLocalSkinDebugLine('[本地皮肤] 记录选择 gid=' + choice.generalID +
+        ' sid=' + choice.skinID, false, 'debug');
       return true;
     }
     function send(original, args) {
@@ -38568,7 +38582,7 @@
       var skinID = this.closeSelectSkinId, dynamic = this.closeSelectDynamicState;
       this.closeSelectSkinId = fallback.skinID;
       this.closeSelectDynamicState = fallback.isDynamic;
-      appendLocalSkinDebugLine('[本地皮肤] 本地sid=' + skinID + '，回传默认sid=' + fallback.skinID, false);
+      appendLocalSkinDebugLine('[本地皮肤] 本地sid=' + skinID + '，回传默认sid=' + fallback.skinID, false, 'debug');
       try { return original.apply(this, args); }
       finally { this.closeSelectSkinId = skinID; this.closeSelectDynamicState = dynamic; }
     }
@@ -38606,7 +38620,7 @@
           matched = true;
           if (entry.SkinID === choice.skinID && entry.state === choice.isDynamic) return;
           appendLocalSkinDebugLine('[本地皮肤] 保留本次选择 gid=' + entry.GeneralID +
-            ' sid=' + entry.SkinID + '→' + choice.skinID, false);
+            ' sid=' + entry.SkinID + '→' + choice.skinID, false, 'debug');
           entry.SkinID = choice.skinID;
           entry.state = choice.isDynamic;
         });
@@ -39562,6 +39576,1258 @@
     },
     catalog: getTenYearSkinCatalog(), log: text => appendLocalSkinDebugLine("[十周年皮肤] " + text, false) });
   window.__xcTenYearSkins = tenYearSkins;
+  // BEGIN GENERATED MODULE: native-skin-groups
+  // Source: src/features/native-skin-groups.js; run npm run build:userscript. Do not edit this block.
+  const getNativeSkinGroups = function getNativeSkinGroups() {
+    return [
+      ["严畯", 473, 1080],
+      ["于吉", 33, 211, 449],
+      ["于禁", 160, 756, 6008],
+      ["伏皇后", 183, 671],
+      ["全琮", 340, 745],
+      ["公孙渊", 341, 6020],
+      ["公孙瓒", 101, 320, 648, 6019, 6118],
+      ["关兴张苞", 188, 690],
+      ["关平", 177, 766],
+      ["关羽", 2, 106, 201, 300, 593],
+      ["典韦", 34, 229, 526],
+      ["凌统", 155, 588, 6017],
+      ["刘备", 1, 220, 299, 664],
+      ["刘宏", 507, 698],
+      ["刘封", 179, 776],
+      ["刘巴", 536, 6114],
+      ["刘晔", 675, 6025],
+      ["刘禅", 53, 451],
+      ["刘表", 172, 626],
+      ["华佗", 22, 318],
+      ["华雄", 171, 214, 446, 644],
+      ["卢植", 407, 692],
+      ["卧龙诸葛亮", 37, 454],
+      ["司马懿", 16, 208, 312, 710, 7003],
+      ["吕布", 23, 206, 319, 714, 6667],
+      ["吕蒙", 10, 202, 306],
+      ["吴国太", 157, 640],
+      ["吴苋", 389, 528],
+      ["周泰", 31, 210],
+      ["周瑜", 12, 203, 308, 770],
+      ["周鲂", 468, 1081],
+      ["夏侯惇", 17, 313],
+      ["夏侯氏", 336, 752],
+      ["夏侯渊", 28, 453],
+      ["大乔", 13, 309],
+      ["太史慈", 38, 463, 602, 1088, 6116],
+      ["姜维", 52, 139, 480, 586],
+      ["孙乾", 376, 1083],
+      ["孙坚", 44, 458, 609, 725, 1087],
+      ["孙尚香", 25, 103, 138, 443],
+      ["孙权", 8, 226, 442, 711],
+      ["孙策", 54, 452, 633, 6035],
+      ["孙鲁班", 327, 708],
+      ["孙鲁育", 135, 6031],
+      ["孟获", 47, 492, 506, 781, 6688],
+      ["小乔", 30, 457, 705],
+      ["崔琰", 95, 739, 6010],
+      ["左慈", 56, 63, 64, 65, 66, 67, 68, 69, 447],
+      ["年兽", 79, 6668],
+      ["庞德", 39, 105, 462],
+      ["庞统", 36, 429, 455, 635],
+      ["廖化", 166, 641],
+      ["张春华", 161, 625, 7007],
+      ["张昭张纮", 55, 563],
+      ["张松", 326, 753],
+      ["张绣", 415, 687],
+      ["张虎乐綝", 1084, 7000],
+      ["张角", 32, 212, 227, 448, 742, 6113],
+      ["张让", 387, 697],
+      ["张辽", 18, 225, 314, 474, 732],
+      ["张郃", 50, 357, 486, 731],
+      ["张飞", 3, 301, 750],
+      ["徐庶", 159, 186, 304, 784],
+      ["徐晃", 42, 496, 6013],
+      ["徐盛", 158, 587],
+      ["戏志才", 375, 723],
+      ["曹丕", 43, 222, 6689],
+      ["曹仁", 29, 111],
+      ["曹休", 333, 767],
+      ["曹冲", 174, 628],
+      ["曹婴", 353, 6687],
+      ["曹彰", 162, 599],
+      ["曹操", 15, 205, 311, 661, 713, 6037, 6666],
+      ["曹植", 151, 629],
+      ["曹洪", 114, 6681],
+      ["曹纯", 426, 6021],
+      ["曹节", 391, 746],
+      ["朱儁", 527, 720],
+      ["朱桓", 328, 798],
+      ["朱然", 182, 779, 6022],
+      ["李傕", 418, 783],
+      ["李儒", 184, 642, 6007],
+      ["李肃", 1085, 7010],
+      ["杨修", 104, 694],
+      ["杨彪", 700, 6117],
+      ["步练师", 168, 775],
+      ["沮授", 330, 749, 6034],
+      ["法正", 154, 185, 610, 759],
+      ["满宠", 176, 6003],
+      ["王允", 372, 555],
+      ["王元姬", 6036, 7005],
+      ["王异", 187, 621],
+      ["甄姬", 21, 223, 444],
+      ["甘宁", 9, 224, 305],
+      ["皇甫嵩", 96, 743],
+      ["祝融", 46, 479, 765, 1086],
+      ["神秘武将", 228, 530, 565, 589, 613, 614, 615, 616, 617, 618, 7021, 9999],
+      ["程昱", 130, 734],
+      ["程普", 169, 620],
+      ["简雍", 178, 600],
+      ["胡班", 534, 5000],
+      ["芮姬", 502, 5556],
+      ["荀彧", 35, 515, 712],
+      ["荀攸", 164, 573],
+      ["荀谌", 460, 523],
+      ["董卓", 45, 470, 605],
+      ["董昭", 355, 735, 6121],
+      ["蔡夫人", 331, 627],
+      ["蔡文姬", 57, 112, 505],
+      ["虞翻", 181, 603],
+      ["袁术", 100, 215, 646],
+      ["袁绍", 41, 450, 623],
+      ["裴秀", 606, 6030],
+      ["许攸", 406, 719],
+      ["许褚", 19, 315],
+      ["许靖", 427, 1082],
+      ["诸葛亮", 4, 204, 440, 717, 6120],
+      ["诸葛果", 373, 772],
+      ["诸葛瑾", 60, 123],
+      ["诸葛瞻", 410, 771],
+      ["诸葛诞", 129, 773],
+      ["貂蝉", 24, 102, 109, 445, 715],
+      ["贾诩", 48, 110, 484, 663],
+      ["赵云", 5, 108, 120, 207, 302, 688],
+      ["辛宪英", 388, 747],
+      ["邓艾", 51, 471, 601],
+      ["郭嘉", 20, 316, 677, 6029],
+      ["郭淮", 175, 658],
+      ["郭照", 662, 6023],
+      ["郭皇后", 380, 726],
+      ["钟会", 173, 567, 758, 6015, 6690],
+      ["钟琰", 548, 7014],
+      ["钟繇", 334, 630],
+      ["陆绩", 402, 704],
+      ["陆逊", 14, 221, 310, 6119],
+      ["陆郁生", 562, 751],
+      ["陈宫", 153, 597],
+      ["陈群", 323, 737],
+      ["韩当", 170, 676],
+      ["韩馥", 651, 733],
+      ["颜良文丑", 40, 550],
+      ["马岱", 167, 696],
+      ["马良", 128, 6032],
+      ["马超", 6, 107, 303, 6027],
+      ["高干", 482, 1079],
+      ["高顺", 152, 604],
+      ["魏延", 27, 456],
+      ["鲁肃", 49, 485, 718],
+      ["黄忠", 26, 61, 230],
+      ["黄月英", 7, 361, 441, 622, 6004],
+      ["黄盖", 11, 307, 6016],
+    ];
+  };
+  // END GENERATED MODULE: native-skin-groups
+  // BEGIN GENERATED MODULE: native-skin-link
+  // Source: src/features/native-skin-link.js; run npm run build:userscript. Do not edit this block.
+  const createNativeSkinLink = function createNativeSkinLink({ window, document, storage, laya: injectedLaya, groups = [], log = () => {} }) {
+    const key = 'xcNativeSkinLink.v1', HOOK_KEY = '__xcNativeSkinLinkHook';
+    // The host script ships its own laya facade whose class(name) resolves game managers through a
+    // name table (GeneralSkinManager is registered there). window.laya is the engine namespace, whose
+    // class() only registers classes and returns nothing useful when asked for a manager, so the
+    // injected facade must win. Hosts that cannot hand the facade over expose it as __xcLayaFacade.
+    function runtime() {
+      if (injectedLaya && typeof injectedLaya.class === 'function') return injectedLaya;
+      const relay = window.__xcLayaFacade;
+      if (typeof relay === 'function') return { class: relay };
+      return window.laya || window.Laya || null;
+    }
+    const byId = new Map();
+    for (const row of groups) {
+      if (!Array.isArray(row) || row.length < 3) continue;
+      for (let i = 1; i < row.length; i++) {
+        const id = Number(row[i]);
+        if (id > 0) byId.set(id, row);
+      }
+    }
+    let enabled = true, hook = null, shared = false, timer = null, attempts = 0, reported = false, deepTries = 0, lastFail = '';
+    // >0 while a caller wants the untouched per-general bucket (skin tabs render one general per
+    // page). The merge wrapper passes straight through so buckets stay separated.
+    let singleDepth = 0;
+    const extraHooks = [];
+    const offSet = new Set();
+    try {
+      const saved = JSON.parse(storage.getItem(key));
+      if (saved && typeof saved === 'object') {
+        if (saved.enabled === false) enabled = false;
+        if (Array.isArray(saved.off)) for (const name of saved.off) if (typeof name === 'string') offSet.add(name);
+      }
+    } catch (_) {}
+    function save() {
+      try { storage.setItem(key, JSON.stringify({ enabled, off: [...offSet] })); } catch (_) {}
+    }
+    function groupOf(generalID) {
+      const row = byId.get(Number(generalID));
+      return row && !offSet.has(row[0]) ? row : null;
+    }
+    // laya.class may hand back the singleton, the class, or a fresh instance depending on build.
+    function pickManager() {
+      const laya = runtime();
+      if (!laya || typeof laya.class !== 'function') return null;
+      let target = null;
+      try { target = laya.class('GeneralSkinManager'); } catch (_) { target = null; }
+      if (!target) return null;
+      if (typeof target !== 'function') {
+        let node = target;
+        while (node) {
+          if (Object.getOwnPropertyDescriptor(node, 'GetGeneralSkinIncludeHide')) return target;
+          node = Object.getPrototypeOf(node);
+        }
+      }
+      if (typeof target.I === 'function') {
+        let instance = null;
+        try { instance = target.I(); } catch (_) { instance = null; }
+        if (instance && typeof instance.GetGeneralSkinIncludeHide === 'function') return instance;
+      }
+      return null;
+    }
+    // What a candidate is, for the diagnostic report only.
+    function shapeOf(value) {
+      if (value === undefined) return 'undefined';
+      if (value === null) return 'null';
+      if (typeof value === 'function') return 'class';
+      return typeof value;
+    }
+    // The object that actually owns GetGeneralSkinIncludeHide: the prototype when the method is a
+    // class method, the instance when it is an own property. Patching a prototype takes effect for
+    // every instance and works even before the singleton exists, which removes the mount-time race.
+    function holderOf(value) {
+      if (!value) return null;
+      try {
+        // The host facade resolves names through its own table and sometimes wraps the result.
+        if (Array.isArray(value)) {
+          for (const item of value) {
+            const holder = holderOf(item);
+            if (holder) return holder;
+          }
+          return null;
+        }
+        if (typeof value === 'function') {
+          const proto = value.prototype;
+          if (proto && typeof proto.GetGeneralSkinIncludeHide === 'function') return proto;
+          if (typeof value.I === 'function') {
+            let instance = null;
+            try { instance = value.I(); } catch (_) { instance = null; }
+            if (instance && typeof instance.GetGeneralSkinIncludeHide === 'function') {
+              const node = ownerAbove(instance);
+              if (node) return node;
+            }
+          }
+          return null;
+        }
+        if (typeof value !== 'object') return null;
+        return ownerAbove(value);
+      } catch (_) { return null; }
+    }
+    // Walk the prototype chain and return the first object that defines the method itself.
+    function ownerAbove(value) {
+      let node = value;
+      for (let depth = 0; depth < 8 && node; depth++) {
+        const desc = Object.getOwnPropertyDescriptor(node, 'GetGeneralSkinIncludeHide');
+        if (desc && typeof desc.value === 'function') return node;
+        node = Object.getPrototypeOf(node);
+      }
+      return null;
+    }
+    // The registered class name and the laya.class contract both differ between OL builds, so scan
+    // Laya's class registry for whatever prototype owns the method. Read-only.
+    function reflectHolder() {
+      const maps = [];
+      for (const root of [window.Laya, window.laya, injectedLaya]) {
+        if (!root || typeof root !== 'object') continue;
+        const utils = root.ClassUtils;
+        for (const map of [
+          utils && utils._classMap, utils && utils.__classMap, utils && utils.classMap,
+          root.__classmap, root._classMap, root.classMap
+        ]) if (map && typeof map === 'object') maps.push(map);
+      }
+      for (const map of maps) {
+        let keys = [];
+        try { keys = Object.keys(map); } catch (_) { continue; }
+        for (const key of keys) {
+          const holder = holderOf(map[key]);
+          if (holder) return holder;
+        }
+      }
+      return null;
+    }
+    // Nothing registers the manager under a stable name in this build: the singleton is only
+    // reachable from live engine / game objects. These are the entry points that exist regardless
+    // of the class registry, so the walk still has somewhere to start.
+    function hostStarts() {
+      const out = [];
+      const push = value => { if (value) out.push(value); };
+      for (const ns of [window.Laya, window.laya, injectedLaya]) {
+        if (!ns || typeof ns !== 'object') continue;
+        push(ns.gamescene); push(ns.stage); push(ns.scene); push(ns.timer);
+        push(ns.loader); push(ns.ResourceManager); push(ns.LocalStorage);
+      }
+      const laya = runtime();
+      if (laya && typeof laya.class === 'function') {
+        for (const name of ['GameContext', 'GameGeneralManager', 'TaskManager', 'RoomControler',
+          'Self', 'TimerManager', 'PromptLayer', 'NewPrivilegeCardManager']) {
+          for (const extra of [[name], [name, true]]) {
+            let value = null;
+            try { value = laya.class.apply(laya, extra); } catch (_) { value = null; }
+            push(value);
+          }
+        }
+      }
+      return out;
+    }
+    const SKIP_KEY = /^(__proto__|constructor|prototype|parent|owner|_owner)$/;
+    function scanHosts() {
+      const queue = hostStarts().map(node => ({ node, depth: 0, path: 'root' }));
+      const seen = new Set();
+      let visited = 0;
+      while (queue.length && visited < 2500) {
+        const current = queue.shift();
+        const node = current.node;
+        if (!node || seen.has(node)) continue;
+        if (typeof node !== 'object' && typeof node !== 'function') continue;
+        seen.add(node);
+        visited++;
+        const holder = holderOf(node);
+        if (holder) return { holder, via: current.path };
+        if (current.depth >= 4) continue;
+        let keys = [];
+        try { keys = Object.getOwnPropertyNames(node); } catch (_) { continue; }
+        let queued = 0;
+        for (const key of keys) {
+          if (queued >= 60) break;
+          if (SKIP_KEY.test(key)) continue;
+          let value = null;
+          try { value = node[key]; } catch (_) { continue; }
+          if (!value || (typeof value !== 'object' && typeof value !== 'function')) continue;
+          if (value === window || value.nodeType) continue;
+          queue.push({ node: value, depth: current.depth + 1, path: current.path + '.' + key });
+          queued++;
+        }
+      }
+      return null;
+    }
+    // Name lookup first (cheap), then the registry, then the bounded graph walk.
+    function pickHolder() {
+      const laya = runtime();
+      const notes = [];
+      if (laya && typeof laya.class === 'function') {
+        for (const call of [['GeneralSkinManager'], ['GeneralSkinManager', true]]) {
+          let target = null;
+          try { target = laya.class.apply(laya, call); } catch (error) {
+            notes.push('laya.class(' + call.join(',') + ') threw');
+            continue;
+          }
+          const holder = holderOf(target);
+          if (holder) return holder;
+          notes.push('laya.class(' + call.join(',') + ')=' + shapeOf(target));
+        }
+      } else {
+        notes.push('laya=' + shapeOf(laya));
+      }
+      const reflected = reflectHolder();
+      if (reflected) return reflected;
+      notes.push('registry=miss');
+      if (deepTries < 4) {
+        deepTries++;
+        const scanned = scanHosts();
+        if (scanned) {
+          log('皮肤互通：通过 ' + scanned.via + ' 找到皮肤管理器');
+          return scanned.holder;
+        }
+        notes.push('scan=miss');
+      }
+      lastFail = notes.join(' / ');
+      return null;
+    }
+    function install() {
+      if (hook) return true;
+      const holder = pickHolder();
+      if (!holder) { retry(); return false; }
+      const existing = window[HOOK_KEY];
+      if (existing && existing.holder === holder && typeof existing.wrapper === 'function') {
+        hook = existing; shared = true; return true;
+      }
+      const original = holder.GetGeneralSkinIncludeHide;
+      if (typeof original !== 'function') return false;
+      const own = Object.getOwnPropertyDescriptor(holder, 'GetGeneralSkinIncludeHide');
+      const wrapper = function (generalID, a, b, c) {
+        const base = original.call(this, generalID, a, b, c);
+        if (!enabled || singleDepth > 0) return base;
+        const row = groupOf(generalID);
+        if (!row) return base;
+        const self = Number(generalID), out = Array.isArray(base) ? base.slice() : [];
+        for (let i = 1; i < row.length; i++) {
+          const peer = Number(row[i]);
+          if (!(peer > 0) || peer === self) continue;
+          let extra = null;
+          try { extra = original.call(this, peer, a, b, c); } catch (_) { extra = null; }
+          if (!Array.isArray(extra)) continue;
+          for (const vo of extra) if (vo && out.indexOf(vo) < 0) out.push(vo);
+        }
+        return out.length ? out : base;
+      };
+      // Bundlers sometimes ship prototype methods as non-writable; a plain assignment would be
+      // dropped in strict mode and the switch would read 已接管 while nothing changed.
+      let patched = false;
+      try {
+        if (own && own.writable === false) {
+          if (own.configurable === false) patched = false;
+          else {
+            Object.defineProperty(holder, 'GetGeneralSkinIncludeHide',
+              { value: wrapper, writable: true, enumerable: own.enumerable, configurable: true });
+            patched = true;
+          }
+        } else {
+          holder.GetGeneralSkinIncludeHide = wrapper;
+          patched = holder.GetGeneralSkinIncludeHide === wrapper;
+        }
+      } catch (_) { patched = false; }
+      if (!patched) {
+        lastFail = 'GetGeneralSkinIncludeHide 不可写（' + shapeOf(holder) + '）';
+        return false;
+      }
+      hook = { holder, original, wrapper, own };
+      shared = false; attempts = 0; reported = false; deepTries = 0; lastFail = '';
+      window[HOOK_KEY] = hook;
+      log('皮肤互通已挂接：' + groups.length + '组 / ' + byId.size + '个武将ID' +
+        (ownsPrototype(hook) ? '（类原型）' : '（实例）'));
+      return true;
+    }
+    function ownsPrototype(record) {
+      try {
+        const instance = pickManager();
+        return !!instance && Object.getPrototypeOf(instance) === record.holder;
+      } catch (_) { return false; }
+    }
+    function uninstall() {
+      if (!hook) return;
+      const record = hook;
+      hook = null;
+      if (!shared && record.holder.GetGeneralSkinIncludeHide === record.wrapper) {
+        try {
+          if (record.own) Object.defineProperty(record.holder, 'GetGeneralSkinIncludeHide', record.own);
+          else delete record.holder.GetGeneralSkinIncludeHide;
+        } catch (_) {}
+      }
+      if (window[HOOK_KEY] === record) window[HOOK_KEY] = null;
+      shared = false;
+    }
+    function retry() {
+      if (timer) return;
+      if (attempts >= 240) {
+        if (!reported) { reported = true; log('未找到 GeneralSkinManager，皮肤互通未生效'); }
+        return;
+      }
+      attempts++;
+      timer = window.setTimeout(function () { timer = null; install(); }, 500);
+    }
+    // Called by the local-skin switch when it unlocks: the panel button is gone, so the state is
+    // driven directly instead of through a control.
+    function attach() {
+      enabled = true;
+      save();
+      attempts = 0;
+      const ok = install();
+      log('皮肤互通' + (ok ? '随本地皮肤启用' : '启用中（等待皮肤管理器）'));
+      return ok;
+    }
+    function detach() {
+      enabled = false;
+      save();
+      uninstall();
+      if (timer) { window.clearTimeout(timer); timer = null; }
+      log('皮肤互通已停止');
+    }
+    function setEnabled(next) {
+      return next ? attach() : (detach(), false);
+    }
+    // Lets callers keep buckets separated while the merge hook stays installed (used by the skin
+    // tabs, which must show exactly one general per page).
+    function withBucket(fn) {
+      singleDepth++;
+      try { return fn(); } finally { singleDepth--; }
+    }
+    // Shared holder so other features can wrap sibling methods on the same prototype instead of
+    // resolving the manager a second time.
+    function getHolder() {
+      return hook ? hook.holder : pickHolder();
+    }
+    function manager() {
+      try { return pickManager() || (hook ? hook.holder : null); } catch (_) { return hook ? hook.holder : null; }
+    }
+    // Idempotent wrapper for another manager method; restores the exact descriptor on undo().
+    function wrap(name, build) {
+      const holder = getHolder();
+      if (!holder || typeof holder[name] !== 'function') return null;
+      for (const item of extraHooks) if (item.name === name) return item.undo;
+      const original = holder[name];
+      const own = Object.getOwnPropertyDescriptor(holder, name);
+      const wrapper = build(original);
+      let patched = false;
+      try {
+        if (own && own.writable === false && own.configurable !== false) {
+          Object.defineProperty(holder, name, { value: wrapper, writable: true, enumerable: own.enumerable, configurable: true });
+          patched = holder[name] === wrapper;
+        } else {
+          holder[name] = wrapper;
+          patched = holder[name] === wrapper;
+        }
+      } catch (_) { patched = false; }
+      if (!patched) return null;
+      const undo = function () {
+        const at = extraHooks.findIndex(item => item.name === name && item.wrapper === wrapper);
+        if (at < 0) return;
+        extraHooks.splice(at, 1);
+        try {
+          if (own) Object.defineProperty(holder, name, own);
+          else delete holder[name];
+        } catch (_) {}
+      };
+      extraHooks.push({ name, wrapper, undo });
+      return undo;
+    }
+    function unwrapAll() {
+      for (const item of extraHooks.slice()) item.undo();
+    }
+    function dispose() {
+      if (timer) { window.clearTimeout(timer); timer = null; }
+      unwrapAll();
+      uninstall();
+    }
+    function status() {
+      return { enabled, hooked: !!hook, shared, groups: groups.length, generals: byId.size, off: [...offSet] };
+    }
+    function setGroupEnabled(name, on) {
+      if (typeof name !== 'string') return false;
+      if (on) offSet.delete(name); else offSet.add(name);
+      save();
+      return !offSet.has(name);
+    }
+    // Read-only probe used by the in-game debug panel.
+    function diagnose(generalID) {
+      const row = groupOf(generalID);
+      return row ? { name: row[0], ids: row.slice(1) } : null;
+    }
+    // Answers "did the server accept a cross-version pick?" without touching anything.
+    // using  = GetSelfUsingSkinID(id), i.e. what the local UsedGeneralSkinID map holds now.
+    // owner  = the general the equipped skin belongs to; != id means a cross-version pick stuck.
+    function probe(generalID) {
+      const id = Number(generalID);
+      const manager = pickManager() || (hook ? hook.holder : null);
+      if (!manager || !(id > 0)) return null;
+      let using = 0, owner = null, owned = 0, name = null;
+      try { using = Number(manager.GetSelfUsingSkinID(id)) || 0; } catch (_) {}
+      if (using > 0) {
+        try {
+          const vo = manager.GetGeneralSkinBySkinID(using);
+          if (vo) { owner = Number(vo.GeneralID) || null; name = vo.SkinName || vo.Name || null; }
+        } catch (_) {}
+        try { const list = manager.GetSkinListBySkinID(using); owned = Array.isArray(list) ? list.length : 0; } catch (_) {}
+      }
+      const row = groupOf(id);
+      return {
+        generalID: id,
+        group: row ? row[0] : null,
+        using,
+        skinOwner: owner,
+        skinName: name,
+        owned,
+        crossVersion: owner != null && owner !== id,
+        verdict: using > 0 && owner != null && owner !== id
+          ? '已生效：跨版本皮肤留在本地（服务端接受或本地写入成功）'
+          : using > 0 ? '使用中为同版本皮肤' : '未记录皮肤（服务端可能已拒绝并回写默认）'
+      };
+    }
+    window.__xcNativeSkinLinkProbe = probe;
+    // One-shot diagnostic: why is / isn't the merge visible? Safe to run any time.
+    function selfTest(generalID) {
+      const id = Number(generalID) || 389;
+      const row = groupOf(id);
+      const manager = pickManager() || (hook ? hook.holder : null);
+      let classShape = 'missing';
+      try {
+        const facade = runtime();
+        const raw = facade && typeof facade.class === 'function'
+          ? facade.class('GeneralSkinManager') : null;
+        classShape = raw == null ? 'undefined' : typeof raw === 'function' ? 'class' : 'instance';
+      } catch (error) { classShape = 'error:' + (error && error.message); }
+      let nativeCount = null, mergedCount = null, sampleIDs = null;
+      if (manager) {
+        try {
+          const base = hook ? hook.original.call(manager, id) : manager.GetGeneralSkinIncludeHide(id);
+          nativeCount = Array.isArray(base) ? base.length : base;
+        } catch (error) { nativeCount = 'error:' + (error && error.message); }
+        try {
+          const merged = manager.GetGeneralSkinIncludeHide(id);
+          mergedCount = Array.isArray(merged) ? merged.length : merged;
+          if (Array.isArray(merged)) sampleIDs = merged.slice(0, 20).map(vo => vo && (vo.skinID || vo.SkinID));
+        } catch (error) { mergedCount = 'error:' + (error && error.message); }
+      }
+      const report = {
+        facade: !!injectedLaya,
+        laya: !!window.laya,
+        layaUpper: !!window.Laya,
+        classShape,
+        hooked: !!hook,
+        viaPrototype: hook ? ownsPrototype(hook) : null,
+        enabled,
+        group: row ? row[0] : null,
+        groupIDs: row ? row.slice(1) : null,
+        nativeCount, mergedCount, sampleIDs,
+        lastFail: lastFail || null,
+        verdict: !hook ? '未接管：皮肤管理器取不到（lastFail 说明每一步的结果）'
+          : !enabled ? '已关闭开关'
+          : mergedCount > nativeCount ? '合并生效'
+          : '已接管但数量未增加'
+      };
+      try { log(JSON.stringify(report)); } catch (error) {}
+      return report;
+    }
+    window.__xcNativeSkinLinkSelfTest = selfTest;
+    // Exhaustive, read-only report of what the runtime actually exposes. Run this when the button
+    // reads 未接管 and paste the JSON back: it shows which lookup step fails.
+    function diagnoseRuntime() {
+      const facade = runtime();
+      const calls = {};
+      for (const name of ['GeneralSkinManager', 'GameContext', 'GameGeneralManager', 'TaskManager',
+        'Self', 'RoomControler']) {
+        const row = {};
+        for (const extra of [[name], [name, true]]) {
+          const slot = extra.length > 1 ? 'instance' : 'plain';
+          try {
+            const value = facade && typeof facade.class === 'function'
+              ? facade.class.apply(facade, extra) : undefined;
+            row[slot] = shapeOf(value);
+          } catch (error) { row[slot] = 'throw'; }
+        }
+        calls[name] = row;
+      }
+      const registry = {};
+      for (const label of ['Laya', 'laya']) {
+        const root = window[label];
+        if (!root || typeof root !== 'object') continue;
+        const keys = [];
+        for (const map of [root.ClassUtils && root.ClassUtils._classMap,
+          root.ClassUtils && root.ClassUtils.__classMap, root.__classmap, root._classMap]) {
+          if (!map || typeof map !== 'object') continue;
+          try {
+            for (const key of Object.keys(map)) {
+              if (keys.length >= 40) break;
+              if (/skin|general/i.test(key)) keys.push(key);
+            }
+          } catch (_) {}
+        }
+        if (keys.length) registry[label] = keys;
+        if (root.ClassUtils) {
+          try { registry[label + 'ClassUtils'] = Object.keys(root.ClassUtils).slice(0, 20); } catch (_) {}
+        }
+      }
+      let scanned = null;
+      try {
+        const hit = scanHosts();
+        scanned = hit ? hit.via : null;
+      } catch (error) { scanned = 'throw'; }
+      const report = {
+        facade: shapeOf(facade),
+        facadeClass: facade ? typeof facade.class : 'none',
+        laya: shapeOf(window.laya),
+        layaClass: window.laya ? typeof window.laya.class : 'none',
+        Laya: shapeOf(window.Laya),
+        stage: !!((window.Laya && window.Laya.stage) || (window.laya && window.laya.stage)),
+        gamescene: !!(window.laya && window.laya.gamescene),
+        calls, registry, scanned,
+        hooked: !!hook,
+        lastFail: lastFail || null
+      };
+      try { log(JSON.stringify(report)); } catch (error) {}
+      return report;
+    }
+    window.__xcNativeSkinLinkDiagnose = diagnoseRuntime;
+    return { install, uninstall, attach, detach, dispose, setEnabled, setGroupEnabled, status, diagnose,
+      groupOf, probe, selfTest, wrap, unwrapAll, withBucket, getHolder, manager };
+  };
+  // END GENERATED MODULE: native-skin-link
+  // BEGIN GENERATED MODULE: native-skin-labels
+  // Source: src/features/native-skin-labels.js; run npm run build:userscript. Do not edit this block.
+  const getNativeSkinLabels = function getNativeSkinLabels() {
+    return {
+      1: "刘备", 2: "关羽", 3: "张飞", 4: "诸葛亮", 5: "赵云", 6: "马超",
+      7: "黄月英", 8: "孙权", 9: "甘宁", 10: "吕蒙", 11: "黄盖", 12: "周瑜",
+      13: "大乔", 14: "陆逊", 15: "曹操", 16: "司马懿", 17: "夏侯惇", 18: "张辽",
+      19: "许褚", 20: "郭嘉", 21: "甄姬", 22: "华佗", 23: "吕布", 24: "貂蝉",
+      25: "孙尚香", 26: "界黄忠", 27: "魏延", 28: "夏侯渊", 29: "曹仁", 30: "小乔",
+      31: "周泰", 32: "张角", 33: "于吉", 34: "典韦", 35: "荀彧", 36: "庞统",
+      37: "卧龙诸葛亮", 38: "太史慈", 39: "庞德", 40: "颜良文丑", 41: "袁绍", 42: "徐晃",
+      43: "曹丕", 44: "孙坚", 45: "董卓", 46: "祝融", 47: "孟获", 48: "贾诩",
+      49: "鲁肃", 50: "张郃", 51: "邓艾", 52: "姜维", 53: "刘禅", 54: "孙策",
+      55: "张昭张纮", 56: "左慈", 57: "蔡文姬", 60: "诸葛瑾", 61: "黄忠", 63: "左慈",
+      64: "左慈", 65: "左慈", 66: "左慈", 67: "左慈", 68: "左慈", 69: "左慈",
+      79: "年兽", 95: "崔琰", 96: "皇甫嵩", 100: "袁术", 101: "公孙瓒", 102: "SP貂蝉",
+      103: "SP孙尚香", 104: "杨修", 105: "SP庞德", 106: "SP关羽", 107: "SP马超", 108: "SP赵云",
+      109: "SP貂蝉", 110: "SP贾诩", 111: "SP曹仁", 112: "SP蔡文姬", 114: "曹洪", 120: "SP赵云",
+      123: "诸葛瑾", 128: "马良", 129: "诸葛诞", 130: "程昱", 135: "孙鲁育", 138: "SP孙尚香",
+      139: "SP姜维", 151: "曹植", 152: "高顺", 153: "陈宫", 154: "法正", 155: "凌统",
+      157: "吴国太", 158: "徐盛", 159: "徐庶", 160: "于禁", 161: "张春华", 162: "曹彰",
+      164: "荀攸", 166: "廖化", 167: "马岱", 168: "步练师", 169: "程普", 170: "韩当",
+      171: "将华雄", 172: "刘表", 173: "钟会", 174: "曹冲", 175: "郭淮", 176: "满宠",
+      177: "关平", 178: "简雍", 179: "刘封", 181: "虞翻", 182: "朱然", 183: "伏皇后",
+      184: "李儒", 185: "法正", 186: "徐庶", 187: "王异", 188: "关兴张苞", 201: "神关羽",
+      202: "神吕蒙", 203: "神周瑜", 204: "神诸葛亮", 205: "神曹操", 206: "神吕布", 207: "神赵云",
+      208: "神司马懿", 210: "周泰", 211: "于吉", 212: "张角", 214: "华雄", 215: "袁术",
+      220: "神刘备", 221: "神陆逊", 222: "神曹丕", 223: "神甄姬", 224: "神甘宁", 225: "神张辽",
+      226: "神孙权", 227: "神张角", 228: "神秘武将", 229: "神典韦", 230: "神黄忠", 299: "界刘备",
+      300: "界关羽", 301: "界张飞", 302: "界赵云", 303: "界马超", 304: "界徐庶", 305: "界甘宁",
+      306: "界吕蒙", 307: "界黄盖", 308: "界周瑜", 309: "界大乔", 310: "界陆逊", 311: "界曹操",
+      312: "界司马懿", 313: "界夏侯惇", 314: "界张辽", 315: "界许褚", 316: "界郭嘉", 318: "界华佗",
+      319: "界吕布", 320: "界公孙瓒", 323: "陈群", 326: "张松", 327: "孙鲁班", 328: "朱桓",
+      330: "沮授", 331: "蔡夫人", 333: "曹休", 334: "钟繇", 336: "夏侯氏", 340: "全琮",
+      341: "公孙渊", 353: "曹婴", 355: "董昭", 357: "SP张郃", 361: "SP黄月英", 372: "王允",
+      373: "诸葛果", 375: "戏志才", 376: "孙乾", 380: "郭皇后", 387: "张让", 388: "辛宪英",
+      389: "吴苋", 391: "曹节", 402: "陆绩", 406: "许攸", 407: "卢植", 410: "诸葛瞻",
+      415: "张绣", 418: "李傕", 426: "曹纯", 427: "许靖", 429: "SP庞统", 440: "界诸葛亮",
+      441: "界黄月英", 442: "界孙权", 443: "界孙尚香", 444: "界甄姬", 445: "界貂蝉", 446: "界华雄",
+      447: "界左慈", 448: "界张角", 449: "界于吉", 450: "界袁绍", 451: "界刘禅", 452: "界孙策",
+      453: "界夏侯渊", 454: "界卧龙诸葛亮", 455: "界庞统", 456: "界魏延", 457: "界小乔", 458: "界孙坚",
+      460: "荀谌", 462: "界庞德", 463: "界太史慈", 468: "周鲂", 470: "界董卓", 471: "界邓艾",
+      473: "严畯", 474: "SP张辽", 479: "界祝融", 480: "界姜维", 482: "高干", 484: "界贾诩",
+      485: "界鲁肃", 486: "界张郃", 492: "界孟获", 496: "界徐晃", 502: "芮姬", 505: "界蔡文姬",
+      506: "SP孟获", 507: "刘宏", 515: "界荀彧", 523: "族荀谌", 526: "界典韦", 527: "朱儁",
+      528: "族吴苋", 530: "神秘武将", 534: "胡班", 536: "刘巴", 548: "族钟琰", 550: "界颜良文丑",
+      555: "族王允", 562: "陆郁生", 563: "界张昭张纮", 565: "神秘武将", 567: "族钟会", 573: "族荀攸",
+      586: "谋姜维", 587: "界徐盛", 588: "界凌统", 589: "神秘武将", 593: "谋关羽", 597: "界陈宫",
+      599: "界曹彰", 600: "界简雍", 601: "谋邓艾", 602: "谋太史慈", 603: "界虞翻", 604: "界高顺",
+      605: "谋董卓", 606: "裴秀", 609: "谋孙坚", 610: "界法正", 613: "神秘武将", 614: "神秘武将",
+      615: "神秘武将", 616: "神秘武将", 617: "神秘武将", 618: "神秘武将", 620: "界程普", 621: "界王异",
+      622: "谋黄月英", 623: "谋袁绍", 625: "界张春华", 626: "界刘表", 627: "界蔡夫人", 628: "界曹冲",
+      629: "界曹植", 630: "族钟繇", 633: "SP孙策", 635: "谋庞统", 640: "界吴国太", 641: "界廖化",
+      642: "界李儒", 644: "谋华雄", 646: "谋袁术", 648: "谋公孙瓒", 651: "韩馥", 658: "界郭淮",
+      661: "SP曹操", 662: "郭照", 663: "谋贾诩", 664: "SP刘备", 671: "界伏皇后", 675: "刘晔",
+      676: "界韩当", 677: "谋郭嘉", 687: "谋张绣", 688: "闪赵云", 690: "界关兴张苞", 692: "谋卢植",
+      694: "族杨修", 696: "界马岱", 697: "谋张让", 698: "闪刘宏", 700: "族杨彪", 704: "族陆绩",
+      705: "谋小乔", 708: "界孙鲁班", 710: "魔司马懿", 711: "魔孙权", 712: "族荀彧", 713: "魔曹操",
+      714: "魔吕布", 715: "魔貂蝉", 717: "谋诸葛亮", 718: "谋鲁肃", 719: "谋许攸", 720: "闪朱儁",
+      723: "谋戏志才", 725: "闪孙坚", 726: "界郭皇后", 731: "闪张郃", 732: "闪张辽", 733: "族韩馥",
+      734: "谋程昱", 735: "谋董昭", 737: "族陈群", 739: "崔琰", 742: "魔张角", 743: "皇甫嵩",
+      745: "界全琮", 746: "界曹节", 747: "界辛宪英", 749: "界沮授", 750: "魔张飞", 751: "族陆郁生",
+      752: "界夏侯氏", 753: "界张松", 756: "界于禁", 758: "界钟会", 759: "族法正", 765: "谋祝融",
+      766: "界关平", 767: "界曹休", 770: "谋周瑜", 771: "族诸葛瞻", 772: "族诸葛果", 773: "族诸葛诞",
+      775: "界步练师", 776: "界刘封", 779: "界朱然", 781: "谋孟获", 783: "谋李傕", 784: "谋徐庶",
+      798: "界朱桓", 1079: "高干", 1080: "严畯", 1081: "周鲂", 1082: "许靖", 1083: "孙乾",
+      1084: "张虎乐綝", 1085: "李肃", 1086: "界祝融", 1087: "界孙坚", 1088: "界太史慈", 5000: "胡班",
+      5556: "改版芮姬", 6003: "界满宠", 6004: "界黄月英", 6007: "界李儒", 6008: "界于禁", 6010: "崔琰",
+      6013: "星徐晃", 6015: "界钟会", 6016: "谋黄盖", 6017: "界凌统", 6019: "界公孙瓒", 6020: "界公孙渊",
+      6021: "曹纯", 6022: "朱然", 6023: "郭照", 6025: "刘晔", 6027: "神马超", 6029: "神郭嘉",
+      6030: "裴秀", 6031: "孙鲁育", 6032: "马良", 6034: "界沮授", 6035: "神孙策", 6036: "王元姬",
+      6037: "谋曹操", 6113: "神张角", 6114: "刘巴", 6116: "势太史慈", 6117: "杨彪", 6118: "谋公孙瓒",
+      6119: "谋陆逊", 6120: "谋诸葛亮", 6121: "势董昭", 6666: "汉曹操", 6667: "战神吕布", 6668: "普通年兽",
+      6681: "乐曹洪", 6687: "改版曹婴", 6688: "乐孟获", 6689: "乐曹丕", 6690: "乐钟会", 7000: "张虎乐綝",
+      7003: "司马懿", 7005: "王元姬", 7007: "张春华", 7010: "李肃", 7014: "钟琰", 7021: "神秘武将",
+      9999: "神秘武将"
+    };
+  };
+  // END GENERATED MODULE: native-skin-labels
+  // BEGIN GENERATED MODULE: native-skin-tabs
+  // Source: src/features/native-skin-tabs.js; run npm run build:userscript. Do not edit this block.
+  const createNativeSkinTabs = function createNativeSkinTabs({ window, laya, groups = [], labels = {}, link, prepareView = () => {}, log = () => {} }) {
+    const WIDTH = 713, HEIGHT = 543, ROW = 28, GAP = 6, ARROW = 14, ARROW_GAP = 4, FONT = 13;
+    // ahs is the currently registered in-game picker, not an obsolete SelectSkinWindow class.
+    const NAMES = ['ChangeSkinWindow', 'SelectSkinWindow', 'ModifyShowSkinWindow'];
+    const byId = new Map();
+    for (const row of groups) {
+      if (!Array.isArray(row) || row.length < 3) continue;
+      for (const id of row.slice(1)) if (Number(id) > 0) byId.set(Number(id), row);
+    }
+    let active = false, mounted = null, listUndo = null, managerUndo = null;
+    const windows = new Map(), pages = new Map(), scopes = [];
+    const diagnosticIDs = new WeakMap();
+    let nextDiagnosticID = 0, sequence = 0, lastEvent = '', lastError = '';
+
+    function idOf(value) {
+      if (!value || (typeof value !== 'object' && typeof value !== 'function')) return 0;
+      if (!diagnosticIDs.has(value)) diagnosticIDs.set(value, ++nextDiagnosticID);
+      return diagnosticIDs.get(value);
+    }
+    function shape(value) {
+      return { type: Array.isArray(value) ? 'array' : typeof value, class: value?.constructor?.name || '',
+        getWindow: typeof value?.GetWindow, getWindowData: typeof value?.GetWindowData,
+        skinBucket: typeof value?.getOnlineSKinListByGeneralId };
+    }
+    function errorInfo(error) {
+      return { message: String(error?.message || error),
+        stack: String(error?.stack || '').split('\n').slice(0, 5).join(' | ') };
+    }
+    // Diagnostics use the injected debug-window adapter. No console, cache, polling or automatic repair.
+    function trace(event, detail) {
+      lastEvent = event;
+      try { log('#' + (++sequence) + ' ' + event + ' ' + JSON.stringify(detail)); } catch (_) {}
+    }
+    function failure(event, error, detail = {}) {
+      lastError = event + ': ' + String(error?.message || error);
+      trace(event, { ...detail, ...errorInfo(error) });
+    }
+    function snapshot(win) {
+      try {
+        const page = pages.get(win), view = win.selectView, bar = page?.bar;
+        const children = [];
+        for (let i = Math.max(0, (win.numChildren || 0) - 8); i < (win.numChildren || 0); i++) {
+          const node = win.getChildAt(i);
+          children.push({ name: node?.name || '', class: node?.constructor?.name || '', z: node?.zOrder || 0 });
+        }
+        return { windowID: idOf(win), name: win.name, generalID: win.generalID || 0,
+          viewID: idOf(view), viewGeneralID: view?.realGeneralID || 0, loading: !!win.loading,
+          destroyed: !!win.destroyed, closing: !!win.closeing, visible: win.visible !== false,
+          attached: !!win.parent, x: win.x, y: win.y,
+          width: win.width, height: win.height, scaleX: win.scaleX, scaleY: win.scaleY,
+          panel: view?.pannel ? { x: view.pannel.x, y: view.pannel.y, width: view.pannel.width, height: view.pannel.height } : null,
+          tabCount: page?.tabs.length || 0, activeTab: page?.activeTab || '', skinCount: view?.list?.length || 0,
+          bar: bar ? { attached: bar.parent === win, destroyed: !!bar.destroyed, visible: bar.visible !== false,
+            alpha: bar.alpha, x: bar.x, y: bar.y, width: bar.width, height: bar.height, z: bar.zOrder || 0,
+            mouse: bar.mouseEnabled,
+            index: win.getChildIndex?.(bar), clipWidth: page.clipWidth,
+            parent: bar.parent?.name || bar.parent?.constructor?.name || '',
+            clip: { attached: page.clip?.parent === bar, visible: page.clip?.visible !== false,
+              width: page.clip?.width, height: page.clip?.height, mouse: page.clip?.mouseEnabled },
+            strip: { attached: page.strip?.parent === page.clip, x: page.strip?.x,
+              width: page.strip?.width, mouse: page.strip?.mouseEnabled } } : null,
+          children };
+      } catch (error) { return { windowID: idOf(win), ...errorInfo(error) }; }
+    }
+    function logAfterFrame(page) {
+      if (!page || !window.XC?.isDebug || typeof window.requestAnimationFrame !== 'function') return;
+      page.diagnosticFrame = window.requestAnimationFrame(function () {
+        page.diagnosticFrame = null;
+        if (current(page)) trace('下一帧状态', snapshot(page.win));
+      });
+    }
+
+    function namespace() { return window.Laya || window.laya; }
+    function windowManager() {
+      try { return typeof laya === 'function' ? laya('WindowManager') : null; }
+      catch (error) { failure('窗口管理器解析失败', error); return null; }
+    }
+    function holderOf(object, name) {
+      for (let item = object; item; item = Object.getPrototypeOf(item)) {
+        if (Object.prototype.hasOwnProperty.call(item, name)) return item;
+      }
+      return object;
+    }
+    // Deactivate even when a later wrapper still calls ours; never overwrite that later wrapper.
+    function wrap(target, name, handler) {
+      if (!target || typeof target[name] !== 'function') {
+        trace('挂钩跳过', { method: name, reason: 'method-missing', target: shape(target) });
+        return null;
+      }
+      const original = target[name], own = Object.getOwnPropertyDescriptor(target, name);
+      let enabled = true;
+      const wrapper = function () {
+        return enabled ? handler.call(this, original, arguments) : original.apply(this, arguments);
+      };
+      try {
+        Object.defineProperty(target, name, { value: wrapper, writable: true, configurable: true,
+          enumerable: own ? own.enumerable : false });
+      } catch (error) {
+        failure('挂钩失败', error, { method: name, target: shape(target),
+          writable: own?.writable, configurable: own?.configurable });
+        return null;
+      }
+      return function () {
+        enabled = false;
+        if (target[name] !== wrapper) return;
+        if (own) Object.defineProperty(target, name, own);
+        else delete target[name];
+      };
+    }
+    function current(page) {
+      return active && pages.get(page.win) === page && !page.win.destroyed &&
+        !page.win.closeing && !page.view.destroyed;
+    }
+    function tabbed(page) { return current(page) && page.tabs.length > 1; }
+    function listFor(manager, tab, showAll, share) {
+      return link.withBucket(function () {
+        const out = [], seen = new Set();
+        for (const id of tab.ids) {
+          const part = manager.getOnlineSKinListByGeneralId(id, showAll, share);
+          for (const skin of part || []) {
+            if (!skin || seen.has(skin.skinID)) continue;
+            seen.add(skin.skinID); out.push(skin);
+          }
+        }
+        return out;
+      });
+    }
+    function buildTabs(id, view, diagnostic) {
+      const row = byId.get(Number(id));
+      if (!row) {
+        if (diagnostic) trace('分页跳过', { ...diagnostic, generalID: Number(id), reason: 'no-group' });
+        return [];
+      }
+      const buckets = new Map();
+      for (const peer of row.slice(1)) {
+        if (Number(peer) === Number(id)) continue;
+        const label = labels[peer] || ('武将' + peer);
+        if (!buckets.has(label)) buckets.set(label, []);
+        buckets.get(label).push(Number(peer));
+      }
+      const manager = link.manager();
+      const out = [{ key: 'self', label: '默认', ids: [Number(id)], self: true }];
+      const counts = [];
+      for (const [label, ids] of buckets) {
+        const tab = { key: 'peer:' + ids[0], label, ids, self: false };
+        let skins;
+        try { skins = listFor(manager, tab, false, !!view.isShareSkin); }
+        catch (error) {
+          if (diagnostic) failure('变体取数失败', error, { ...diagnostic, ids, label, manager: shape(manager) });
+          throw error;
+        }
+        counts.push({ label, ids, count: skins.length });
+        if (skins.length) out.push(tab);
+      }
+      if (diagnostic) trace('分页生成', { ...diagnostic, generalID: Number(id), group: row[0],
+        manager: shape(manager), share: !!view.isShareSkin, buckets: counts,
+        tabCount: out.length, reason: out.length > 1 ? 'multiple-pages' : 'peer-empty' });
+      return out;
+    }
+    function installListHook() {
+      if (listUndo) return true;
+      const holder = link.getHolder();
+      trace('皮肤取数挂钩', shape(holder));
+      listUndo = wrap(holder, 'GetOnlineSKinList', function (original, args) {
+        const page = scopes[scopes.length - 1];
+        if (!page || !tabbed(page) || Number(args[0]) !== page.generalID) return original.apply(this, args);
+        const tab = page.tabs.find(item => item.key === page.activeTab);
+        // The default page keeps official GeneralSkinParent sharing; each peer page is a pure bucket.
+        return tab.self ? link.withBucket(() => original.apply(this, args)) || []
+          : listFor(this, tab, args[1], args[2]);
+      });
+      return !!listUndo;
+    }
+    function ensureTop(page) {
+      if (page.bar && typeof page.win.setChildIndex === 'function') {
+        page.win.setChildIndex(page.bar, page.win.numChildren - 1);
+      }
+    }
+    function applyLayout(page) {
+      if (!tabbed(page)) return;
+      const { win, view } = page;
+      // initBg triggers native resize/animation work. Do it only when the dimensions change.
+      if (win.width !== WIDTH || win.height !== HEIGHT) win.initBg(WIDTH, HEIGHT, WIDTH);
+      if (!win.closeBtn && typeof win.addCloseBtn === 'function') {
+        win.addCloseBtn(); page.addedClose = win.closeBtn;
+      }
+      view.size(WIDTH, HEIGHT);
+      view.itemCtn = 4;
+      view.pannel.pos(20, 84);
+      view.pannel.size(WIDTH - 25, 420);
+      if (win.countdownTimer) win.countdownTimer.y = HEIGHT - 30;
+      if (page.bar) {
+        page.bar.pos(20, 46);
+        ensureTop(page);
+      }
+    }
+    function scope(page, original, receiver, args) {
+      if (!tabbed(page)) return original.apply(receiver, args);
+      scopes.push(page);
+      try { return original.apply(receiver, args); } finally { scopes.pop(); }
+    }
+    function hookView(page) {
+      const { view, win } = page;
+      function hook(target, name, handler) {
+        const undo = wrap(target, name, handler);
+        if (undo) page.undo.push(undo);
+      }
+      for (const name of ['initSkinListData', 'initSelectListData', 'RefreshShareSkin']) {
+        hook(view, name, function (original, args) { return scope(page, original, this, args); });
+      }
+      hook(view, 'calculateSize', function (original, args) {
+        if (!tabbed(page)) return original.apply(this, args);
+        applyLayout(page);
+      });
+      hook(win, 'calculateSize', function (original, args) {
+        if (!tabbed(page)) return original.apply(this, args);
+        applyLayout(page);
+      });
+      hook(view, 'updateContent', function (original, args) {
+        applyLayout(page);
+        const result = original.apply(this, args);
+        if (tabbed(page)) ensureTop(page);
+        return result;
+      });
+      hook(view, 'event', function (original, args) {
+        if (tabbed(page) && args[0] === 'CLOSE_SKIN_WINDOW') {
+          if (scopes.includes(page) || !this.clickCheck) {
+            trace('保留窗口', { windowID: idOf(win), reason: scopes.includes(page) ? 'list-refresh' : 'no-pick' });
+            return;
+          }
+          log('选择皮肤：gid=' + page.generalID + ' sid=' + this.closeSelectSkinId);
+        }
+        return original.apply(this, args);
+      });
+      hook(view, 'destroy', function (original, args) {
+        // Keep the native destroy -> closeSelectSure submission, including local-skin send isolation.
+        trace('视图销毁', { windowID: idOf(win), viewID: idOf(this), picked: !!this.clickCheck,
+          skinID: this.closeSelectSkinId });
+        try { return original.apply(this, args); } finally { releasePage(page, 'view-destroy'); }
+      });
+    }
+    function releasePage(page, reason) {
+      if (pages.get(page.win) !== page) return;
+      trace('释放分页', { reason, ...snapshot(page.win) });
+      if (page.diagnosticFrame != null) window.cancelAnimationFrame?.(page.diagnosticFrame);
+      pages.delete(page.win);
+      if (mounted === page) mounted = Array.from(pages.values()).find(current) || null;
+      for (const undo of page.undo.reverse()) undo();
+      if (page.bar) page.bar.destroy(true);
+      if (page.addedClose && page.win.closeBtn === page.addedClose) {
+        page.win.removeChild(page.addedClose);
+        page.addedClose.destroy?.(true);
+        page.win.closeBtn = null;
+      }
+    }
+    function startPage(win, generalID) {
+      if (pages.has(win)) releasePage(pages.get(win), 'new-enter');
+      const view = win.selectView, Laya = namespace();
+      const diagnostic = { windowID: idOf(win), viewID: idOf(view), name: win.name, generalID: Number(generalID) || 0 };
+      if (!view || view.destroyed || !Number(generalID)) {
+        trace('分页前置未满足', { ...diagnostic, hasView: !!view, viewDestroyed: !!view?.destroyed });
+        return null;
+      }
+      // Every picker instance needs a current local-selection owner, including single-page generals.
+      // Bind before native UpdateInfo builds cards/captures callbacks and before our instance wrappers.
+      trace('视图登记开始', diagnostic);
+      let registered;
+      try { registered = prepareView(view); }
+      catch (error) { failure('视图登记失败', error, diagnostic); throw error; }
+      trace('视图登记完成', { ...diagnostic, registered: registered ?? 'unknown',
+        localSendHook: !!view.closeSelectSure?.__localSkinDebugHooked });
+      if (!Laya?.Sprite || !installListHook()) {
+        trace('分页依赖未满足', { ...diagnostic, sprite: typeof Laya?.Sprite, listHook: !!listUndo });
+        return null;
+      }
+      const page = { win, view, generalID: Number(generalID), activeTab: 'self',
+        tabs: buildTabs(generalID, view, diagnostic), undo: [], bar: null, items: [], offset: 0, addedClose: null };
+      pages.set(win, page); mounted = page;
+      try {
+        if (page.tabs.length > 1) { hookView(page); buildBar(page); }
+      } catch (error) {
+        failure('Tab创建失败', error, diagnostic);
+        releasePage(page, 'build-error');
+        throw error;
+      }
+      log('分页初始化：窗口=' + win.name + ' gid=' + page.generalID + ' 页数=' + page.tabs.length);
+      return page;
+    }
+    function bindWindow(win) {
+      if (!active || !win || win.destroyed || windows.has(win)) return;
+      const undo = [];
+      undo.push(wrap(win, 'enterWindow', function (original, args) {
+        if (!active) return original.apply(this, args);
+        trace('原生开窗进入', { requestedGeneralID: Number(args[0]) || 0, ...snapshot(this) });
+        let page;
+        try { page = startPage(this, args[0]); }
+        catch (error) { failure('初始化分页失败', error, { windowID: idOf(this) }); }
+        let result;
+        try { result = original.apply(this, args); }
+        catch (error) { failure('原生开窗失败', error, { windowID: idOf(this) }); throw error; }
+        if (page) applyLayout(page);
+        trace('原生开窗完成', snapshot(this));
+        logAfterFrame(page);
+        return result;
+      }));
+      undo.push(wrap(win, 'destroy', function (original, args) {
+        try { return original.apply(this, args); }
+        finally {
+          if (pages.has(this)) releasePage(pages.get(this), 'window-destroy');
+          unbindWindow(this);
+        }
+      }));
+      windows.set(win, undo.filter(Boolean));
+      trace('窗口挂钩完成', { windowID: idOf(win), name: win.name, enterHook: !!undo[0], destroyHook: !!undo[1] });
+    }
+    function unbindWindow(win) {
+      for (const undo of (windows.get(win) || []).reverse()) undo();
+      windows.delete(win);
+    }
+    function installWindowHook() {
+      if (managerUndo) return true;
+      const manager = windowManager();
+      trace('窗口管理器', shape(manager));
+      managerUndo = wrap(manager && holderOf(manager, 'GetWindow'), 'GetWindow', function (original, args) {
+        const win = original.apply(this, args);
+        if (active && NAMES.includes(args[0])) {
+          trace('取得选肤窗口', win ? snapshot(win) : { name: args[0], reason: 'window-null' });
+          bindWindow(win);
+        }
+        return win;
+      });
+      return !!managerUndo;
+    }
+    // Read existing windows once when enabling, never create one or poll for it.
+    function ensureMounted() {
+      if (!active) return false;
+      const manager = windowManager();
+      if (!manager || typeof manager.GetWindowData !== 'function') return false;
+      installWindowHook();
+      for (const name of NAMES) {
+        const win = manager.GetWindowData(name);
+        trace('启用时窗口检查', { name, found: !!win, loading: !!win?.loading,
+          destroyed: !!win?.destroyed, closing: !!win?.closeing });
+        if (!win || win.destroyed || win.closeing) continue;
+        bindWindow(win);
+        if (pages.has(win) || !win.selectView || !Number(win.generalID)) continue;
+        const page = startPage(win, win.generalID);
+        if (page && tabbed(page)) { rebuild(page); logAfterFrame(page); }
+      }
+      return !!mounted;
+    }
+    function drawTab(entry, selected) {
+      const { item, label } = entry;
+      item.graphics.clear();
+      item.graphics.drawRect(0, 0, item.width, ROW, selected ? '#6b4a1d' : '#2a1a0d');
+      item.graphics.drawRect(0, ROW - 2, item.width, selected ? 2 : 1, selected ? '#e8c07a' : '#5a4326');
+      label.color = selected ? '#ffe9b0' : '#c2a678'; label.bold = selected;
+    }
+    function scrollBy(page, delta) {
+      if (!current(page)) return;
+      page.offset = Math.max(0, Math.min(page.offset + delta, Math.max(0, page.stripWidth - page.clipWidth)));
+      page.strip.x = -page.offset;
+    }
+    function buildBar(page) {
+      const Laya = namespace(), bar = new Laya.Sprite(), clip = new Laya.Sprite(), strip = new Laya.Sprite();
+      const width = WIDTH - 40, clipWidth = width - 2 * (ARROW + ARROW_GAP);
+      bar.name = 'xcSkinTabs'; bar.size(width, ROW); bar.mouseEnabled = true;
+      // Isolate this input before native flat-container handlers see it.
+      for (const type of [Laya.Event.MOUSE_DOWN, Laya.Event.MOUSE_UP, Laya.Event.CLICK]) {
+        if (type) bar.on(type, null, event => event?.stopPropagation?.());
+      }
+      clip.mouseEnabled = strip.mouseEnabled = true;
+      clip.pos(ARROW + ARROW_GAP, 0); clip.size(clipWidth, ROW);
+      clip.scrollRect = new Laya.Rectangle(0, 0, clipWidth, ROW);
+      clip.addChild(strip); bar.addChild(clip);
+      Object.assign(page, { bar, clip, strip, clipWidth });
+      let x = 0;
+      for (const tab of page.tabs) {
+        const item = new Laya.Sprite(), label = new Laya.Text();
+        item.size(Math.max(46, tab.label.length * FONT + 22), ROW); item.pos(x, 0); item.mouseEnabled = true;
+        label.text = tab.label; label.fontSize = FONT; label.width = item.width; label.height = ROW;
+        label.align = 'center'; label.valign = 'middle'; label.mouseEnabled = false;
+        item.addChild(label); strip.addChild(item);
+        const entry = { tab, item, label }; page.items.push(entry);
+        drawTab(entry, tab.key === page.activeTab);
+        // Tab sprites stay alive across switches. Only their paint and the skin content change.
+        item.on(Laya.Event.CLICK, null, function (event) {
+          event?.stopPropagation?.();
+          selectPageTab(page, tab.key);
+        });
+        x += item.width + GAP;
+      }
+      page.stripWidth = Math.max(0, x - GAP); strip.size(Math.max(clipWidth, page.stripWidth), ROW);
+      for (const left of [true, false]) {
+        const arrow = new Laya.Sprite(); arrow.size(ARROW, ROW); arrow.mouseEnabled = true;
+        arrow.graphics.drawRect(0, 0, ARROW, ROW, '#241408');
+        arrow.graphics.drawPoly(0, 0, left ? [4, 14, 9, 9, 9, 19] : [9, 14, 4, 9, 4, 19], '#d9b06a');
+        arrow.pos(left ? 0 : width - ARROW, 0); arrow.visible = page.stripWidth > clipWidth;
+        arrow.on(Laya.Event.CLICK, null, () => scrollBy(page, left ? -120 : 120)); bar.addChild(arrow);
+      }
+      page.win.addChild(bar);
+      trace('Tab挂载完成', snapshot(page.win));
+    }
+    function rebuild(page) {
+      if (!tabbed(page)) return;
+      page.view.initSkinListData();
+      applyLayout(page);
+      page.view.selectTex.visible = false;
+      page.view.updateContent();
+      if (page.view.pannel.vScrollBar) page.view.pannel.vScrollBar.value = 0;
+      page.win.updateSkinNum?.();
+      ensureTop(page);
+    }
+    function selectPageTab(page, key) {
+      if (!current(page) || key === page.activeTab || !page.tabs.some(tab => tab.key === key)) return;
+      mounted = page; page.activeTab = key;
+      for (const entry of page.items) drawTab(entry, entry.tab.key === key);
+      try {
+        rebuild(page);
+        log('切页完成：' + key + ' 皮肤=' + (page.view.list?.length || 0));
+      } catch (error) { failure('切换分页失败', error, { windowID: idOf(page.win), key }); }
+    }
+    function selectTab(key) { if (mounted) selectPageTab(mounted, key); }
+    function attach() {
+      if (active) return true;
+      trace('启用分页', { groups: groups.length, generals: byId.size });
+      active = true;
+      const linked = link.attach();
+      trace('皮肤互通状态', { attached: linked, ...link.status?.() });
+      installListHook();
+      const ready = installWindowHook();
+      ensureMounted();
+      log(ready ? '分页已接入原生开窗入口' : '分页未接入：WindowManager.GetWindow 不可用');
+      return ready;
+    }
+    function detach() {
+      if (!active) return false;
+      active = false;
+      if (managerUndo) { managerUndo(); managerUndo = null; }
+      if (listUndo) { listUndo(); listUndo = null; }
+      for (const page of Array.from(pages.values())) {
+        releasePage(page, 'detach');
+        if (!page.win.destroyed && !page.win.closeing && !page.view.destroyed) {
+          page.view.initSkinListData(); page.view.calculateSize();
+          page.win.calculateSize((page.view.list?.length || 0) + 1); page.view.updateContent();
+          page.win.updateSkinNum?.();
+        }
+      }
+      for (const win of Array.from(windows.keys())) unbindWindow(win);
+      return true;
+    }
+    function status() {
+      return { active, hooked: !!listUndo, windowHooked: !!managerUndo, mounted: !!mounted,
+        bar: !!mounted?.bar, tabs: (mounted?.tabs || []).map(tab => ({ key: tab.key, label: tab.label, ids: tab.ids.slice() })),
+        activeTab: mounted?.activeTab || 'self', generalID: mounted?.generalID || 0,
+        window: mounted?.win.name || '', lastEvent, lastError };
+    }
+    function diagnose() {
+      const report = { ...status(), windows: Array.from(windows.keys()).map(snapshot) };
+      trace('诊断快照', report);
+      return report;
+    }
+    function plan(id) {
+      return buildTabs(id, mounted?.view || { isShareSkin: false }).map(tab => ({ key: tab.key, label: tab.label, ids: tab.ids.slice() }));
+    }
+    window.__xcSkinTabsStatus = status; window.__xcSkinTabsPlan = plan;
+    return { attach, detach, status, plan, selectTab, ensureMounted, diagnose,
+      get active() { return active; }, get tabs() { return mounted?.tabs || []; } };
+  };
+  // END GENERATED MODULE: native-skin-tabs
+  const nativeSkinLink = createNativeSkinLink({ window, document, storage: localStorage,
+    laya: typeof laya === "undefined" ? undefined : laya,
+    groups: getNativeSkinGroups(),
+    log: text => appendLocalSkinDebugLine("[皮肤互通] " + text, false) });
+  window.__xcNativeSkinLink = nativeSkinLink;
+  // The picker splits that merge into per-version tabs; it rides on the local-skin switch and has
+  // no panel control of its own.
+  const nativeSkinTabs = createNativeSkinTabs({ window, document,
+    laya: name => window.__xcLayaFacade?.(name),
+    groups: getNativeSkinGroups(), labels: getNativeSkinLabels(),
+    link: nativeSkinLink,
+    prepareView: view => window.__localSkinDebug?.bindSelectView?.(view),
+    log: appendLocalSkinTabDebugLine });
+  window.__xcNativeSkinTabs = nativeSkinTabs;
 
   function waitForCardBackSwitch(attempt) {
     var cardBackSwitch = document.getElementById("cardBackThemeSwitch");
@@ -39927,8 +41193,8 @@
       }
 
       function hookSelectView(view) {
-        if (!view) return;
-        localSkinSelections.attach(view);
+        if (!view) return false;
+        var registered = localSkinSelections.attach(view);
 
         var proto = Object.getPrototypeOf(view);
 
@@ -40008,6 +41274,7 @@
         });
 
         hookItems(view);
+        return registered;
       }
 
       function hookItems(view) {
@@ -40233,6 +41500,9 @@
 
       state.scan = findChangeSkinWindow;
       state.patch = patchChangeSkinWindow;
+      // Explicit synchronous bridge for every native picker entry; the bootstrap Show hook only
+      // discovers its first window prototype and cannot register views of the other picker classes.
+      state.bindSelectView = hookSelectView;
       state.diag = function () {
         var info = {
           started: state.started,
@@ -40243,6 +41513,7 @@
         return info;
       };
       state.stop = function () {
+        state.bindSelectView = null;
         localSkinSelections.reset();
         state.timers.forEach(function (timer) {
           clearTimeout(timer);
@@ -40281,6 +41552,12 @@
       }, 500);
       state.timers.push(state.bootstrapTimer);
     })();
+    // 本地皮肤链路就位后一并启用皮肤互通与选肤分页（原独立开关已移除）。
+    try {
+      nativeSkinTabs.attach();
+    } catch (error) {
+      appendLocalSkinTabDebugLine("启用失败：" + error.message);
+    }
   }
 
   function requestEightIdentityRecordProbe(source, attempt) {

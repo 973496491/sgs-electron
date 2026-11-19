@@ -360,6 +360,26 @@
       "sourceRoot": "repo",
       "source": "electron-next/src/features/ten-year-skin-catalog.js",
       "target": "modules/features/ten-year-skin-catalog.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/native-skin-groups.js",
+      "target": "modules/features/native-skin-groups.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/native-skin-link.js",
+      "target": "modules/features/native-skin-link.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/native-skin-labels.js",
+      "target": "modules/features/native-skin-labels.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/native-skin-tabs.js",
+      "target": "modules/features/native-skin-tabs.js"
     }
   ],
   "packageFiles": [

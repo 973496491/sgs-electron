@@ -1,0 +1,62 @@
+{
+  "source": "C:/Users/97349/AppData/Local/Temp/xc-load-audit-c_7em4my/main/sgsGame_a.sgs",
+  "sha256": "62158152c88b48edfb468a46c609061532d7fb1722a890c82f91d57dbeeddbc7",
+  "view": {
+    "initSkinListData": "initSkinListData(){if(!this.realGeneralID)return;if(this.closeSelectDynamicState=0,this.initSelectListData())return void this.event(nqt.CLOSE_SKIN_WINDOW);if(!this.isShareSkin)return;let t=[],i=y8t.I().GetOnlineSKinList(this.realGeneralID,!0);if(i&&i.length)for(let s=0;s<i.length;s++){let e=y8t.I().GetSkinListBySkinID(i[s].skinID);e&&e.length||Zni.ChecHasShareSkin(i[s].skinID,!0)||t.push(i[s].skinID)}t.length&&y8t.I().SendReqShareItem(t,2)}",
+    "calculateSize": "calculateSize(){let t=this.list&&this.list.length?this.list.length+1:1;t<=1?this.event(nqt.CLOSE_SKIN_WINDOW):(t<=6?(this.size(540,509),this.itemCtn=3):(this.size(713,509),this.itemCtn=4),this.pannel.size(this.width-25,420),this.pannel.pos(20,50),t>8&&(this.pannel.x-=5))}",
+    "updateContent": "updateContent(){if(this.clearItems(),!this.list||!this.list.length)return;let t=0,i=16,s=!1;for(var e=0;e<this.list.length;e++){let h=this.list[e],r=y8t.I().GetSkinListBySkinID(h.skinID);if(!(!(!r||!r.length)&&0!=this.usingSkinID||s)){let e=this.initDefultItem();e.pos(t,i),t+=e.width+19,s=!0;let h=this.itemList.length;h&&h%this.itemCtn==0&&(t=0,i+=e.height+30)}let n=new aqt;this.pannelContent.addDrawChild(n),n.InitData(h,h.skinID==this.usingSkinID),n.on(vU.SGSFLATCONTAINER_OVER,this,this.selectItem),n.on(vU.SGSFLATCONTAINER_OUT,this,this.selectOut),n.on(vU.SGSFLATCONTAINER_CLICK,this,this.itemClick),n.on(aqt.COMPSE_SKIN_CLICK,this,this.composeSkinClick),n.pos(t,i),t+=n.width+19,this.itemList.push(n);let a=this.itemList.length;a&&a%this.itemCtn==0&&(t=0,i+=n.height+30)}if(!s){let s=this.initDefultItem(),e=this.itemList.length-1;e&&e%this.itemCtn==0&&(t=0),s.pos(t,i)}let h=Math.ceil(this.itemList.length/this.itemCtn);this.pannelContent.size(this.pannel.width,16+183*h+30*(h-1));let r=100,n=this.itemList[this.itemList.length-1];n&&(r=n.endIndex),this.pannelContent.setDrawChildIndex(this.selectTex,r),this.pannel.refresh()}",
+    "initDefultItem": "initDefultItem(){let t=new aqt;return this.pannelContent.addDrawChild(t),t.InitBaseData(POt.SELECTSKIN_JINDIAN,this.generalInfo.GeneralSeatImg,0,!0,0==this.usingSkinID,0),t.on(vU.SGSFLATCONTAINER_OVER,this,this.selectItem),t.on(vU.SGSFLATCONTAINER_OUT,this,this.selectOut),t.on(vU.SGSFLATCONTAINER_CLICK,this,this.itemClick),t.on(aqt.COMPSE_SKIN_CLICK,this,this.composeSkinClick),this.itemList.push(t),t}",
+    "itemClick": "itemClick(t){if(t&&t.currentTarget){this.clickCheck=!0;let i=t.currentTarget;if(!i.HasSkin)return;i.IsUsing||(this.closeSelectSkinId=i.SkinID,this.closeSelectDynamicState=i.DynamicState),this.event(nqt.CLOSE_SKIN_WINDOW)}}",
+    "composeSkinClick": "composeSkinClick(t){t&&(this.clickCheck=!0,this.closeSelectSkinId=t.SkinID,this.closeSelectDynamicState=0,this.event(nqt.CLOSE_SKIN_WINDOW))}",
+    "clearItems": "clearItems(){for(;this.itemList.length;){this.itemList.pop().clear(!0)}this.itemList.length=0}",
+    "initSelectListData": "initSelectListData(){if(this.generalInfo=aMt.I().GetGeneralInfo(this.realGeneralID),this.generalInfo){let t=this.generalInfo&&this.generalInfo.Parent&&this.generalInfo.Parent.length?this.generalInfo.Parent[0]:this.realGeneralID;if(this.defaultGeneralID=t,this.list=y8t.I().GetOnlineSKinList(this.realGeneralID,!1,this.isShareSkin),this.list&&this.list.length){if(this.usingSkinID&&!this.clickCheck){let t=y8t.I().GetSkinListBySkinID(this.usingSkinID);if(t){if(this.closeSelectSkinId=this.usingSkinID,t&&t.length>0){for(let i=0;i<t.length;i++)this.closeSelectDynamicState+=t[0].IsUseStatic<=0&&t[0].IsUpgrade>0?1:0;this.closeSelectDynamicState>0&&(this.closeSelectDynamicState=1)}}else{let t;this.usingSkinID&&(t=Zni.ChecHasShareSkin(this.usingSkinID)),t&&(this.closeSelectSkinId=this.usingSkinID,this.closeSelectDynamicState=t.upgrade?1:0)}}return this.sortList(),!1}}return!0}",
+    "RefreshShareSkin": "RefreshShareSkin(){this.initSelectListData(),this.updateContent()}",
+    "destroy": "destroy(){this.clickCheck&&this.closeSelectSure(),this.generalInfo=null,this.list=null,super.destroy()}",
+    "UpdateInfo": "UpdateInfo(t){this.realGeneralID=t,this.initUsingSKinID(t),this.clientID=Zni.CurrentPlayer.ClientId,this.initSkinListData(),this.calculateSize(),this.updateContent()}",
+    "initUsingSKinID": "initUsingSKinID(t){this.usingSkinID=y8t.I().GetSelfUsingSkinID(t);let i=Zni.SelfSeat;i&&i.GeneralId==t?this.usingSkinID=i.SkinID:i&&i.General2Id==t&&(this.usingSkinID=i.Skin2ID)}"
+  },
+  "window": {
+    "calculateSize": "calculateSize(t){t<=1?this.Close():(t<=6?this.initBg(540,509,540):this.initBg(713,509,713),this.windowTitleTxt.size(this.windowTitleTxt.contextWidth,this.windowTitleTxt.contextHeight),this.windowTitleTxt.pos(this.width-this.windowTitleTxt.contextWidth>>1,this.windowTitleTxt.y))}",
+    "enterWindow": "enterWindow(t,i,s){if(!t)return void this.Close();if(this.generalID=t,aMt.I().GetGeneralInfo(t)){let e=y8t.I().GetOnlineSKinList(t);e&&e.length?(super.enterWindow(),this.calculateSize(e.length+1),this.selectView.UpdateInfo(t),i&&s&&(this.ShowCountdownTimer(this.time?this.time:i,!1,267,0,-1,s),this.countdownTimer.y=this.height-30),this.updateSkinNum()):this.Close()}else this.Close()}"
+  },
+  "baseWindow": {
+    "loadResComplete": "loadResComplete(){if(this.destroyed)return this.isShowWait=!1,void this.reclaimRes();this.Init(),this.canUpWindowData=!0,this.isShowWait&&(this.isShowWait=!1,this.enterWindow(...this.args||[]),this.autoGuideOnOpen&&Sei.I().CheckAllGuides()),this.needUpdateWindow&&(this.needUpdateWindow=!1,this.UpdateWindow(this.updateWindowsData))}"
+  },
+  "manager": {
+    "GetWindow": "GetWindow(t,i=!0,...s){let e=this.gamePopUpWindowDict.getStringKey(t);return e?s&&s.length>0&&e&&e.InitExData(s):(e=Zi.GetInstanceByClassName(t),e&&e instanceof xsi?(e.InitData(...s),e.name=t,e.LoadRes()):(e&&e.destroy(),e=null)),e?(this.addKey(t,e),e.parent&&i&&e.Reset(),this.lastPopupGameWindow=e,e):(console.log(t+\"弹窗未找到\"),null)}",
+    "GetGeneralSkinIncludeHide": "GetGeneralSkinIncludeHide(t,i=!1,s=!1,e=!1){if(!t)return null;let h=G8t.I().GetGeneralSkin(t,!0,!1,e);if(h&&h.length){let t=[];for(let e=0,r=h.length;e<r;e++){let r=h[e];if(r)if(r.IsSkinShow||i)t.push(r);else{let i=this.GetSkinListBySkinID(r.skinID);if(i&&i.length)t.push(r);else if(s){Zni.ChecHasShareSkin(r.skinID)&&t.push(r)}}}return t}return null}",
+    "GetOnlineSKinList": "GetOnlineSKinList(t,i=!1,s=!1){let e=aMt.I().GetGeneralInfo(t);if(!e)return null;let h=this.getOnlineSKinListByGeneralId(t,i,s);if(h||(h=[]),h){let t=e.GeneralSkinParentIDs;if(t&&t.length){let e=[];for(var r=0;r<t.length;r++){let h=this.getOnlineSKinListByGeneralId(t[r],i,s);h&&h.length&&(e=e.concat(h))}h=h.concat(e)}if(h&&h.length)return h}return null}",
+    "getOnlineSKinListByGeneralId": "getOnlineSKinListByGeneralId(t,i=!1,s=!1){let e=this.GetGeneralSkinIncludeHide(t,i,s);return e&&e.length?e:null}"
+  },
+  "pickers": {
+    "ChangeSkinWindow": {
+      "registration": "this.r(\"ChangeSkinWindow\",ahs)",
+      "registrationOffset": 420282,
+      "className": "ahs",
+      "enterWindow": "enterWindow(t){if(!t)return void this.Close();if(this.generalID=t,aMt.I().GetGeneralInfo(t)){let i=y8t.I().GetOnlineSKinList(this.generalID);i&&i.length?(super.enterWindow(),this.calculateSize(i.length+1),this.selectView.UpdateInfo(t),this.updateSkinNum()):this.Close()}else this.Close()}",
+      "calculateSize": "calculateSize(t){t<=1?this.Close():(t<=6?this.initBg(540,509,540):this.initBg(713,509,713),this.windowTitleTxt.size(this.windowTitleTxt.contextWidth,this.windowTitleTxt.contextHeight),this.windowTitleTxt.pos(this.width-this.windowTitleTxt.contextWidth>>1,this.windowTitleTxt.y))}",
+      "hasNativeCloseButton": true
+    },
+    "SelectSkinWindow": {
+      "registration": "this.r(\"SelectSkinWindow\",tTs)",
+      "registrationOffset": 422117,
+      "className": "tTs",
+      "enterWindow": "enterWindow(t,i,s){if(!t)return void this.Close();if(this.generalID=t,aMt.I().GetGeneralInfo(t)){let e=y8t.I().GetOnlineSKinList(t);e&&e.length?(super.enterWindow(),this.calculateSize(e.length+1),this.selectView.UpdateInfo(t),i&&s&&(this.ShowCountdownTimer(this.time?this.time:i,!1,267,0,-1,s),this.countdownTimer.y=this.height-30),this.updateSkinNum()):this.Close()}else this.Close()}",
+      "calculateSize": "calculateSize(t){t<=1?this.Close():(t<=6?this.initBg(540,509,540):this.initBg(713,509,713),this.windowTitleTxt.size(this.windowTitleTxt.contextWidth,this.windowTitleTxt.contextHeight),this.windowTitleTxt.pos(this.width-this.windowTitleTxt.contextWidth>>1,this.windowTitleTxt.y))}",
+      "hasNativeCloseButton": false
+    },
+    "ModifyShowSkinWindow": {
+      "registration": "this.r(\"ModifyShowSkinWindow\",vps)",
+      "registrationOffset": 422148,
+      "className": "vps",
+      "enterWindow": "enterWindow(t){if(!t)return void this.Close();if(this.generalID=t,aMt.I().GetGeneralInfo(t)){let i=y8t.I().GetOnlineSKinList(this.generalID);i&&i.length?(super.enterWindow(),this.calculateSize(i.length+1),this.selectView.UpdateInfo(t),this.updateSkinNum()):this.Close()}else this.Close()}",
+      "calculateSize": "calculateSize(t){t<=1?this.Close():(t<=6?this.initBg(540,509,540):this.initBg(713,509,713),this.windowTitleTxt.size(this.windowTitleTxt.contextWidth,this.windowTitleTxt.contextHeight),this.windowTitleTxt.pos(this.width-this.windowTitleTxt.contextWidth>>1,this.windowTitleTxt.y))}",
+      "hasNativeCloseButton": true
+    }
+  },
+  "seat": {
+    "className": "Ugs",
+    "offset": 22057523,
+    "onSKinClick": "onSKinClick(t){if(Bri.I().IsReplaying||!this.seat||Zni.IsPvpRoguelike&&this.seat&&this.seat.Figure!=Lm.ZhuGong)return;let i=this.isZhu?this.seat.GeneralId:this.seat.General2Id;i&&dt.I().A(\"ChangeSkinWindow\",i)}"
+  }
+}

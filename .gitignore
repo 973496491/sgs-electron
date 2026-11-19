@@ -4,3 +4,15 @@ __pycache__/
 
 # Local Tampermonkey delivery snapshot.
 /三国杀打小抄-油猴.user.js
+
+# Local investigation downloads, browser profiles, deployment backups and reports.
+/tmp/
+
+# Agent session memory, temporary skill extraction and local Python environment.
+/.workbuddy/
+/.codex-skill-staging/
+/.venv-card-atlas/
+
+# Packaged client snapshot and local signing certificate; keep source in Git.
+/app.asar
+/electron-next/mycert.pfx

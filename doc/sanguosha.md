@@ -29,6 +29,17 @@
 - 对照仍存在的11月10日明文：原 `regWindowclass(){Laya.Browser.window.ChannelUtils=Y2t,Laya.Browser.window.SystemContext=cAt}` 变为 `regWindowclass(){Laya.Browser.window.ChannelUtils=qni}`；当前内部尺寸类 `_kt` 仍存在（字符偏移5066785附近）。这解释依赖全局SystemContext的小抄Init一直等待；不证明当前运行页面仅此一处异常。本轮未连接在线账号、未取得当前页面运行状态。
 - 用户新增.js的尺寸计算与当天 `_kt.UpdateGameSize/updateGameAdaptation` 在720组对照中一致；补丁后部署原始Init进入initFrame，补丁前等待。随后按用户要求实现有启动/停止责任的兼容控制器；原生类摘录及差分测试固化在仓库tests/fixtures/system-context-native-20261118.json与tests/system-context-compat.cjs，11项通过。实现、生命周期、实际同步与回退见架构表同名节；未游戏内实测。
 
+
+## OL互通皮肤Tab / 原生开窗入口核查（2026-11-19）
+
+复用已核验存在的11月18日明文 `C:/Users/97349/AppData/Local/Temp/xc-load-audit-c_7em4my/main/sgsGame_a.sgs`，SHA256 `62158152c88b48edfb468a46c609061532d7fb1722a890c82f91d57dbeeddbc7`，不重新下载/解密，不涉及十周年或 `_w`。`B9t.GetWindow@11486561` 返回后调用者才Show；资源未齐时Show保存args，`xsi.loadResComplete -> Init -> enterWindow`。所以GetWindow返回时安装实例enterWindow钩子，在原生UpdateInfo/列表初始化之前建分页即可覆盖首次、异步资源和重开，无须巡检/扫树/重试/Show双入口。
+
+`nqt@9744028` 在卡片on时捕获itemClick，`tTs@22835861` Init捕获Close；选择链仍为itemClick置clickCheck -> CLOSE -> Close/AutoReclaim -> destroy中closeSelectSure。分页只替换取数与尺寸/空列表关闭分支，不重写选肤提交。Tab保持同一精灵，切页只改样式/加载区，尺寸不变不重复initBg触发resize/动画。真实管理器GetWindow、窗口enterWindow、视图UpdateInfo及资源loadResComplete等方法已加入 `tests/fixtures/native-skin-tabs-20261118.json`；39组原生摘录+模拟通过，修改前模块在禁止补挂定时器/稳定Tab/快速同将重开三项失败。职责、生命周期和同步见架构表“开窗入口收敛”；尚未游戏内实测。
+
+局内入口补核（用户反馈无Tab）：同快照 `regWindowclass` 实际映射ChangeSkinWindow=ahs@21049773、SelectSkinWindow=tTs@22835861、ModifyShowSkinWindow=vps@22552827；`Ugs.onSKinClick@22057523` 明确从座位主/副将GeneralId/General2Id打开ChangeSkinWindow。旧可行性报告把ahs误当旧实现，导致运行白名单与39组测试都漏了局内窗。已校正文档/白名单，夹具加入真实注册、ahs方法和座位按钮；修前第40组复现无Tab，修后42组通过，未游戏内实测。无新增解包流程/下载/十周年链路。
+
+同日组合复核：皮肤Tab列表/原生close通过并不证明本地选择已登记。既有localSkin bootstrap只挂首个picker原型，其他入口的view可能缺views WeakMap owner；真实主脚本+原生响应消费模拟复现“选择后关窗仍默认”。已通过prepareView -> state.bindSelectView同步登记每个原生视图，详见架构表/互通文档“新视图漏登记”，8个组合场景通过，仍未游戏内实测，无新客户端下载/协议解包或十周年改动。
+
 ## 本地皮肤首次打开 / 原生条目权限核查（2026-11-16）
 
 复用已核验存在的11月10日普通ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-new-cards-audit-phdf4rol/sgsGame_a.sgs`，SHA256 `52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63`，未下载或解密新包，不涉及 `_w`。`KPt.InitBaseData`（字符偏移7106669附近）把传入持有状态写入 `hasSkin/bg.mouseEnabled/blackbg.visible`，`HasSkin` getter直接返回hasSkin；选择视图 `itemClick`（7097730附近）在 `!item.HasSkin` 时提前返回。偏移仅对该快照有效，方法源码已固化 `electron-next/tests/fixtures/local-skin-native-20261110.json`，无需依赖临时明文才能运行测试。
