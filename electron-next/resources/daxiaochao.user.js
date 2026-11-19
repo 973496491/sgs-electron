@@ -18700,7 +18700,133 @@
   window.__xcCleanupTopMarqueeButton = () => topMarquee.detachMainPanel();
   topMarquee.start();
 
+  // 出牌读秒诊断：只观察旧链路，不补装、不替换控件、不改变开关或计时行为。
+  const playCountdownDiagnostics = (() => {
+    let active = false, phase = "not-started", failure = null, target = null;
+    let observed = new WeakMap(), nextID = 0;
+    const ownedWrappers = new WeakSet();
+    const enabled = () => active && !!window.XC?.isDebug;
+    function read(value, key) {
+      try { return value == null ? undefined : value[key]; } catch (_) { return "getter-error"; }
+    }
+    function type(value) { return read(read(value, "constructor"), "name") || typeof value; }
+    function errorInfo(error) {
+      return { message: String(read(error, "message") || error), stack: String(read(error, "stack") || "").slice(0, 1400) };
+    }
+    function log(event, data) {
+      if (!enabled()) return;
+      try { appendLocalSkinDebugLine("[出牌读秒] " + event + " " + JSON.stringify(data), false, "debug"); } catch (_) {}
+    }
+    function context() {
+      const scene = read(laya, "scene"), top = read(scene, "topMenu");
+      return { enabled: !!read(globalConfig, "countDownSwitch"), scene: read(scene, "SceneName"),
+        hasScene: !!scene, hasTopMenu: !!top, hasBackBtn: !!read(top, "backBtn"),
+        cachedTextClass: type(read(read(laya, "classes"), "SgsSpriteFilterBtn")) };
+    }
+    function node(value) {
+      if (!value) return null;
+      const result = { type: type(value) };
+      for (const key of ["x", "y", "width", "height", "visible", "alpha", "scaleX", "scaleY", "destroyed"])
+        result[key] = read(value, key);
+      return result;
+    }
+    function snapshot(timer) {
+      const text = read(timer, "text"), field = read(text, "textField");
+      const handler = read(read(timer, "updateHandler"), "method"), current = read(timer, "onUpdate");
+      const chain = []; let cursor = timer;
+      while (cursor && chain.length < 10) {
+        const entry = node(cursor), clip = read(cursor, "scrollRect");
+        entry.clip = clip ? { x: clip.x, y: clip.y, width: clip.width, height: clip.height } : null;
+        entry.mask = !!read(cursor, "mask"); chain.push(entry);
+        if (cursor === Laya.stage) break;
+        cursor = read(cursor, "parent");
+      }
+      return { timer: node(timer), remain: read(timer, "RemainValue"), onReserveTime: read(timer, "onReserveTime"),
+        hasHandler: typeof handler === "function", currentIsOurHook: ownedWrappers.has(current),
+        capturedMatchesCurrent: typeof handler === "function" && handler === current,
+        capturedIsOurHook: typeof handler === "function" && ownedWrappers.has(handler),
+        text: text ? { ...node(text), attached: read(text, "parent") === timer,
+          label: read(text, "label"), labelSize: read(text, "labelSize"),
+          field: field ? { ...node(field), text: read(field, "text"), color: read(field, "color"),
+            fontSize: read(field, "fontSize"), textWidth: read(field, "textWidth"), textHeight: read(field, "textHeight") } : null } : null,
+        attachedToStage: cursor === Laya.stage, ancestors: chain };
+    }
+    function once(timer, event, detail) {
+      if (!enabled() || !timer) return;
+      try {
+        let state = observed.get(timer);
+        if (!state) {
+          if (nextID >= 16) return;
+          state = { id: ++nextID, events: new Set() }; observed.set(timer, state);
+        }
+        if (state.events.has(event)) return;
+        state.events.add(event);
+        log(event, { timerID: state.id, ...context(), ...(detail || {}), ...snapshot(timer) });
+      } catch (error) { log("diagnostic:error", errorInfo(error)); }
+    }
+    function inspect(source) {
+      if (!enabled()) return;
+      try {
+        const scene = laya.gamescene;
+        const seats = [read(scene, "SelfSeatUi"), ...(read(read(scene, "seatContainer"), "seatUIs") || [])];
+        const timers = new Set();
+        for (const seat of seats) {
+          for (const timer of [read(seat, "countdownTimer"), read(read(seat, "otherTopManager"), "countdownTimer")])
+            if (timer) timers.add(timer);
+        }
+        log("inspect", { source, phase, failure, ...context(), timerCount: timers.size,
+          hasTarget: !!target, hasOnUpdate: typeof read(target, "onUpdate") === "function",
+          hasSavedOriginal: typeof read(target, "__onUpdate") === "function",
+          currentIsOurHook: ownedWrappers.has(read(target, "onUpdate")) });
+        let count = 0;
+        for (const timer of timers) { if (count++ >= 12) break; log("inspect:timer", snapshot(timer)); }
+      } catch (error) { log("inspect:error", errorInfo(error)); }
+    }
+    function onInspect(event) {
+      if (event.detail) event.detail.handled = true;
+      observed = new WeakMap(); nextID = 0;
+      inspect(event.detail?.source || "debug-open");
+    }
+    function onConfig(event) {
+      if (event.detail?.property === "countDownSwitch") inspect("switch-change");
+    }
+    return {
+      start() {
+        if (active) return;
+        active = true; phase = "waiting-for-install";
+        window.addEventListener("xc:play-countdown-diagnose", onInspect);
+        window.addEventListener("xc:config-change", onConfig);
+      },
+      begin() { phase = "installing"; failure = null; log("install:start", context()); },
+      windowFound(win) {
+        log("install:window", { found: !!win, type: type(win), hasShowCountdownTimer: typeof read(win, "ShowCountdownTimer") === "function" });
+      },
+      finish(proto, installed, wrapper) {
+        target = proto;
+        if (installed) ownedWrappers.add(wrapper);
+        phase = installed ? "installed" : "skipped";
+        log("install:result", { installed: !!installed, reason: installed ? "ok" : !proto ? "target-missing" :
+          typeof read(proto, "onUpdate") !== "function" ? "onUpdate-missing" : "saved-original-exists",
+          targetType: type(proto), hasOnUpdate: typeof read(proto, "onUpdate") === "function",
+          hasSavedOriginal: typeof read(proto, "__onUpdate") === "function", currentIsOurHook: ownedWrappers.has(read(proto, "onUpdate")) });
+      },
+      installError(error) { phase = "failed"; failure = errorInfo(error); log("install:error", failure); },
+      first(timer) { once(timer, "update:first"); },
+      created(timer) { once(timer, "text:create"); },
+      rendered(timer) { once(timer, "text:updated"); },
+      updateError(timer, stage, error) { once(timer, stage + ":error", errorInfo(error)); },
+      dispose() {
+        if (!active) return;
+        active = false; phase = "stopped"; failure = null; target = null;
+        observed = new WeakMap(); nextID = 0;
+        window.removeEventListener("xc:play-countdown-diagnose", onInspect);
+        window.removeEventListener("xc:config-change", onConfig);
+      },
+    };
+  })();
+
   async function setProto() {
+    playCountdownDiagnostics.start();
     const n = _0x47c207;
     function t() {
       const n = _0x3812;
@@ -20645,36 +20771,47 @@
           },
         );
       })(),
+      // 出牌读秒：保留原计时与诊断链，数字显示在条尾右侧。
       (async function () {
-        var t, e, i;
-        const a = n;
-        redefine(
-          null ==
-            (i =
-              null ==
-              (e =
-                null ==
-                (t = laya[a(868)](a(669), void 0, 0, (n) => n[a(1709)](1)))
-                  ? void 0
-                  : t[a(1558)])
-                ? void 0
-                : e[a(738)])
-            ? void 0
-            : i[a(738)],
-          a(812),
-          {
-            value: function () {
-              const n = a;
-              this[n(235)][n(756)](this, arguments),
-                globalConfig[n(1610)] &&
-                  (!this[n(800)] &&
-                    ((this[n(800)] = laya[n(868)](n(208))),
-                    this[n(1227)](this[n(800)])),
-                  (this[n(800)][n(307)] = 17),
-                  (this[n(800)][n(859)] = this[n(645)][n(1658)](0)));
-            },
-          },
-        );
+        playCountdownDiagnostics.begin();
+        try {
+          const win = laya.get("GamePopUpWindow", void 0, 0, (value) => {
+            playCountdownDiagnostics.windowFound(value);
+            value.ShowCountdownTimer(1);
+          });
+          const proto = win?.countdownTimer?.__proto__?.__proto__;
+          const wrapper = function () {
+            playCountdownDiagnostics.first(this);
+            try { this.__onUpdate.apply(this, arguments); }
+            catch (error) { playCountdownDiagnostics.updateError(this, "native", error); throw error; }
+            try {
+              if (globalConfig.countDownSwitch) {
+                if (!this.text) {
+                  this.text = laya.get("SgsSpriteFilterBtn");
+                  playCountdownDiagnostics.created(this);
+                  this.addChild(this.text);
+                }
+                this.text.labelSize = 17;
+                this.text.labelBold = true;
+                this.text.label = this.RemainValue.toFixed(0);
+                // 数字放在整条计时条右端外侧；只改文字节点，不改变计时条尺寸。
+                if (this.text.textField.color !== "#ff4d4f") {
+                  this.text.labelColors = "#ff4d4f,#ff4d4f,#ff4d4f,#ff4d4f,#ff4d4f";
+                  this.text.textField.color = "#ff4d4f";
+                }
+                this.text.labelAlign = "left";
+                this.text.labelValign = "middle";
+                this.text.mouseEnabled = false;
+                const textWidth = Math.max(28, this.text.label.length * 11);
+                if (this.text.width !== textWidth || this.text.height !== 24) this.text.size(textWidth, 24);
+                this.text.pos(Math.round(this.width) + 6, Math.round((this.height - 24) / 2));
+                playCountdownDiagnostics.rendered(this);
+              }
+            } catch (error) { playCountdownDiagnostics.updateError(this, "text", error); throw error; }
+          };
+          const installed = redefine(proto, "onUpdate", { value: wrapper });
+          playCountdownDiagnostics.finish(proto, installed, wrapper);
+        } catch (error) { playCountdownDiagnostics.installError(error); throw error; }
       })(),
       (async function () {
         var t;
@@ -30489,6 +30626,7 @@
   }
   function Exit() {
     systemContextCompatibility.stop();
+    playCountdownDiagnostics.dispose();
     var n, t, e, i;
     const a = _0x41a3d0;
     window.__xcResetLocalSkinSelections?.();
@@ -38981,6 +39119,10 @@
         true,
         "debug",
       );
+      const countdownRequest = { source: "debug-open", handled: false };
+      window.dispatchEvent(new CustomEvent("xc:play-countdown-diagnose", { detail: countdownRequest }));
+      if (!countdownRequest.handled)
+        appendLocalSkinDebugLine("[出牌读秒] inspect:unavailable core-diagnostics-not-started", false, "debug");
       // 用于区分“日志还没生效”和“技能数据仍被截断”：缺失此行说明页面还在跑旧脚本。
       appendLocalSkinDebugLine(
         "[可见牌] trace:build " +

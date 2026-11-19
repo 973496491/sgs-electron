@@ -12,6 +12,14 @@
 
 关键词：`八人身份旧日志漏控`、`request:send`、`requese:send`、`getseven`、`logEightIdentity`、`旧包装器固定api`、`record:accepted`、`debug-log-channels.cjs`。
 
+## 2026-11-19：出牌读秒诊断日志（先取证，再修复）
+
+- 用户确认全程无数字后要求先加日志，未授权在此次诊断阶段顺便改计时/补装/控件工厂。新增 `[出牌读秒]` 日志经 `appendLocalSkinDebugLine(...,false,'debug')` 和既有核心桥进入“调试日志”页，接口打印保持关闭即可。总调试关闭不写/不缓存/不打开窗口。
+- 安装日志 `install:start/window/result/error` 区分窗口/方法缺失、原型目标缺失、已有保存原方法和成功；首次更新 `update:first/text:create/text:updated` 与 `native:error/text:error` 区分原生回调、控件创建、字号/文字写入。异常仍原对象抛出，既有一次安装、关开关后的行为不变。
+- 登录阶段日志通常早于手动开调试。现由 `openDebugFromButton -> xc:play-countdown-diagnose -> playCountdownDiagnostics.inspect` 读取当前状态，未监听输出 `inspect:unavailable core-diagnostics-not-started`；不回放关闭期间日志。读秒的原配置事件同链输出 `inspect source=switch-change`，不执行功能修复。原生handler是否缓存旧引用、当前timer/text/textField尺寸/alpha/颜色、父链/裁切/Stage连接均有摘要。诊断只读现存实例，不构造游戏窗口或取类。
+- 私有状态/监听/计时器实例去重归核心 `playCountdownDiagnostics`；setProto入口start，Exit dispose。每次开调试只记录最多16实例的首次/每错误阶段一次，显式快照最多12实例；没有帧日志流、巡检或后台诊断计时器。详细链与回退见架构表“出牌读秒链路核查与诊断日志”。专项17项、日志分类26项、窗口可见性10项及语法/装配检查通过，未游戏内实测。
+- 使用：重新加载页面后登录，开启调试并保持“调试日志”页/接口打印关闭；读秒关开一次，开始一局，进度条出现数秒后再关开一次，复制该前缀的全部日志交回分析。当前阶段不宣称已修复读秒。
+
 ## 2026-11-19：调试日志与接口/心跳分区，新增日志默认屏蔽规则
 
 本节取代历史记录中的“接口打印默认开启”“所有日志直接写 panelBody”和“接口 dump 仅在 pendingSkin 时输出”。用户允许把旧日志归入可屏蔽类型，并要求以后不符合规则的日志在关闭接口打印时直接不输出。

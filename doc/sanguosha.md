@@ -23,6 +23,12 @@
 
 本文只针对 **OL**。
 
+## 出牌读秒 / 原生计时条核查（2026-11-19）
+
+复用已核验存在的11月18日普通ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-load-audit-c_7em4my/main/sgsGame_a.sgs`，SHA256 `62158152c88b48edfb468a46c609061532d7fb1722a890c82f91d57dbeeddbc7`；无新下载、解密或 `_w` 调查。原生注册 `GamePopUpWindow=Dgs`（注册字符偏移420193、类22005087），`ShowCountdownTimer` 创建 `T4i@18692666 extends Isi@12536693`；`Isi.onUpdate@12543401` 计算并写入 RemainValue，普通本人/他人计时分别 new T4i / new Isi，共用该方法。`ShowCountdown` 通过 Laya.Handler 捕获方法引用，事后改原型不能更新旧Handler；储备时间用 `onReserveTimeUpdata` 更新动画位置，不经过 onUpdate，也不维护 RemainValue。
+
+`qi._ -> qi.r -> MOt.J -> Laya.ClassUtils.regClass` 仍为原生注册链，本轮未发现注册改为不可用私有表；不因 `qi.r`/`MOt.J` 混淆名称误判旧 `ClassUtils.getInstance` 已废弃。小抄数字控件却是门面 `laya.class("SgsSpriteFilterBtn") -> scene.topMenu.backBtn.constructor` 的推断结果，缺场景依赖时可失败。真实计时类摘录与主脚本挂钩/get/redefine 的7组隔离检查证明一次性安装失败不恢复、控件缺失抛错、关闭残留及储备时间漏更，不能唯一确认当前游戏现场是哪条失败路径。初轮偏好落盘true、工程/部署读秒区块相同、无保存的 XC_LAST_ERROR，未访问当前页面内存或修改运行文件。随后按用户要求仅加现场诊断日志，仍待日志后修复，详见架构表“出牌读秒链路核查与诊断日志”；没有新原生下载或解包。证据目录 `C:/Users/97349/AppData/Local/Temp/xc-play-countdown-audit-r7of15/`，手工索引 `manualLookupNotes.playCountdown`。
+
 ## 小抄不加载 / SystemContext 导出缺失（2026-11-18）
 
 - 定向获取官方 `https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs`，UTC `2026-11-18T14:19:54.712682+00:00`，5,647,897字节，ZIP SHA256 `437f4a4540d8ae7ae0551a04f41168def85689d2a81c7b6eb6e510ded8f942a8`；按普通ZIP解出明文，无配置解密或WASM操作。临时证据目录 `C:/Users/97349/AppData/Local/Temp/xc-load-audit-c_7em4my/`。配套公开libs/after.js为29,952字节，SHA256 `99f1799a8cfc14d12c4c4deed9ed3ec438cd1016c3cde07c5c1a1fd7fafca773`。

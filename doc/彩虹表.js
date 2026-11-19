@@ -32724,6 +32724,35 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  playCountdown: {
+    title: "出牌读秒：一次性原型挂钩、完全不显示断点与现场诊断日志",
+    verifiedAt: "2026-11-19",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: ["出牌读秒", "从头到尾没有数字", "countDownSwitch", "COUNT_DOWN_SWITCH", "GamePopUpWindow", "ShowCountdownTimer", "countdownTimer", "onUpdate", "__onUpdate", "RemainValue", "SgsSpriteFilterBtn", "topMenu", "backBtn", "labelSize", "onReserveTimeUpdata", "安装失败无重试", "playCountdownDiagnostics", "xc:play-countdown-diagnose", "capturedMatchesCurrent", "inspect:unavailable", "play-countdown-diagnostics.cjs", "时间条最右侧", "条外后缀", "项目红", "#ff4d4f", "textField.color"],
+    decodedIndexes: {
+      _0x3812: {
+        208: "SgsSpriteFilterBtn", 235: "__onUpdate", 307: "labelSize", 645: "RemainValue",
+        669: "GamePopUpWindow", 738: "__proto__", 756: "apply", 800: "text", 812: "onUpdate",
+        859: "label", 868: "get", 1227: "addChild", 1558: "countdownTimer",
+        1610: "countDownSwitch", 1658: "toFixed", 1709: "ShowCountdownTimer"
+      },
+      _0x3911: { 359: "countDownSwitch", 223: "COUNT_DOWN_SWITCH" }
+    },
+    chain: [
+      "普通开关#countDownSwitch -> _0x4484c9通用change -> globalConfig.countDownSwitch -> COUNT_DOWN_SWITCH，Id_Key_Value默认true；不触发安装/重装。2026-11-19只读落盘值true，工程/APPDATA读秒区块相同，无XC_LAST_ERROR，未读页面内存。",
+      "login -> setProto -> laya.get(GamePopUpWindow,undefined,0,win=>win.ShowCountdownTimer(1)) -> countdownTimer.__proto__.__proto__ -> redefine(onUpdate)，保存__onUpdate。原生后创建this.text=laya.get(SgsSpriteFilterBtn)，addChild，labelSize=17，label=RemainValue.toFixed(0)。不是语音、出牌或延时操作，未限定PLAY阶段。",
+      "11月18日普通明文SHA256=62158152c88b48edfb468a46c609061532d7fb1722a890c82f91d57dbeeddbc7：GamePopUpWindow=Dgs，T4i extends Isi，Isi.onUpdate/RemainValue和两级原型仍存在；qi.r -> MOt.J仍调ClassUtils.regClass，未证明原生接口删除。",
+      "缺窗口时回调直接读ShowCountdownTimer拒绝，缺原型/方法时redefine=false被忽略；一次安装无结果日志、重试、切场恢复、Exit卸载。SgsSpriteFilterBtn由门面scene.topMenu.backBtn.constructor推断，缺依赖返回undefined，已执行原生更新后在labelSize写入处抛错，可能有进度条无数字。仅复现失败机制，未确认现场具体命中点。",
+      "偏好归globalConfig，剩余时间归原生计时器，额外数字在各timer.text随父销毁。关开关仅停止写入不隐藏，旧数字残留；ShowCountdown缓存Handler方法引用，后改原型不影响旧handler。储备时间onReserveTimeUpdata既不走onUpdate也不更新RemainValue，现有数字会停住，不能靠同样读值修复。",
+      "初轮decoder16索引一致；原生Isi/T4i/Dgs和真实主脚本get/redefine/挂钩7组隔离检查通过，DOM/时间/游戏服务为桩，不是视觉或游戏内测试。证据临时目录xc-play-countdown-audit-r7of15。用户现象从头到尾无数字，关闭残留/储备漏更不能当本次根因；初轮未改运行代码，随后用户要求仅加诊断、收日志后再修复。",
+      "诊断版playCountdownDiagnostics私有拥有active/phase/failure/target、observed WeakMap和ownedWrappers WeakSet；setProto入口start幂等订阅xc:play-countdown-diagnose与xc:config-change，Exit dispose移除监听/强引用，不清原有业务挂钩。原安装点输出install:start/window/result/error；原更新输出update:first/text:create/text:updated/native:error/text:error，异常原对象继续抛出，不补装/重试/换控件/改关开关残留。",
+      "openDebugFromButton发同步诊断事件，核心未监听则inspect:unavailable；总调试开启后读当前phase/错误和真实本人/他人计时器，包括otherTopManager。capturedMatchesCurrent/capturedIsOurHook辨别Handler旧引用，text/field/ancestors记录尺寸/颜色/alpha/clip/mask/Stage连接。snapshot不调用get/class探针，开关变化同链inspect，无周期巡检/定时器。",
+      "日志[出牌读秒]显式false,debug经现有桥进入普通页，API可关；调试关闭不写不缓存，打开后读当前状态而非回放。每次打开重置16实例首次/错误去重，显式快照最多12条计时器。专项17项、日志分类26项、可见性10项及语法/装配检查通过，未游戏内实测。重载后打开调试、读秒关开、进局等进度条再关开，复制全部该前缀日志；原失效原因仍待现场证据。详情/部署见架构表。",
+      "用户随后确认文字已可见，要求时间条最右侧外面/条后方与项目红。onUpdate仍写17号RemainValue.toFixed(0)，文字节点size=max(28,位数*11)×24，pos=round(timer.width)+6,round((timer.height-24)/2)，左对齐/垂直居中且不接鼠标，不改变计时条尺寸或填充进度。每次按当前宽高重定位，沿原父销毁链。",
+      "红色复用项目#ff4d4f；同时写五态labelColors与textField.color。原生kU.changeState无skins直接返回，单设labelColors可能保留白字；颜色不同时才排状态赋色。17项既有检查扩充红字/条外/尺寸变化/三位数断言，日志26项和语法/装配通过；位置/颜色尚未游戏内验证，回退本轮样式size/pos段，无新模块/配置/挂钩/任务。",
+      "用户反馈读秒文字太细，同一onUpdate文字链追加labelBold=true -> 原生setter写textField.bold；字号17、项目红#ff4d4f及条尾右侧6px布局沿用，无新状态/配置/任务。既有17项专项增加bold断言，语法/装配通过，字重观感待游戏页面重载验收；回退此赋值即可。检索：出牌读秒加粗、labelBold、textField.bold。"
+    ]
+  },
   systemContextStartupCompatibility: {
     title: "小抄无法加载：SystemContext导出缺失与启动兼容",
     verifiedAt: "2026-11-18",

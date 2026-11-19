@@ -21,6 +21,8 @@ const panelSource = slice("  function getLocalSkinDebugState()", "  function nor
 function fixture() {
   globalThis.window = globalThis;
   globalThis.XC = { isDebug: false };
+  globalThis.CustomEvent = class { constructor(type, init) { this.type = type; this.detail = init.detail; } };
+  globalThis.dispatchEvent = () => {};
   class Element {
     constructor() { this.children = []; this.style = {}; this.handlers = {}; this.text = ""; }
     appendChild(child) { if (child.parentNode) child.parentNode.removeChild(child); this.children.push(child); child.parentNode = this; return child; }

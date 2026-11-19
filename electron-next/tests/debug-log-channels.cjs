@@ -282,6 +282,20 @@ test('untyped legacy logs and malformed debug records fail closed', h => {
     appendLocalSkinDebugBlockAsync('[旧模块] block','legacy payload',true); drain();`);
   assert(!h.run(`/legacy|unqualified|空消息|typo/.test(getLocalSkinDebugState().panelEl.textContent)`));
 });
+test('real countdown diagnostics remain in the normal log with API printing off', h => {
+  h.run(`setApi(false);
+    globalThis.laya={scene:null,classes:{}};
+    globalThis.globalConfig={countDownSwitch:true};
+    globalThis.addEventListener=globalThis.removeEventListener=()=>{};
+    ${slice('  const playCountdownDiagnostics = (() => {', '  async function setProto()')}
+    playCountdownDiagnostics.start();playCountdownDiagnostics.begin();
+    playCountdownDiagnostics.installError(new Error('countdown-install-marker'));`);
+  assert(h.run(`/出牌读秒.*install:start/.test(getLocalSkinDebugState().panelBody.textContent)`));
+  assert(h.run(`/countdown-install-marker/.test(getLocalSkinDebugState().panelBody.textContent)`));
+  assert(!h.run(`/出牌读秒|countdown-install-marker/.test(getLocalSkinDebugState().responseBody.textContent)`));
+  h.run(`XC.isDebug=false;playCountdownDiagnostics.installError(new Error('countdown-closed-marker'));`);
+  assert(!h.run(`/countdown-closed-marker/.test(getLocalSkinDebugState().panelEl.textContent)`));
+});
 test('untyped logs appear only in API tab when API printing is enabled', h => {
   h.run(`setApi(true); appendLocalSkinDebugLine('[旧模块] legacy');
     appendLocalSkinDebugLine('unqualified',true,'debug');`);
