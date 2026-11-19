@@ -33428,14 +33428,18 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     searchKeywords: ["默认屏蔽", "日志分类规则", "未分类日志", "接口/心跳", "关闭接口打印",
       "getLocalSkinDebugLogChannel", "canPrintLocalSkinDebugResponse", "appendLocalSkinDebugLine",
       "__xcAppendLocalSkinDebugLine", "appendLocalSkinTabDebugLine", "responseBody", "activeLogChannel", "responseLogGeneration",
-      "debug-log-channels.cjs", "巡检心跳", "interface-probe", "回归", "回退"],
-    decodedIndexes: {},
+      "debug-log-channels.cjs", "巡检心跳", "interface-probe", "八人身份旧日志漏控", "旧包装器固定api",
+      "logEightIdentity", "getseven", "request:send", "requese:send", "record:accepted", "回归", "回退"],
+    decodedIndexes: {
+      "_0x3812": { "158": "sendReq", "530": "req", "743": "del", "868": "get", "1626": "uuid", "1634": "SevenDayResultWindow", "1643": "from" }
+    },
     chain: [
       "非混淆日志工具统一分类：第三参显式debug且文本/块标题符合[模块名] 非空正文才进panelBody；未分类旧日志、未知类型、格式不合规调用和api日志进responseBody。新页面printResp=false，在入口丢弃api；force不能越过接口或总调试开关。接口原文不得标为debug。",
       "第一IIFE的appendLocalSkinDebugLine安全代理通过__xcAppendLocalSkinDebugLine透传第三参类别/第四参响应名；canPrintLocalSkinDebugResponse统一检查XC.isDebug、printResp及响应名前缀拦截。原样旧调用不自动按前缀豁免，用户已允许旧日志默认屏蔽。",
       "打开调试->openDebugFromButton->ensureLocalSkinDebugPanel创建调试日志/接口心跳两页，activeLogChannel/panelTabs管理页签；复制和清空仅当前页，两区各自滚动。关闭接口打印同步终止Worker/post/fallback，clearLocalSkinDebugPendingChunks('api')保留正常异步块；responseLogGeneration和Worker实例校验拒绝迟到输出/异常。关闭或脱离DOM重建清理两区、任务和拖拽监听。",
       "SGSMODULE的respHook保留localSkinSelections.apply/pendingSkin业务处理，接口打印不再要求hasPendingSkin；开关和前缀过滤只控制日志。核心dispatch/dispatch-probe/message:game-record及外层interface-probe归api，皮肤Tab注入适配器把巡检心跳和缓存心跳归api；必要功能结果用显式debug。外层interface-probe不再引用另一IIFE局部logEightIdentity。",
-      "新增日志写法和校验以doc/debug窗口文档.md 2026-11-19节及rules.md为准；专项debug-log-channels.cjs最终20项通过，可见性10项、配置7项、皮肤响应顺序19项通过。回退必须成套处理分类/body/任务取消，不删除关闭总调试不能拉起面板的既有门槛；尚非游戏内验收。"
+      "同日补修：logEightIdentity只把少数探针分api、其余默认debug，造成request:send/record:accepted等旧日志漏控；现旧入口固定api，所有标签（含未知/误拼）都要求接口开关开启，force不能越过。保留xcEightIdentityTrace和实际请求/战绩业务；新必要诊断不能由旧包装器自动提升debug。",
+      "专项抽取真实getseven(_0x47c207=_0x3812)验证关闭接口打印仍发送[26,35,44,5,7,1]且两页无请求日志，开启仅入接口页；窗口缺失blocked不发请求且遵守开关。debug-log-channels.cjs扩展25项，修前6项失败修后全过；可见性10、配置7、皮肤响应顺序19通过。规则以debug窗口文档及rules.md为准，回退不得恢复api:debug默认放行；尚非游戏内验收。"
     ]
   },
   debugPanelVisibility: {

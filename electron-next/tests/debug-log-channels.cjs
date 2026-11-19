@@ -84,7 +84,18 @@ function harness() {
     const _0x1ca036 = i => ({427:'all_record',573:'query_uid'}[i]);
     ${slice('  function appendLocalSkinDebugLine(text, force, channel, responseName)', '  let visibleCardTraceSequence')}
     ${slice('  function logEightIdentity(label, data, force)', '  function logLightDealStart(')}
+    // Verified _0x3812 / _0x47c207 aliases from manualLookupNotes.eightPlayerIdentityRecord.
+    const _0x47c207 = i => ({158:'sendReq',530:'req',743:'del',868:'get',1626:'uuid',1634:'SevenDayResultWindow',1643:'from'}[i]);
+    const gameRecord = {};
+    globalThis.sentModes = [];
+    globalThis.recordWindow = {sendReq(mode) { sentModes.push(mode); }};
+    const laya = {
+      get(name) { if (name !== 'SevenDayResultWindow') throw Error('unexpected window'); return globalThis.recordWindow; },
+      del(name, delay) { globalThis.recordWindowCleanup = {name, delay}; },
+    };
+    ${slice('  async function getseven(', '  async function kanshu(')}
     globalThis.coreProbe = {dispatch: logLightRoomDispatch, shape: logLightRoomDispatchProbe, record: logEightIdentityMessageProbe, identity: logEightIdentity};
+    coreProbe.getseven = getseven;
   })();`, context);
   vm.runInContext('globalThis.skinTabLog = appendLocalSkinTabDebugLine;', context);
   return { run: text => vm.runInContext(text, context) };
@@ -191,12 +202,54 @@ test('core dispatch and record probes forward their channel across IIFEs', h => 
   assert(h.run(`/dispatch-probe/.test(getLocalSkinDebugState().responseBody.textContent)`));
   assert(h.run(`/message:game-record/.test(getLocalSkinDebugState().responseBody.textContent)`));
 });
-test('API off suppresses forced identity response probes but retains feature diagnostics', h => {
+test('API off suppresses legacy identity probes and results, retaining new typed diagnostics', h => {
   h.run(`setApi(false); coreProbe.identity('interface-probe',{className:'ClientGameRecordInfoRep'},true);
     coreProbe.record({all_record:[]},'ClientGameRecordInfoRep');
-    coreProbe.identity('record:accepted',{count:1},true);`);
-  assert(!h.run(`/interface-probe|message:game-record/.test(getLocalSkinDebugState().panelEl.textContent)`));
-  assert(h.run(`/record:accepted/.test(getLocalSkinDebugState().panelBody.textContent)`));
+    coreProbe.identity('record:accepted',{count:1},true);
+    appendLocalSkinDebugLine('[测试] action:done count=1',false,'debug');`);
+  assert(!h.run(`/interface-probe|message:game-record|record:accepted/.test(getLocalSkinDebugState().panelEl.textContent)`));
+  assert(h.run(`/action:done/.test(getLocalSkinDebugState().panelBody.textContent)`));
+});
+test('all legacy identity labels fail closed, including unknown or misspelled request names', h => {
+  h.run(`setApi(false);
+    for (const label of ['request:prepare','request:send','requese:send','request:blocked','request:send-error',
+        'record:accepted','record:item','room-context','room-enter-request','game-start','deal-start',
+        'bootstrap:request','future-legacy-label']) coreProbe.identity(label,{legacyMarker:'identity-payload'},true);
+    coreProbe.identity('request:send',{legacyMarker:'non-forced-payload'},false);`);
+  assert(!h.run(`/identity-payload|non-forced-payload/.test(getLocalSkinDebugState().panelEl.textContent)`));
+  assert(h.run(`JSON.parse(localStorage.getItem('xcEightIdentityTrace')).some(x=>x.label==='request:send')`));
+});
+test('legacy identity request and result logs appear only in API tab when enabled', h => {
+  h.run(`setApi(true); coreProbe.identity('request:send',{uid:42,modeId:1},true);
+    coreProbe.identity('record:accepted',{mode:1,count:2},true);
+    button('接口/心跳').fire('click'); button('复制').fire('click');`);
+  assert(!h.run(`/request:send|record:accepted/.test(getLocalSkinDebugState().panelBody.textContent)`));
+  assert(h.run(`/request:send/.test(copied) && /record:accepted/.test(copied)`));
+  h.run(`setApi(false); coreProbe.identity('request:send',{uid:'after-disabled'},true);`);
+  assert(!h.run(`/after-disabled/.test(getLocalSkinDebugState().panelEl.textContent)`));
+});
+test('real getseven sends every mode with API printing off without polluting either log page', h => {
+  h.run(`setApi(false); coreProbe.getseven(42); drain();`);
+  assert.equal(h.run('JSON.stringify(sentModes)'), '[26,35,44,5,7,1]');
+  assert.equal(h.run('recordWindow.uuid'), 42);
+  assert.equal(h.run('recordWindowCleanup.name'), 'SevenDayResultWindow');
+  assert(!h.run(`/request:send|request:prepare/.test(getLocalSkinDebugState().panelEl.textContent)`));
+});
+test('real getseven sends and logs only in API tab when API printing is on', h => {
+  h.run(`setApi(true); coreProbe.getseven(42,[26,1]); drain();`);
+  assert.equal(h.run('JSON.stringify(sentModes)'), '[26,1]');
+  assert(!h.run(`/request:send|request:prepare/.test(getLocalSkinDebugState().panelBody.textContent)`));
+  assert(h.run(`/request:prepare/.test(getLocalSkinDebugState().responseBody.textContent)`));
+  assert.equal(h.run(`getLocalSkinDebugState().responseBody.children.filter(x=>x.textContent.includes('request:send')).length`), 2);
+});
+test('real getseven blocked diagnostics obey API switch without changing request gating', h => {
+  h.run(`setApi(false); recordWindow=null; coreProbe.getseven(42,[1]); drain();`);
+  assert.equal(h.run('sentModes.length'), 0);
+  assert(!h.run(`/request:blocked|request:prepare/.test(getLocalSkinDebugState().panelEl.textContent)`));
+  h.run(`setApi(true); coreProbe.getseven(42,[1]); drain();`);
+  assert.equal(h.run('sentModes.length'), 0);
+  assert(h.run(`/request:blocked/.test(getLocalSkinDebugState().responseBody.textContent)`));
+  assert(!h.run(`/request:blocked/.test(getLocalSkinDebugState().panelBody.textContent)`));
 });
 test('skin picker live and buffered heartbeats are isolated and obey API switch', h => {
   h.run(`setApi(false); skinTabLog('巡检心跳：disabled');

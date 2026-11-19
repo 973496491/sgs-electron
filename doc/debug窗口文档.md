@@ -1,5 +1,17 @@
 # debug 窗口文档
 
+## 2026-11-19 补修：八人身份 request:send 旧日志误入调试页
+
+- 实际原因：上一版 `logEightIdentity(label,data,force)` 只把 `interface-probe/settlement-probe/room-context-probe` 和 dispatch 房间探针分给 api，其余标签默认传 `debug`。`getseven -> logEightIdentity('request:prepare'/'request:send',...,true) -> 核心 IIFE 安全代理 -> __xcAppendLocalSkinDebugLine` 因此直接进入 `panelBody`，绕过了接口打印门槛；并非用户开关没关、文件版本未确认或 Worker 漏取消。原测试还把 `record:accepted` 的旧结果日志作为正常区保留项，接受标准本身不完整。
+- 修复：旧的 `logEightIdentity` 入口**固定传 api**，不再按少数标签排除后把其它标签提升为 debug；`request:*`（包含用户描述中的 `requese:send` 拼写）、`record:*`、房间/开局/探针以及以后经此入口添加的未知标签全部遵守接口开关。关闭接口打印时两页均不新增这些行；开启后只进入 `接口/心跳` 页。`force=true/false` 均不绕过；同一个响应 `className` 的可选前缀过滤继续沿原桥透传。
+- 该入口只负责旧战绩/身份追踪的输出和既有 `localStorage.xcEightIdentityTrace` 历史记录；未改变请求、模式列表、UID、战绩处理、trace 最多200条的存储或对局状态。该独立历史记录不回灌窗口；关闭打印期间不会新增隐藏日志 DOM。新功能必要诊断继续在调用点显式使用 `debug` + `[模块名] 非空正文`，旧包装器不能统一替调用方取得 debug 权限。
+- 真实入口验证：抽取实际 `getseven()`，按手工彩虹表已核实的 `_0x47c207=_0x3812` 映射还原依赖：`868=get`、`1634=SevenDayResultWindow`、`158=sendReq`、`1626=uuid`、`530=req`、`1643=from`、`743=del`。接口关闭时仍发送全部 `[26,35,44,5,7,1]`，两页没有 prepare/send；接口开启时发送行为相同，prepare/send 只在接口页。窗口缺失仍不发请求，blocked 同样遵守开关。
+- `tests/debug-log-channels.cjs` 从20项扩展至25项，并修正旧结果日志的错误保留断言；新规则在修复前共6项失败，修复后25项全部通过。覆盖未知/误拼标签、force、开关前后、接口页复制、保留独立trace、真正 getseven 请求/阻塞链。调试关闭可见性10项、配置7项、本地皮肤响应顺序19项、userscript 语法及装配检查通过；这些是模拟与文件检查，尚非游戏内实测。
+- 回退注意：恢复旧的 `api : debug` 分支会重新放行 request/record 等旧日志；不要以新增标签黑名单代替旧入口默认 api。状态/挂钩/任务生命周期不变，本次未增加发布文件、版本、重试或定时器。
+- 同步验收：重新核对实际宿主 `F:/Game/SGSOL/resources/app/main.js` 的 `read-local-script -> %APPDATA%/SGSOL/三国杀打小抄.js` 与 `script/electron_frame.js` 的 `dom-ready` 注入；锁内确认无待恢复事务，按现有发布映射仅备份/原子替换主脚本。部署前源/目标相同，本轮主脚本仅 `logEightIdentity` 一处分类变更；其它未提交功能、模块、账号/用户配置及1.0.13版本记录保留。备份 `C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/ff09e8503a2d48d3bb9cded38e9cf146/backup/0`，同目录 `deployment.json` 记录本轮结果；源/目标 SHA256 `35A10ABED98D1DB3E209FD1C18E9C7DE83054F4B9392D82A285DBF21DC6179FB` 一致，部署副本语法及25+10+7项调试检查通过，事务已完成。需重载游戏页面或退出重开客户端后生效；未重启、热注入、生成asar或游戏内实测。
+
+关键词：`八人身份旧日志漏控`、`request:send`、`requese:send`、`getseven`、`logEightIdentity`、`旧包装器固定api`、`record:accepted`、`debug-log-channels.cjs`。
+
 ## 2026-11-19：调试日志与接口/心跳分区，新增日志默认屏蔽规则
 
 本节取代历史记录中的“接口打印默认开启”“所有日志直接写 panelBody”和“接口 dump 仅在 pendingSkin 时输出”。用户允许把旧日志归入可屏蔽类型，并要求以后不符合规则的日志在关闭接口打印时直接不输出。
@@ -22,7 +34,7 @@ queueLocalSkinDebugResponseDump('HeartBeatRep', response);
 
 - 分类由 `getLocalSkinDebugLogChannel(text,channel)` 统一收口；`appendLocalSkinDebugLine` / `beginLocalSkinDebugBlock` 在创建窗口、构造日志 DOM 之前检查类别和开关。`canPrintLocalSkinDebugResponse(name)` 统一检查总调试开关、接口开关及可选响应名前缀；功能诊断不按响应名过滤。添加日志后回归“接口关闭时合规 debug 可见、未分类/格式错误/api 完全无输出；接口开启时仅出现在接口页”。禁止新增控制台输出或旁路 DOM 写入。
 - 关闭接口打印同步调用 `stopLocalSkinDebugDumpWorker()` 和 `clearLocalSkinDebugPendingChunks('api')`：终止 Worker，撤销 post/fallback 队列与定时器，丢弃接口分片；正常诊断的异步分片保留。`responseLogGeneration` 防止旧块重新入队，Worker 回调校验所属实例，旧 Worker 的迟到异常不能停止新 Worker。最终分片写入还校验当前 body、父节点、分类开关和代次。
-- 监听继续由 `openDebugFromButton -> installLocalSkinDebugResponseHook -> state.respHook` 幂等接入 `SGSMODULE`。开启接口打印时所有有响应名的非 `ChangeSkinWindow` 响应可入队，保留前缀过滤；本地皮肤 `localSkinSelections.apply` / `pendingSkin` 处理始终执行，关闭打印不拦截游戏业务。核心 IIFE 的 dispatch、dispatch-probe、战绩字段探针透传 api；八人身份中的处理结果仍可显式 debug。外层 interface-probe 直接使用本作用域日志入口，不再错误依赖另一 IIFE 的局部 `logEightIdentity`。皮肤 Tab 的 `巡检心跳：` 及 `[缓存] 巡检心跳：` 在注入的日志适配器归为 api，挂载/选择等事件保留显式 debug。
+- 监听继续由 `openDebugFromButton -> installLocalSkinDebugResponseHook -> state.respHook` 幂等接入 `SGSMODULE`。开启接口打印时所有有响应名的非 `ChangeSkinWindow` 响应可入队，保留前缀过滤；本地皮肤 `localSkinSelections.apply` / `pendingSkin` 处理始终执行，关闭打印不拦截游戏业务。核心 IIFE 的 dispatch、dispatch-probe、战绩字段探针透传 api；八人身份旧入口的全部标签现固定 api，取代此前将处理结果默认放行到 debug 的错误分类。外层 interface-probe 直接使用本作用域日志入口，不再错误依赖另一 IIFE 的局部 `logEightIdentity`。皮肤 Tab 的 `巡检心跳：` 及 `[缓存] 巡检心跳：` 在注入的日志适配器归为 api，挂载/选择等事件保留显式 debug。
 - 状态由既有 `window.__localSkinDebug` 持有：`activeLogChannel/panelTabs/panelBody/responseBody` 管理窗口，`responseLogGeneration` 管理接口分片身份，原有 dump/fallback 状态继续归日志输出链。窗口关闭或脱离文档重建时终止旧任务、清理节点与拖拽 document 监听；同页重开不会复活旧任务。无对局模式限制，总开关关闭时丢弃所有类型。
 - 验证：新增 `tests/debug-log-channels.cjs` 抽取真实函数、桥接和 Tab 日志适配器，初版修前 13 项中 11 项失败，最终扩展为 20 项全部通过；覆盖默认关闭、严格分类、两区滚动/复制/清空、Worker/fallback/迟到回调、面板重建、前缀过滤、无 pending 的接口监听及关闭打印仍处理皮肤。原调试可见性 10 项、配置面板 7 项、皮肤响应顺序 19 项通过。可见牌 33 项中 4 项因现有测试桩缺 `handCards` 失败，对修改前游戏加载副本运行也同样 4 项失败；本次未扩展修改该功能。模拟 DOM/回调验证不等于游戏内验收。
 - 回退需整体恢复入口分类、两个日志 body、开关即时取消和异步回调保护；不要只删最终门槛，避免恢复漏控。新测试和文档不属于发布文件，主脚本安装路径不变，无需改发布映射。

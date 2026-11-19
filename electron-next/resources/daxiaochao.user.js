@@ -8292,9 +8292,8 @@
     if (!force && !(window.XC && window.XC.isDebug)) return;
     try {
       const entry = { time: Date.now(), label, data: data || {} };
-      const channel = ['interface-probe', 'settlement-probe', 'room-context-probe'].includes(label) ||
-        (label === 'room-context' && data && data.source === 'dispatch') ? 'api' : 'debug';
-      appendLocalSkinDebugLine('[八人身份] ' + label + ' ' + JSON.stringify(data || {}), true, channel, data && data.className);
+      // This legacy logger owns request/probe/result traces; never promote unclassified labels to debug.
+      appendLocalSkinDebugLine('[八人身份] ' + label + ' ' + JSON.stringify(data || {}), true, 'api', data && data.className);
       const key = 'xcEightIdentityTrace';
       const old = JSON.parse(localStorage.getItem(key) || '[]');
       old.push(entry);
