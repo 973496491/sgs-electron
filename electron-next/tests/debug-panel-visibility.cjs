@@ -35,7 +35,7 @@ function fixture() {
   globalThis.document = {
     documentElement: root, body, createElement: () => new Element(),
     createTextNode: text => Object.assign(new Element(), { text: String(text) }),
-    getElementById: id => find(root, id), addEventListener() {},
+    getElementById: id => find(root, id), addEventListener() {}, removeEventListener() {},
   };
   globalThis.panel = () => document.getElementById("xcDebugPanel");
   globalThis.callbacks = new Map();
@@ -87,7 +87,7 @@ test("error/info fallback cannot reopen the disabled panel", h => {
   assert.equal(h.run("panel()"),null);
 });
 test("manual open still creates and writes to the panel", h => {
-  h.run('toggle.checked=true; openDebugFromButton(toggle); appendLocalSkinDebugLine("normal"); appendLocalSkinDebugLine("forced",true);');
+  h.run('toggle.checked=true; openDebugFromButton(toggle); appendLocalSkinDebugLine("[测试] normal",false,"debug"); appendLocalSkinDebugLine("[测试] forced",true,"debug");');
   assert(h.run("panel()"));
   assert(h.run('getLocalSkinDebugState().panelBody.textContent.includes("normal")'));
   assert(h.run('getLocalSkinDebugState().panelBody.textContent.includes("forced")'));
@@ -111,7 +111,7 @@ test("close terminates dump jobs and delayed worker output stays closed", h => {
     const state=getLocalSkinDebugState();
     state.dumpWorker={terminate(){terminated++}};
     state.dumpJobs={1:{title:"worker",force:true}};
-    const block=beginLocalSkinDebugBlock("pending",true);
+    const block=beginLocalSkinDebugBlock("[测试] pending",true,"debug");
     queueLocalSkinDebugBlockChunk(block,"queued");
     toggle.checked=false; openDebugFromButton(toggle);
     handleLocalSkinDebugDumpWorkerMessage({data:{id:1,type:"chunk",chunk:"late"}}); drain();
@@ -126,7 +126,7 @@ test("reopening manually after closing restores async output", h => {
     toggle.checked=false; openDebugFromButton(toggle);
     appendLocalSkinDebugLine("discarded",true);
     toggle.checked=true; openDebugFromButton(toggle);
-    appendLocalSkinDebugBlockAsync("block","new chunk",true); drain();
+    appendLocalSkinDebugBlockAsync("[测试] block","new chunk",true,"debug"); drain();
   `);
   assert(h.run('panel().textContent.includes("new chunk")'));
   assert(!h.run('panel().textContent.includes("discarded")'));

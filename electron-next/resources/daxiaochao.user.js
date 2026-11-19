@@ -8292,7 +8292,9 @@
     if (!force && !(window.XC && window.XC.isDebug)) return;
     try {
       const entry = { time: Date.now(), label, data: data || {} };
-      appendLocalSkinDebugLine('[八人身份] ' + label + ' ' + JSON.stringify(data || {}), true);
+      const channel = ['interface-probe', 'settlement-probe', 'room-context-probe'].includes(label) ||
+        (label === 'room-context' && data && data.source === 'dispatch') ? 'api' : 'debug';
+      appendLocalSkinDebugLine('[八人身份] ' + label + ' ' + JSON.stringify(data || {}), true, channel, data && data.className);
       const key = 'xcEightIdentityTrace';
       const old = JSON.parse(localStorage.getItem(key) || '[]');
       old.push(entry);
@@ -8349,7 +8351,7 @@
         proto: protoFields,
         room: getLightRoomFields(room),
       };
-      appendLocalSkinDebugLine("[房间上下文] dispatch " + JSON.stringify(data), true);
+      appendLocalSkinDebugLine("[房间上下文] dispatch " + JSON.stringify(data), true, "api", classText);
       if (window.XC && window.XC.isDebug) logEightIdentity("room-context", data);
     } catch (e) {}
   }
@@ -8362,7 +8364,7 @@
       const envelopeKeys = envelope && typeof envelope === "object" ? Object.keys(envelope).slice(0, 32) : [];
       const protoKeys = proto && typeof proto === "object" ? Object.keys(proto).slice(0, 32) : [];
       const data = { source: "dispatch-probe", className: name, envelopeKeys, protoKeys };
-      appendLocalSkinDebugLine("[房间上下文] dispatch-probe " + JSON.stringify(data), true);
+      appendLocalSkinDebugLine("[房间上下文] dispatch-probe " + JSON.stringify(data), true, "api", name);
       if (window.XC && window.XC.isDebug) logEightIdentity("room-context-probe", data);
     } catch (e) {}
   }
@@ -8390,6 +8392,8 @@
           arrayFields,
         }),
         true,
+        "api",
+        className,
       );
     } catch (e) {}
   }
@@ -25037,14 +25041,14 @@
     })();
   }
   // 可见牌诊断：核心 IIFE 通过桥接写入现有调试面板，不调用控制台。
-  function appendLocalSkinDebugLine(text) {
+  function appendLocalSkinDebugLine(text, force, channel, responseName) {
     // 真正的面板函数在第二个 IIFE；开局/发牌等旧调用需要本作用域的安全入口。
     // 仅开启调试时写入，桥尚未安装或面板重建异常均不得打断业务状态更新。
     try {
       if (!(window.XC && window.XC.isDebug)) return;
       const append = window.__xcAppendLocalSkinDebugLine;
       if (typeof append === "function" && append !== appendLocalSkinDebugLine)
-        append(text, false);
+        append(text, false, channel, responseName);
     } catch (error) {}
   }
   let visibleCardTraceSequence = 0;
@@ -36772,7 +36776,8 @@
     if (typeof state.bootstrapTimer === "undefined")
       state.bootstrapTimer = null;
     if (typeof state.pendingSkin === "undefined") state.pendingSkin = null;
-    if (typeof state.printResp === "undefined") state.printResp = true;
+    if (typeof state.printResp === "undefined") state.printResp = false;
+    if (!state.activeLogChannel) state.activeLogChannel = "debug";
     if (!Array.isArray(state.responseIgnoreRules))
       state.responseIgnoreRules = loadLocalSkinDebugIgnoreRules();
     return state;
@@ -37079,8 +37084,13 @@
         document.documentElement.contains(state.panelEl);
     } catch (e) {}
     if (state.panelEl && !panelAttached) {
+      stopLocalSkinDebugDumpWorker();
+      clearLocalSkinDebugPendingChunks();
+      if (state.panelCleanup) state.panelCleanup();
       state.panelEl = null;
       state.panelBody = null;
+      state.responseBody = null;
+      state.panelTabs = null;
       state.configPanelEl = null;
       state.panelMinimized = false;
     }
@@ -37130,12 +37140,32 @@
     var body = document.createElement("div");
     body.style.cssText =
       "padding:8px 10px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;flex:1;max-height:50vh;min-height:60px";
+    var responseBody = document.createElement("div");
+    responseBody.style.cssText = body.style.cssText;
+    var tabs = document.createElement("div");
+    tabs.style.cssText = "display:flex;gap:14px;padding:6px 10px;background:#252538";
+    state.panelTabs = {};
+    ["debug", "api"].forEach(function (channel) {
+      var tab = document.createElement("span");
+      tab.textContent = channel === "api" ? "接口/心跳" : "调试日志";
+      tab.style.cursor = "pointer";
+      tab.addEventListener("click", function () {
+        state.activeLogChannel = channel;
+        updateLocalSkinDebugLogTabs();
+      });
+      state.panelTabs[channel] = tab;
+      tabs.appendChild(tab);
+    });
     panel.appendChild(header);
+    panel.appendChild(tabs);
     panel.appendChild(body);
+    panel.appendChild(responseBody);
     document.body.appendChild(panel);
     state.panelEl = panel;
     state.panelBody = body;
+    state.responseBody = responseBody;
     state.panelMinimized = false;
+    updateLocalSkinDebugLogTabs();
 
     var dragging = false,
       sx = 0,
@@ -37161,26 +37191,39 @@
       panel.style.bottom = "auto";
       e.preventDefault();
     });
-    document.addEventListener("mousemove", function (e) {
+    function onMouseMove(e) {
       if (!dragging) return;
       panel.style.left = ox + e.clientX - sx + "px";
       panel.style.top = oy + e.clientY - sy + "px";
-    });
-    document.addEventListener("mouseup", function () {
+    }
+    function onMouseUp() {
       dragging = false;
-    });
+    }
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    state.panelCleanup = function () {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      state.panelCleanup = null;
+    };
 
     apiSwitch.addEventListener("change", function () {
       state.printResp = apiSwitch.checked;
+      if (!state.printResp) {
+        stopLocalSkinDebugDumpWorker();
+        clearLocalSkinDebugPendingChunks("api");
+      }
       appendLocalSkinDebugLine(
-        "\u63a5\u53e3\u6253\u5370\uff1a" +
+        "[调试窗口] 接口打印：" +
           (state.printResp ? "\u5f00\u542f" : "\u5173\u95ed"),
         true,
+        "debug",
       );
     });
     configBtn.addEventListener("click", toggleLocalSkinDebugConfigPanel);
     copyBtn.addEventListener("click", function () {
-      var txt = body.textContent || "";
+      var selectedBody = state.activeLogChannel === "api" ? state.responseBody : state.panelBody;
+      var txt = (selectedBody && selectedBody.textContent) || "";
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(txt);
@@ -37201,18 +37244,44 @@
       }, 800);
     });
     clearBtn.addEventListener("click", function () {
-      stopLocalSkinDebugDumpWorker();
-      clearLocalSkinDebugPendingChunks();
-      body.textContent = "";
+      var channel = state.activeLogChannel;
+      if (channel === "api") stopLocalSkinDebugDumpWorker();
+      clearLocalSkinDebugPendingChunks(channel);
+      var selectedBody = channel === "api" ? state.responseBody : state.panelBody;
+      if (selectedBody) selectedBody.textContent = "";
     });
     minBtn.addEventListener("click", function () {
       state.panelMinimized = !state.panelMinimized;
-      body.style.display = state.panelMinimized ? "none" : "";
+      updateLocalSkinDebugLogTabs();
       if (state.configPanelEl)
         state.configPanelEl.style.display = state.panelMinimized ? "none" : "";
       minBtn.textContent = state.panelMinimized ? "+" : "\u2014";
     });
     return panel;
+  }
+
+  function updateLocalSkinDebugLogTabs() {
+    var state = getLocalSkinDebugState();
+    ["debug", "api"].forEach(function (channel) {
+      var selected = state.activeLogChannel === channel;
+      var body = channel === "api" ? state.responseBody : state.panelBody;
+      if (body) body.style.display = !state.panelMinimized && selected ? "" : "none";
+      var tab = state.panelTabs && state.panelTabs[channel];
+      if (tab) tab.style.color = selected ? "#f2de9c" : "#999";
+    });
+  }
+
+  function canPrintLocalSkinDebugResponse(name) {
+    return !!(window.XC && window.XC.isDebug) &&
+      getLocalSkinDebugState().printResp !== false &&
+      (!name || !isLocalSkinDebugResponsePrintIgnored(name));
+  }
+
+  // Fail closed: only explicitly typed, module-prefixed feature logs belong to the debug channel.
+  // Legacy/untyped/malformed records are API logs and obey the API printing switch.
+  function getLocalSkinDebugLogChannel(text, channel) {
+    return channel === "debug" && /^\[[^\]\r\n]+\]\s+\S/.test(String(text))
+      ? "debug" : "api";
   }
 
   function getLocalSkinDebugStamp() {
@@ -37225,13 +37294,15 @@
     );
   }
 
-  function appendLocalSkinDebugLine(text, force) {
+  function appendLocalSkinDebugLine(text, force, channel, responseName) {
     try {
       // force 仅保留调用兼容，日志不得越过用户关闭的调试开关。
       if (!(window.XC && window.XC.isDebug)) return;
+      channel = getLocalSkinDebugLogChannel(text, channel);
+      if (channel === "api" && !canPrintLocalSkinDebugResponse(responseName)) return;
       ensureLocalSkinDebugPanel();
       var state = getLocalSkinDebugState();
-      var body = state.panelBody;
+      var body = channel === "api" ? state.responseBody : state.panelBody;
       if (!body) return;
       var line = document.createElement("div");
       line.textContent = "[" + getLocalSkinDebugStamp() + "] " + String(text);
@@ -37240,6 +37311,11 @@
       body.scrollTop = body.scrollHeight;
     } catch (e) {}
   }
+  function appendLocalSkinTabDebugLine(text) {
+    appendLocalSkinDebugLine("[皮肤Tab] " + text, false,
+      /^(?:\[缓存\] )?巡检心跳：/.test(text) ? "api" : "debug");
+  }
+
   window.__xcAppendLocalSkinDebugLine = appendLocalSkinDebugLine;
   if (Array.isArray(window.__xcEightPvePendingDebugLines)) {
     window.__xcEightPvePendingDebugLines.splice(0).forEach(function (line) {
@@ -37316,11 +37392,14 @@
       var state = getLocalSkinDebugState();
       stopLocalSkinDebugDumpWorker();
       clearLocalSkinDebugPendingChunks();
+      if (state.panelCleanup) state.panelCleanup();
       if (state.panelEl && state.panelEl.parentNode) {
         state.panelEl.parentNode.removeChild(state.panelEl);
       }
       state.panelEl = null;
       state.panelBody = null;
+      state.responseBody = null;
+      state.panelTabs = null;
       state.configPanelEl = null;
       state.panelMinimized = false;
     } catch (e) {}
@@ -37388,12 +37467,14 @@
     }
   }
 
-  function beginLocalSkinDebugBlock(title, force) {
+  function beginLocalSkinDebugBlock(title, force, channel, responseName) {
     try {
       if (!(window.XC && window.XC.isDebug)) return null;
+      channel = getLocalSkinDebugLogChannel(title, channel);
+      if (channel === "api" && !canPrintLocalSkinDebugResponse(responseName)) return null;
       ensureLocalSkinDebugPanel();
       var state = getLocalSkinDebugState();
-      var body = state.panelBody;
+      var body = channel === "api" ? state.responseBody : state.panelBody;
       if (!body) return null;
       var line = document.createElement("div");
       line.style.cssText = "border-bottom:1px solid #2a2a40;padding:3px 0";
@@ -37404,7 +37485,8 @@
       );
       body.appendChild(line);
       body.scrollTop = body.scrollHeight;
-      return { line: line, body: body };
+      return { line: line, body: body, channel: channel || "debug",
+        responseName: responseName, generation: state.responseLogGeneration || 0 };
     } catch (e) {
       return null;
     }
@@ -37425,6 +37507,7 @@
     try {
       if (!block || !block.line) return;
       var state = getLocalSkinDebugState();
+      if (!isLocalSkinDebugBlockCurrent(block, state)) return;
       if (!state.debugChunkQueue) state.debugChunkQueue = [];
       state.debugChunkQueue.push({
         block: block,
@@ -37445,6 +37528,10 @@
       var lastBody = null;
       while (queue.length && budget > 0) {
         var item = queue[0];
+        if (!isLocalSkinDebugBlockCurrent(item.block, state)) {
+          queue.shift();
+          continue;
+        }
         var text = item.text || "";
         var start = item.offset || 0;
         var end = Math.min(text.length, start + Math.min(chunkSize, budget));
@@ -37475,15 +37562,33 @@
     }
   }
 
-  function clearLocalSkinDebugPendingChunks() {
+  function isLocalSkinDebugBlockCurrent(block, state) {
+    if (!block || !(window.XC && window.XC.isDebug)) return false;
+    if (block.channel === "api" &&
+        (!canPrintLocalSkinDebugResponse(block.responseName) ||
+         block.generation !== (state.responseLogGeneration || 0))) return false;
+    var body = block.channel === "api" ? state.responseBody : state.panelBody;
+    return block.body === body && block.line && block.line.parentNode === body;
+  }
+
+  function clearLocalSkinDebugPendingChunks(channel) {
     try {
       var state = getLocalSkinDebugState();
-      if (state.debugChunkQueue) state.debugChunkQueue.length = 0;
+      if (!channel || channel === "api")
+        state.responseLogGeneration = (state.responseLogGeneration || 0) + 1;
+      if (state.debugChunkQueue) state.debugChunkQueue = state.debugChunkQueue.filter(function (item) {
+        return channel && item.block && item.block.channel !== channel;
+      });
+      if ((!state.debugChunkQueue || !state.debugChunkQueue.length) && state.debugChunkFlushTimer) {
+        var cancel = window.cancelAnimationFrame || clearTimeout;
+        cancel(state.debugChunkFlushTimer);
+        state.debugChunkFlushTimer = null;
+      }
     } catch (e) {}
   }
 
-  function appendLocalSkinDebugBlockAsync(title, text, force) {
-    var block = beginLocalSkinDebugBlock(title, force);
+  function appendLocalSkinDebugBlockAsync(title, text, force, channel, responseName) {
+    var block = beginLocalSkinDebugBlock(title, force, channel, responseName);
     if (!block) return;
     queueLocalSkinDebugBlockChunk(block, text);
   }
@@ -37540,14 +37645,18 @@
       state.dumpWorker = worker;
       state.dumpWorkerUrl = url;
       state.dumpJobs = state.dumpJobs || {};
-      worker.onmessage = handleLocalSkinDebugDumpWorkerMessage;
+      worker.onmessage = function (event) {
+        if (state.dumpWorker === worker) handleLocalSkinDebugDumpWorkerMessage(event);
+      };
       worker.onerror = function (event) {
+        if (state.dumpWorker !== worker) return;
         var active = state.dumpActiveJob;
         stopLocalSkinDebugDumpWorker(true);
         appendLocalSkinDebugLine(
           "接口打印：子线程异常，改用分片主线程打印 " +
             ((event && (event.message || event.type)) || ""),
           false,
+          "api",
         );
         if (active) queueLocalSkinDebugFallbackDump(active, "worker-error");
         scheduleLocalSkinDebugDumpPost();
@@ -37600,16 +37709,23 @@
 
   function handleLocalSkinDebugDumpWorkerMessage(event) {
     var data = event.data || {};
+    if (!(window.XC && window.XC.isDebug)) return;
+    ensureLocalSkinDebugPanel();
     var state = getLocalSkinDebugState();
     var job = state.dumpJobs && state.dumpJobs[data.id];
     if (!job) return;
+    if (!canPrintLocalSkinDebugResponse(job.name)) {
+      stopLocalSkinDebugDumpWorker(true);
+      scheduleLocalSkinDebugDumpPost();
+      return;
+    }
     if (data.type === "start") {
-      job.block = beginLocalSkinDebugBlock(job.title, job.force);
+      job.block = beginLocalSkinDebugBlock(job.title, job.force, "api", job.name);
       return;
     }
     if (data.type === "chunk") {
       if (!job.block)
-        job.block = beginLocalSkinDebugBlock(job.title, job.force);
+        job.block = beginLocalSkinDebugBlock(job.title, job.force, "api", job.name);
       if (job.block) queueLocalSkinDebugBlockChunk(job.block, data.chunk || "");
       return;
     }
@@ -37647,6 +37763,10 @@
     }
 
     var job = queue.shift();
+    if (!canPrintLocalSkinDebugResponse(job.name)) {
+      scheduleLocalSkinDebugDumpPost();
+      return;
+    }
     var worker = createLocalSkinDebugDumpWorker();
     if (!worker) {
       queueLocalSkinDebugFallbackDump(job, "worker-unavailable");
@@ -37673,6 +37793,8 @@
         "接口打印：响应对象无法发送到子线程，改用分片主线程打印 " +
           ((e && e.message) || e),
         false,
+        "api",
+        job.name,
       );
       queueLocalSkinDebugFallbackDump(job, "postMessage-failed");
       scheduleLocalSkinDebugDumpPost();
@@ -38042,8 +38164,13 @@
     var block = beginLocalSkinDebugBlock(
       queued.job.title + " [fallback-incremental:" + queued.reason + "]",
       queued.job.force,
+      "api",
+      queued.job.name,
     );
-    if (!block) return false;
+    if (!block) {
+      if (queue.length) scheduleLocalSkinDebugFallbackDump();
+      return false;
+    }
     state.fallbackDumpActive = {
       job: queued.job,
       reason: queued.reason,
@@ -38061,7 +38188,7 @@
     if (!state.fallbackDumpActive && !startNextLocalSkinDebugFallbackDump())
       return;
     var item = state.fallbackDumpActive;
-    if (!(window.XC && window.XC.isDebug) || state.printResp === false) {
+    if (!canPrintLocalSkinDebugResponse(item.job.name)) {
       state.fallbackDumpActive = null;
       if (state.fallbackDumpQueue) state.fallbackDumpQueue.length = 0;
       return;
@@ -38087,6 +38214,8 @@
       appendLocalSkinDebugLine(
         "接口打印：分片主线程打印失败 " + ((e && e.message) || e),
         false,
+        "api",
+        item.job.name,
       );
       if (state.fallbackDumpQueue && state.fallbackDumpQueue.length)
         scheduleLocalSkinDebugFallbackDump();
@@ -38095,6 +38224,7 @@
 
   function queueLocalSkinDebugFallbackDump(job, reason) {
     try {
+      if (!canPrintLocalSkinDebugResponse(job.name)) return;
       var state = getLocalSkinDebugState();
       if (!state.fallbackDumpQueue) state.fallbackDumpQueue = [];
       state.fallbackDumpQueue.push({ job: job, reason: reason || "unknown" });
@@ -38103,6 +38233,8 @@
       appendLocalSkinDebugLine(
         "接口打印：分片主线程打印入队失败 " + ((e && e.message) || e),
         false,
+        "api",
+        job.name,
       );
     }
   }
@@ -38110,12 +38242,13 @@
   function queueLocalSkinDebugResponseDump(name, payload) {
     try {
       var state = getLocalSkinDebugState();
-      if (!(window.XC && window.XC.isDebug) || state.printResp === false)
+      if (!canPrintLocalSkinDebugResponse(name))
         return;
       if (!state.dumpPostQueue) state.dumpPostQueue = [];
       state.dumpSeq = (state.dumpSeq || 0) + 1;
       state.dumpPostQueue.push({
         id: state.dumpSeq,
+        name: name,
         title: "服务端响应 " + name,
         payload: payload,
         force: false,
@@ -38146,6 +38279,7 @@
 
   function logEightIdentityInterfaceProbe(first, className) {
     try {
+      if (!canPrintLocalSkinDebugResponse(className)) return;
       var proto =
         first.ProtoObj ||
         first.protoObj ||
@@ -38158,9 +38292,8 @@
         lowerClassName.indexOf("clientgamerecordinforep") >= 0 ||
         !!(proto && (proto.query_uid !== undefined || proto.all_record !== undefined || proto.used_general !== undefined || proto.game_result !== undefined || proto.figure !== undefined));
       if (!recordShape) return;
-      logEightIdentity(
-        "interface-probe",
-        {
+      appendLocalSkinDebugLine(
+        "[八人身份] interface-probe " + JSON.stringify({
           className: className,
           query_uid: proto && proto.query_uid,
           modeId: proto && proto.id,
@@ -38170,8 +38303,10 @@
             proto && typeof proto === "object"
               ? Object.keys(proto).slice(0, 24)
               : [],
-        },
+        }),
         true,
+        "api",
+        className,
       );
     } catch (e) {}
   }
@@ -38529,7 +38664,7 @@
         state.pendingSkin = null;
       }
 
-      if (state.printResp !== false && !ignoredForPrint && hasPendingSkin)
+      if (state.printResp !== false && !ignoredForPrint && cn)
         queueLocalSkinDebugResponseDump(cn, first);
     };
 
@@ -38829,8 +38964,9 @@
       ensureLocalSkinDebugPanel();
       installLocalSkinDebugResponseHook();
       appendLocalSkinDebugLine(
-        "\u8c03\u8bd5\u7a97\u53e3\u5df2\u6253\u5f00",
+        "[调试窗口] 调试窗口已打开",
         true,
+        "debug",
       );
       // 用于区分“日志还没生效”和“技能数据仍被截断”：缺失此行说明页面还在跑旧脚本。
       appendLocalSkinDebugLine(

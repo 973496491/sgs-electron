@@ -1,5 +1,39 @@
 # debug 窗口文档
 
+## 2026-11-19：调试日志与接口/心跳分区，新增日志默认屏蔽规则
+
+本节取代历史记录中的“接口打印默认开启”“所有日志直接写 panelBody”和“接口 dump 仅在 pendingSkin 时输出”。用户允许把旧日志归入可屏蔽类型，并要求以后不符合规则的日志在关闭接口打印时直接不输出。
+
+- 调试窗口有 `调试日志` / `接口/心跳` 两个页签；`panelBody` 只接收合规功能日志，`responseBody` 接收接口、心跳及所有未分类日志。两个 DOM 各自滚动、保留内容；`复制` / `清空` 仅作用于当前页，最小化后恢复所选页。切页不会打开接口打印。
+- `state.printResp` 新页面默认 `false`；同页关闭/重开面板保留开关。不新增 localStorage 偏好，不覆盖已有接口前缀配置 `xcLocalSkinDebugIgnoreRules`。关闭接口打印后，接口类日志在入口直接丢弃，不缓存、不序列化、不追加隐藏 DOM；已显示历史内容保留在接口页，需清空时手动清空该页。`force=true` 不能绕过接口开关或 `XC.isDebug`。
+- **后续新增日志必须遵守的规则**：只有显式传第三参 `"debug"`，且文本/异步块标题符合 `[模块名] 事件 内容`（非空模块名、右括号后有空白和非空正文）的功能诊断，才能进入正常调试区。接口返回、协议原文、游戏接口检查、重复巡检/心跳必须传 `"api"`。没有类型、类型拼错、显式 debug 但格式不合规，全部降为 api；不能靠加一个 `[模块名]` 自动取得正常日志权限，不能给接口原文标 debug 来规避开关。旧调用未逐项迁移，默认属于可屏蔽日志，因此关闭接口打印时部分既有功能诊断也不再显示；以后按实际排查需要迁移合规的必要事件。
+
+```js
+// 操作结果、异常、状态变化等必要功能诊断：明确类型 + 模块前缀。
+appendLocalSkinDebugLine('[整理手牌] sort:done count=8', false, 'debug');
+// 接口/心跳/检查返回；可选第四参是响应名，沿用接口拦截前缀规则。
+appendLocalSkinDebugLine('[接口检查] HeartBeatRep ok=true', false, 'api', 'HeartBeatRep');
+// 第一 IIFE 的同名代理已透传第三、四参；其它模块使用现有明确日志依赖或桥：
+window.__xcAppendLocalSkinDebugLine('[模块名] action:error reason=...', false, 'debug');
+// 异步普通诊断块同样要求合规标题与显式类型；原始响应请走已有 dump 队列。
+appendLocalSkinDebugBlockAsync('[模块名] inspect:result', text, false, 'debug');
+queueLocalSkinDebugResponseDump('HeartBeatRep', response);
+```
+
+- 分类由 `getLocalSkinDebugLogChannel(text,channel)` 统一收口；`appendLocalSkinDebugLine` / `beginLocalSkinDebugBlock` 在创建窗口、构造日志 DOM 之前检查类别和开关。`canPrintLocalSkinDebugResponse(name)` 统一检查总调试开关、接口开关及可选响应名前缀；功能诊断不按响应名过滤。添加日志后回归“接口关闭时合规 debug 可见、未分类/格式错误/api 完全无输出；接口开启时仅出现在接口页”。禁止新增控制台输出或旁路 DOM 写入。
+- 关闭接口打印同步调用 `stopLocalSkinDebugDumpWorker()` 和 `clearLocalSkinDebugPendingChunks('api')`：终止 Worker，撤销 post/fallback 队列与定时器，丢弃接口分片；正常诊断的异步分片保留。`responseLogGeneration` 防止旧块重新入队，Worker 回调校验所属实例，旧 Worker 的迟到异常不能停止新 Worker。最终分片写入还校验当前 body、父节点、分类开关和代次。
+- 监听继续由 `openDebugFromButton -> installLocalSkinDebugResponseHook -> state.respHook` 幂等接入 `SGSMODULE`。开启接口打印时所有有响应名的非 `ChangeSkinWindow` 响应可入队，保留前缀过滤；本地皮肤 `localSkinSelections.apply` / `pendingSkin` 处理始终执行，关闭打印不拦截游戏业务。核心 IIFE 的 dispatch、dispatch-probe、战绩字段探针透传 api；八人身份中的处理结果仍可显式 debug。外层 interface-probe 直接使用本作用域日志入口，不再错误依赖另一 IIFE 的局部 `logEightIdentity`。皮肤 Tab 的 `巡检心跳：` 及 `[缓存] 巡检心跳：` 在注入的日志适配器归为 api，挂载/选择等事件保留显式 debug。
+- 状态由既有 `window.__localSkinDebug` 持有：`activeLogChannel/panelTabs/panelBody/responseBody` 管理窗口，`responseLogGeneration` 管理接口分片身份，原有 dump/fallback 状态继续归日志输出链。窗口关闭或脱离文档重建时终止旧任务、清理节点与拖拽 document 监听；同页重开不会复活旧任务。无对局模式限制，总开关关闭时丢弃所有类型。
+- 验证：新增 `tests/debug-log-channels.cjs` 抽取真实函数、桥接和 Tab 日志适配器，初版修前 13 项中 11 项失败，最终扩展为 20 项全部通过；覆盖默认关闭、严格分类、两区滚动/复制/清空、Worker/fallback/迟到回调、面板重建、前缀过滤、无 pending 的接口监听及关闭打印仍处理皮肤。原调试可见性 10 项、配置面板 7 项、皮肤响应顺序 19 项通过。可见牌 33 项中 4 项因现有测试桩缺 `handCards` 失败，对修改前游戏加载副本运行也同样 4 项失败；本次未扩展修改该功能。模拟 DOM/回调验证不等于游戏内验收。
+- 回退需整体恢复入口分类、两个日志 body、开关即时取消和异步回调保护；不要只删最终门槛，避免恢复漏控。新测试和文档不属于发布文件，主脚本安装路径不变，无需改发布映射。
+- 同步记录：已重新核对 `F:/Game/SGSOL/resources/app/main.js` 的 `read-local-script -> app.getPath('userData')/三国杀打小抄.js` 和 `script/electron_frame.js` 的 `dom-ready` 注入。持 `.xiaochao-install.lock` 独占锁，确认无未恢复事务后按映射备份、暂存、原子替换主脚本，最后将已有工程 `version.json` 1.0.13 同步到安装记录（此前记录仍为1.0.11，实际加载脚本已是1.0.13；未增加工程版本）。本轮操作清单中的 `modules/features/native-skin-tabs.js` 与当前源已一致，跳过覆盖；其它模块和账号/用户配置不动。备份/部署报告：`C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/09cde3f18d784c6486fa9cbf099a5bfb/`，`backup/0` 为同步前主脚本，`backup/1` 为版本记录，`deployment.json` 为校验结果；主脚本源/部署 SHA256 `85EE64E34A4BE7EAE4E037125CE815631CECAC13A451872305002132C841A5B3`。部署副本语法、日志分类20项、关闭可见性10项、配置7项通过；装配和版本检查通过，安装状态文件已清除。尚未重载当前游戏页面或游戏内实测；需重载页面/退出重开客户端加载，不热注入、不重启、不生成asar、不发布云端。
+
+提交边界：`appendLocalSkinTabDebugLine` 是调试日志侧拥有的皮肤 Tab 日志适配器，保持心跳/缓存心跳归 api、挂载/选肤事件归 debug 的既有行为。适配器独立于皮肤分页实现，专项直接验证该函数；本次 Git 提交只包含调试日志工具、相关文档和测试，工作区尚未提交的皮肤分页工厂/装配/发布映射/版本改动不混入本提交。
+
+提交前复核：从 Git 暂存区导出独立副本，语法、装配/版本一致性、日志分类20项、关闭可见性10项、配置7项、皮肤响应顺序19项全部通过，不依赖未提交的皮肤分页源码。适配器归属整理后的工作脚本再次按相同安装锁/事务/备份/原子替换流程同步，部署副本37项调试检查通过，SHA256 `452F53B3394C93DBAD43EE6948DCC478B5701552BF55722A1F867B0D058F8635`；本次备份 `.xiaochao-install-work/f1e6bce8be814d06ab6997fa06f59fee/backup/0` 为上一部署脚本，未改变版本或其它安装文件。未热注入或重启游戏。
+
+关键词：`默认屏蔽`、`日志分类规则`、`未分类日志`、`接口/心跳`、`debug-log-channels.cjs`、`getLocalSkinDebugLogChannel`、`canPrintLocalSkinDebugResponse`、`appendLocalSkinTabDebugLine`、`activeLogChannel`、`responseBody`、`responseLogGeneration`、`api`、`debug`。
+
 ## 2026-09-19 第 21 段：标题改名 + 接口拦截配置单行化
 
 - 用户要求：调试面板标题由 `皮肤调试日志` 改为 `调试日志`；`配置` 展开的 `接口拦截配置` 由“每条规则一行”改为一行、字段用逗号分割，方便一次性取出全部拦截配置；点击 `添加` 仍与现在一致（展开一个新的空行）；点击 `保存` 后把新增行追加到配置行末尾。本轮只改 `C:\Users\97349\Downloads\electron` 项目文件，不动用户目录 `C:\Users\97349\AppData\Roaming\SGSOL\三国杀打小抄.js`，也不编译 asar。
