@@ -4,11 +4,15 @@ const path = require("node:path");
 const assert = require("node:assert/strict");
 const root = path.resolve(__dirname, "..");
 const definitions = [
+  { id: "selection-ratings-client", file: "src/adapters/selection-ratings-client.js", name: "createSelectionRatingsClient" },
+  { id: "selection-ratings", file: "src/features/selection-ratings.js", name: "createSelectionRatings" },
   { id: "ten-year-skin-catalog", file: "src/features/ten-year-skin-catalog.js", name: "getTenYearSkinCatalog" },
   { id: "ten-year-skins", file: "src/features/ten-year-skins.js", name: "createTenYearSkins" },
   { id: "native-skin-groups", file: "src/features/native-skin-groups.js", name: "getNativeSkinGroups" },
   { id: "native-skin-link", file: "src/features/native-skin-link.js", name: "createNativeSkinLink" },
   { id: "native-skin-labels", file: "src/features/native-skin-labels.js", name: "getNativeSkinLabels" },
+  { id: "ten-year-static-catalog", file: "src/features/ten-year-static-catalog.js", name: "getTenYearStaticCatalog" },
+  { id: "ten-year-native", file: "src/features/ten-year-native.js", name: "createTenYearNative" },
   { id: "native-skin-tabs", file: "src/features/native-skin-tabs.js", name: "createNativeSkinTabs" },
   { id: "xushao-client", file: "src/adapters/xushao-client.js", name: "createXuShaoClient" },
   { id: "xushao-assist", file: "src/features/xushao-assist.js", name: "createXuShaoAssist" },

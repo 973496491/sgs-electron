@@ -23,6 +23,26 @@
 
 本文只针对 **OL**。
 
+十周年独立分支进度（2026-11-21，仅调查）：沿用户提供的`lkfun.github.io/script/daxiaochao.user.js`的`Es -> GeneralSkinInfoConfig.sgs -> SkinConf`入口，新定向取得官方`/10/pc/libs/min/laya.sgs`（526386字节，SHA256`7430decb6adc1313d120a24086150027177f743f197ea72c5f6b04e903e237a8`），确认`CtrUtil`实际位于包内`laya.core.min.js`末尾。复用11-18缓存resc和配置/主程序，4份配置解密、gzip、JSON和原生封装一致性通过；已取得5435条SkinConf、80套皮肤、动作/语音配置及武将表，主程序解后为ZIP。产物在`tmp/ten-year-userscript-audit-20261120/`，详情/哈希/可复核步骤见[十周年皮肤读取调查](十周年皮肤读取调查.md)最新节。不是使用本文普通AES Key/IV，也不表示下文OL `_w`分支、完整资源归档或游戏内效果已通过；没有运行代码改动或部署。
+
+## 武将评分 / 强度评分定向核查（2026-11-19，仅调查）
+
+曹金玉/谋周瑜缺项复核（2026-11-20，仅调查）：定向读取官方普通`res/config/Config.sgs`，UTC`2026-11-19T17:16:35.651853+00:00`，4547800字节、ZIP SHA256`b98d30f9b30ef6f092510d098ae6d87fbfc73771bef3d21dbad8ceddb3bcac65`；只保留character密文、按既有普通AES-CFB/gzip解出的JSON和source/result，未保留整包，也未处理_w。character密文SHA256`d2f064c7312f96fec5dae08aaffac210aa5356cd938f033b81ef4993554253d0`、JSON`646ad9b8fea6e56e81717b2bb46199ec3f818b4c0fd8c6c0d82690594d165efb`，与11月19日本地快照相同。基础表1651行中有740/CaoJinYu、770/MouZhouYu，565条CharGrade均无这两个ID；实际adapter在九种评分维度都返回general-missing，0为缺项占位，不是只少军八分数或名字查错。证据`tmp/ol-general-rating-audit/missing-generals-20261120/`，详见架构表及评分调查报告同名节；未尝试账号补分请求、未改运行代码或部署，不能断言原生服务端也无分。
+
+2026-11-20上下文访问修复：用户真实日志已证明565行评分和候选读取成功，失败在门面GameContext返回undefined；不是评分配置未解出。定向读取普通ES6 `https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs`，UTC `2026-11-19T16:46:01.210351+00:00`，ZIP SHA256 `473b4c67921161a021d1393e4ac80aac735196b7c869c0ddfcc0deb61e8680eb`，明文24139039字节、SHA256 `5e26cc635c4e0cdc2a7ee12d480a0372061cd768ec07ab1d9812ae851b063553`；ZIP直解，不涉及配置AES或WASM。已保存`tmp/ol-general-rating-audit/native-20261120/{main.sgs,main.js,source.json}`。新鲜明文仍有GameContext=Zni导出（字符5919623附近）和GetModeType/GetGroupID，不能把当前页面的门面失败推断成整个官方删除出口。
+
+同快照核对qCs.InitUI的身份条件建立figurePart、this.manager=CurrentScene.Manager及ShowGenerals的this.selfFigure=SelfSeat.Figure；pti.SelfSeat/Seats getter已归档到selection-ratings-native fixture。修复adapter独立检查引擎出口，出口均缺时用有明确模式证据的选将窗口及其身份读取评分，不改全局GameContext或原生对象。共有主公杀/斗地主窗口须以身份面板区分；本地普通Config中mode148/149/154为gameMode33，与身份RULE_SHENFEN=1不同，本轮仅用于核验条件而非运行期硬编码。30组专项包含修前全0复现及修后按角色恢复，未游戏内复测，详情/同步见架构表“全0现场定位与上下文访问修复”。
+
+2026-11-20全0现场诊断追加：不下载新包，复查小抄真实loadConfig_w可见评分导出晚于整包Promise.all与后续整理。真实k函数隔离故障注入可复现“character已解出但其他配置失败导致未导出”，只证明这种路径可能存在，不确认用户军八/斗地主的全0原因。已加入generalGradeLoadState阶段/条数/字段名/有限错误观察和debug-open即时快照；下载、解密、导出和取分语义保持，未套用普通AES解密_w、未补发游戏请求。当前实现/23组验证与部署见架构表“军八/斗地主全0诊断”。
+
+2026-11-20实现追加：现有小抄第一IIFE的`XC.loadConfig_w(k)`早已通过JSZip、当前`CtrUtil.Ctr.Ofb_Dec`和Zlib解析`character.sgs`；本轮仅在其现有Object.assign(w,...)保留`WuJiangs.CharGrade -> XC.initMap.generalGrades`，供选将评分adapter读取，无新增下载、密钥或WASM解包流程，也未把普通配置AES方法套用于_w。不是直接取得原生aMt实例，尚未接其服务端评分缓存补缺。卡下N/10、缺分0/10、无UI开关的验证版及14组真实摘录/配置导出检查、隔离Laya显示/同步记录见架构表“选将评分验证版”；下文原生调查与缺口保留历史范围，未游戏内实测。
+
+复用已核实存在的11月18日普通ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-load-audit-c_7em4my/main/sgsGame_a.sgs`（SHA256 `62158152c88b48edfb468a46c609061532d7fb1722a890c82f91d57dbeeddbc7`），以及本地 `tmp/ol-lamp/Config.sgs`（SHA256 `5e4ca84f6c742e1a631978119efe664b6bdf04e1a75e1c817a22bc80373854e0`）。原包character密文与已提取文件相同；按本文普通AES-CFB/gzip参数再次解析，与本地character.json语义一致（文件SHA256 `646ad9b8fea6e56e81717b2bb46199ec3f818b4c0fd8c6c0d82690594d165efb`）。没有新下载、完整解包、WASM或账号接口操作。
+
+配置 `WuJiangs.CharGrade` 含565个ID、0～10分整数，`CharTips`有9种模式/身份说明。主程序 `initGeneralCharGrades`先配置后缓存补缺，106017响应的 `SetGeneralsCharGrade`把九项/10后只补不存在的ID；详情 `showPingding -> ShowPingdingInfo -> GetGeneralCharGrade -> fe -> Czt -> k_i` 展示“强度评分”。106016/106017批量实现与170023/170024单条定义存在，但GetGeneralCharGrade不发请求，批量请求只发现方法定义，不能声称缺项自动在线补齐。仅找到既有评分及显示处理，没有找到基础分数生成算法。详情、样例和来源边界见 [武将评分逻辑调查](武将评分逻辑调查.md)，架构表同名节与 `manualLookupNotes.generalStrengthRating`；工作文件 `tmp/ol-general-rating-audit/` 的5组离线解密/真实摘录检查通过，未游戏内实测，无运行代码变更或同步。
+
+选将评分显示后续核查（同日，仅报告）：复用同哈希主程序，无新下载。普通qCs/l4i、排位XLs/rSs及另一注册新版rLs/Cai为不同入口，Card setter/换将/SP替换链和模式身份字段可定位；普通双排7px、新排位15px不足以无条件增加独立文字行。aMt无已确认全局导出或现有小抄门面，GameGeneralManager=nhi不可混用，当前运行评分数据适配尚未接通。可实现卡下显示，但不能以离线表或最高分冒充当前身份实时分数。详见 [选将界面武将评分显示可行性报告](选将界面武将评分显示可行性报告.md) 与架构表同名小节；9项只读源码结构核对通过，不是界面/运行期验收，未改功能代码或部署。
+
 ## 出牌读秒 / 原生计时条核查（2026-11-19）
 
 复用已核验存在的11月18日普通ES6明文 `C:/Users/97349/AppData/Local/Temp/xc-load-audit-c_7em4my/main/sgsGame_a.sgs`，SHA256 `62158152c88b48edfb468a46c609061532d7fb1722a890c82f91d57dbeeddbc7`；无新下载、解密或 `_w` 调查。原生注册 `GamePopUpWindow=Dgs`（注册字符偏移420193、类22005087），`ShowCountdownTimer` 创建 `T4i@18692666 extends Isi@12536693`；`Isi.onUpdate@12543401` 计算并写入 RemainValue，普通本人/他人计时分别 new T4i / new Isi，共用该方法。`ShowCountdown` 通过 Laya.Handler 捕获方法引用，事后改原型不能更新旧Handler；储备时间用 `onReserveTimeUpdata` 更新动画位置，不经过 onUpdate，也不维护 RemainValue。

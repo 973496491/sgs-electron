@@ -1,6 +1,6 @@
 // OL picker tabs share the native list/render/pick lifecycle. GetWindow returns before Show;
 // enterWindow runs after resources/Init are ready, so it is the single page initialization entry.
-module.exports = function createNativeSkinTabs({ window, laya, groups = [], labels = {}, link, prepareView = () => {}, log = () => {} }) {
+module.exports = function createNativeSkinTabs({ window, laya, groups = [], labels = {}, link, prepareView = () => {}, extension = null, log = () => {} }) {
   const WIDTH = 713, HEIGHT = 543, ROW = 28, GAP = 6, ARROW = 14, ARROW_GAP = 4, FONT = 13;
   // ahs is the currently registered in-game picker, not an obsolete SelectSkinWindow class.
   const NAMES = ['ChangeSkinWindow', 'SelectSkinWindow', 'ModifyShowSkinWindow'];
@@ -9,7 +9,7 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
     if (!Array.isArray(row) || row.length < 3) continue;
     for (const id of row.slice(1)) if (Number(id) > 0) byId.set(Number(id), row);
   }
-  let active = false, mounted = null, listUndo = null, managerUndo = null;
+  let active = false, mounted = null, listUndo = null, managerUndo = null, eligibilityUndo = null;
   const windows = new Map(), pages = new Map(), scopes = [];
   const diagnosticIDs = new WeakMap();
   let nextDiagnosticID = 0, sequence = 0, lastEvent = '', lastError = '';
@@ -113,8 +113,15 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
     return active && pages.get(page.win) === page && !page.win.destroyed &&
       !page.win.closeing && !page.view.destroyed;
   }
-  function tabbed(page) { return current(page) && page.tabs.length > 1; }
-  function listFor(manager, tab, showAll, share) {
+  function tabbed(page) { return current(page) && (page.tabs.length > 1 || page.external); }
+  function appendExternal(list, generalID, tab, showAll = false) {
+    // Native share-skin probing requests showAll=true. Local display entries must never
+    // enter SendReqShareItem; the normal picker query still receives them.
+    if (!extension || showAll) return list || [];
+    const extra = extension.entries(generalID, tab.label);
+    return (list || []).concat(extra);
+  }
+  function listFor(manager, tab, showAll, share, generalID) {
     return link.withBucket(function () {
       const out = [], seen = new Set();
       for (const id of tab.ids) {
@@ -124,11 +131,12 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
           seen.add(skin.skinID); out.push(skin);
         }
       }
-      return out;
+      return appendExternal(out, generalID, tab, showAll);
     });
   }
   function buildTabs(id, view, diagnostic) {
-    const row = byId.get(Number(id));
+    const externalPages = extension?.pages(Number(id)) || [];
+    const row = byId.get(Number(id)) || (externalPages.length ? ['', Number(id)] : null);
     if (!row) {
       if (diagnostic) trace('分页跳过', { ...diagnostic, generalID: Number(id), reason: 'no-group' });
       return [];
@@ -140,19 +148,36 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
       if (!buckets.has(label)) buckets.set(label, []);
       buckets.get(label).push(Number(peer));
     }
+    const selfLabel = extension?.label(Number(id)) || '默认';
+    if (extension && selfLabel !== '默认') {
+      // Multiple OL IDs with this exact display label join the current page too.
+      const same = buckets.get(selfLabel) || [];
+      buckets.delete(selfLabel);
+      if (same.length) buckets.set(selfLabel, same);
+      for (const page of externalPages) {
+        if (!buckets.has(page.label)) buckets.set(page.label, []);
+        for (const peer of page.ids) if (Number(peer) !== Number(id) && !buckets.get(page.label).includes(peer)) buckets.get(page.label).push(peer);
+      }
+    }
+    const selfPeers = buckets.get(selfLabel) || [];
+    if (extension) buckets.delete(selfLabel);
     const manager = link.manager();
-    const out = [{ key: 'self', label: '默认', ids: [Number(id)], self: true }];
+    const out = [{ key: 'self', label: selfLabel, ids: [Number(id), ...selfPeers], self: true }];
     const counts = [];
     for (const [label, ids] of buckets) {
-      const tab = { key: 'peer:' + ids[0], label, ids, self: false };
+      const tab = { key: ids.length ? 'peer:' + ids[0] : 'name:' + label, label, ids, self: false };
       let skins;
-      try { skins = listFor(manager, tab, false, !!view.isShareSkin); }
+      try { skins = listFor(manager, tab, false, !!view.isShareSkin, Number(id)); }
       catch (error) {
         if (diagnostic) failure('变体取数失败', error, { ...diagnostic, ids, label, manager: shape(manager) });
         throw error;
       }
       counts.push({ label, ids, count: skins.length });
       if (skins.length) out.push(tab);
+    }
+    if (extension && out.length > 1) {
+      const own = appendExternal(link.withBucket(() => manager.GetOnlineSKinList(Number(id), false, !!view.isShareSkin)), Number(id), out[0]);
+      if (!own.length) out.shift(); // Original/default entry remains available inside each native page.
     }
     if (diagnostic) trace('分页生成', { ...diagnostic, generalID: Number(id), group: row[0],
       manager: shape(manager), share: !!view.isShareSkin, buckets: counts,
@@ -162,14 +187,26 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
   function installListHook() {
     if (listUndo) return true;
     const holder = link.getHolder();
+    if (extension && !eligibilityUndo && typeof holder?.HaveOnlineByGeneralId === 'function') {
+      eligibilityUndo = wrap(holder, 'HaveOnlineByGeneralId', function (original, args) {
+        if (original.apply(this, args)) return true;
+        return extension.pages(Number(args[0])).some(page => extension.entries(Number(args[0]), page.label).length > 0 ||
+          page.ids.some(id => (link.withBucket(() => this.getOnlineSKinListByGeneralId(id, false, false)) || []).length > 0));
+      });
+    }
     trace('皮肤取数挂钩', shape(holder));
     listUndo = wrap(holder, 'GetOnlineSKinList', function (original, args) {
       const page = scopes[scopes.length - 1];
       if (!page || !tabbed(page) || Number(args[0]) !== page.generalID) return original.apply(this, args);
       const tab = page.tabs.find(item => item.key === page.activeTab);
       // The default page keeps official GeneralSkinParent sharing; each peer page is a pure bucket.
-      return tab.self ? link.withBucket(() => original.apply(this, args)) || []
-        : listFor(this, tab, args[1], args[2]);
+      if (!tab.self) return listFor(this, tab, args[1], args[2], page.generalID);
+      const out = (link.withBucket(() => original.apply(this, args)) || []).slice();
+      const seen = new Set(out.map(skin => skin.skinID));
+      for (const peer of tab.ids.slice(1)) for (const skin of link.withBucket(() => this.getOnlineSKinListByGeneralId(peer, args[1], args[2])) || []) {
+        if (!seen.has(skin.skinID)) { seen.add(skin.skinID); out.push(skin); }
+      }
+      return appendExternal(out, page.generalID, tab, args[1]);
     });
     return !!listUndo;
   }
@@ -275,11 +312,13 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
       trace('分页依赖未满足', { ...diagnostic, sprite: typeof Laya?.Sprite, listHook: !!listUndo });
       return null;
     }
-    const page = { win, view, generalID: Number(generalID), activeTab: 'self',
+    extension?.bindView(view);
+    const page = { win, view, generalID: Number(generalID), activeTab: 'self', external: !!extension?.pages(Number(generalID)).length,
       tabs: buildTabs(generalID, view, diagnostic), undo: [], bar: null, items: [], offset: 0, addedClose: null };
+    if (!page.tabs.some(tab => tab.key === 'self')) page.activeTab = page.tabs[0]?.key || 'self';
     pages.set(win, page); mounted = page;
     try {
-      if (page.tabs.length > 1) { hookView(page); buildBar(page); }
+      if (page.tabs.length > 1 || page.external) { hookView(page); buildBar(page); }
     } catch (error) {
       failure('Tab创建失败', error, diagnostic);
       releasePage(page, 'build-error');
@@ -298,7 +337,7 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
       try { page = startPage(this, args[0]); }
       catch (error) { failure('初始化分页失败', error, { windowID: idOf(this) }); }
       let result;
-      try { result = original.apply(this, args); }
+      try { result = page?.external ? scope(page, original, this, args) : original.apply(this, args); }
       catch (error) { failure('原生开窗失败', error, { windowID: idOf(this) }); throw error; }
       if (page) applyLayout(page);
       trace('原生开窗完成', snapshot(this));
@@ -427,6 +466,7 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
     if (active) return true;
     trace('启用分页', { groups: groups.length, generals: byId.size });
     active = true;
+    extension?.attach();
     const linked = link.attach();
     trace('皮肤互通状态', { attached: linked, ...link.status?.() });
     installListHook();
@@ -438,8 +478,10 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
   function detach() {
     if (!active) return false;
     active = false;
+    extension?.detach();
     if (managerUndo) { managerUndo(); managerUndo = null; }
     if (listUndo) { listUndo(); listUndo = null; }
+    if (eligibilityUndo) { eligibilityUndo(); eligibilityUndo = null; }
     for (const page of Array.from(pages.values())) {
       releasePage(page, 'detach');
       if (!page.win.destroyed && !page.win.closeing && !page.view.destroyed) {

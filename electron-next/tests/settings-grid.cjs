@@ -1,17 +1,18 @@
 // Real settings template and dynamic control owners; game actions are mocked.
 const fs = require('node:fs'), os = require('node:os'), path = require('node:path'), vm = require('node:vm');
 const assert = require('node:assert/strict'), { execFileSync } = require('node:child_process');
-const source = fs.readFileSync(path.join(__dirname, '../resources/daxiaochao.user.js'), 'utf8').replace(/\r\n/g, '\n');
+const source = fs.readFileSync(process.argv[2] || path.join(__dirname, '../resources/daxiaochao.user.js'), 'utf8').replace(/\r\n/g, '\n');
 function slice(a,b) { const i=source.indexOf(a),j=source.indexOf(b,i);assert(i>=0&&j>i,a);return source.slice(i,j); }
 const p=source.indexOf('  function D() {'),e=source.indexOf('    ];',p);
 const strings=vm.runInNewContext(source.slice(source.indexOf('[',p),e+5));
 const a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/',b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 const decode=t=>Buffer.from([...t].map(c=>a.includes(c)?b[a.indexOf(c)]:c).join(''),'base64').toString('utf8');
 const template=strings.filter(t=>t.length>3000).map(decode).find(t=>t.includes('id="wallpaperContainer"'));
-const factories=['hand-cards','top-marquee','deck-visibility'].map((name,i)=>'const '+['createHand','createMarquee','createDeck'][i]+'='+require('../src/features/'+name+'.js').toString()+';').join('\n');
+const factories=['hand-cards','top-marquee','deck-visibility','xushao-assist'].map((name,i)=>'const '+['createHand','createMarquee','createDeck','createXuShao'][i]+'='+require('../src/features/'+name+'.js').toString()+';').join('\n');
 const helpers=slice('  function findSwitchContainer(', '  function setLocalSkinSwitchState(')+slice('  function layoutClonedSwitchButton(', '  function setDebugSwitchState(')+slice('  function insertDebugButton(', '  // Hand-card main-panel host.');
 const layout=slice('  const settingsLayout = (() => {','  // 仅拥有秒杀区域')+slice('  const secKillPanel = (() => {','  function addFrame() {')+slice('  function _0x3f649d(', '  const _0x1b7acc =');
 const owners=slice('  const quanYuDisplay =','  function _0x43fd79({')+slice('  // 皮肤屏蔽按钮：','  window.__xcInstallSkinEffectButton =');
+const tooltips=slice('  let _0x5ee876 = !1,','  function _0x208a6c()');
 function originalFunction(name){const i=source.indexOf('  function '+name+'('),j=source.indexOf('\n  }\n',i);assert(i>=0&&j>i);return source.slice(i,j+5);}
 const popups=['initCardThemePopup','_0x208a6c','_0x310ee8','_0x5fdac7'].map(originalFunction).join('\n');
 async function browserChecks() {
@@ -19,6 +20,7 @@ async function browserChecks() {
   const assert=(v,m)=>{if(!v)throw Error(m||'assertion failed');};
   const next=()=>new Promise(r=>setTimeout(r,80));
   const originalIds=Array.from(document.querySelectorAll('[id]'),n=>n.id);
+  const originalShouQi=document.getElementById('autoSQKSwitch');
   const saved=new Map(),storage={getItem:k=>saved.get(k)||null,setItem:(k,v)=>saved.set(k,v)};
   const general=()=>document.getElementById('xcSettingsGeneral'), blocking=()=>document.getElementById('xcSettingsBlocking');
   const setting=()=>general().closest('.setting');
@@ -28,6 +30,7 @@ async function browserChecks() {
   const hand=createHand({window,document,storage,client:{getContainer:()=>null,getScene:()=>null,getSelectionContext:()=>null,isEnabled:()=>true,sort:()=>true}});
   const marquee=createMarquee({window,document,storage,getLaya:()=>null,getTimer:()=>null});
   const deck=createDeck({window,document,storage,placeControl:settingsLayout.place,readCards:()=>[],readDiscardCards:()=>[],renderKnownCard:()=>document.createElement('span')});
+  const xushao=createXuShao({window,document,storage,placeControl:settingsLayout.place,refreshLayout:()=>{},client:{read:()=>null,clearEggs(){},clearHighlights(){}}});
   function mount(){
     openParent();settingsLayout.mount();secKillPanel.mount();
     insertLocalSkinButton(document.getElementById('cardBackThemeSwitch'));
@@ -35,8 +38,10 @@ async function browserChecks() {
     hand.start();hand.attachMainPanel(host);hand.mount();
     marquee.start();marquee.attachMainPanel(host);installSkinEffectButton();
     deck.start();deck.mountControls();quanYuDisplay.mountControls();_0x3f649d();
+    xushao.start();xushao.mount();
+    window[popupTable[554]]=window.innerWidth;_0x47344d();
   }
-  function cleanup(){hand.dispose();marquee.dispose();deck.dispose();quanYuDisplay.cleanupControls();cleanupSkinEffectButton();secKillPanel.dispose();}
+  function cleanup(){hand.dispose();marquee.dispose();deck.dispose();xushao.dispose();quanYuDisplay.cleanupControls();cleanupSkinEffectButton();secKillPanel.dispose();}
   const ordered=grid=>Array.from(grid.children).filter(n=>n.querySelector('input')&&getComputedStyle(n).display!=='none').sort((x,y)=>+getComputedStyle(x).order-+getComputedStyle(y).order);
   function assertGrid(grid){
     assert(getComputedStyle(grid).display==='grid','grid display');
@@ -118,12 +123,55 @@ async function browserChecks() {
   check('blocking list has exact requested order and 3+2 rows',()=>{
     assert(ordered(blocking()).map(n=>n.querySelector('input').id).join(',')==='xcTopMarqueeToggle,xcSkinEffectToggle,generalSwitch,xcQuanYuDisplayToggle,effectBlockSwitch');
   });
-  check('general settings and daily controls fill removed positions without empty cells',()=>{assert(ordered(general()).length===17);assert(ordered(document.getElementById('xcSettingsDaily')).length===8);});
+  check('four settings sections have exact titles, shared style and requested order',()=>{
+    const headings=Array.from(setting().querySelectorAll(':scope > h4[data-xc-settings-heading]'));
+    assert(headings.map(n=>n.textContent).join(',')==='常用设置,屏蔽设置,普通设置,调试');
+    assert(headings.every(n=>n.className==='jie-group-title'));
+    assert(setting().lastElementChild.id==='xcSettingsTrailing');
+  });
+  check('requested controls move between common, normal and debug without replacement',()=>{
+    for(const id of ['skipProbWindowSwitch','countDownSwitch','seatUISwitch','autoSignSwitch','xcSecKillPanelToggle'])
+      assert(document.getElementById(id).closest('.xc-settings-grid').id==='xcSettingsDaily',id);
+    for(const id of ['skinPaperSwitch','cardLabelSwitch','autoSQKSwitch','tianshuSwitch','CDKNotificationSwitch'])
+      assert(document.getElementById(id).closest('.xc-settings-grid').id==='xcSettingsGeneral',id);
+    assert(document.getElementById('localSkinDebugSwitch').closest('.xc-settings-grid').id==='xcSettingsTrailing');
+    assert(document.getElementById('autoSQKSwitch')===originalShouQi);
+    assert(originalShouQi.closest('.xc-settings-flow-item').querySelector('.explanation').textContent==='定向刷牌');
+    assert(originalShouQi.closest('.xc-settings-flow-item').getAttribute('data-tooltip')==='斗地主使用, 自动使用手气卡定向刷到选中的牌');
+    assert(ordered(document.getElementById('xcSettingsDaily')).length===12);
+  });
   check('original IDs and hidden activation/seckill defaults remain',()=>{
     for(const id of originalIds)assert(document.querySelectorAll('[id="'+id+'"]').length===1,'ID '+id);
     assert(document.getElementById('xcSecKillPanel').hidden&&!document.getElementById('xcSecKillPanelToggle').checked);
     assert(document.getElementById('ACSubmit').closest('.ACContainer').style.display==='none');
   });
+  function assertDescriptions(){
+    for(const [id,text] of Object.entries({
+      localSkinThemeSwitch:'本地使用当前未拥有的皮肤, 打开后自动开启皮肤互通, 如:魔孙权通界孙权皮肤',
+      xcXuShaoToggle:'自动标注许劭小游戏棋盘所有战功的可用联连线',
+      handSortPanelSwitch:'对手牌进行按规则排序, 打开花色选中后, 让裴秀的采风拥有快速选中所有指定花色的能力',
+      xcTopMarqueeToggle:'关闭顶部烦人的公告跑马灯',
+    })){
+      const input=document.getElementById(id),item=input.closest('.xc-settings-flow-item');assert(item.getAttribute('data-tooltip')===text,id+' tooltip');
+    }
+  }
+  check('four requested tooltips match verbatim on actual dynamic owner controls',assertDescriptions);
+  function assertHoverDescriptions(){
+    for(const id of ['localSkinThemeSwitch','handSortPanelSwitch','xcXuShaoToggle','xcTopMarqueeToggle']){
+      const input=document.getElementById(id),item=input.closest('.xc-settings-flow-item');
+      const caption=item.querySelector('.explanation,.xc-settings-caption'),slider=item.querySelector('.slider');
+      _0x154f77();
+      caption.dispatchEvent(new MouseEvent('mouseover',{bubbles:true,relatedTarget:null}));
+      assert(_0x462817&&_0x462817.textContent===item.getAttribute('data-tooltip'),id+' actual caption hover description missing');
+      assert(getComputedStyle(_0x462817).visibility!=='hidden'&&_0x462817.getBoundingClientRect().width>0,id+' tooltip visible');
+      caption.dispatchEvent(new MouseEvent('mouseout',{bubbles:true,relatedTarget:slider}));
+      assert(getComputedStyle(_0x462817).visibility!=='hidden',id+' moving within control does not hide tooltip');
+      slider.dispatchEvent(new MouseEvent('mouseover',{bubbles:true,relatedTarget:caption}));
+      slider.dispatchEvent(new MouseEvent('mouseout',{bubbles:true,relatedTarget:document.body}));
+      assert(getComputedStyle(_0x462817).visibility==='hidden',id+' leaving control hides tooltip');
+    }
+  }
+  check('real tooltip delegation shows descriptions on captions and switches, then hides on leave',assertHoverDescriptions);
   check('dynamic controls keep their original change handlers',()=>{
     const toggle=document.getElementById('xcTopMarqueeToggle');toggle.checked=true;toggle.dispatchEvent(new Event('change',{bubbles:true}));assert(marquee.isBlocked());
     const skin=document.getElementById('xcSkinEffectToggle');skin.checked=true;skin.dispatchEvent(new Event('change',{bubbles:true}));assert(window.__xcIsSkinEffectsBlocked());
@@ -139,10 +187,13 @@ async function browserChecks() {
     assert(Math.abs(following.getBoundingClientRect().left-old.left)<1,'gap filled');blocking().appendChild(item);assertGrid(blocking());
   });
   const styles=ordered(general()).concat(ordered(blocking())).map(n=>n.getAttribute('style')).join('|');
+  const generalIDs=ordered(general()).map(n=>n.querySelector('input').id).join(',');
   for(let i=0;i<5;i++)mount();await next();
   check('repeated installs keep unique controls and stable normal-flow styles',()=>{
-    assert(ordered(general()).length===17&&ordered(blocking()).length===5);assert(styles===ordered(general()).concat(ordered(blocking())).map(n=>n.getAttribute('style')).join('|'));
+    assert(ordered(general()).map(n=>n.querySelector('input').id).join(',')===generalIDs&&ordered(blocking()).length===5);assert(styles===ordered(general()).concat(ordered(blocking())).map(n=>n.getAttribute('style')).join('|'));
     assertGears();
+    assertDescriptions();
+    assertHoverDescriptions();
   });
   const shell=document.getElementById('createIframe');shell.style.transform='scale(0.8)';await next();
   check('scaled panel still has three aligned columns',()=>{assertGrid(general());assertGrid(blocking());});shell.style.transform='';
@@ -159,9 +210,11 @@ async function browserChecks() {
   for(const id of ['xcHandSortSwitchRow','xcTopMarqueeSwitchRow','xcSkinEffectSwitchRow','xcDeckVisibilityControl','xcQuanYuDisplayControl'])document.getElementById(id)?.remove();
   document.getElementById('handSortPanelLabel')?.remove();mount();await next();
   check('DOM rebuild restores list layout and dynamic owners without duplicate inputs',()=>{
-    assertGrid(general());assertGrid(blocking());assert(ordered(general()).length===17&&ordered(blocking()).length===5);
+    assertGrid(general());assertGrid(blocking());assert(ordered(general()).map(n=>n.querySelector('input').id).join(',')===generalIDs&&ordered(blocking()).length===5);
     const ids=Array.from(setting().querySelectorAll('input[id]'),n=>n.id);assert(ids.length===new Set(ids).size);
     assertGears();
+    assertDescriptions();
+    assertHoverDescriptions();
   });
   check('old local skin layout callbacks cannot steal rebuilt captions',()=>{
     const caption=document.getElementById('localSkinThemeLabel'),parent=caption.parentNode;
@@ -181,7 +234,7 @@ const html=template.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/u
 const stubs='const LOCAL_SKIN_SWITCH_ID="localSkinThemeSwitch",LOCAL_SKIN_LABEL_ID="localSkinThemeLabel",LOCAL_SKIN_TEXT="本地皮肤",DEBUG_SWITCH_ID="localSkinDebugSwitch",DEBUG_LABEL_ID="localSkinDebugLabel",DEBUG_TEXT="打开调试",DEBUG_BUTTON_X_OFFSET=0;function isLocalSkinLocked(){return false}function setLocalSkinSwitchState(i,v){i.checked=v;i.disabled=v}function enableLocalSkinFromButton(){}function setDebugSwitchState(i){i.checked=false}function openDebugFromButton(){}const laya={gamescene:null};function _0x43fd79(){}function appendLocalSkinDebugLine(){}let blocked=false;window.__xcSetSkinEffectsBlocked=v=>blocked=v;window.__xcIsSkinEffectsBlocked=()=>blocked;';
 const tables=require('../../doc/彩虹表.js').tables;
 const popupStubs='const globalConfig={},popupTable='+JSON.stringify(tables._0x871b.all)+',themeTable='+JSON.stringify(tables._0x262d.all)+';const _0x41a3d0=i=>popupTable[i],_0x43fec8=i=>themeTable[i];function _0x126168(){return ()=>{}}function _0x327542(){throw Error("unexpected popup fallback")}';
-fs.writeFileSync(file,'<!doctype html><meta charset="utf-8"><style>#createIframe{width:380px;transform-origin:top left}*{transition:none!important;animation:none!important}</style><div id="createIframe"><div id="iframe-source">'+html+'</div></div><pre id="xcSettingsGridTestResult">PENDING</pre><script>'+stubs+popupStubs+factories+helpers+layout+owners+popups+'('+browserChecks.toString()+')().catch(e=>document.getElementById("xcSettingsGridTestResult").textContent=JSON.stringify({error:e.stack}));</script>');
+fs.writeFileSync(file,'<!doctype html><meta charset="utf-8"><style>#createIframe{width:380px;transform-origin:top left}*{transition:none!important;animation:none!important}</style><div id="createIframe"><div id="iframe-source">'+html+'</div></div><pre id="xcSettingsGridTestResult">PENDING</pre><script>'+stubs+popupStubs+factories+helpers+layout+owners+popups+tooltips+'('+browserChecks.toString()+')().catch(e=>document.getElementById("xcSettingsGridTestResult").textContent=JSON.stringify({error:e.stack}));</script>');
 const output=execFileSync(browser,['--headless','--disable-gpu','--no-sandbox','--no-first-run','--disable-background-networking','--virtual-time-budget=2500','--window-size='+(process.env.SETTINGS_GRID_TEST_WINDOW||'1100,1200'),'--user-data-dir='+path.join(dir,'profile'),'--screenshot='+path.join(dir,'layout.png'),'--dump-dom','file:///'+file.replace(/\\/g,'/')],{encoding:'utf8',windowsHide:true,timeout:30000,maxBuffer:8e6,stdio:['ignore','pipe','pipe']});
 fs.writeFileSync(path.join(dir,'dom.html'),output);process.stdout.write('Artifacts: '+dir+'\n');
 const match=output.match(/<pre id="xcSettingsGridTestResult">([^<]+)<\/pre>/);assert(match&&match[1]!=='PENDING');

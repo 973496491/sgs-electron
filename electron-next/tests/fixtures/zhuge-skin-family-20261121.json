@@ -1,0 +1,112 @@
+{
+  "sources": {
+    "tmp\\ol-lamp\\character.json": "646ad9b8fea6e56e81717b2bb46199ec3f818b4c0fd8c6c0d82690594d165efb",
+    "tmp\\ol-lamp\\cha_gs_dbs_fs_skininfo.json": "9e07d018df08765d055cf9443bb9f7a83013f4c70fafb30bc585bcc5bda33781",
+    "tmp\\ten-year-userscript-audit-20261120\\decoded\\GeneralSkinInfoConfig.json": "78f937c1a49d5b490e8983fde2b414a3d4db2c50bcdb4d2af2de2a202f1c652b"
+  },
+  "olGenerals": [
+    {
+      "id": 4,
+      "rawFamily": "诸葛亮",
+      "label": "诸葛亮"
+    },
+    {
+      "id": 37,
+      "rawFamily": "卧龙诸葛亮",
+      "label": "卧龙诸葛亮"
+    },
+    {
+      "id": 204,
+      "rawFamily": "诸葛亮",
+      "label": "神诸葛亮"
+    },
+    {
+      "id": 440,
+      "rawFamily": "诸葛亮",
+      "label": "界诸葛亮"
+    },
+    {
+      "id": 454,
+      "rawFamily": "卧龙诸葛亮",
+      "label": "界卧龙诸葛亮"
+    },
+    {
+      "id": 717,
+      "rawFamily": "诸葛亮",
+      "label": "谋诸葛亮"
+    },
+    {
+      "id": 6120,
+      "rawFamily": "诸葛亮",
+      "label": "谋诸葛亮"
+    }
+  ],
+  "olSkinIDs": {
+    "4": [
+      401,
+      402,
+      403,
+      404,
+      405,
+      406
+    ],
+    "37": [
+      3701,
+      3702,
+      3703,
+      3704,
+      3705,
+      3707,
+      3706,
+      3708,
+      3709
+    ],
+    "204": [
+      20401,
+      20402,
+      20403
+    ],
+    "440": [
+      44001,
+      44002,
+      44005,
+      44003,
+      44004,
+      44006
+    ],
+    "454": [
+      45401,
+      45402,
+      45403,
+      45404,
+      45405
+    ],
+    "717": [
+      71701,
+      71702
+    ],
+    "6120": []
+  },
+  "tenWu": {
+    "generalID": 230,
+    "skinIDs": [
+      123001,
+      523001
+    ]
+  },
+  "tenWolong": {
+    "generalID": 38,
+    "skinIDs": [
+      103801,
+      303801,
+      303802,
+      403801,
+      503801,
+      603801,
+      603802,
+      603803,
+      503802,
+      403802
+    ]
+  }
+}

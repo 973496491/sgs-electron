@@ -3,6 +3,16 @@
   "files": [
     {
       "sourceRoot": "repo",
+      "source": "electron-next/src/adapters/selection-ratings-client.js",
+      "target": "modules/adapters/selection-ratings-client.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/selection-ratings.js",
+      "target": "modules/features/selection-ratings.js"
+    },
+    {
+      "sourceRoot": "repo",
       "source": "electron-next/src/features/deck-visibility.js",
       "target": "modules/features/deck-visibility.js"
     },
@@ -380,6 +390,16 @@
       "sourceRoot": "repo",
       "source": "electron-next/src/features/native-skin-tabs.js",
       "target": "modules/features/native-skin-tabs.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/ten-year-static-catalog.js",
+      "target": "modules/features/ten-year-static-catalog.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/ten-year-native.js",
+      "target": "modules/features/ten-year-native.js"
     }
   ],
   "packageFiles": [

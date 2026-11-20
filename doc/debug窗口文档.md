@@ -1,5 +1,13 @@
 # debug 窗口文档
 
+## 2026-11-20后续：调试分区
+
+设置现在按“常用设置、屏蔽设置、普通设置、调试”排列。打开调试localSkinDebugSwitch与十周年皮肤xcTenYearSkinsToggle进入最后的调试分区（内部xcSettingsTrailing），仍保留打开调试为区内最后一项。标题使用原jie-group-title样式，由共享settingsLayout.ensureSections幂等维护；原按钮ID、开关/显隐/日志处理与持久状态沿原链，未新增业务监听或轮询。静态/动态创建、重建后归位的21组设置检查及27项Chromium交互通过，未游戏内实测，部署见架构表“设置面板四分区”。下文此前的“设置末尾网格”记录以本节新标题和分配为准。
+
+## 2026-11-20：打开调试按钮移至设置末尾
+
+用户要求“武将评分”加入设置并将“打开调试”放在最后。原localSkinDebugSwitch由共享settingsLayout移出常规组，放入整个`.setting.panel-content`最后的`xcSettingsTrailing`网格；动态创建、重复布局和设置重建仍保持末位。只改布局位置，原按钮ID/状态、开关handler、窗口显隐、诊断快照、日志分区和接口打印规则保持。真实模板Chromium布局/交互20项、原调试显隐10项及日志分类26项通过，未游戏内实测；具体持久化和部署见架构表“武将评分设置开关”。
+
 ## 2026-11-19 补修：八人身份 request:send 旧日志误入调试页
 
 - 实际原因：上一版 `logEightIdentity(label,data,force)` 只把 `interface-probe/settlement-probe/room-context-probe` 和 dispatch 房间探针分给 api，其余标签默认传 `debug`。`getseven -> logEightIdentity('request:prepare'/'request:send',...,true) -> 核心 IIFE 安全代理 -> __xcAppendLocalSkinDebugLine` 因此直接进入 `panelBody`，绕过了接口打印门槛；并非用户开关没关、文件版本未确认或 Worker 漏取消。原测试还把 `record:accepted` 的旧结果日志作为正常区保留项，接受标准本身不完整。

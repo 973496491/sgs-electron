@@ -32724,6 +32724,89 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // Manual lookup notes. Keep these small and searchable; the generated table above
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
+  tenYearMergedStaticSkins: {
+    title: "十周年静态同名合页验证版 / 来源记录与OL默认0隔离",
+    verifiedAt: "2026-11-21",
+    sourceFile: "electron-next/src/features/ten-year-native.js",
+    searchKeywords: ["十周年静态合页验证版", "同名合页", "ten-year-native", "ten-year-static-catalog", "xcTenYearMergedSkins.v1", "神孙权", "碧海潮生", "668", "360", "OL默认0载体", "__xcTenYearEntry", "__xcSkinKey", "onSeatReady", "selfSeat", "CardId", "SendReqShareItem", "原子同步"],
+    decodedIndexes: {},
+    chain: [
+      "2026-11-21用户明确所有同名武将全表纳入，已写AGENTS/rules并实现：不再手列前缀/常规ID或模式/旧资源清单白名单；姓名、官方本体/父本体及明确同义归族，版词从两端字段自动学习，ExType只影响学习样本不挡直接同名。目录1648 OL身份/1762十周年角色/652版本关系/3396静态候选/651静态页，旧719无丢失；动态690和无同名1349有完整审计。",
+      "同Resource同页只画一项，优先主素材原ID，原始别名保留，旧偏好按资源标使用中；不同图同标题均留。pages含纯OL同名及版本关系，资格检查实际桶/候选不画空按钮。旧清单缺图不删候选，点击双图验证失败不覆盖。乐蔡额外1133002标名候选也留；全表原始名字/本体直接关联独立核对4313条遗漏0，651页运行取数全资源覆盖，专项89项及相关回归过。第15节中间719策略未单独发布，最终部署见报告16节；fit函数/版本值与记录未改，未游戏内确认全部新图。",
+      "2026-11-21乐蔡文姬缺页已修：十周年1330的Character.Name乐蔡文姬/exType76与GeneralConf.GeneralName蔡文姬/ExType76明确，旧前缀白名单漏乐。生成器补读GeneralConfig，完整同名优先，再以同ID/ExType+已知完整本体名+显示名完整后缀归族，保留乐/星/界SP标签；不是同姓猜组，正常/模式筛选与旧回退保留。蔡57/SP112/界505都可开乐蔡页，未改运行选择/协议/居中代码。",
+      "乐蔡八静态1133001/6133001/5133001/4133001/5133002/6133002/5133003/5133004，16 PNG验证并入开发verified输入，4动态对应排除。新目录719条390家族版本页、身份756，不代表全量5435。原生真实摘录专项79项含修前失败/修后齐页、三窗与三版蔡选择/使用中/切回、星界SP及剧情排除，相关回归过。版本标记/记录、居中功能模块不变，部署/备份见迁移报告15节，实际新页视觉待用户重载验证。",
+      "2026-11-21用户截图确认武诸葛千古一相已切换但留白，明确先居中缩放、不强行调位置。fit原min把876x632缩成146x105.333，上下空33.333；改为max等比铺满原生可视矩形并中心对称裁切，普通绘制238.405x172、x-46.2025/y0，无人物焦点或单皮肤偏移。复用yP.ShowType的scrollRect，半牌x36/宽73；仅缺框才补Laya.Rectangle，fitMasks只恢复本模块仍持有的框，原UI/姓名/血量不动。66项与相关回归通过，新的实际视觉待用户验证，详情/备份见迁移报告14节。",
+      "用户同日明确禁止助手擅自改版本，已写AGENTS.md和rules.md脚本版本由用户决定；修复/测试/同步/打包均不自动授权升版或回退。本次两个version.json和脚本两个版本标记保持既有值，部署只更新功能和装配脚本，不写版本记录。",
+      "1.0.15用户实测谋诸葛缺武/卧龙页已修复：原生成器漏武，OL37/454卧龙与717诸葛家族分离，旧版本表缺十周年卧龙大图导致过滤。开发期ten-year-skin-family-rules.json显式卧龙诸葛亮->诸葛亮并加武；保留完整页名。pages联合OL同家族版本，纯OL卧龙页不依赖十周年素材；原始native-skin-groups151组427ID与窗口外查询不改。十周年230武两款123001/523001，38卧龙10静态，OL37九条/454五条；实际OL显示仍沿原生筛选，不并其他诸葛人物。",
+      "开发期ten-year-static-verified.json保存缺版本项的URL/200/PNG/UTC/大小/SHA/尺寸证据，本轮24张武/卧龙PNG通过；静态目录684条366家族版本页，身份756。JSON仅生成输入非运行依赖，原发布路径不变。ten-year-native.cjs60项含修前缺页复现、三窗延迟、武/OL卧龙/十周年卧龙/反向选谋、源ID隔离和不污染原生桶，相关回归通过；同步备份/验收见迁移报告13节，未游戏内复验。",
+      "新增独立明文工厂，无新增decoder索引。生成器build-ten-year-static-catalog.py复用本地解码快照和已确认静态URL，756个OL身份/668条静态/360个家族版本页，排除动态7/8/10；不是全量5435皮肤已接入。双工厂装配到主脚本并登记release-files的modules/features映射。",
+      "本地开关 -> runLocalSkinEnableInline -> nativeSkinTabs.attach -> extension.attach -> GetWindow/enterWindow -> prepareView与extension.bindView -> 同步scopes取数 -> 原生卡片/点击/关闭/destroy/closeSelectSure。完整版本名跨OL/十周年合页、当前页去重，默认保留OL Parent共享，无分组单将和空OL桶有来源时可打开。HaveOnlineByGeneralId只扩入口资格，窗口外GetOnlineSKinList不混来源；共享showAll探测不返回本地项。",
+      "条目__xcTenYearEntry源ID/__xcSkinKey=ten:源ID内部区分，skinID仅用有效OL默认0。先验证大图/座位图并存储账号->OL将->源皮肤偏好xcTenYearMergedSkins.v1，再让原生一次提交；原localSkinSelections.record/send/apply继续真实默认回传和入站OL0恢复。无全局虚拟ID、无伪造持有、无十周年原ID入OL协议。",
+      "源行精确标使用中，KU缩略图固定146x172，当前本人yP头像按seat严格身份及generalCard.CardId取源big大图等比居中；不改共享VO，其他玩家/另一将隔离。GetLocalSkinScene补账号/本人并回退SelfSeatUi，场景sync和getSeatUIs->onSeatReady接晚建头像，无巡检。切回OL清本地来源并通过旧模块remove恢复该条目旧手工映射，其他旧映射保留。",
+      "视图/验证/图片按场景账号令牌失效，场景更换恢复旧头像钩子，destroy清视图，stop/Exit经分页detach恢复本模块仍持有的方法并重载原图；持久偏好保留。新诊断显式[十周年静态]+debug，失败提示不自动开调试。",
+      "神孙权OL22601同辉日月与十周年122401经典/522401碧海潮生同页，吕玲绮716无旧互通组仍可显示。ten-year-native.cjs44项真实摘录及选择/响应/渲染模拟通过，原有皮肤/日志/DOM/版本回归通过；发布包测试因环境Expand-Archive失败未称全过。同步/备份见迁移报告12节，当前未游戏内实测。"
+    ]
+  },
+  externalTenYearSkinConfig: {
+    title: "外部十周年小抄线索 / 皮肤配置解密和名称关联（仅调查）",
+    verifiedAt: "2026-11-21",
+    sourceFile: "tmp/ten-year-userscript-audit-20261120/daxiaochao.remote.user.js",
+    searchKeywords: ["外部十周年", "lkfun", "Es", "Ii", "Di", "SkinConf", "RelationGeneralID", "GeneralSkinInfoConfig", "CtrUtil.native", "decode-config", "SkinGradeType", "BigResource", "maxBig", "舐伤伴君", "繁华彩鸢", "炽焱流金", "静态目录名称", "941", "955"],
+    decodedIndexes: {},
+    chain: [
+      "远程脚本1.20.0，SHA256=92da1723557cffb05dc06b80078b7906657803861514c2d226b06e4ff332ec10，非本仓库decoder版本，不套本地数字索引。原文及Unicode字符偏移见remote-skin-evidence.json。",
+      "INIT等待JSZipUtils/CtrUtil.Ctr.Ofb_Dec/bgDiv -> Is -> Config.sgs unzip保存Ii。Es按需解GeneralSkinInfoConfig.sgs/gunzip/JSON，SkinConf只筛ItemName含经典形象，RelationGeneralID逐项映射Resource -> general/head/<Resource>.png，再用generalDict转名，Di缓存；gameRecord/generalRecord -> __HEADS_JSON__。是统计头像链，不是本地皮肤解锁。",
+      "skinSP:yi、skinDict:bi、bigSkin:xi仅空初始化与导出；skinMap:wi是GeneralCards.Character a/v武将关系，不当皮肤名称表。skinSwitch残留change显隐不足以证明可用换肤。",
+      "实际CtrUtil在新取得官方/10/pc/libs/min/laya.sgs的laya.core.min.js末尾。复用11-18 resc、Config与main缓存，e/f/d初始化、16384指针、a解密、d复位、补16-length%16并截回原长；配置gzip/JSON，main解后ZIP。4配置与原生封装逐字节一致、重复复位一致，不推断底层算法或复用OL普通AES参数，不扩大OL_w进度。",
+      "SkinConf5435唯一ID、SkinSpineConf213、ClientAwakeSkin48、DialogConf19591、SkinSuitConf80。BigResource经PlayBigPicture用于general/maxBig；动态转静态GetStaticSkinByDynamicId查询独立映射，禁止当big/static万能回退或硬做ID加减。543501周鲂带军鄱阳，744001马云騄舐伤伴君。",
+      "十周年吕玲绮549/2100有12条（另9007特殊记录），OL吕玲绮716不混用；炽焱流金554901/754901、繁华彩鸢554902/754902、战场绝版554903/754903、盖世无双554904/754904、冰魄映雪654901/854901，另经典154901/飞花惊武454901。",
+      "tmp/ten-year-userscript-audit-20261120保存decoded/4份JSON和skins.tsv/lvlingqi-skins.tsv/static-catalog-names.tsv。955组目录941组按Resource、12组按ClientAwakeSkin.Resource关联，1132102/1222101仅编号或BigResource线索，分栏保留。未把索引接入运行面板、未部署/注入/重启或游戏内验收；来源时间哈希和步骤见十周年皮肤读取调查最新节。"
+    ]
+  },
+  settingsPanelSections: {
+    title: "设置四分区：常用设置、屏蔽设置、普通设置、调试",
+    verifiedAt: "2026-11-20",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
+    searchKeywords: ["常用设置", "普通设置", "屏蔽设置", "调试", "测试模式", "日常自动化", "自动手气卡", "settingsLayout", "ensureSections", "autoSQKSwitch", "xcTenYearSkinsToggle", "localSkinDebugSwitch"],
+    decodedIndexes: { _0x871b: { "152": ".switch-container, .calRes", "473": "data-tooltip", "574": "mouseover", "518": "mouseout" } },
+    chain: [
+      "描述实际显示修复：本地皮肤localSkinThemeSwitch/整理手牌handSortPanelSwitch的说明位于克隆label.switch外的xc-settings-flow-item，原_0x47344d只closest(_0x871b[152]=.switch-container, .calRes)导致有data-tooltip却不显示；先执行真实事件复现失败。修复mouseover[574]/mouseout[518]共用选择器，保留原项并追加.xc-settings-flow-item[data-tooltip]，仍走原_0x96bf04/隐藏链及contains/relatedTarget保护。不改控件类/事件/状态，也不新增监听或定时器。原DOM属性检查22组升级23组，四种真实动态owner经实际悬浮显示/离开隐藏/内部移动/重建验证通过；来源与同步见架构表。",
+      "最新按钮描述：settingsLayout.descriptions只读表由place在静态/动态/重建路径写data-tooltip；若克隆control有旧内层tooltip同步替换，避免遮蔽外层新文案。本地皮肤localSkinThemeSwitch=本地使用当前未拥有的皮肤, 打开后自动开启皮肤互通, 如:魔孙权通界孙权皮肤；许劭辅助xcXuShaoToggle=自动标注许劭小游戏棋盘所有战功的可用联连线；整理手牌handSortPanelSwitch=对手牌进行按规则排序, 打开花色选中后, 让裴秀的采风拥有快速选中所有指定花色的能力；屏蔽弹幕xcTopMarqueeToggle=关闭顶部烦人的公告跑马灯。定向刷牌原描述也归同表。仅UI说明，原状态/handler/业务联动沿原模块，真实动态owner22组检查通过，部署见架构表。",
+      "同日最新文案：autoSQKSwitch常用区名称改为定向刷牌（此前称自动手气卡），data-tooltip=斗地主使用, 自动使用手气卡定向刷到选中的牌。由settingsLayout.place更新原caption/容器，保留input/ID/偏好/默认关闭/配置和刷牌链；不新增斗地主场景门槛或业务状态。布局/标题/按钮归属沿四分区，验证与同步见架构表。",
+      "共享明文settingsLayout.groups仍为唯一分配表，内部General/Blocking/Daily/Trailing ID不改；titles/ensureSections在真实addFrame.mount和动态place入口复用/补齐jie-group-title标题，按用户最终顺序常用设置/屏蔽设置/普通设置/调试，调试最后。重复调用不重建控件、不新增观察器/定时器/状态。",
+      "autoSQKSwitch可见名改自动手气卡，从日常移常用；skipProbWindowSwitch/countDownSwitch/seatUISwitch/autoSignSwitch/xcSecKillPanelToggle移普通前五项；xcTenYearSkinsToggle和localSkinDebugSwitch归调试，仍以打开调试为最后一项。其它原无标题控件归常用，屏蔽原顺序保留。原input/caption/handler/配置值不改，只在原caption节点更新手气名称，未改默认关闭或刷牌策略。",
+      "真实动态owner和模板settings-grid21组、评分设置Chromium27项、原生手气布局及两尺寸各38项选牌对话框通过，未游戏内实测。源码/职责/回退与实际同步见架构表设置面板四分区；仅主脚本布局/文案变更，无新发布路径、账号配置改写或asar。"
+    ]
+  },
+  generalStrengthRating: {
+    title: "OL武将评分：CharGrade强度评分数据与消费链，仅调查",
+    verifiedAt: "2026-11-20",
+    searchKeywords: ["武将评分", "强度评分", "武将评定", "CharGrade", "CharTips", "GetGeneralCharGrade", "SetGeneralsCharGrade", "106016", "106017", "170023", "170024", "TechScore", "选将评分", "卡下评分", "当前身份评分", "评分数据适配", "暂无评分", "SelectNewPaiWeiGeneralWindow", "FirstHand"],
+    decodedIndexes: { B: { "177": "assign", "207": "location", "186": "host", "265": "character", "353": "Ofb_Dec", "479": "Ctr" }, _0x3812: { "251": "SelectGeneralHappyNewWindow", "625": "WindowInstanceDict", "693": "GameGeneralManager", "782": "SelectNewPaiWeiGeneralWindow", "941": "SelectGeneralWindow", "977": "SelectGeneralHappyWindow", "1378": "GameContext" } },
+    chain: [
+      "最新2026-11-20用户要求设置按钮落盘：名称武将评分，xcGeneralRatingsControl/xcGeneralRatingsToggle，常规组许劭辅助之后；description原样为：显示当前模式下, 所属身份和座次所在的武将评分, 当前服务器返回的评分中: 谋周瑜和曹金玉缺失信息。模块持有localStorage.xcGeneralRatingsEnabled，首次默认true，保存false后新实例恢复关闭，存储失败不改业务状态/UI回滚。只改说明与开关，不改变既有评分数据通路。",
+      "selection-ratings.start/mount同时接addFrame与原setProto；模块拥有control及监听，关闭stopRunning清原生挂钩/评分/布局/计时器但保留开关UI和必要诊断，Exit.dispose再清UI/监听，偏好保留。旧DOM事件忽略，change.stopImmediatePropagation防通用设置误写globalConfig，无新巡检/观察器。",
+      "打开调试localSkinDebugSwitch从常规组移到共享settingsLayout.xcSettingsTrailing，trailingGrid按需创建并始终放在整个setting.panel-content末尾，动态创建/重建同样保持。调试处理和开关逻辑不改。评分33组、真实HTML/CSS/模块Chromium20项、广播39/显隐10/分类26通过，未游戏内验收；无新增发布路径/asar，部署见架构表武将评分设置开关。",
+      "曹金玉/谋周瑜缺项复核：2026-11-20官方普通Config定向character与旧快照同哈希(646ad9b8fea6e56e81717b2bb46199ec3f818b4c0fd8c6c0d82690594d165efb)。基础1651行有740/曹金玉/CaoJinYu、770/周瑜/MouZhouYu/谋前缀，但565条CharGrade均无整条记录；不是仅军八缺项、0分值或姓名识别错。实际adapter九维均general-missing -> 0/10。普通周瑜12/界周瑜308不可借分给770；原生服务端补分未接入也未本次实发，只读结论不证明服务端无分。证据tmp/ol-general-rating-audit/missing-generals-20261120，来源/包哈希见OL指南和架构表；无功能修改或部署。",
+      "最新现场日志00:40～00:41：565行评分phase=published、候选九维有非零；game.present=false/type=undefined、dimension0/no-self-scene，windowFigure1。已确认本功能依赖的laya.class(GameContext)不可达导致全0，不是配置未解出。修前复现15/1/475/740全0，修后按主公恢复4/3/10/0；475为卧龙凤雏。",
+      "上下文访问修复：adapter每次独立验证门面及Laya.Browser.window.GameContext，不让首个错误truthy realm候选遮住其它出口；全缺时只对有原生模式证据的窗口生成单次只读评分上下文。qCs.InitUI仅身份规则建figurePart并保存manager=CurrentScene.Manager，ShowGenerals写selfFigure=SelfSeat.Figure；窗口身份优先、缺失再manager.SelfSeat.Figure。普通身份窗有figurePart取3～6；斗地主2023/地主农民窗无身份面板取8/9，有面板仍按主公杀身份；国战窗取7。未知模式/身份继续0，不用最高分猜。",
+      "诊断新增contextSource(facade/engine-export/selection-window/none)、nativeAvailable/roleSource/hasIdentityPanel，显示去重包含来源；不写原生/全局、不新增配置、监听或定时器。晚到原生上下文优先接管。30组专项及日志分类26组通过，含真实门面错误候选、全缺窗口回退、四身份/双角色、换将/晚到/重开；未游戏内复测。11月20日新取普通ES6明文SHA256=5e26cc635c4e0cdc2a7ee12d480a0372061cd768ec07ab1d9812ae851b063553仍导出GameContext，不以门面失败推断原生删除出口；来源和同步见OL指南/架构表。",
+      "2026-11-20用户军八/斗地主卡下全0：本轮只补诊断，不宣称已修复。旧日志在总调试关闭时丢弃后仍去重，新增openDebugFromButton -> xc:selection-ratings-diagnose -> feature.diagnose即时只读快照；start订阅/Exit撤销，不创建窗口/发送操作。输出[选将评分]诊断/链路/显示，明确false/debug，API可关；总调试关闭不详细采样，无控制台/历史日志缓存。",
+      "generalGradeLoadState由第一IIFE拥有，loadID隔离idle/request/request-error/unzip/decode/character-decoded/published/failed及条数/有限字段名/240字错误；晚旧回调不覆盖当前状态。原generalGrades等待整包Promise.all及后续整理，真实k故障注入可复现其他配置失败导致character已解出却未导出，但不是已证实现场根因；不改变原下载/解密/导出及失败语义。",
+      "adapter快照源类型/原始与索引行数/样例ID、modeID/groupID/rule/模式标记/SelfFigure/seatFigure/windowFigure，最多12候选的ID/原始分/九维；source-missing/source-empty/general-missing/grade-field-missing/grade-zero/grade-invalid分开。稳定状态不刷屏。23组专项+显隐10/分类26通过，未游戏内取日志；后续重载并打开调试后看选将的诊断/链路，详见架构表军八/斗地主全0诊断。",
+      "2026-11-20用户授权验证版已实现，以下11月19日仅调查/未实现描述为历史记录。复用第一IIFE XC.loadConfig_w(k)现有Config_w下载/JSZip/当前CtrUtil.Ctr.Ofb_Dec/Zlib/JSON链，Object.assign(w,...)新增generalGrades:c[character.sgs].WuJiangs.CharGrade，经XC.initMap=w给selection-ratings-client只读索引，不额外下载、不硬编码旧565项、不改官方主程序，也不假设aMt可直接访问。原生服务端评分缓存补缺未接入。",
+      "选将验证版：setProto -> selectionRatings.start -> WindowManager.GetWindow返回后白名单绑定enterWindow/Show/布局/关闭/销毁；只读已存在窗口，管理器最多60次500ms重试。打开时250ms刷新本人generalUis实际Card.CardId，缺分/无源/身份未定/不支持玩法统一0/10，其他按原始模式项Math.ceil显示N/10。无UI/持久偏好，内部setEnabled预留后续开关；Exit.dispose清定时器/标签/位置租约/自有挂钩，不覆盖后装包装器。",
+      "src/adapters/selection-ratings-client.js负责数据/场景/Laya.Text，src/features/selection-ratings.js拥有scope/标签/布局/启停。卡底+1非交互文字，双排行距预留18px并移开必要底部控件，原生布局前恢复偏移防累加。诊断[选将评分]走现有调试桥false/debug。14组实际导出/原生摘录模拟、实际缓存OL Laya+无账号Chromium的8卡7/10与0/10可见通过，不是游戏内验收；发布映射/工厂装配已登记，部署见架构表。",
+      "本次是原生普通ES6明文链，无新增小抄decoder映射。主程序SHA256=62158152c88b48edfb468a46c609061532d7fb1722a890c82f91d57dbeeddbc7；字符偏移为Python Unicode索引：fe557191、initGeneralCharGrades6101574、GetGeneralCharGrade6113681、SetGeneralsCharGrade6114974、Izt10273012、Czt10274183、k_i15583860。详见doc/武将评分逻辑调查.md。",
+      "本地character.json含1651条基础武将，WuJiangs.CharGrade含565个ID/0～10分整数，CharTips含9项：Grade_1/2排位先后手，3/4/5/6主忠反内，7国战，8/9地主农民。配置优先；GENERAL_GRADE_SAVE_DATA仅补缺，LocalServerTime换日清缓存并通知重建。",
+      "详情showPingding -> Izt.ShowPingdingInfo -> aMt.GetGeneralCharGrade -> fe.getGradeList -> Czt雷达图 -> k_i.updateData，文案CHR_INFO_EXPERT_SCORE=强度评分。fe过滤非正数、Math.ceil、按<=4/<=7/>7分档，结合CanUseGeneralInMode最多保留5项；详情<=3项无数据表现，雷达顶点grade/10。",
+      "106016/106017批量generalId[]/generalData[]，170023/170024单条定义；Bnt4411114解码generalId、ttrankFirst/Second、dizhu/nongmin、zhugong/zhongchen/fanzei/neijian/guozhan，SetGeneralsCharGrade各项/10只补不存在ID。ClientGeneralScoreBatchDataReq13273154有发送/5秒超时/响应消费，但本快照只找到方法定义，GetGeneralCharGrade只读，不证明开详情会补齐缺项。",
+      "静态缺许劭757/谢灵毓769/谋周瑜770，不等于网络无评分。recNew*身份推荐、LordCardRate*、武将战力榜分开；TechScore兼容五项默认40但本地无字段及直接调用，不当真实评分。未找到基础分数制定公式，不推断一定由服务端算法或投票产生。原包/解密比对与5组真实摘录依赖桩检查通过；仅文档，无账号请求、运行修改/同步或游戏内实测。",
+      "同日选将评分可行性：普通qCs.ShowGenerals23345721 -> l4i18650331，排位SelectNewPaiWeiGeneralWindow=XLs23834625 -> initGeneralUIs23853726 -> rSs22646113 -> fes -> l4i；另一注册新版rLs23655668 -> Cai14682505 -> fvt6710528。Card setter调用UpdateCardFace；RespChangeGeneral23030054和SP替换会在原卡换ID。本人generalUis与队友teamMateGeneralItems需区分，不只挂旧窗口或首次开窗。",
+      "按玩法解释SelfFigure14535102：主公/地主均1、反贼/农民均3；FirstHand14608640基于有效FixedViewId，未就绪可能默认true。身份取原始grade3～6、地主农民8/9、匹配排位1/2、国战7，不拿getGradeList前5项或最高分替代；缺分暂无评分、身份未定不猜。普通卡94x131/小卡61x61，双排间隔7px/XLs15px，卡下文字需配套布局并保留原生推荐/胜率/SP/皮肤/输入。",
+      "评分显示未实现：aMt闭包内管理器无已确认全局/小抄门面入口，GameGeneralManager=nhi不是它；后续须先验证运行期评分数据适配，不将旧565项内嵌称为当前实时评分。建议适配模块管数据/场景、显示模块管当前窗口卡标签/ID/维度及幂等安装清理；9项只读结构核对通过，未运行期取管理器或游戏渲染，未改/同步功能。报告doc/选将界面武将评分显示可行性报告.md。"
+    ]
+  },
   playCountdown: {
     title: "出牌读秒：一次性原型挂钩、完全不显示断点与现场诊断日志",
     verifiedAt: "2026-11-19",
@@ -34332,6 +34415,8 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     searchKeywords: ["十周年皮肤", "吕玲绮", "716", "ten-year-skins", "xcTenYearStaticSkins.v1", "xcTenYearSkinSize.v1", "SkinsizeType", "IsBanner", "显示框", "显示区域不一致", "横版竖版", "局内座位卡", "全身大图", "半身座位图", "loadSkinComplete", "getSeatAvatars", "syncSeatHooks", "SkinBigUrl", "SkinSeatUrl", "恢复原图"],
     decodedIndexes: {},
     chain: [
+      "2026-11-21最新静态同名合页分析，未实施：用户优先完整武将名合并OL/十周年一页、不带来源前缀，取代独立十周年页建议。OL226/native标签神孙权与十周年224/Character.Name神孙权可合页，条目含OL22601同辉日月、十周年122401经典/522401碧海潮生；522401大图与座位图本轮GET有效PNG但未游戏渲染。来源+源ID仅内部区分，重名不同图不直接删，当前页避免重复，神/界/魔等版本名不剥除，原生Parent共享保留。详情/证据/验收见十周年迁移报告11节。",
+      "2026-11-21仅分析未实施：统一到现有本地皮肤/互通Tab可行，但buildTabs无byId组直接空（当前716无互通组/标签），原生enterWindow另有OL桶空关闭前置。现模块observe仅716且id>0，按共享OL VO改图；独立十周年条目需来源标识/取数/选择与反查适配、本人场景隔离、默认0、IsUsing及切回恢复，不能只加组或把十周年ID回填OL协议。设计及边界见十周年迁移报告第10节；静态复用已存在，动态/语音未完成。",
       "非混淆独立模块，经现有构建器装配；waitForCardBackSwitch安装入口，hookItem及InitData后置observe读取原生条目skinData（VO直接位于这里，skinBaseVo仅兼容回退）。",
       "仅generalID716，按OL SkinID映射十周年955组成对静态资源；包装VO图片getter/方法和本地动态可用性，映射条目UI dynamicState归零；不改localSkinSelections发送隔离。",
       "显示区域由原生SkinsizeType决定（11-18快照skinImgComplete@7482756：VERTICAL2=350x464比0.754、BANNER1=536x380比1.41、SKIN_169=335x594比0.564），不是图片像素。十周年大图竖版574x761比0.754、横版876x632比1.386。apply按大图真实宽高比选最近框（>=1.15 BANNER、<=0.9 VERTICAL、否则SKIN_169），映射生效时覆盖SkinsizeType/IsBanner/Is169，恢复时回退原生。",

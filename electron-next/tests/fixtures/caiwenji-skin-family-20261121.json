@@ -1,0 +1,130 @@
+{
+  "sources": {
+    "tmp\\ol-lamp\\character.json": "646ad9b8fea6e56e81717b2bb46199ec3f818b4c0fd8c6c0d82690594d165efb",
+    "tmp\\ol-lamp\\cha_gs_dbs_fs_skininfo.json": "9e07d018df08765d055cf9443bb9f7a83013f4c70fafb30bc585bcc5bda33781",
+    "tmp\\ten-year-userscript-audit-20261120\\decoded\\GeneralCards.json": "a77f265aa446dda0610fc9dfa4b007bd314b61baf09b7891a2222268ebefc822",
+    "tmp\\ten-year-userscript-audit-20261120\\decoded\\GameGeneralConfig.json": "671c7833138c9fe1fe253bdc41cad9a2993debb863bae0bdd266a2d4c325cdba",
+    "tmp\\ten-year-userscript-audit-20261120\\decoded\\GeneralSkinInfoConfig.json": "78f937c1a49d5b490e8983fde2b414a3d4db2c50bcdb4d2af2de2a202f1c652b"
+  },
+  "olGenerals": [
+    {
+      "id": 57,
+      "family": "蔡文姬",
+      "label": "蔡文姬"
+    },
+    {
+      "id": 112,
+      "family": "蔡文姬",
+      "label": "SP蔡文姬"
+    },
+    {
+      "id": 505,
+      "family": "蔡文姬",
+      "label": "界蔡文姬"
+    }
+  ],
+  "olSkinIDs": {
+    "57": [
+      5703,
+      5701,
+      5705,
+      5706,
+      5707,
+      5708,
+      5709,
+      5710
+    ],
+    "112": [
+      11201,
+      11202,
+      11203,
+      11204,
+      11205,
+      11206,
+      11207,
+      11208,
+      11209,
+      11210,
+      11211,
+      11212
+    ],
+    "505": [
+      50501,
+      50502,
+      50503
+    ]
+  },
+  "tenCharacter": {
+    "CharacterId": 1330,
+    "Name": "乐蔡文姬",
+    "exType": 76,
+    "country": 4,
+    "hp": 3,
+    "Spell": [
+      2487,
+      2488
+    ],
+    "gender": 2
+  },
+  "tenGeneral": {
+    "GeneralID": 1330,
+    "GeneralName": "蔡文姬",
+    "ExType": 76
+  },
+  "staticSkins": [
+    {
+      "SkinID": 1133001,
+      "ItemName": "经典形象*乐蔡文姬",
+      "Resource": 1133001,
+      "SkinGradeType": 1
+    },
+    {
+      "SkinID": 6133001,
+      "ItemName": "姝丽风华*乐蔡文姬",
+      "Resource": 6133001,
+      "SkinGradeType": 6
+    },
+    {
+      "SkinID": 5133001,
+      "ItemName": "众乐和鸣*乐蔡文姬",
+      "Resource": 5133001,
+      "SkinGradeType": 5
+    },
+    {
+      "SkinID": 4133001,
+      "ItemName": "暮雪归鸿*乐蔡文姬",
+      "Resource": 4133001,
+      "SkinGradeType": 4
+    },
+    {
+      "SkinID": 5133002,
+      "ItemName": "日暮晚风*乐蔡文姬",
+      "Resource": 5133002,
+      "SkinGradeType": 5
+    },
+    {
+      "SkinID": 6133002,
+      "ItemName": "瑞雪氤氲*乐蔡文姬",
+      "Resource": 6133002,
+      "SkinGradeType": 6
+    },
+    {
+      "SkinID": 5133003,
+      "ItemName": "怀珠韫玉*乐蔡文姬",
+      "Resource": 5133003,
+      "SkinGradeType": 5
+    },
+    {
+      "SkinID": 5133004,
+      "ItemName": "菲菲公主*乐蔡文姬",
+      "Resource": 5133004,
+      "SkinGradeType": 11
+    }
+  ],
+  "dynamicSkinIDs": [
+    8133001,
+    7133001,
+    8133002,
+    7133003
+  ]
+}

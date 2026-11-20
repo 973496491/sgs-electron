@@ -1,0 +1,659 @@
+{
+  "description": "Public PNG pairs verified during static picker investigations; not account data.",
+  "pairs": {
+    "522401": {
+      "big": {
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/522401.png",
+        "checkedUtc": "2026-11-20T16:22:48.245207+00:00",
+        "status": 200,
+        "contentType": "image/png",
+        "bytes": 821100,
+        "sha256": "e100fa23ed89b3d72d7a41e85f1daf9bfa1bb27b9b6f7e9f39b6791c63542835",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/522401.png",
+        "checkedUtc": "2026-11-20T16:22:48.245608+00:00",
+        "status": 200,
+        "contentType": "image/png",
+        "bytes": 119247,
+        "sha256": "f9ab964e552d0ed981246664e79110dd5fd3e169c4ae6e8b6a0183dc6e23e8f0",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "103801": {
+      "big": {
+        "skinID": 103801,
+        "resource": "103801",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/103801.png",
+        "checkedUtc": "2026-11-20T17:09:54.087442+00:00",
+        "status": 200,
+        "bytes": 171801,
+        "contentType": "image/png",
+        "sha256": "66039523bf364a24b26c9f24fab73aa853ba7b423af4377d80fca0e916971cc7",
+        "pngDimensions": [
+          574,
+          761
+        ]
+      },
+      "seat": {
+        "skinID": 103801,
+        "resource": "103801",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/103801.png",
+        "checkedUtc": "2026-11-20T17:09:54.088021+00:00",
+        "status": 200,
+        "bytes": 118143,
+        "contentType": "image/png",
+        "sha256": "5057731435ab7aec7016b168831381ff7227358e4d3b8a8c9d0f339fc0b13ed7",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "303801": {
+      "big": {
+        "skinID": 303801,
+        "resource": "303801",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/303801.png",
+        "checkedUtc": "2026-11-20T17:09:54.088355+00:00",
+        "status": 200,
+        "bytes": 211301,
+        "contentType": "image/png",
+        "sha256": "2a2d33ffe8ec41c22f189c98968dd2c092c19a940ee14ebe8ecdb5a85f4a9578",
+        "pngDimensions": [
+          574,
+          761
+        ]
+      },
+      "seat": {
+        "skinID": 303801,
+        "resource": "303801",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/303801.png",
+        "checkedUtc": "2026-11-20T17:09:54.088577+00:00",
+        "status": 200,
+        "bytes": 125569,
+        "contentType": "image/png",
+        "sha256": "6c38df20443a893eccb761851ab3cb8be81f23a55e101f7fbadf0b057ad6f7f0",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "303802": {
+      "big": {
+        "skinID": 303802,
+        "resource": "303802",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/303802.png",
+        "checkedUtc": "2026-11-20T17:09:54.312959+00:00",
+        "status": 200,
+        "bytes": 172101,
+        "contentType": "image/png",
+        "sha256": "6bdeb66709085b7b45ebd84ed3ba232acb69115ba0e5ad423304dde79383a845",
+        "pngDimensions": [
+          574,
+          761
+        ]
+      },
+      "seat": {
+        "skinID": 303802,
+        "resource": "303802",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/303802.png",
+        "checkedUtc": "2026-11-20T17:09:54.327097+00:00",
+        "status": 200,
+        "bytes": 109472,
+        "contentType": "image/png",
+        "sha256": "c0b3141a672b9725d84ca4de5014c56c08c0195c9c2e26c7fcae2b232ad4f4c9",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "403801": {
+      "big": {
+        "skinID": 403801,
+        "resource": "403801",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/403801.png",
+        "checkedUtc": "2026-11-20T17:09:54.397747+00:00",
+        "status": 200,
+        "bytes": 222228,
+        "contentType": "image/png",
+        "sha256": "6d0d9296e9d20253111ef12b41d62f5a238778ed493060a99a246cfc9970ace9",
+        "pngDimensions": [
+          574,
+          761
+        ]
+      },
+      "seat": {
+        "skinID": 403801,
+        "resource": "403801",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/403801.png",
+        "checkedUtc": "2026-11-20T17:09:54.398391+00:00",
+        "status": 200,
+        "bytes": 113528,
+        "contentType": "image/png",
+        "sha256": "cfcfd7e98a4ede537ca4a89f21f2a8634fa427f3cfc486ddfa49311e18c71cee",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "503801": {
+      "big": {
+        "skinID": 503801,
+        "resource": "503801",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/503801.png",
+        "checkedUtc": "2026-11-20T17:09:54.409512+00:00",
+        "status": 200,
+        "bytes": 247493,
+        "contentType": "image/png",
+        "sha256": "ffcdb30a9b322484b661a45f74afb4955c93d4daf0b972afb0fb824dfcb05d72",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 503801,
+        "resource": "503801",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/503801.png",
+        "checkedUtc": "2026-11-20T17:09:54.488127+00:00",
+        "status": 200,
+        "bytes": 115786,
+        "contentType": "image/png",
+        "sha256": "95032b89fc2b993372bd31a66ade23b6157aa8763b0f5b85541213ffcb1069e9",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "603801": {
+      "big": {
+        "skinID": 603801,
+        "resource": "603801",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/603801.png",
+        "checkedUtc": "2026-11-20T17:09:54.507913+00:00",
+        "status": 200,
+        "bytes": 246252,
+        "contentType": "image/png",
+        "sha256": "be3e6e4b67b45de9777611a65f9e25c0632571268fd6ca5127f6c56dc93c6529",
+        "pngDimensions": [
+          574,
+          761
+        ]
+      },
+      "seat": {
+        "skinID": 603801,
+        "resource": "603801",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/603801.png",
+        "checkedUtc": "2026-11-20T17:09:54.508865+00:00",
+        "status": 200,
+        "bytes": 136225,
+        "contentType": "image/png",
+        "sha256": "9c61361e42c9acb32d9240727947a50770fdc1d3941456758f71b770bd053e43",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "603802": {
+      "big": {
+        "skinID": 603802,
+        "resource": "603802",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/603802.png",
+        "checkedUtc": "2026-11-20T17:09:54.593609+00:00",
+        "status": 200,
+        "bytes": 937465,
+        "contentType": "image/png",
+        "sha256": "4071b6469bbecf35e8d50907df22c27e6c993536e72d7d8369605247d4100f95",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 603802,
+        "resource": "603802",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/603802.png",
+        "checkedUtc": "2026-11-20T17:09:54.681630+00:00",
+        "status": 200,
+        "bytes": 121681,
+        "contentType": "image/png",
+        "sha256": "5ed84ee1fe76847b2fba99b8f0bd2eba753a5f132bae772f0543ab144a3b865e",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "603803": {
+      "big": {
+        "skinID": 603803,
+        "resource": "603803",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/603803.png",
+        "checkedUtc": "2026-11-20T17:09:54.742207+00:00",
+        "status": 200,
+        "bytes": 239265,
+        "contentType": "image/png",
+        "sha256": "4ce44e42e13cc2b0f4d666182ebe9b899570e02774b605b1c869fc330b325171",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 603803,
+        "resource": "603803",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/603803.png",
+        "checkedUtc": "2026-11-20T17:09:54.750950+00:00",
+        "status": 200,
+        "bytes": 107946,
+        "contentType": "image/png",
+        "sha256": "b3c48e68f626db991c06fff3da3451a8413205195705501b723a205d5dfcdfae",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "503802": {
+      "big": {
+        "skinID": 503802,
+        "resource": "503802",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/503802.png",
+        "checkedUtc": "2026-11-20T17:09:54.802431+00:00",
+        "status": 200,
+        "bytes": 992960,
+        "contentType": "image/png",
+        "sha256": "a82b7547e6641c1453e14d74a9c14f800ee248ae9e7fd6b1a725e0968b20e369",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 503802,
+        "resource": "503802",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/503802.png",
+        "checkedUtc": "2026-11-20T17:09:54.838867+00:00",
+        "status": 200,
+        "bytes": 125031,
+        "contentType": "image/png",
+        "sha256": "a7804c8a0c1432836b6089f796421fef864437a71bf51d6967181561aa711331",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "403802": {
+      "big": {
+        "skinID": 403802,
+        "resource": "403802",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/403802.png",
+        "checkedUtc": "2026-11-20T17:09:54.876577+00:00",
+        "status": 200,
+        "bytes": 945967,
+        "contentType": "image/png",
+        "sha256": "ca932aee15408c0e37e5fb3fb8e5372a82c582b58acc6bf4493d3f6f7bae9831",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 403802,
+        "resource": "403802",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/403802.png",
+        "checkedUtc": "2026-11-20T17:09:54.941968+00:00",
+        "status": 200,
+        "bytes": 115493,
+        "contentType": "image/png",
+        "sha256": "02ca8b075a0f4b8a25795b77996c7c844ed6f3e66be3db26ad1f42cc3bd0a765",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "123001": {
+      "big": {
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/123001.png",
+        "checkedUtc": "2026-11-20T17:14:18.167422+00:00",
+        "status": 200,
+        "contentType": "image/png",
+        "bytes": 919759,
+        "sha256": "b2d393cf302c73d235266ebcce06d113a5a2baf346a75b36379e1cd110b7ce37",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/123001.png",
+        "checkedUtc": "2026-11-20T17:14:18.095912+00:00",
+        "status": 200,
+        "contentType": "image/png",
+        "bytes": 115753,
+        "sha256": "3c200300ffee6bd8bc27222e5d359f27f5c23fc36dd6a5a332495067ae326efb",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "523001": {
+      "big": {
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/523001.png",
+        "checkedUtc": "2026-11-20T17:14:18.188945+00:00",
+        "status": 200,
+        "contentType": "image/png",
+        "bytes": 1046771,
+        "sha256": "3e0e631bea9ac6eb51cf62a5742aa98b676d48059d852c721248e30537131b41",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/523001.png",
+        "checkedUtc": "2026-11-20T17:14:18.114671+00:00",
+        "status": 200,
+        "contentType": "image/png",
+        "bytes": 115080,
+        "sha256": "59fbcbe92e1b3b4a2b31a56e5a81c27947e18a2e872d9fd05478a9b37f181cde",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "1133001": {
+      "big": {
+        "skinID": 1133001,
+        "resource": "1133001",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/1133001.png",
+        "checkedUtc": "2026-11-20T17:53:57.048554+00:00",
+        "status": 200,
+        "bytes": 615458,
+        "contentType": "image/png",
+        "sha256": "39af1c09659ffa55132426d8a408c9f4467067e4ebe6d75c6976d14084f96ea3",
+        "pngDimensions": [
+          574,
+          761
+        ]
+      },
+      "seat": {
+        "skinID": 1133001,
+        "resource": "1133001",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/1133001.png",
+        "checkedUtc": "2026-11-20T17:53:57.048936+00:00",
+        "status": 200,
+        "bytes": 105558,
+        "contentType": "image/png",
+        "sha256": "ca00e5159bdb3a583937035a77e637b7ce7d8c3d8bfa8ad34692136e564b0673",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "6133001": {
+      "big": {
+        "skinID": 6133001,
+        "resource": "6133001",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/6133001.png",
+        "checkedUtc": "2026-11-20T17:53:57.049199+00:00",
+        "status": 200,
+        "bytes": 886749,
+        "contentType": "image/png",
+        "sha256": "b6821eea62158f78f386c0db23bc7eb7dee5892afe7f933d54df252e1bf4f534",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 6133001,
+        "resource": "6133001",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/6133001.png",
+        "checkedUtc": "2026-11-20T17:53:57.049439+00:00",
+        "status": 200,
+        "bytes": 118367,
+        "contentType": "image/png",
+        "sha256": "37ba676a3f39fb4b0d0fb15960587ccc51531cb1e985e0087f90eb923b9a195b",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "5133001": {
+      "big": {
+        "skinID": 5133001,
+        "resource": "5133001",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/5133001.png",
+        "checkedUtc": "2026-11-20T17:53:57.263104+00:00",
+        "status": 200,
+        "bytes": 983818,
+        "contentType": "image/png",
+        "sha256": "43448595c6b458373bf5451b693ed781b85fbb94bfc57bd4c5086672b9f92fa1",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 5133001,
+        "resource": "5133001",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/5133001.png",
+        "checkedUtc": "2026-11-20T17:53:57.263333+00:00",
+        "status": 200,
+        "bytes": 117245,
+        "contentType": "image/png",
+        "sha256": "8bd72bc7d9e26031c116bf8b0cb352832e609151d971688026aeb1df2e3b91be",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "4133001": {
+      "big": {
+        "skinID": 4133001,
+        "resource": "4133001",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/4133001.png",
+        "checkedUtc": "2026-11-20T17:53:57.283449+00:00",
+        "status": 200,
+        "bytes": 901353,
+        "contentType": "image/png",
+        "sha256": "f4afe6ff28fcc889b8a24e452dd00f7f90d71c8f4c1d3cb77770515a3e0bd919",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 4133001,
+        "resource": "4133001",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/4133001.png",
+        "checkedUtc": "2026-11-20T17:53:57.340722+00:00",
+        "status": 200,
+        "bytes": 110549,
+        "contentType": "image/png",
+        "sha256": "a64f7b989fa194b7847aad9ca088314d27254181fdfae2796d72595550bb475f",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "5133002": {
+      "big": {
+        "skinID": 5133002,
+        "resource": "5133002",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/5133002.png",
+        "checkedUtc": "2026-11-20T17:53:57.445310+00:00",
+        "status": 200,
+        "bytes": 885817,
+        "contentType": "image/png",
+        "sha256": "f06161007d1381508eecdc3767a985ddd8d779acb11b2d2f1b947b2105a4a489",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 5133002,
+        "resource": "5133002",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/5133002.png",
+        "checkedUtc": "2026-11-20T17:53:57.445566+00:00",
+        "status": 200,
+        "bytes": 117803,
+        "contentType": "image/png",
+        "sha256": "249ccc5ec7a56f1c5e99a1c39fbee2cb452946ec875f13482534dc21301fecbd",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "6133002": {
+      "big": {
+        "skinID": 6133002,
+        "resource": "6133002",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/6133002.png",
+        "checkedUtc": "2026-11-20T17:53:57.489174+00:00",
+        "status": 200,
+        "bytes": 1079030,
+        "contentType": "image/png",
+        "sha256": "480b1aad0c90c2c3614aba518ed40f1cd9cab80ad74121c46358f37bfb500ad5",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 6133002,
+        "resource": "6133002",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/6133002.png",
+        "checkedUtc": "2026-11-20T17:53:57.507220+00:00",
+        "status": 200,
+        "bytes": 115772,
+        "contentType": "image/png",
+        "sha256": "59d1964055852852500aaacd6a8b5c10438310f79af21edf22e240cf8f3b00a4",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "5133003": {
+      "big": {
+        "skinID": 5133003,
+        "resource": "5133003",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/5133003.png",
+        "checkedUtc": "2026-11-20T17:53:57.531911+00:00",
+        "status": 200,
+        "bytes": 1094288,
+        "contentType": "image/png",
+        "sha256": "7b558bf0852e64f02c9e3edf4ab799d93fb6ee1b434e8fed06673b4623364c55",
+        "pngDimensions": [
+          876,
+          632
+        ]
+      },
+      "seat": {
+        "skinID": 5133003,
+        "resource": "5133003",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/5133003.png",
+        "checkedUtc": "2026-11-20T17:53:57.607164+00:00",
+        "status": 200,
+        "bytes": 127600,
+        "contentType": "image/png",
+        "sha256": "4da6424b00b2ea2b15c25c9caf1975d3a314c8bc72656794aceb72da2d15bb19",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    },
+    "5133004": {
+      "big": {
+        "skinID": 5133004,
+        "resource": "5133004",
+        "kind": "big/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/static/5133004.png",
+        "checkedUtc": "2026-11-20T17:53:57.677686+00:00",
+        "status": 200,
+        "bytes": 636502,
+        "contentType": "image/png",
+        "sha256": "9892d1ddde7041456f70d3afb4a8e1d4ad0b6a1eb22ac5a08f5c10ca139c9028",
+        "pngDimensions": [
+          574,
+          761
+        ]
+      },
+      "seat": {
+        "skinID": 5133004,
+        "resource": "5133004",
+        "kind": "seat/static",
+        "url": "https://web.sanguosha.com/10/pc/res/assets/runtime/general/seat/static/5133004.png",
+        "checkedUtc": "2026-11-20T17:53:57.698428+00:00",
+        "status": 200,
+        "bytes": 109460,
+        "contentType": "image/png",
+        "sha256": "cf6bc042d890e5b8691f4e2f6a36ee06148047ab058d1d893512b52b95323f40",
+        "pngDimensions": [
+          229,
+          270
+        ]
+      }
+    }
+  }
+}

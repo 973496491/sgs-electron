@@ -139,7 +139,7 @@ function makeWindowClass() {
 // Native view: clicking a skin sets the pending id and emits CLOSE_SKIN_WINDOW, and destroy()
 // is what actually sends the SET request. One class per harness, so the tabs module hooks a fresh
 // prototype (the real build has nqt.prototype shared by SelectSkinWindow and 皮肤详情).
-function makeViewClass() {
+function makeViewClass(options = {}) {
   class FakeView {
     constructor(manager, generalID) {
       this.manager = manager;
@@ -216,7 +216,7 @@ function makeViewClass() {
       FakeView, { CLOSE_SKIN_WINDOW: 'CLOSE_SKIN_WINDOW' },
       { I() { return nativeManager; } }, { ChecHasShareSkin() { return false; }, CurrentPlayer: { ClientId: 42 } },
       { I() { return { GetGeneralInfo(id) { return { GeneralSeatImg: 'seat:' + id }; } }; } },
-      NativeItem, { SGSFLATCONTAINER_OVER: 'over', SGSFLATCONTAINER_OUT: 'out', SGSFLATCONTAINER_CLICK: 'click' },
+      options.itemClass || NativeItem, { SGSFLATCONTAINER_OVER: 'over', SGSFLATCONTAINER_OUT: 'out', SGSFLATCONTAINER_CLICK: 'click' },
       { SELECTSKIN_JINDIAN: '默认' });
   // Managers are per harness; native methods resolve the active view's manager on each call.
   let nativeManager;
@@ -278,7 +278,7 @@ function harness(options = {}) {
       new Function('return ({' + picker.calculateSize + '})')()));
     windowClasses.set(name, WindowClass);
   }
-  const ViewClass = makeViewClass();
+  const ViewClass = makeViewClass(options);
   function open(generalID, publish = true, windowName = options.windowName || 'SelectSkinWindow', loading = false) {
     const view = new ViewClass(manager, generalID);
     const picker = native.pickers[windowName], WindowClass = windowClasses.get(windowName);
