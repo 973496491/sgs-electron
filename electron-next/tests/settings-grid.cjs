@@ -8,7 +8,7 @@ const strings=vm.runInNewContext(source.slice(source.indexOf('[',p),e+5));
 const a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/',b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 const decode=t=>Buffer.from([...t].map(c=>a.includes(c)?b[a.indexOf(c)]:c).join(''),'base64').toString('utf8');
 const template=strings.filter(t=>t.length>3000).map(decode).find(t=>t.includes('id="wallpaperContainer"'));
-const factories=['hand-cards','top-marquee','deck-visibility','xushao-assist'].map((name,i)=>'const '+['createHand','createMarquee','createDeck','createXuShao'][i]+'='+require('../src/features/'+name+'.js').toString()+';').join('\n');
+const factories=['hand-cards','top-marquee','deck-visibility','xushao-assist','ten-year-native'].map((name,i)=>'const '+['createHand','createMarquee','createDeck','createXuShao','createTenYear'][i]+'='+require('../src/features/'+name+'.js').toString()+';').join('\n');
 const helpers=slice('  function findSwitchContainer(', '  function setLocalSkinSwitchState(')+slice('  function layoutClonedSwitchButton(', '  function setDebugSwitchState(')+slice('  function insertDebugButton(', '  // Hand-card main-panel host.');
 const layout=slice('  const settingsLayout = (() => {','  // 仅拥有秒杀区域')+slice('  const secKillPanel = (() => {','  function addFrame() {')+slice('  function _0x3f649d(', '  const _0x1b7acc =');
 const owners=slice('  const quanYuDisplay =','  function _0x43fd79({')+slice('  // 皮肤屏蔽按钮：','  window.__xcInstallSkinEffectButton =');
@@ -23,6 +23,8 @@ async function browserChecks() {
   const originalIds=Array.from(document.querySelectorAll('[id]'),n=>n.id);
   const originalShouQi=document.getElementById('autoSQKSwitch');
   const saved=new Map(),storage={getItem:k=>saved.get(k)||null,setItem:(k,v)=>saved.set(k,v)};
+  const tenYear=createTenYear({window,storage,catalog:{generals:[],skins:[]},getContext:()=>null,getAvatars:()=>[]});
+  window.__xcTenYearNative=tenYear;
   const general=()=>document.getElementById('xcSettingsGeneral'), blocking=()=>document.getElementById('xcSettingsBlocking');
   const setting=()=>general().closest('.setting');
   const openParent=()=>{setting().previousElementSibling.classList.add('active');setting().style.maxHeight='5000px';};
@@ -42,7 +44,7 @@ async function browserChecks() {
     xushao.start();xushao.mount();
     window[popupTable[554]]=window.innerWidth;_0x47344d();
   }
-  function cleanup(){hand.dispose();marquee.dispose();deck.dispose();xushao.dispose();quanYuDisplay.cleanupControls();cleanupSkinEffectButton();secKillPanel.dispose();}
+  function cleanup(){tenYear.unmountSettings();hand.dispose();marquee.dispose();deck.dispose();xushao.dispose();quanYuDisplay.cleanupControls();cleanupSkinEffectButton();secKillPanel.dispose();}
   const ordered=grid=>Array.from(grid.children).filter(n=>n.querySelector('input')&&getComputedStyle(n).display!=='none').sort((x,y)=>+getComputedStyle(x).order-+getComputedStyle(y).order);
   function assertGrid(grid){
     assert(getComputedStyle(grid).display==='grid','grid display');
@@ -56,6 +58,34 @@ async function browserChecks() {
     }
   }
   mount();await next();
+  check('local-skin gear opens display settings without an extra toggle or enabling skin',()=>{
+    const input=document.getElementById('localSkinThemeSwitch'),caption=document.getElementById('localSkinThemeLabel'),dialog=document.getElementById('xcTenYearScaleDialog');
+    const before=input.checked;
+    assert(caption.querySelector('.xc-settings-gear svg')&&dialog.hidden&&!document.getElementById('xcTenYearScaleToggle'));
+    caption.querySelector('.xc-settings-gear').click();assert(!dialog.hidden&&dialog.getBoundingClientRect().width>200,'visible display dialog');
+    assert(input.checked===before,'gear does not toggle local skin');
+    const range=document.getElementById('xcTenYearScale-static'),number=document.getElementById('xcTenYearScale-dynamic-number');
+    range.value='150';range.dispatchEvent(new Event('input',{bubbles:true}));
+    number.value='80';number.dispatchEvent(new Event('change',{bubbles:true}));
+    assert(tenYear.getScales().static===150&&tenYear.getScales().dynamic===80,'independent live inputs');
+    assert(document.getElementById('xcTenYearScale-static-number').value==='150'&&document.getElementById('xcTenYearScale-dynamic').value==='80','paired inputs synchronized');
+    assert(JSON.parse(saved.get('xcTenYearDisplayScale.v1')).dynamic===80,'preferences saved');
+    number.value='';number.dispatchEvent(new Event('change'));assert(number.value==='80','empty input restores preference');
+    const x=document.getElementById('xcTenYearScale-staticX'),y=document.getElementById('xcTenYearScale-dynamicY-number');
+    x.value='17';x.dispatchEvent(new Event('input'));y.value='-12';y.dispatchEvent(new Event('change'));
+    assert(tenYear.getDisplaySettings().staticX===17&&tenYear.getDisplaySettings().dynamicY===-12,'independent static/dynamic pan controls save immediately');
+    dialog.querySelector('[data-close]').click();assert(dialog.hidden&&caption.getAttribute('aria-expanded')==='false'&&input.checked===before,'close preserves local skin state');
+    input.disabled=true;caption.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+    assert(!dialog.hidden&&input.disabled&&input.checked===before,'locked local skin still allows keyboard access to settings');
+    dialog.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));assert(dialog.hidden,'escape closes settings');input.disabled=false;
+  });
+  check('local-skin delayed caption layout keeps the gear handler and never changes native switch state',()=>{
+    const input=document.getElementById('localSkinThemeSwitch'),caption=document.getElementById('localSkinThemeLabel'),before=input.checked;
+    layoutLocalSkinButton(input.closest('label.switch'),document.getElementById('cardBackThemeSwitch'));
+    caption.querySelector('.xc-settings-gear').click();
+    assert(!document.getElementById('xcTenYearScaleDialog').hidden&&input.checked===before,'new gear markup still reaches the caption owner');
+    document.getElementById('xcTenYearScaleDialog').querySelector('[data-close]').click();
+  });
   check('real startup chain creates a visible debug switch and reaches the hand-panel bridge without retired modules',()=>{
     const debug=document.getElementById('localSkinDebugSwitch'),grid=document.getElementById('xcSettingsTrailing');
     assert(debug&&debug.closest('.xc-settings-flow-item').getBoundingClientRect().height>0,'debug switch visible');
@@ -79,10 +109,10 @@ async function browserChecks() {
       assert(Math.abs(after[0]-before[0]-3)<0.05&&Math.abs(before[2]-after[2]-3)<0.05,'outer buttons move inward 3px '+id);
     }
   });
-  const gearIds=['skinPaperSwitch','cardBackThemeSwitch','effectBlockSwitch','handSortPanelSwitch','xcDeckVisibilityToggle'];
+  const gearIds=['skinPaperSwitch','cardBackThemeSwitch','effectBlockSwitch','handSortPanelSwitch','xcDeckVisibilityToggle','localSkinThemeSwitch'];
   function assertGears(hitTest=false){
     for(const id of gearIds){
-      const item=document.getElementById(id).closest('.xc-settings-flow-item'),caption=item.querySelector('.explanation');
+      const item=document.getElementById(id).closest('.xc-settings-flow-item'),caption=item.querySelector(id==='localSkinThemeSwitch'?'#localSkinThemeLabel':'.explanation');
       const icons=caption.querySelectorAll('.xc-settings-gear svg');
       assert(icons.length===1,'one explicit gear for '+id);
       const rect=icons[0].getBoundingClientRect();assert(rect.width>=11&&rect.height>=11,'visible vector gear for '+id);
@@ -94,7 +124,7 @@ async function browserChecks() {
       }
     }
   }
-  check('all five original settings captions have visible vector gears',()=>assertGears(true));
+  check('original settings and local-skin captions have visible clickable vector gears',()=>assertGears(true));
   check('wallpaper, card theme and effect-block gear clicks use original popup handlers',()=>{
     initCardThemePopup();_0x310ee8();_0x5fdac7();
     for(const [id,dialogId] of [['skinPaperSwitch','wallpaperDialog'],['cardBackThemeSwitch','cardThemeDialog'],['effectBlockSwitch','blockEffectDialog']]){
@@ -224,6 +254,18 @@ async function browserChecks() {
     assertDescriptions();
     assertHoverDescriptions();
   });
+  check('scale settings rebuild preserves preferences and rejects stale detached handlers',()=>{
+    const stale=document.getElementById('xcTenYearScale-static'),old=tenYear.getScales();
+    const nativeSwitch=document.getElementById('localSkinThemeSwitch');
+    tenYear.unmountSettings();
+    assert(nativeSwitch.isConnected&&!document.getElementById('xcTenYearScaleDialog'),'settings cleanup preserves local-skin control');
+    tenYear.mountSettings({document,placeControl:settingsLayout.place});
+    stale.value='200';stale.dispatchEvent(new Event('input'));
+    assert(tenYear.getScales().static===old.static&&document.getElementById('xcTenYearScale-dynamic-number').value==='80');
+    assert(!document.getElementById('xcTenYearScaleToggle')&&document.querySelectorAll('#xcTenYearScaleDialog').length===1);
+    document.getElementById('xcTenYearScaleDialog').querySelector('[data-reset]').click();
+    assert(tenYear.getScales().static===100&&tenYear.getScales().dynamic===100&&tenYear.getDisplaySettings().staticX===0&&tenYear.getDisplaySettings().dynamicY===0,'reset restores zoom and pan defaults');
+  });
   check('old local skin layout callbacks cannot steal rebuilt captions',()=>{
     const caption=document.getElementById('localSkinThemeLabel'),parent=caption.parentNode;
     layoutLocalSkinButton(oldLocal,oldSource);
@@ -233,7 +275,11 @@ async function browserChecks() {
   check('dispose removes owned dynamic controls and no callbacks recreate them',()=>{
     for(const id of ['handSortPanelSwitch','xcTopMarqueeToggle','xcSkinEffectToggle','xcDeckVisibilityToggle','xcQuanYuDisplayToggle'])assert(!document.getElementById(id),id);
   });
-  mount();setting().scrollIntoView();
+  mount();setting().scrollIntoView();document.getElementById('localSkinThemeLabel').click();await next();
+  check('scale dialog stays centered in the viewport after settings scroll',()=>{
+    const rect=document.getElementById('xcTenYearScaleDialog').getBoundingClientRect();
+    assert(Math.abs(rect.left+rect.width/2-document.documentElement.clientWidth/2)<1&&Math.abs(rect.top+rect.height/2-document.documentElement.clientHeight/2)<1,'viewport center '+JSON.stringify({x:rect.x,y:rect.y,w:rect.width,h:rect.height}));
+  });
   document.getElementById('xcSettingsGridTestResult').textContent=JSON.stringify(results);
 }
 const browser=['C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'].find(fs.existsSync);assert(browser);

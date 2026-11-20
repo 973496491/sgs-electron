@@ -31072,6 +31072,7 @@
     cardThemeFeature.dispose();
     xuShaoAssist.dispose();
     window.__xcNativeSkinTabs?.detach();
+    window.__xcTenYearNative?.unmountSettings();
     handCards.dispose();
     topMarquee.dispose();
     aliveCountrySummary.stop();
@@ -32196,9 +32197,10 @@
       if (description && item.getAttribute('data-tooltip') !== description) item.setAttribute('data-tooltip', description);
       if (description && control !== item && control.hasAttribute('data-tooltip') && control.getAttribute('data-tooltip') !== description)
         control.setAttribute('data-tooltip', description);
-      if (["skinPaperSwitch", "cardLabelSwitch", "cardBackThemeSwitch", "effectBlockSwitch", "handSortPanelSwitch", "xcDeckVisibilityToggle"].includes(input.id)) {
-        const label = item.querySelector(".explanation");
+      if (["skinPaperSwitch", "cardLabelSwitch", "cardBackThemeSwitch", "effectBlockSwitch", "handSortPanelSwitch", "xcDeckVisibilityToggle", "localSkinThemeSwitch"].includes(input.id)) {
+        const label = item.querySelector(input.id === 'localSkinThemeSwitch' ? '#localSkinThemeLabel' : '.explanation');
         if (label) {
+          if (input.id === 'localSkinThemeSwitch') label.style.cursor = 'pointer';
           if (!label.classList.contains("xc-settings-gear-caption")) label.classList.add("xc-settings-gear-caption");
           if (!label.querySelector(".xc-settings-gear")) {
             const gear = document.createElement("span");
@@ -32401,6 +32403,7 @@
         _0x47344d();
     }
     settingsLayout.mount();
+    window.__xcTenYearNative?.mountSettings({ document, placeControl: settingsLayout.place });
     _0x2a327f(), _0x4484c9(), _0x1b8c7a(), drawChatFace();
     secKillPanel.mount();
     cardThemeFeature.start();
@@ -40704,7 +40707,7 @@
   const createTenYearDynamic = function createTenYearDynamic({ window, log = () => {} }) {
     const BASE = 'https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/dynamic/';
     const templates = new Map(), players = new Map();
-    let attached = false;
+    let attached = false, transform = { scale: 100, x: 0, y: 0 };
     const engine = () => window.Laya || window.laya;
     const templateKey = spec => spec.resource + ':' + spec.layers.map(layer => layer.file + '@' + (layer.version || '')).join(',');
     function trim(protectedKey) {
@@ -40764,15 +40767,42 @@
       if (!player) return;
       players.delete(avatar);
       player.root?.destroy(true);
+      restoreFallback(player);
+    }
+    function restoreFallback(player) {
+      const saved = player.fallback;
+      if (saved?.hidden && saved.node.visible === false) saved.node.visible = saved.visible;
+      if (saved) saved.hidden = false;
+    }
+    function syncFallback(player) {
+      if (!player.root?.visible) { restoreFallback(player); return; }
+      const saved = player.fallback;
+      if (saved) { saved.node.visible = false; saved.hidden = true; }
     }
     function resize(avatar) {
       const p = players.get(avatar);
       if (!p?.root || !p.bounds) return;
       const box = avatar.scrollRect || { x: 0, y: 0, width: avatar.width || 146, height: avatar.height || 172 };
-      const scale = Math.max(box.width / p.bounds.width, box.height / p.bounds.height);
+      const scale = Math.max(box.width / p.bounds.width, box.height / p.bounds.height) * transform.scale / 100;
       p.root.scale(scale, scale);
-      p.root.pos((box.x || 0) + box.width / 2 - (p.bounds.x + p.bounds.width / 2) * scale,
-        (box.y || 0) + box.height / 2 - (p.bounds.y + p.bounds.height / 2) * scale);
+      p.root.pos((box.x || 0) + box.width / 2 - (p.bounds.x + p.bounds.width / 2) * scale + transform.x,
+        (box.y || 0) + box.height / 2 - (p.bounds.y + p.bounds.height / 2) * scale + transform.y);
+      syncFallback(p);
+    }
+    function setScale(value) {
+      return setTransform({ scale: value });
+    }
+    function setTransform(values) {
+      if (!values || Object.keys(values).some(key => !['scale', 'x', 'y'].includes(key) || !Number.isFinite(values[key]))) return false;
+      const next = { ...transform };
+      for (const [key, value] of Object.entries(values)) next[key] = key === 'scale' ?
+        Math.max(50, Math.min(200, Math.round(value / 5) * 5)) : Math.max(-200, Math.min(200, Math.round(value)));
+      transform = next;
+      for (const [avatar, player] of players) {
+        if (avatar.destroyed || avatar.seat?.IsDead || !player.isCurrent()) stop(avatar);
+        else resize(avatar);
+      }
+      return true;
     }
     function show(avatar, spec, isCurrent) {
       // This module only plays portrait idle. The existing skin-effects blocker
@@ -40798,6 +40828,7 @@
         const bounds = reference.getBounds();
         if (!(bounds.width > 0 && bounds.height > 0)) throw Error('动态可视区域为空');
         player.bounds = { x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height };
+        if (avatar.skinTex) player.fallback = { node: avatar.skinTex, visible: avatar.skinTex.visible, hidden: false };
         avatar.addChild(root); resize(avatar);
         log('待机已挂载：' + spec.id + '，' + layers.map(layer => layer.file).join('+'));
       }).catch(error => {
@@ -40809,6 +40840,7 @@
       const player = players.get(avatar);
       if (player) player.visible = !!value;
       if (player?.root) player.root.visible = player.visible;
+      if (player) syncFallback(player);
     }
     function attach() { attached = true; }
     function reset() {
@@ -40823,7 +40855,7 @@
     function detach() {
       attached = false; reset();
     }
-    return { attach, detach, reset, prepare, show, stop, resize, visible,
+    return { attach, detach, reset, prepare, show, stop, resize, visible, setScale, setTransform,
       status: () => ({ players: players.size, templates: templates.size }) };
   };
   // END GENERATED MODULE: ten-year-dynamic
@@ -40832,6 +40864,21 @@
   const createTenYearNative = function createTenYearNative({ window, storage, catalog, getContext, getAvatars,
     loadImage, dynamicCatalog = [], dynamic = null, notify = () => {}, log = () => {} }) {
     const STORAGE = 'xcTenYearMergedSkins.v1', BASE = 'https://web.sanguosha.com/10/pc/res/assets/runtime/general/';
+    const SCALE_STORAGE = 'xcTenYearDisplayScale.v1';
+    const percent = value => typeof value === 'number' && Number.isFinite(value) ?
+      Math.max(50, Math.min(200, Math.round(value / 5) * 5)) : 100;
+    const offset = value => typeof value === 'number' && Number.isFinite(value) ? Math.max(-200, Math.min(200, Math.round(value))) : 0;
+    let display = { static: 100, dynamic: 100, staticX: 0, staticY: 0, dynamicX: 0, dynamicY: 0 }, settings = null;
+    try {
+      const stored = JSON.parse(storage.getItem(SCALE_STORAGE));
+      display = Object.fromEntries(Object.keys(display).map(key => [key,
+        key === 'static' || key === 'dynamic' ? percent(stored?.[key]) : offset(stored?.[key])]));
+    } catch (_) {}
+    function applyDynamicSettings() {
+      if (typeof dynamic?.setTransform === 'function') dynamic.setTransform({ scale: display.dynamic, x: display.dynamicX, y: display.dynamicY });
+      else dynamic?.setScale?.(display.dynamic);
+    }
+    applyDynamicSettings();
     const generals = new Map(catalog.generals.map(row => [row[0], { family: row[1], label: row[2] }]));
     const rows = new Map([...catalog.skins, ...dynamicCatalog].map(row => [String(row[0]), row]));
     const artKey = row => row[9] ? 'dynamic:' + row[9].resource : 'static:' + row[1];
@@ -41057,10 +41104,12 @@
       }
       const clipped = clip?.width > 0 && clip?.height > 0;
       const wBox = clipped ? clip.width : width, hBox = clipped ? clip.height : height;
-      const scale = clipped ? Math.max(wBox / image.width, hBox / image.height) : Math.min(width / image.width, height / image.height);
+      const base = clipped ? Math.max(wBox / image.width, hBox / image.height) : Math.min(width / image.width, height / image.height);
+      const scale = base * display.static / 100;
       const w = image.width * scale, h = image.height * scale;
       texture.size?.(w, h);
-      texture.pos?.((clipped ? clip.x || 0 : 0) + (wBox - w) / 2, (clipped ? clip.y || 0 : 0) + (hBox - h) / 2);
+      texture.pos?.((clipped ? clip.x || 0 : 0) + (wBox - w) / 2 + display.staticX,
+        (clipped ? clip.y || 0 : 0) + (hBox - h) / 2 + display.staticY);
       texture.scaleX = texture.scaleY = 1;
       if (!clipped && !avatar.__xcTenYearFitWarned) {
         avatar.__xcTenYearFitWarned = true; log('裁切区域不可用，暂按完整图显示');
@@ -41146,7 +41195,9 @@
           const result = original.apply(this, args); dynamic?.visible(this, args[0]); return result;
         });
         for (const name of ['ShowType', 'ClearFilter']) add(name, function (original, args) {
-          const result = original.apply(this, args); showDynamic(this, avatarChoice(this)); return result;
+          const result = original.apply(this, args), row = avatarChoice(this);
+          if (row && this.__xcTenYearFitted) fit(this);
+          showDynamic(this, row); return result;
         });
       }
     }
@@ -41189,7 +41240,113 @@
       }
       renderedAvatars.clear();
     }
+    function renderSettings() {
+      if (!settings) return;
+      for (const [key, inputs] of Object.entries(settings.inputs)) {
+        inputs.range.value = inputs.number.value = String(display[key]);
+      }
+    }
+    function setScales(values) {
+      if (!values || Object.keys(values).some(key => !['static', 'dynamic'].includes(key) ||
+        typeof values[key] !== 'number' || !Number.isFinite(values[key]))) return false;
+      return setDisplaySettings(values);
+    }
+    function setDisplaySettings(values) {
+      if (!values || Object.keys(values).some(key => !Object.prototype.hasOwnProperty.call(display, key) ||
+        typeof values[key] !== 'number' || !Number.isFinite(values[key]))) return false;
+      const next = { ...display };
+      for (const [key, value] of Object.entries(values)) next[key] = key === 'static' || key === 'dynamic' ? percent(value) : offset(value);
+      try { storage.setItem(SCALE_STORAGE, JSON.stringify(next)); }
+      catch (error) {
+        log('显示设置保存失败：' + error.message); notify('本地皮肤显示设置保存失败，保留原设置'); renderSettings(); return false;
+      }
+      display = next;
+      applyDynamicSettings();
+      if (active) for (const avatar of getAvatars() || []) {
+        if (avatarChoice(avatar) && avatar.__xcTenYearFitted) fit(avatar);
+      }
+      renderSettings(); return true;
+    }
+    function unmountSettings() {
+      const old = settings; settings = null;
+      if (!old) return;
+      old.caption.removeEventListener('click', old.click);
+      old.caption.removeEventListener('keydown', old.keydown);
+      for (const [key, value] of Object.entries(old.attributes)) {
+        if (value === null) old.caption.removeAttribute(key); else old.caption.setAttribute(key, value);
+      }
+      old.dialog.remove();
+    }
+    function mountSettings({ document, placeControl = () => {} } = {}) {
+      const grid = document?.getElementById('xcSettingsGeneral');
+      const caption = document?.getElementById('localSkinThemeLabel');
+      const control = document?.getElementById('localSkinThemeSwitch')?.closest('.xc-settings-flow-item');
+      if (!grid?.isConnected || !control?.isConnected || !caption?.isConnected) return;
+      if (settings?.control === control && settings.caption === caption && settings.dialog.isConnected) {
+        placeControl(settings.control); return;
+      }
+      unmountSettings();
+      // Remove retired/copied markup without taking ownership of the local-skin switch.
+      document.getElementById('xcTenYearScaleControl')?.remove();
+      document.getElementById('xcTenYearScaleDialog')?.remove();
+      const dialog = document.createElement('div');
+      dialog.id = 'xcTenYearScaleDialog'; dialog.hidden = true;
+      dialog.setAttribute('role', 'dialog'); dialog.setAttribute('aria-labelledby', 'xcTenYearScaleTitle');
+      dialog.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:340px;max-width:calc(100vw - 40px);max-height:calc(100vh - 32px);overflow:auto;box-sizing:border-box;padding:18px;background:#262626;color:#eee;border:1px solid #9b8154;border-radius:8px;box-shadow:0 8px 30px #0009;z-index:2147483646;font:14px sans-serif;pointer-events:auto;';
+      dialog.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><strong id="xcTenYearScaleTitle">本地皮肤设置</strong><button type="button" data-close aria-label="关闭皮肤设置">关闭</button></div>' +
+        '<p style="margin:0 0 14px;line-height:1.6">调整十周年皮肤，实时生效并自动保存。<br>右移、下移为正，左移、上移为负。<br>牌框大小不变，超出部分裁切。</p>';
+      const attributes = Object.fromEntries(['role', 'tabindex', 'aria-label', 'aria-controls', 'aria-expanded'].map(key => [key, caption.getAttribute(key)]));
+      const owner = settings = { control, caption, attributes, dialog, inputs: {} };
+      const live = () => settings === owner && control.isConnected && caption.isConnected && dialog.isConnected;
+      function open(value) {
+        if (!live()) return;
+        caption.setAttribute('aria-expanded', String(value));
+        dialog.hidden = !value;
+        if (value) dialog.querySelector('input')?.focus({ preventScroll: true });
+      }
+      caption.setAttribute('role', 'button'); caption.setAttribute('tabindex', '0'); caption.setAttribute('aria-label', '本地皮肤设置');
+      caption.setAttribute('aria-controls', dialog.id); caption.setAttribute('aria-expanded', 'false');
+      owner.click = event => { event.preventDefault(); event.stopPropagation(); open(true); };
+      owner.keydown = event => { if (event.key === 'Enter' || event.key === ' ') owner.click(event); };
+      caption.addEventListener('click', owner.click); caption.addEventListener('keydown', owner.keydown);
+      dialog.querySelector('[data-close]').addEventListener('click', () => open(false));
+      dialog.addEventListener('keydown', event => { if (event.key === 'Escape') open(false); });
+      for (const [kind, title] of [['static', '静态皮肤'], ['dynamic', '动态皮肤']]) {
+        const section = document.createElement('section');
+        const heading = document.createElement('strong'); heading.textContent = title;
+        section.appendChild(heading); section.style.cssText = 'border-top:1px solid #555;padding-top:12px;margin-top:14px;';
+        for (const [key, text, min, max, step, unit] of [[kind, '缩放', 50, 200, 5, '%'],
+          [kind + 'X', '水平平移', -200, 200, 1, 'px'], [kind + 'Y', '垂直平移', -200, 200, 1, 'px']]) {
+          const row = document.createElement('div'); row.style.cssText = 'margin:14px 0;';
+          const label = document.createElement('label'); label.textContent = text;
+          label.htmlFor = 'xcTenYearScale-' + key;
+          const line = document.createElement('div'); line.style.cssText = 'display:flex;align-items:center;gap:8px;margin-top:8px;';
+          const range = document.createElement('input'), number = document.createElement('input');
+          range.type = 'range'; number.type = 'number';
+          range.id = label.htmlFor; number.id = range.id + '-number';
+          for (const input of [range, number]) { input.min = String(min); input.max = String(max); input.step = String(step); input.setAttribute('aria-label', title + text); }
+          range.style.cssText = 'flex:1;min-width:0;'; number.style.cssText = 'width:58px;box-sizing:border-box;';
+          const suffix = document.createElement('span'); suffix.textContent = unit;
+          owner.inputs[key] = { range, number };
+          range.addEventListener('input', () => { if (live()) setDisplaySettings({ [key]: Number(range.value) }); });
+          number.addEventListener('change', () => {
+            if (!live()) return;
+            if (number.value.trim() && Number.isFinite(number.valueAsNumber)) setDisplaySettings({ [key]: number.valueAsNumber });
+            else renderSettings();
+          });
+          line.append(range, number, suffix); row.append(label, line); section.appendChild(row);
+        }
+        dialog.appendChild(section);
+      }
+      const reset = document.createElement('button'); reset.type = 'button'; reset.textContent = '恢复默认（100%，平移归零）';
+      reset.setAttribute('data-reset', '');
+      reset.addEventListener('click', () => { if (live()) setDisplaySettings({ static: 100, dynamic: 100, staticX: 0, staticY: 0, dynamicX: 0, dynamicY: 0 }); });
+      dialog.appendChild(reset); document.body.appendChild(dialog);
+      placeControl(control); renderSettings();
+    }
     return { attach, detach, sync, onSeatReady, bindView, fixItems, entries, pages, urls, validate,
+      mountSettings, unmountSettings, setScales, getScales: () => ({ static: display.static, dynamic: display.dynamic }),
+      setDisplaySettings, getDisplaySettings: () => ({ ...display }),
       label: gid => generals.get(Number(gid))?.label,
       choice: gid => choice(gid), status: () => ({ active, staticRecords: catalog.skins.length,
         dynamicRecords: dynamicCatalog.length, dynamic: dynamic?.status(), avatarOwners: avatarHooks.size }) };
@@ -41743,6 +41900,7 @@
     if (cardBackSwitch && document.body) {
       insertLocalSkinButton(cardBackSwitch);
       insertDebugButton(cardBackSwitch);
+      window.__xcTenYearNative?.mountSettings({ document, placeControl: row => window.__xcPlaceSettingsControl?.(row) });
       window.__xcInstallHandSortPanelButton?.();
       return;
     }

@@ -253,6 +253,7 @@ function setup(options = {}) {
       'Zhuge family selection across delayed native window '+name);
   }
   const env=setup(); await flush();
+  check(env.extension.getScales().static===100 && env.extension.getScales().dynamic===100, 'display scales default independently to 100 percent');
   const nativeClip=env.avatar.scrollRect;
   let {win,view}=env.open();
   check(env.legacyAccesses()===0, 'native picker initialization never accesses retired manual mapper');
@@ -279,6 +280,34 @@ function setup(options = {}) {
     env.avatar.skinTex.height===172 && Math.abs(env.avatar.skinTex.x-(146-env.avatar.skinTex.width)/2)<0.001 && env.avatar.skinTex.y===0,
     'landscape full-body image covers the native slot with symmetric center scaling');
   check(env.avatar.scrollRect===nativeClip && nativeClip.width===146 && nativeClip.height===172, 'existing native clip rectangle preserved');
+  const beforeScaleRequests=env.requests.length,baseWidth=env.avatar.skinTex.width;
+  check(env.extension.setScales({static:150,dynamic:80}) && Math.abs(env.avatar.skinTex.width-baseWidth*1.5)<0.001 &&
+    env.avatar.skinTex.height===258 && Math.abs(env.avatar.skinTex.y+43)<0.001 && env.avatar.scrollRect===nativeClip,
+    'static zoom updates the current full image around its center without changing the viewport');
+  env.extension.setScales({static:125});env.extension.setScales({static:150});
+  check(Math.abs(env.avatar.skinTex.width-baseWidth*1.5)<0.001 && env.requests.length===beforeScaleRequests && view.sent.length===1,
+    'successive adjustments recompute from source dimensions without reload or protocol changes');
+  check(env.extension.getScales().dynamic===80 && setup({data:env.data}).extension.getScales().static===150,
+    'independent dynamic preference survives static changes and a newly constructed owner restores saved scales');
+  env.extension.setDisplaySettings({staticX:18,staticY:-11,dynamicX:-9,dynamicY:6});
+  check(Math.abs(env.avatar.skinTex.x-((146-env.avatar.skinTex.width)/2+18))<0.001 && env.avatar.skinTex.y===-54 &&
+    env.avatar.scrollRect===nativeClip && env.requests.length===beforeScaleRequests && view.sent.length===1,
+    'static horizontal and vertical pan act after zoom without moving the viewport or issuing skin changes');
+  const restoredDisplay=setup({data:env.data});
+  check(restoredDisplay.extension.getDisplaySettings().staticX===18 && restoredDisplay.extension.getDisplaySettings().dynamicX===-9 &&
+    restoredDisplay.extension.getDisplaySettings().dynamicY===6,'static and dynamic offsets persist independently with legacy zoom preferences');
+  restoredDisplay.extension.detach();
+  env.extension.setDisplaySettings({staticX:0,staticY:0,dynamicX:0,dynamicY:0});
+  const failingScale=setup({failStorage:true});
+  check(!failingScale.extension.setScales({static:160}) && failingScale.extension.getScales().static===100,
+    'failed scale persistence leaves the current preference unchanged');failingScale.extension.detach();
+  check(!failingScale.extension.setDisplaySettings({staticX:25}) && failingScale.extension.getDisplaySettings().staticX===0,
+    'failed pan persistence preserves the prior offset');
+  const legacyDisplay=setup({data:new Map([['xcTenYearDisplayScale.v1',JSON.stringify({static:140,dynamic:75})]])});
+  check(legacyDisplay.extension.getScales().static===140 && legacyDisplay.extension.getDisplaySettings().dynamicX===0 && legacyDisplay.extension.getDisplaySettings().staticY===0,
+    'old scale-only preferences restore without changing zoom and default new pan fields to zero');legacyDisplay.extension.detach();
+  check(!env.extension.setScales({static:NaN}) && !env.extension.setScales({dynamic:'80'}), 'invalid numeric preferences are rejected');
+  env.extension.setScales({static:100,dynamic:100});
   stale.resolve(); check(env.avatar.skinTex.texture.url.includes('522401'), 'late OL image cannot overwrite selection');
   check(env.receive(8,777).SkinID===0 && env.seat.skin===0, 'real response consumer restores OL 0, never ten-year ID');
   check(env.receive(8,999,99).SkinID===999, 'another player response remains unchanged');
@@ -286,6 +315,14 @@ function setup(options = {}) {
   check(env.avatar.scrollRect===env.avatar.showRect && env.avatar.scrollRect.x===36 && env.avatar.scrollRect.width===73 &&
     Math.abs(env.avatar.skinTex.x-(36+(73-env.avatar.skinTex.width)/2))<0.001 && env.avatar.skinTex.height===172,
     'actual native half-card viewport keeps its center without custom image offsets');
+  env.extension.setScales({static:150});
+  check(env.avatar.skinTex.height===258 && Math.abs(env.avatar.skinTex.x-(36+(73-env.avatar.skinTex.width)/2))<0.001,
+    'manual zoom respects native half-card center');
+  env.extension.setDisplaySettings({staticX:-13,staticY:7});
+  check(Math.abs(env.avatar.skinTex.x-(36+(73-env.avatar.skinTex.width)/2-13))<0.001 && env.avatar.skinTex.y===-36,
+    'half-card pan preserves the native offset and uses logical pixels after zoom');
+  env.extension.setDisplaySettings({staticX:0,staticY:0});
+  env.extension.setScales({static:100});
   env.avatar.ShowType(1);env.avatar.loadSkin('OL/full');env.requests.at(-1).resolve();
   env.other.loadSkin('OL/other');check(env.requests.at(-1).url==='OL/other', 'another avatar is untouched');
   env.other.loadSkin('https://web.sanguosha.com/10/pc/legacy.png');env.requests.at(-1).resolve();

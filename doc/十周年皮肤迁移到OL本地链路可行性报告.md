@@ -1,5 +1,7 @@
 # 十周年皮肤迁移到 OL 本地链路可行性报告
 
+> 2026-11-21最新显示设置：按用户后续要求合入“本地皮肤”齿轮浮层，并增加静态/动态各自的水平、垂直平移；最新入口/验收见第21节，第20节保留第一轮独立缩放入口记录。版本仍保持1.0.15。
+
 > 第1～8节保留最初只读调查的结论和边界。用户随后授权修改并同步，指定用于 OL 吕玲绮；已实施状态及验证步骤见第9节。
 
 > 2026-11-21调查补核：已沿外部十周年小抄线索离线解出旧缓存的5435条皮肤配置及武将对应关系，名称“尚未解出”的旧结论以[十周年皮肤读取调查](十周年皮肤读取调查.md)最新节为准。本轮仅生成查询表和更新文档，尚未把名称索引接入现有面板，也未新增动态适配或部署；原有静态功能范围不变。
@@ -768,3 +770,76 @@ attach启用待机，detach停止骨骼、取消加载/超时、销毁模板，�
 | 三国杀打小抄.js | D6C537D899D7A15EDD88C4D637BADF8513F0708B271AA1A5DFCB0BAC79CD8215 |
 
 工程/游戏`version.json`哈希仍为`3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB`，脚本标记保持1.0.15；账号、用户配置、其它发布文件与播放器/目录均未改。未自动重启、热注入、云端发布或生成asar；文件已同步，当前游戏页面仍须用户重载后验收。
+
+## 20. 十周年静态/动态整体缩放设置（2026-11-21，版本不变）
+
+用户在仅调查之后授权“先按照整体缩放来设置，静态和动态进行区分”，用于自行进游戏查看实际效果。本轮在常用设置的本地皮肤后增加“十周年缩放”，打开浮窗分别设置静态/动态整体倍率，50%～200%、5%步进，支持滑条、百分比输入、自动保存与恢复默认。默认两者100%，不代用户选定缩放值。对当前本人头像即时重排；关闭浮窗仍保留倍率，重新载入与换局沿原链继续应用。本轮不扩展单皮肤倍率、人物偏移、单独人物/背景缩放或牌框外溢。
+
+### 20.1 模块、状态与真实生命周期
+
+- `ten-year-native.js`拥有独立本机持久键`xcTenYearDisplayScale.v1={static:100,dynamic:100}`和设置DOM；来源选择仍归`xcTenYearMergedSkins.v1`。`getScales`返回副本，`setScales`先持久化再更新画面，保存失败保留旧值并走已有提示/debug日志；无效输入拒绝，缺失/损坏偏好按100%。不使用全局通用状态袋，不改真实将/持有/协议。
+- 设置通过既有`window.__xcTenYearNative`桥提供`mountSettings/unmountSettings`，从第二IIFE真实`waitForCardBackSwitch`启动及核心`addFrame`重建入口可达；`settingsLayout.groups.xcSettingsGeneral`登记`xcTenYearScaleToggle`，位于本地皮肤后。同一DOM幂等，重建清旧浮窗/处理器所有权并拒旧节点事件，`Exit`明确卸载。普通皮肤`detach`清渲染而不移除设置入口，便于再次启用前调节；无新增全局监听、观察器、轮询。
+- 静态`loadSkinComplete -> fit`从原图宽高按自动适配比例再乘静态倍率，保持`scrollRect`和中心对称裁切；`ShowType/ClearFilter`补静态重排。动态`setScale -> resize`从已保存参考边界重算并缩放现有根Sprite，背景、人物、前景共用同一倍率，不重建骨骼、不重复下载、不累乘；加载期间的设置在真正挂载时应用。仍只影响当前本人十周年头像，不改选肤列表缩略图、其它玩家或OL资源。
+- 每播放器只在动画真正挂载且可见后隐藏静态回退`skinTex`，记录原`visible`；原生显隐、停止、reset、detach及失败恢复持有的隐藏状态，原先隐藏的不误开启。这样动态缩小时不会透出大尺寸静态人物；静态回退继续按静态倍率显示。原有场景/账号/选择代次与模板取消机制保留，攻击/技能屏蔽继续保留待机。
+
+### 20.2 验证与游戏内验收边界
+
+源码与真实原生方法摘录验证：`ten-year-native.cjs`118项、`ten-year-dynamic.cjs`34项；覆盖独立倍率/保存恢复、保存失败与非法值、即时更新无换肤发送/纹理请求、连续调整不累乘、半牌中心、加载中改倍率、静态底图隐藏与停止恢复。真实Chromium的`settings-grid.cjs`27项通过，含真实启动入口、两种输入联动、保存/恢复默认、重复挂载与重建、旧DOM失效及浮窗居中；截图`C:/Users/97349/AppData/Local/Temp/xc-settings-grid-test-8VQTfg/layout.png`。相邻评分设置27、分页42、组合8、诊断8、首次23、响应19、皮肤屏蔽52及版本7通过。装配一致性与主脚本/彩虹表语法检查通过。
+
+`ten-year-dynamic-electron.cjs`已扩展真实缩放和底图断言，使用实际Electron10.4.5、官方Laya core/ani与已下载SK/PNG，分别验证744001背景+角色、7133801/8133801座位SK：80%倍率按预期写入真实根Sprite，调整不换播放器且不累乘，连续帧像素变化，动态隐藏和detach后的像素精确回到原静态底图。隔离证据目录分别为`F:/Game/xc-ten-year-dynamic-bvzevI/resources/app/`、`F:/Game/xc-ten-year-dynamic-QsuYm8/resources/app/`、`F:/Game/xc-ten-year-dynamic-CmAe53/resources/app/`，含`result.json`、`scaled-80.png`等；未连接账号、未操作当前对局，不将隔离绘制当作游戏内视觉验收。
+
+用户验收：自行重载游戏页面或重开客户端，开启本地皮肤，选择十周年皮肤；设置→常用设置→十周年缩放，先试静态140%、动态80%，观察放大裁切/缩小留边，按需再调；换静态/动态、换将/换局后检查倍率保持，点恢复默认确认两项100%。本轮只整体居中缩放，牌框、姓名、血量和点击区域不变，放大允许裁切边缘。真实游戏内显示效果待用户验收。
+
+本轮只修改两现有功能模块、主脚本手写装配入口及其生成区块、相关测试和文档；没有新增/删除/移动发布文件，现有`release-files.json`映射已经覆盖，无需变更。版本标记与两份`version.json`保持1.0.15；不生成asar、不发布云端、不自动重启或热注入。回退成组恢复`ten-year-native.js/ten-year-dynamic.js`与主脚本，旧实现忽略新缩放键，原来源选择不必迁移。
+
+检索词：十周年整体缩放设置、十周年缩放、xcTenYearDisplayScale.v1、xcTenYearScaleToggle、静态缩放、动态缩放、getScales、setScales、setScale、mountSettings、静态底图恢复、80%缩放、118项、34项、默认100%。
+
+### 20.3 同步实际游戏加载环境完成
+
+核对实际宿主`F:/Game/SGSOL/resources/app/main.js`仍由`read-local-script`读取`%APPDATA%/SGSOL/三国杀打小抄.js`，`script/electron_frame.js`在`dom-ready`注入。同步前核对这三份部署文件与本轮改动前HEAD内容一致，没有覆盖其它用户改动；按唯一发布映射只写动态模块、静态适配模块、最后主脚本。使用`.xiaochao-install.lock`独占锁，锁内重查旧哈希与无待恢复事务，先备份、写安装事务，再同目录临时文件原子替换并核对源/部署SHA256；部署副本语法、118项原生链及34项播放器再次通过，事务已清理。
+
+备份目录`C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/67c000c595ff4837a05cfdc56a6672f0/`；`backup/0`动态、`backup/1`静态适配、`backup/2`主脚本，`deployment.json`记录前后哈希。工程/游戏两份`version.json`前后SHA256仍为`3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB`，主脚本标记保持1.0.15；账号、用户配置和其它发布文件均未改。
+
+| 文件（源/部署一致） | SHA256 |
+|---|---|
+| modules/features/ten-year-dynamic.js | FAC9A847895006B64E3BD9CBF7049372FEF52F6DA46A69618D8AC13425770C0C |
+| modules/features/ten-year-native.js | DB751FDC67A94F4D6C7A1CAAEE0C38DC488A4361C190420DE03550300C2C7A08 |
+| 三国杀打小抄.js | 9DE4D9475E182C75594AE98BFD242549C3B1A5658704CF4C2F9A29722F748A08 |
+
+已写入实际加载目录，未自动重启客户端、热注入当前页面、云端发布或生成asar；用户自行重载后才加载本轮设置并进行真实对局视觉验收。
+
+## 21. 本地皮肤齿轮浮层 / 静态动态平移（2026-11-21，版本不变）
+
+用户要求将十周年缩放合到本地皮肤，加入小齿轮打开浮层；平移在可实现时一并添加。现有静态`skinTex.pos`和动态根Sprite定位可直接在保留裁切及坐标系的前提下增加偏移，故本轮同时实现两项。
+
+### 21.1 用户入口、状态和模块职责
+
+独立“十周年缩放”开关已移除。设置→常用设置→本地皮肤右侧小齿轮（说明文字也可点）打开“本地皮肤设置”浮层，按静态皮肤/动态皮肤分区，各有缩放50%～200%、水平平移与垂直平移-200～200px；平移1逻辑像素步进，右/下正、左/上负，所有输入即时生效并自动保存。“恢复默认”同时归100%、位移0。单位为头像局部逻辑像素，游戏整体放大时屏幕上的移动距离会随之变化；超出原牌框的部分裁切。动态背景、人物和前景一起缩放平移，姓名、血量、技能、原牌框与点击区不移动。
+
+`ten-year-native`继续唯一维护本机偏好`xcTenYearDisplayScale.v1`，新增`staticX/staticY/dynamicX/dynamicY`，保持原static/dynamic倍率；旧双字段配置缺偏移自动按0，不清旧缩放或来源选择。`getDisplaySettings/setDisplaySettings`查询副本/先保存后生效，失败保留旧值；`getScales/setScales`继续保留双倍率语义。静态fit在居中缩放公式后加staticX/Y；`applyDynamicSettings`显式调用播放器`setTransform({scale,x,y})`，播放器从参考bounds重算并在最终坐标加偏移，不累乘、不重载、不重播。平移/倍率按静态和动态全局区分，尚未扩展单皮肤偏好或拖拽人物。
+
+入口仍为`waitForCardBackSwitch`真实启动及`addFrame`设置重建→既有`__xcTenYearNative.mountSettings`。`settingsLayout`仅给原`localSkinThemeLabel`补统一SVG齿轮，事件/浮层归十周年扩展；caption click与Enter/Space阻止默认及冒泡，不改变本地皮肤开关，开关锁定仍可调整。`ensureFloatingLabel`延迟100/500ms布局会重置说明textContent而重建SVG，故将事件绑定在稳定caption上，布局补图标后仍可用。`unmountSettings`移除自己的caption处理器、恢复说明属性并移除浮层，不删除或改写原开关；旧DOM回调拒绝写入，无新增全局监听、观察器或轮询。换局/换账号、异步加载完成、半牌显示、ShowType/ClearFilter与退出沿原渲染/清理链使用新偏好。
+
+### 21.2 验证与游戏内验收
+
+`ten-year-native.cjs`123项、`ten-year-dynamic.cjs`37项通过，新增静态平移叠加缩放且无换肤发送/下载、静动态偏移独立保存、旧配置兼容、保存失败回退、半牌坐标、加载中倍率及偏移同时生效、连续平移不累加/不改变根Sprite或比例。真实Chromium `settings-grid.cjs`28项通过：真实启动接齿轮而无独立开关、点击不启用本地皮肤、锁定时仍可键盘打开、静动态平移控件、关闭/Escape/统一恢复默认、延迟重绘SVG仍可点击、重建和清理不删除原开关。截图与DOM证据`C:/Users/97349/AppData/Local/Temp/xc-settings-grid-test-fz10Ym/`。相邻评分设置27、皮肤屏蔽52、分页42、组合8、诊断8、首次23、响应19及版本7通过；装配与主脚本/彩虹表语法检查通过。
+
+真实Electron10.4.5+官方Laya、已下载素材分别测试744001背景/人物双层及7133801座位SK，80%缩放后右移18/上移13逻辑像素；实际根Sprite坐标相符且像素变化，反复修改不换播放器、不改变倍率或累加，连续动画帧与隐藏/停止恢复底图仍通过。隔离证据`F:/Game/xc-ten-year-dynamic-jc3dUM/resources/app/`、`F:/Game/xc-ten-year-dynamic-J7SzpO/resources/app/`含`panned-right18-up13.png/result.json`。这些为隔离引擎/DOM及原生方法摘录验证，未连接账号或操作当前对局，不代替用户游戏内视觉验收。
+
+自行重载页面或重开客户端后，点击本地皮肤齿轮，分别调整静态/动态的缩放、水平/垂直平移；检查旧倍率保持、切换皮肤/换局后偏好保持、恢复默认重置位置。版本1.0.15不变，无新增/删除/移动发布文件，现有release-files映射已覆盖两模块和主脚本；没有asar、云端发布、自动重启或热注入。回退成组恢复本轮两模块与主脚本；旧模块忽略偏移字段，仍能读取原缩放字段与来源选择。
+
+检索词：本地皮肤齿轮、取消独立开关、十周年平移、水平平移、垂直平移、staticX、staticY、dynamicX、dynamicY、setDisplaySettings、setTransform、caption事件、ensureFloatingLabel、123项、37项、28项。
+
+### 21.3 同步实际游戏环境完成
+
+再次核对`F:/Game/SGSOL/resources/app/main.js`的`read-local-script -> %APPDATA%/SGSOL/三国杀打小抄.js`和`script/electron_frame.js`的`dom-ready`入口。同步前确认本轮三份源码基线与实际安装内容逐字节一致，并保存基线哈希，锁内再次核对；按release-files只更新两功能模块、最后主脚本。持`.xiaochao-install.lock`独占锁、无待恢复事务，先备份并写恢复事务，再同目录临时文件原子替换；源/部署SHA256与部署副本语法及123项原生链、37项播放器检查通过，事务已清理。
+
+备份`C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/ffdaf11fc8354257b09adc5591ffa980/`，`backup/0`动态、`backup/1`静态适配、`backup/2`主脚本，`deployment.json`记录前后哈希。两份version.json仍为SHA256`3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB`，脚本版本1.0.15未改；未改账号/用户配置、其它发布文件，未重启、热注入、云端发布或生成asar。
+
+| 文件（源/部署一致） | SHA256 |
+|---|---|
+| modules/features/ten-year-dynamic.js | 5122968FD624E48D513B721BC4983A05D528D035953D013F9FB1C5183481D66D |
+| modules/features/ten-year-native.js | 5A4B33585FCB74F3AB77EE167AF5734146DB68E91E96CDB760F4740F1F0F4270 |
+| 三国杀打小抄.js | 5FDC34BDDFFD3DE95A058DDA3368FBD90BFFE02B02A9B0D7E2AAFAD50E67F0D0 |
+
+文件已部署，当前游戏页面仍需用户自行重载后才加载齿轮和平移设置，实际对局视觉效果待验收。

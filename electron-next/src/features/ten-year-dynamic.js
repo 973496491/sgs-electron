@@ -2,7 +2,7 @@
 module.exports = function createTenYearDynamic({ window, log = () => {} }) {
   const BASE = 'https://web.sanguosha.com/10/pc/res/assets/runtime/general/big/dynamic/';
   const templates = new Map(), players = new Map();
-  let attached = false;
+  let attached = false, transform = { scale: 100, x: 0, y: 0 };
   const engine = () => window.Laya || window.laya;
   const templateKey = spec => spec.resource + ':' + spec.layers.map(layer => layer.file + '@' + (layer.version || '')).join(',');
   function trim(protectedKey) {
@@ -62,15 +62,42 @@ module.exports = function createTenYearDynamic({ window, log = () => {} }) {
     if (!player) return;
     players.delete(avatar);
     player.root?.destroy(true);
+    restoreFallback(player);
+  }
+  function restoreFallback(player) {
+    const saved = player.fallback;
+    if (saved?.hidden && saved.node.visible === false) saved.node.visible = saved.visible;
+    if (saved) saved.hidden = false;
+  }
+  function syncFallback(player) {
+    if (!player.root?.visible) { restoreFallback(player); return; }
+    const saved = player.fallback;
+    if (saved) { saved.node.visible = false; saved.hidden = true; }
   }
   function resize(avatar) {
     const p = players.get(avatar);
     if (!p?.root || !p.bounds) return;
     const box = avatar.scrollRect || { x: 0, y: 0, width: avatar.width || 146, height: avatar.height || 172 };
-    const scale = Math.max(box.width / p.bounds.width, box.height / p.bounds.height);
+    const scale = Math.max(box.width / p.bounds.width, box.height / p.bounds.height) * transform.scale / 100;
     p.root.scale(scale, scale);
-    p.root.pos((box.x || 0) + box.width / 2 - (p.bounds.x + p.bounds.width / 2) * scale,
-      (box.y || 0) + box.height / 2 - (p.bounds.y + p.bounds.height / 2) * scale);
+    p.root.pos((box.x || 0) + box.width / 2 - (p.bounds.x + p.bounds.width / 2) * scale + transform.x,
+      (box.y || 0) + box.height / 2 - (p.bounds.y + p.bounds.height / 2) * scale + transform.y);
+    syncFallback(p);
+  }
+  function setScale(value) {
+    return setTransform({ scale: value });
+  }
+  function setTransform(values) {
+    if (!values || Object.keys(values).some(key => !['scale', 'x', 'y'].includes(key) || !Number.isFinite(values[key]))) return false;
+    const next = { ...transform };
+    for (const [key, value] of Object.entries(values)) next[key] = key === 'scale' ?
+      Math.max(50, Math.min(200, Math.round(value / 5) * 5)) : Math.max(-200, Math.min(200, Math.round(value)));
+    transform = next;
+    for (const [avatar, player] of players) {
+      if (avatar.destroyed || avatar.seat?.IsDead || !player.isCurrent()) stop(avatar);
+      else resize(avatar);
+    }
+    return true;
   }
   function show(avatar, spec, isCurrent) {
     // This module only plays portrait idle. The existing skin-effects blocker
@@ -96,6 +123,7 @@ module.exports = function createTenYearDynamic({ window, log = () => {} }) {
       const bounds = reference.getBounds();
       if (!(bounds.width > 0 && bounds.height > 0)) throw Error('动态可视区域为空');
       player.bounds = { x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height };
+      if (avatar.skinTex) player.fallback = { node: avatar.skinTex, visible: avatar.skinTex.visible, hidden: false };
       avatar.addChild(root); resize(avatar);
       log('待机已挂载：' + spec.id + '，' + layers.map(layer => layer.file).join('+'));
     }).catch(error => {
@@ -107,6 +135,7 @@ module.exports = function createTenYearDynamic({ window, log = () => {} }) {
     const player = players.get(avatar);
     if (player) player.visible = !!value;
     if (player?.root) player.root.visible = player.visible;
+    if (player) syncFallback(player);
   }
   function attach() { attached = true; }
   function reset() {
@@ -121,6 +150,6 @@ module.exports = function createTenYearDynamic({ window, log = () => {} }) {
   function detach() {
     attached = false; reset();
   }
-  return { attach, detach, reset, prepare, show, stop, resize, visible,
+  return { attach, detach, reset, prepare, show, stop, resize, visible, setScale, setTransform,
     status: () => ({ players: players.size, templates: templates.size }) };
 };

@@ -30,7 +30,7 @@ function setup(){
   addEventListener:(key,fn)=>listeners.set(key,fn),removeEventListener:(key,fn)=>{if(listeners.get(key)===fn)listeners.delete(key);},
   __xcIsSkinEffectsBlocked:()=>blocked};
  const owner=create({window,log:s=>logs.push(s)});
- const avatar=new Sprite();avatar.width=146;avatar.height=172;avatar.seat={};avatar.scrollRect={x:36,y:0,width:73,height:172};
+ const avatar=new Sprite();avatar.width=146;avatar.height=172;avatar.seat={};avatar.skinTex={visible:true};avatar.scrollRect={x:36,y:0,width:73,height:172};
  return {owner,window,avatar,timers,listeners,instances,logs,load:()=>instances.filter(t=>!t.destroyed).forEach(t=>t.emit('complete')),
   block(value){blocked=value;listeners.get('xc-skin-effects-change')?.();}};
 }
@@ -52,11 +52,28 @@ function setup(){
  check(root.children.length===2&&root.children.every(s=>s.name==='play'&&s.loop),'background and role each play real loop action');
  check(root.mouseEnabled===false&&root.mouseThrough===true,'animation layer does not intercept game clicks');
  check(Math.abs(root.scaleX-172/700)<1e-9&&root.x===72.5,'one coordinate transform respects native half-card clipping');
+ check(h.avatar.skinTex.visible===false,'mounted animation hides the static fallback to prevent duplicate figures at smaller scales');
+ h.owner.setScale(80);
+ check(Math.abs(root.scaleX-172/700*0.8)<1e-9 && root.x===72.5 && h.avatar.children[0]===root && h.instances.length===2,
+  'dynamic overall zoom transforms the existing background and role root without replaying or downloading');
+ h.owner.setScale(150);h.owner.setScale(80);
+ check(Math.abs(root.scaleX-172/700*0.8)<1e-9,'dynamic repeated adjustments use the saved unscaled bounds');
+ const beforePan={x:root.x,y:root.y,scale:root.scaleX};h.owner.setTransform({x:17,y:-12});
+ check(root.x===beforePan.x+17 && root.y===beforePan.y-12 && root.scaleX===beforePan.scale && h.avatar.children[0]===root,
+  'dynamic pan translates the combined role/background root in logical pixels without changing scale or player');
+ h.owner.setTransform({x:-4,y:9});h.owner.setTransform({x:17,y:-12});
+ check(root.x===beforePan.x+17 && root.y===beforePan.y-12,'dynamic repeated pan starts from reference bounds and never accumulates');
+ check(!h.owner.setTransform({x:NaN}) && !h.owner.setTransform({z:1}),'invalid transform updates leave current display unchanged');
+ h.owner.setTransform({x:0,y:0});
+ h.owner.setScale(100);
  h.owner.visible(h.avatar,false);check(root.visible===false,'native ShowSkeleton visibility can hide the layer');
+ check(h.avatar.skinTex.visible===true,'native animation hide restores static fallback visibility');
  h.block(true);check(!root.destroyed&&h.owner.status().players===1&&root.visible===false,'attack-effects blocking preserves idle player and native visibility');
  h.owner.visible(h.avatar,true);
+ check(h.avatar.skinTex.visible===false,'showing animation again owns only fallback visibility');
  h.block(false);await flush();check(h.avatar.children[0]===root&&h.instances.length===2,'toggling attack-effects block never rebuilds or interrupts idle');
  h.owner.detach();check(h.listeners.size===0&&h.timers.size===0&&h.instances.every(t=>t.destroyed),'detach releases players, templates, listener, and timers');
+ check(h.avatar.skinTex.visible===true,'detach restores the original static fallback');
 
  const initiallyBlocked=setup();initiallyBlocked.block(true);initiallyBlocked.owner.attach();initiallyBlocked.owner.show(initiallyBlocked.avatar,spec,()=>true);initiallyBlocked.load();await flush();
  check(initiallyBlocked.avatar.children.length===1&&initiallyBlocked.owner.status().players===1,'saved skin-effects blocking=true still permits ten-year idle, matching native policy');initiallyBlocked.owner.detach();
@@ -71,6 +88,11 @@ function setup(){
  check(completed.instances.every(t=>t.destroyed)&&completed.avatar.children.length===0,'detach between load completion and Promise continuation releases ready-but-uncommitted templates');
  const invisible=setup();invisible.owner.attach(()=>{});invisible.owner.show(invisible.avatar,spec,()=>true);invisible.owner.visible(invisible.avatar,false);invisible.load();await flush();
  check(invisible.avatar.children[0].visible===false,'native hide before loading remains effective after asynchronous mounting');invisible.owner.detach();
+ const earlyScale=setup();earlyScale.owner.attach();earlyScale.owner.show(earlyScale.avatar,spec,()=>true);earlyScale.owner.setTransform({scale:75,x:-8,y:10});earlyScale.load();await flush();
+ check(Math.abs(earlyScale.avatar.children[0].scaleX-172/700*0.75)<1e-9 && earlyScale.avatar.children[0].x===64.5 && earlyScale.avatar.children[0].y===96,
+  'zoom and pan changed during loading apply together when the asynchronous animation mounts');earlyScale.owner.detach();
+ const originallyHidden=setup();originallyHidden.avatar.skinTex.visible=false;originallyHidden.owner.attach();originallyHidden.owner.show(originallyHidden.avatar,spec,()=>true);originallyHidden.load();await flush();originallyHidden.owner.detach();
+ check(originallyHidden.avatar.skinTex.visible===false,'cleanup preserves a static fallback that was originally hidden');
  const bad=setup();const failed=bad.owner.prepare(spec);bad.instances[0].names=['attack'];bad.load();await assert.rejects(failed,/缺少待机/);await flush();
  check(bad.instances.every(t=>t.destroyed)&&bad.timers.size===0&&bad.owner.status().templates===0,'incompatible action fails preparation and releases partial resources');
  const timeout=setup();const pending=timeout.owner.prepare(spec);[...timeout.timers.values()][0]();await assert.rejects(pending,/超时/);await flush();
