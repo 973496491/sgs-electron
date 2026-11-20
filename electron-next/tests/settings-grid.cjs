@@ -15,6 +15,7 @@ const owners=slice('  const quanYuDisplay =','  function _0x43fd79({')+slice('  
 const tooltips=slice('  let _0x5ee876 = !1,','  function _0x208a6c()');
 function originalFunction(name){const i=source.indexOf('  function '+name+'('),j=source.indexOf('\n  }\n',i);assert(i>=0&&j>i);return source.slice(i,j+5);}
 const popups=['initCardThemePopup','_0x208a6c','_0x310ee8','_0x5fdac7'].map(originalFunction).join('\n');
+const bootstrap=originalFunction('waitForCardBackSwitch');
 async function browserChecks() {
   const results=[],check=(name,fn)=>{fn();results.push(name);};
   const assert=(v,m)=>{if(!v)throw Error(m||'assertion failed');};
@@ -31,11 +32,11 @@ async function browserChecks() {
   const marquee=createMarquee({window,document,storage,getLaya:()=>null,getTimer:()=>null});
   const deck=createDeck({window,document,storage,placeControl:settingsLayout.place,readCards:()=>[],readDiscardCards:()=>[],renderKnownCard:()=>document.createElement('span')});
   const xushao=createXuShao({window,document,storage,placeControl:settingsLayout.place,refreshLayout:()=>{},client:{read:()=>null,clearEggs(){},clearHighlights(){}}});
+  let mainPanelRequests=0;
+  window.__xcInstallHandSortPanelButton=()=>{mainPanelRequests++;hand.start();hand.attachMainPanel(host);hand.mount();};
   function mount(){
     openParent();settingsLayout.mount();secKillPanel.mount();
-    insertLocalSkinButton(document.getElementById('cardBackThemeSwitch'));
-    insertDebugButton(document.getElementById('cardBackThemeSwitch'));
-    hand.start();hand.attachMainPanel(host);hand.mount();
+    waitForCardBackSwitch(0);
     marquee.start();marquee.attachMainPanel(host);installSkinEffectButton();
     deck.start();deck.mountControls();quanYuDisplay.mountControls();_0x3f649d();
     xushao.start();xushao.mount();
@@ -55,6 +56,13 @@ async function browserChecks() {
     }
   }
   mount();await next();
+  check('real startup chain creates a visible debug switch and reaches the hand-panel bridge without retired modules',()=>{
+    const debug=document.getElementById('localSkinDebugSwitch'),grid=document.getElementById('xcSettingsTrailing');
+    assert(debug&&debug.closest('.xc-settings-flow-item').getBoundingClientRect().height>0,'debug switch visible');
+    assert(grid.querySelectorAll('input').length===1&&grid.querySelector('input')===debug,'only live debug control');
+    assert(mainPanelRequests===1&&document.getElementById('handSortPanelSwitch'),'startup continues to hand-panel mount');
+    assert(!document.getElementById('xcTenYearSkinsButton')&&!document.getElementById('xcTenYearSkinPanel'),'retired controls absent');
+  });
   check('all three sections use three-column automatic lists',()=>{assertGrid(general());assertGrid(blocking());assertGrid(document.getElementById('xcSettingsDaily'));});
   check('all three lists use the reduced eight-pixel row gap',()=>{
     for(const id of ['xcSettingsGeneral','xcSettingsBlocking','xcSettingsDaily'])assert(getComputedStyle(document.getElementById(id)).rowGap==='8px',id);
@@ -234,7 +242,7 @@ const html=template.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/u
 const stubs='const LOCAL_SKIN_SWITCH_ID="localSkinThemeSwitch",LOCAL_SKIN_LABEL_ID="localSkinThemeLabel",LOCAL_SKIN_TEXT="本地皮肤",DEBUG_SWITCH_ID="localSkinDebugSwitch",DEBUG_LABEL_ID="localSkinDebugLabel",DEBUG_TEXT="打开调试",DEBUG_BUTTON_X_OFFSET=0;function isLocalSkinLocked(){return false}function setLocalSkinSwitchState(i,v){i.checked=v;i.disabled=v}function enableLocalSkinFromButton(){}function setDebugSwitchState(i){i.checked=false}function openDebugFromButton(){}const laya={gamescene:null};function _0x43fd79(){}function appendLocalSkinDebugLine(){}let blocked=false;window.__xcSetSkinEffectsBlocked=v=>blocked=v;window.__xcIsSkinEffectsBlocked=()=>blocked;';
 const tables=require('../../doc/彩虹表.js').tables;
 const popupStubs='const globalConfig={},popupTable='+JSON.stringify(tables._0x871b.all)+',themeTable='+JSON.stringify(tables._0x262d.all)+';const _0x41a3d0=i=>popupTable[i],_0x43fec8=i=>themeTable[i];function _0x126168(){return ()=>{}}function _0x327542(){throw Error("unexpected popup fallback")}';
-fs.writeFileSync(file,'<!doctype html><meta charset="utf-8"><style>#createIframe{width:380px;transform-origin:top left}*{transition:none!important;animation:none!important}</style><div id="createIframe"><div id="iframe-source">'+html+'</div></div><pre id="xcSettingsGridTestResult">PENDING</pre><script>'+stubs+popupStubs+factories+helpers+layout+owners+popups+tooltips+'('+browserChecks.toString()+')().catch(e=>document.getElementById("xcSettingsGridTestResult").textContent=JSON.stringify({error:e.stack}));</script>');
+fs.writeFileSync(file,'<!doctype html><meta charset="utf-8"><style>#createIframe{width:380px;transform-origin:top left}*{transition:none!important;animation:none!important}</style><div id="createIframe"><div id="iframe-source">'+html+'</div></div><pre id="xcSettingsGridTestResult">PENDING</pre><script>'+stubs+popupStubs+factories+helpers+layout+owners+popups+tooltips+bootstrap+'('+browserChecks.toString()+')().catch(e=>document.getElementById("xcSettingsGridTestResult").textContent=JSON.stringify({error:e.stack}));</script>');
 const output=execFileSync(browser,['--headless','--disable-gpu','--no-sandbox','--no-first-run','--disable-background-networking','--virtual-time-budget=2500','--window-size='+(process.env.SETTINGS_GRID_TEST_WINDOW||'1100,1200'),'--user-data-dir='+path.join(dir,'profile'),'--screenshot='+path.join(dir,'layout.png'),'--dump-dom','file:///'+file.replace(/\\/g,'/')],{encoding:'utf8',windowsHide:true,timeout:30000,maxBuffer:8e6,stdio:['ignore','pipe','pipe']});
 fs.writeFileSync(path.join(dir,'dom.html'),output);process.stdout.write('Artifacts: '+dir+'\n');
 const match=output.match(/<pre id="xcSettingsGridTestResult">([^<]+)<\/pre>/);assert(match&&match[1]!=='PENDING');

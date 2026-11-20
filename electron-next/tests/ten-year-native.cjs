@@ -17,8 +17,8 @@ let assertions = 0;
 function check(value, message) { assert(value, message); assertions++; }
 
 function setup(options = {}) {
-  const data = options.data || new Map(), logs = [], requests = [];
-  const storage = { getItem: key => data.get(key), setItem: (key, value) => {
+  const data = options.data || new Map(), logs = [], requests = [], storageReads = [];
+  const storage = { getItem: key => { storageReads.push(key); return data.get(key); }, setItem: (key, value) => {
     if (options.failStorage) throw Error('quota'); data.set(key, value);
   } };
   const ctx = { account: 123, selfClientID: 42, selfSeatIndex: 0 };
@@ -95,7 +95,8 @@ function setup(options = {}) {
   h.window.__xcGetServerSkinDefault = () => ({ skinID: 88, isDynamic: 0 });
   const a=source.indexOf('  function getLocalSkinDebugSkinList('), b=source.indexOf('  function notifyLocalSkinError(',a);
   const c=source.indexOf('  function runLocalSkinEnableInline()'), d=source.indexOf('  function requestEightIdentityRecordProbe(',c);
-  h.window.__xcTenYearSkins = { observe() {} };
+  let legacyAccesses = 0;
+  Object.defineProperty(h.window, '__xcTenYearSkins', { get() { legacyAccesses++; } });
   const boot = new Function('window','Laya','document','getLocalSkinDebugState','appendLocalSkinDebugLine',
     'ensureLocalSkinDebugPanel','getLocalSkinDebugResponseName','logEightIdentityInterfaceProbe',
     'isLocalSkinDebugResponsePrintIgnored','queueLocalSkinDebugResponseDump','setTimeout','clearTimeout',
@@ -108,7 +109,8 @@ function setup(options = {}) {
     const response={ Protocol:{ ClientID:clientID,Type:0,Count:1,GeneralSkinList:[entry] } };
     state.respHook(response); ctx.scene.generalSkinUpdateRep(response); return entry;
   }
-  return { h, state, avatar, other, extension, ctx, seat, requests, data, logs, receive,
+  return { h, state, avatar, other, extension, ctx, seat, requests, data, logs, receive, storageReads,
+    legacyAccesses: () => legacyAccesses,
     setAvatars(value) { avatars=value; },
     open(id=8, name='ChangeSkinWindow', loading=false) { seat.GeneralId=id;avatar.generalCard.CardId=id;return h.open(id,true,name,loading); } };
 }
@@ -123,6 +125,20 @@ function setup(options = {}) {
   check(relayWindow.__xcGetLocalSkinScene().selfSeat===fallbackSeat && relayWindow.__xcGetLocalSkinScene().account===123,
     'actual runtime bridge supports missing GameContext through native self avatar');
   check(catalog.skins.length > 3000 && catalog.generals.length > 1500, 'all-name static candidates and named OL identities');
+  const lvEntry=catalog.skins.find(row=>row[8].some(p=>p[1]==='吕玲绮'));
+  const legacySaved=new Map([
+    ['xcTenYearStaticSkins.v1',JSON.stringify({71601:'543501'})],
+    ['xcTenYearSkinSize.v1',JSON.stringify({71601:1})],
+    ['xcTenYearMergedSkins.v1',JSON.stringify({123:{716:String(lvEntry[0])}})]
+  ]);
+  const legacyValues=[...legacySaved].slice(0,2);
+  const retired=setup({data:legacySaved,buckets:{716:[71601]}}), retiredView=retired.open(716).view;
+  check(retired.extension.choice(716)?.[0]===lvEntry[0], 'merged Lv Lingqi choice restores independently of retired manual preferences');
+  retiredView.itemList.find(i=>i.SkinID===71601).click();
+  check(!retired.extension.choice(716)&&retired.receive(716).SkinID===71601&&retired.legacyAccesses()===0,
+    'returning to native OL skin uses the live chain without legacy mapper callbacks');
+  check(legacyValues.every(([k,v])=>legacySaved.get(k)===v&&!retired.storageReads.includes(k)),
+    'retired mapping keys are inert and preserved without reads or writes');
   const compiledIDs = new Set(catalog.generals.map(row=>row[0]));
   check(nameCoverage.namedOLIDs.every(id=>compiledIDs.has(id)), 'every named OL identity from the actual source snapshot is retained');
   const associations = new Set(catalog.skins.flatMap(row=>row[8].map(page=>JSON.stringify([row[0],...page]))));
@@ -239,6 +255,7 @@ function setup(options = {}) {
   const env=setup(); await flush();
   const nativeClip=env.avatar.scrollRect;
   let {win,view}=env.open();
+  check(env.legacyAccesses()===0, 'native picker initialization never accesses retired manual mapper');
   const tabs=env.h.tabs.status().tabs;
   check(tabs.filter(t=>t.label==='神孙权').length===1, 'one merged Shen Sunquan page');
   check(tabs[0].label==='孙权' && tabs.every(t=>!/OL-|十周年-/.test(t.label)), 'full names without source prefixes');

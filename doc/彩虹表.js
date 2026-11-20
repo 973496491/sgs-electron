@@ -32751,6 +32751,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     searchKeywords: ["十周年静态合页验证版", "同名合页", "ten-year-native", "ten-year-static-catalog", "xcTenYearMergedSkins.v1", "神孙权", "碧海潮生", "668", "360", "OL默认0载体", "__xcTenYearEntry", "__xcSkinKey", "onSeatReady", "selfSeat", "CardId", "SendReqShareItem", "原子同步"],
     decodedIndexes: {},
     chain: [
+      "2026-11-21旧十周年调试按钮清理：正式ten-year-native同名合页不依赖旧ten-year-skins手工验证器；旧模块和目录/按钮/VO及座位挂钩已删除，构造参数和切回OL分支删除restoreLegacy。xcTenYearMergedSkins.v1、来源ID/OL默认0隔离、静态动态候选、本人渲染和生命周期不改。旧xcTenYearStaticSkins.v1/xcTenYearSkinSize.v1保留但不再消费；新增吕玲绮恢复/切回OL及真实开窗无旧全局访问检查，106项通过。详情与同步见迁移报告18节；下列旧手工图兼容描述是历史记录。",
       "2026-11-21用户明确所有同名武将全表纳入，已写AGENTS/rules并实现：不再手列前缀/常规ID或模式/旧资源清单白名单；姓名、官方本体/父本体及明确同义归族，版词从两端字段自动学习，ExType只影响学习样本不挡直接同名。目录1648 OL身份/1762十周年角色/652版本关系/3396静态候选/651静态页，旧719无丢失；动态690和无同名1349有完整审计。",
       "同Resource同页只画一项，优先主素材原ID，原始别名保留，旧偏好按资源标使用中；不同图同标题均留。pages含纯OL同名及版本关系，资格检查实际桶/候选不画空按钮。旧清单缺图不删候选，点击双图验证失败不覆盖。乐蔡额外1133002标名候选也留；全表原始名字/本体直接关联独立核对4313条遗漏0，651页运行取数全资源覆盖，专项89项及相关回归过。第15节中间719策略未单独发布，最终部署见报告16节；fit函数/版本值与记录未改，未游戏内确认全部新图。",
       "2026-11-21乐蔡文姬缺页已修：十周年1330的Character.Name乐蔡文姬/exType76与GeneralConf.GeneralName蔡文姬/ExType76明确，旧前缀白名单漏乐。生成器补读GeneralConfig，完整同名优先，再以同ID/ExType+已知完整本体名+显示名完整后缀归族，保留乐/星/界SP标签；不是同姓猜组，正常/模式筛选与旧回退保留。蔡57/SP112/界505都可开乐蔡页，未改运行选择/协议/居中代码。",
@@ -32785,11 +32786,13 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
   },
   settingsPanelSections: {
     title: "设置四分区：常用设置、屏蔽设置、普通设置、调试",
-    verifiedAt: "2026-11-20",
+    verifiedAt: "2026-11-21",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
     searchKeywords: ["常用设置", "普通设置", "屏蔽设置", "调试", "测试模式", "日常自动化", "自动手气卡", "settingsLayout", "ensureSections", "autoSQKSwitch", "xcTenYearSkinsToggle", "localSkinDebugSwitch"],
     decodedIndexes: { _0x871b: { "152": ".switch-container, .calRes", "473": "data-tooltip", "574": "mouseover", "518": "mouseout" } },
     chain: [
+      "2026-11-21调试按钮消失补修：旧工厂已删但waitForCardBackSwitch残留局部tenYearSkins.mount，真实启动在insertLocalSkinButton之后ReferenceError，中断insertDebugButton及__xcInstallHandSortPanelButton。已删除这一行，恢复原调试/手牌入口。原设置测试绕过wait直接插按钮造成漏检，现改执行真实wait；修前Chromium复现tenYearSkins is not defined，修后24项含唯一可见调试/无旧控件/后续手牌/重复及重建通过，另调试10日志26选肤106通过。无新decoder/状态/配置/路径，版本不变；部署和回退见迁移报告18.2。",
+      "2026-11-21删除旧十周年调试按钮xcTenYearSkinsToggle/xcTenYearSkinsButton及专用跨IIFE布局桥__xcPlaceTenYearSkinControl；settingsLayout.groups.xcSettingsTrailing现只含localSkinDebugSwitch。四区标题/位置、调试原handler和日志显隐不变；Chromium设置23+27项、显隐10及日志26通过，未游戏内实测。下列十周年按钮归调试是历史布局，最新模块/部署见架构表旧十周年调试按钮清理。",
       "描述实际显示修复：本地皮肤localSkinThemeSwitch/整理手牌handSortPanelSwitch的说明位于克隆label.switch外的xc-settings-flow-item，原_0x47344d只closest(_0x871b[152]=.switch-container, .calRes)导致有data-tooltip却不显示；先执行真实事件复现失败。修复mouseover[574]/mouseout[518]共用选择器，保留原项并追加.xc-settings-flow-item[data-tooltip]，仍走原_0x96bf04/隐藏链及contains/relatedTarget保护。不改控件类/事件/状态，也不新增监听或定时器。原DOM属性检查22组升级23组，四种真实动态owner经实际悬浮显示/离开隐藏/内部移动/重建验证通过；来源与同步见架构表。",
       "最新按钮描述：settingsLayout.descriptions只读表由place在静态/动态/重建路径写data-tooltip；若克隆control有旧内层tooltip同步替换，避免遮蔽外层新文案。本地皮肤localSkinThemeSwitch=本地使用当前未拥有的皮肤, 打开后自动开启皮肤互通, 如:魔孙权通界孙权皮肤；许劭辅助xcXuShaoToggle=自动标注许劭小游戏棋盘所有战功的可用联连线；整理手牌handSortPanelSwitch=对手牌进行按规则排序, 打开花色选中后, 让裴秀的采风拥有快速选中所有指定花色的能力；屏蔽弹幕xcTopMarqueeToggle=关闭顶部烦人的公告跑马灯。定向刷牌原描述也归同表。仅UI说明，原状态/handler/业务联动沿原模块，真实动态owner22组检查通过，部署见架构表。",
       "同日最新文案：autoSQKSwitch常用区名称改为定向刷牌（此前称自动手气卡），data-tooltip=斗地主使用, 自动使用手气卡定向刷到选中的牌。由settingsLayout.place更新原caption/容器，保留input/ID/偏好/默认关闭/配置和刷牌链；不新增斗地主场景门槛或业务状态。布局/标题/按钮归属沿四分区，验证与同步见架构表。",
@@ -34429,12 +34432,13 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     ]
   },
   tenYearStaticSkins: {
-    title: "十周年静态素材接入OL吕玲绮",
-    verifiedAt: "2026-11-18",
-    sourceFile: "electron-next/src/features/ten-year-skins.js",
+    title: "旧十周年吕玲绮手工验证器（已退休）",
+    verifiedAt: "2026-11-21",
+    sourceFile: "electron-next/resources/daxiaochao.user.js",
     searchKeywords: ["十周年皮肤", "吕玲绮", "716", "ten-year-skins", "xcTenYearStaticSkins.v1", "xcTenYearSkinSize.v1", "SkinsizeType", "IsBanner", "显示框", "显示区域不一致", "横版竖版", "局内座位卡", "全身大图", "半身座位图", "loadSkinComplete", "getSeatAvatars", "syncSeatHooks", "SkinBigUrl", "SkinSeatUrl", "恢复原图"],
     decodedIndexes: {},
     chain: [
+      "2026-11-21用户要求旧十周年调试按钮清理：旧mount/open/apply/remove及955目录仍可用但仅为716正数OL载体手工换图，正式同名合页/动态不依赖。现删除ten-year-skins.js、ten-year-skin-catalog.js与专用测试，移除生成块/构造/两个全局桥、addFrame挂载、hookItem/InitData观察、场景syncSeatHooks和Exit.dispose。ten-year-native及构造处删除restoreLegacy旧兼容分支，保留正式切回OL链。release-files.files去旧两项，remove登记原两个modules/features路径；旧两个存储键不再读写但保留，版本不变。下列链均为历史，不是当前功能；当前来源查tenYearMergedStaticSkins/tenYearDynamicIdleSkins，回退和部署见迁移报告18节。",
       "2026-11-21最新静态同名合页分析，未实施：用户优先完整武将名合并OL/十周年一页、不带来源前缀，取代独立十周年页建议。OL226/native标签神孙权与十周年224/Character.Name神孙权可合页，条目含OL22601同辉日月、十周年122401经典/522401碧海潮生；522401大图与座位图本轮GET有效PNG但未游戏渲染。来源+源ID仅内部区分，重名不同图不直接删，当前页避免重复，神/界/魔等版本名不剥除，原生Parent共享保留。详情/证据/验收见十周年迁移报告11节。",
       "2026-11-21仅分析未实施：统一到现有本地皮肤/互通Tab可行，但buildTabs无byId组直接空（当前716无互通组/标签），原生enterWindow另有OL桶空关闭前置。现模块observe仅716且id>0，按共享OL VO改图；独立十周年条目需来源标识/取数/选择与反查适配、本人场景隔离、默认0、IsUsing及切回恢复，不能只加组或把十周年ID回填OL协议。设计及边界见十周年迁移报告第10节；静态复用已存在，动态/语音未完成。",
       "非混淆独立模块，经现有构建器装配；waitForCardBackSwitch安装入口，hookItem及InitData后置observe读取原生条目skinData（VO直接位于这里，skinBaseVo仅兼容回退）。",

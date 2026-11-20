@@ -710,3 +710,38 @@ attach启用待机，detach停止骨骼、取消加载/超时、销毁模板，�
 | modules/features/ten-year-dynamic-catalog.js | B6DB05691D8CCB7C9F9364B814AAA0413202B824BB24FA88C19DE183379D35B3 |
 
 部署副本102项选肤链和26项播放器及主脚本语法再次通过，无待恢复事务。工程和部署version.json的SHA256仍为3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB，脚本标记保持1.0.15；账号/偏好、原生身份和客户端宿主均未改。未热注入、自动重启、发布正式包或生成asar，当前对局结束后重载才加载本次乐貂蝉适配。
+
+## 18. 旧十周年调试按钮清理（2026-11-21）
+
+用户要求核查调试区十周年皮肤按钮，并清理按钮及衍生无效逻辑。确认它并非无handler的空按钮：`addFrame -> __xcTenYearSkins.mount -> xcTenYearSkinsButton.open -> apply/remove`仍能操作955项编号素材，但只服务OL716吕玲绮正数SkinID的早期手工换图验证。正式本地皮肤同名页通过`nativeSkinTabs.extension -> ten-year-native -> ten-year-dynamic`独立运行；仅切回OL时残留`restoreLegacy -> 旧模块.remove`兼容边，移除旧验证器后已无存在必要。
+
+本轮删除旧`ten-year-skins.js/ten-year-skin-catalog.js`和专用测试，移除两个生成区块及构造、跨IIFE全局桥、设置按钮归组、面板/编号分页/预览/验证/保存恢复、VO图片/显示框/动态包装、座位缩放挂钩以及启动、hookItem/InitData、场景和Exit调用。正式模块只删除`restoreLegacy`参数/调用，切回OL仍清理自己的来源选择并沿原生提交、响应还原和头像刷新。旧存储`xcTenYearStaticSkins.v1/xcTenYearSkinSize.v1`保留但不再读写或生效；正式账号来源偏好`xcTenYearMergedSkins.v1`不迁移、不清空。3396静态/553动态候选、同名页、本人/场景隔离、合法OL默认0回传和现有播放器生命周期保持。
+
+构建器移除旧两项；`release-files.json.files`去掉旧两个模块，`remove`精确登记`modules/features/ten-year-skins.js`与`modules/features/ten-year-skin-catalog.js`，供本机同步及未来安装清理旧文件。调试区现在只含打开调试`localSkinDebugSwitch`；四区标题、折叠、布局、调试开关/日志出口不变，无新增任务、挂钩、配置或发布路径。
+
+验证先加入真实选肤初始化对旧全局访问计数断言，在旧代码失败；修后`ten-year-native.cjs`106项通过，覆盖吕玲绮合页选择从正式偏好恢复、切回OL、旧两个键不读写和不再访问旧模块。播放器26、原本地首次23/响应19、分页42/互通24/组合8/诊断8、屏蔽52、设置真实Chromium23+27、调试显隐10/日志26及版本7+8通过；主脚本语法和装配一致性通过。以上为隔离/真实DOM检查，未进行本轮游戏内验收。回退需恢复整组旧源码/生成块/接线、ten-year-native旧兼容接口、构建定义及发布映射，同时恢复被清理的旧部署模块；仅恢复按钮不足以回退。
+
+检索词：旧十周年调试按钮清理、手工换图退休、955编号目录、xcTenYearSkinsButton、xcTenYearSkinsToggle、xcTenYearSkinPanel、restoreLegacy、旧映射惰置、release-files.remove、106项、版本1.0.15。
+
+### 18.1 验证与同步完成
+
+`tmp/ten-year-debug-cleanup/installer-verification.json`记录本轮隔离真实安装器验证：使用实际主脚本、正式选肤模块、原版本及两个remove条目，安装成功清理两旧模块、逐文件内容一致、保留配置且无待恢复事务。未制作正式发布包。部署前四个相关目标与Git基线逐字核对（仅兼容换行差异），并记录SHA256到同目录deployment-input.json；复核F:/Game/SGSOL/resources/app/main.js的read-local-script→APPDATA/SGSOL/三国杀打小抄.js及electron_frame.js的dom-ready入口。
+
+持`.xiaochao-install.lock`独占锁重检基线、版本与无待恢复事务，按原protocol=1日志备份后，原子替换正式ten-year-native模块、删除两个精确废弃路径、最后原子替换主脚本。备份`C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/0f89398e2e684ecaa8c59a3b84144b53/`：backup/0为旧ten-year-native、backup/1旧ten-year-skins、backup/2旧编号目录、backup/3旧主脚本，deployment.json保存源/目标/SHA与删除记录。源码及安装映射变更同步生效，无账号或用户偏好写入。
+
+| 文件（源/部署一致） | SHA256 |
+|---|---|
+| 三国杀打小抄.js | A3388617081D02954659831DB867052DCD22E10F93A008C1D8AE1F6EFC3D2151 |
+| modules/features/ten-year-native.js | 7503DE730B719AE7FA77B2831B9A75F0F00AE829EC671EB43231C6C1A69555AA |
+
+部署副本106项选肤链、真实Chromium设置27项与主脚本语法再次通过；保留的80个发布映射文件逐一对照源内容一致，两个旧模块均不存在，无待恢复事务。正式静态目录、动态目录/播放器和分页生成块与修改前一致。工程/游戏两个version.json的SHA256仍为3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB，两个脚本标记保持1.0.15。未热注入、自动重启或生成asar；游戏当前页面未替换，重载后验收按钮消失及正式选肤仍正常。
+
+### 18.2 打开调试按钮缺失补修 / 真实启动链回归
+
+用户反馈“为什么调试按钮也没有了”。上一轮清理确有遗漏：`waitForCardBackSwitch`仍直接调用局部变量`tenYearSkins.mount(cardBackSwitch)`。旧构造及实例被移除后，这行ReferenceError阻断紧随其后的`insertDebugButton`和`__xcInstallHandSortPanelButton`，因此调试/手牌按钮创建未完成。原静态符号排查漏掉局部变量名，原settings-grid测试又直接调用两个insert函数，绕过真实启动顺序；18.1中的验证不能证明这段启动已正常。
+
+本轮只删除失效调用，恢复`wait -> insertLocalSkinButton -> insertDebugButton -> 原手牌桥`。测试改为执行源码中的完整wait函数，在真实Chromium先复现`tenYearSkins is not defined`，修后24项通过；新增确认调试按钮可见且唯一、调试区只有原开关、旧十周年控件缺席和启动继续到真实手牌模块挂载桥，并通过重复挂载/设置DOM重建检查。调试显隐10、日志26、正式选肤106、版本7、主脚本语法及装配通过。无新增状态/监听/偏好/发布文件或映射变更；原调试handler、开关和日志规则保持，尚未本轮游戏内实测。
+
+再次复用已核实实际宿主入口和主脚本发布映射，持独占安装锁确认无恢复事务，并验证修改范围严格仅为上述一行删除，备份后原子替换`%APPDATA%/SGSOL/三国杀打小抄.js`。备份`C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/b77716ec01004148879084345c3698be/backup/0`，同目录deployment.json记录前后哈希；源/目标SHA256均为`96604EFCA556CEAE3AEF2ED886BB72FB2041BDDDB37766E508BDA92E6FCFCC38`，旧部署为`A3388617081D02954659831DB867052DCD22E10F93A008C1D8AE1F6EFC3D2151`。部署副本真实启动/设置24项、调试显隐10和语法再次通过，未留恢复事务。版本1.0.15、账号/用户配置和模块均未改；未自动重启、热注入或生成asar，重载页面后恢复按钮。
+
+检索词：调试按钮消失、打开调试按钮缺失、启动残留调用、waitForCardBackSwitch、tenYearSkins is not defined、insertDebugButton、整理手牌按钮、真实启动顺序、24项、b77716ec。

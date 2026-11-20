@@ -1,6 +1,16 @@
 # debug 窗口文档
 
-## 2026-11-20后续：调试分区
+## 2026-11-21补修：打开调试按钮缺失 / 启动残留调用
+
+用户反馈清理十周年按钮后“打开调试”也消失。根因是第二IIFE的真实`waitForCardBackSwitch`仍有局部变量调用`tenYearSkins.mount(cardBackSwitch)`；旧工厂与实例已删除，因此在`insertLocalSkinButton`之后抛`ReferenceError`，后续`insertDebugButton`及`__xcInstallHandSortPanelButton`均未执行。不是调试开关被删除或隐藏。现仅删除这处失效调用，保持调试原handler/日志规则和整理手牌桥。
+
+此前设置测试直接调用两个insert函数，没有覆盖真实wait启动顺序，因而漏检；旧删除项搜索也只覆盖了全局桥，漏掉局部变量。现settings-grid.cjs运行原始wait函数，经真实模板/DOM验证可见的唯一调试开关、旧控件缺席、启动继续到手牌桥，并沿同一入口重复挂载/重建。修前真实Chromium复现`tenYearSkins is not defined`，修后24项通过，另调试显隐10/日志26、选肤106和语法/装配通过。本次无新状态/监听/偏好/发布路径，版本不变，未游戏内实测；同步记录见十周年迁移报告18.2。
+
+## 2026-11-21：旧十周年调试按钮清理
+
+调试区现仅保留“打开调试”localSkinDebugSwitch。早期“十周年皮肤”按钮xcTenYearSkinsButton/xcTenYearSkinsToggle及其编号预览、手工映射面板xcTenYearSkinPanel已移除，旧VO/座位挂钩和正式选肤链中的restoreLegacy兼容回调一并退休。旧映射键保留但不再读写，正式本地皮肤同名页里的十周年静态与动态选择继续使用xcTenYearMergedSkins.v1。四个设置区、调试显隐/日志规则不变；Chromium设置23+27项、调试显隐10及日志26通过，未游戏内实测。模块/回退和部署见架构表“旧十周年调试按钮清理”与迁移报告第18节。
+
+## 2026-11-20后续：调试分区（历史布局）
 
 设置现在按“常用设置、屏蔽设置、普通设置、调试”排列。打开调试localSkinDebugSwitch与十周年皮肤xcTenYearSkinsToggle进入最后的调试分区（内部xcSettingsTrailing），仍保留打开调试为区内最后一项。标题使用原jie-group-title样式，由共享settingsLayout.ensureSections幂等维护；原按钮ID、开关/显隐/日志处理与持久状态沿原链，未新增业务监听或轮询。静态/动态创建、重建后归位的21组设置检查及27项Chromium交互通过，未游戏内实测，部署见架构表“设置面板四分区”。下文此前的“设置末尾网格”记录以本节新标题和分配为准。
 

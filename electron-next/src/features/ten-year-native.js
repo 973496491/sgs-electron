@@ -1,6 +1,6 @@
 // Ten-year entries in native OL picker pages. Source IDs never become protocol skin IDs.
 module.exports = function createTenYearNative({ window, storage, catalog, getContext, getAvatars,
-  loadImage, dynamicCatalog = [], dynamic = null, restoreLegacy = () => {}, notify = () => {}, log = () => {} }) {
+  loadImage, dynamicCatalog = [], dynamic = null, notify = () => {}, log = () => {} }) {
   const STORAGE = 'xcTenYearMergedSkins.v1', BASE = 'https://web.sanguosha.com/10/pc/res/assets/runtime/general/';
   const generals = new Map(catalog.generals.map(row => [row[0], { family: row[1], label: row[2] }]));
   const rows = new Map([...catalog.skins, ...dynamicCatalog].map(row => [String(row[0]), row]));
@@ -152,7 +152,6 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
       if (!active || !item) return original.apply(this, args);
       if (state.scene !== c.scene || state.account !== account(c)) { log('跳过旧场景选肤窗口'); return; }
       if (!source) {
-        try { restoreLegacy(Number(item.SkinID) || 0); } catch (error) { log('恢复OL资源失败：' + error.message); return; }
         if (choice(gid)) {
           try { setChoice(gid, null); } catch (error) { log('切回OL失败：' + error.message); return; }
           item.isUsing = false;

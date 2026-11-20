@@ -363,16 +363,6 @@
     },
     {
       "sourceRoot": "repo",
-      "source": "electron-next/src/features/ten-year-skins.js",
-      "target": "modules/features/ten-year-skins.js"
-    },
-    {
-      "sourceRoot": "repo",
-      "source": "electron-next/src/features/ten-year-skin-catalog.js",
-      "target": "modules/features/ten-year-skin-catalog.js"
-    },
-    {
-      "sourceRoot": "repo",
       "source": "electron-next/src/features/native-skin-groups.js",
       "target": "modules/features/native-skin-groups.js"
     },
@@ -429,5 +419,8 @@
       "target": "release-common.ps1"
     }
   ],
-  "remove": []
+  "remove": [
+    "modules/features/ten-year-skins.js",
+    "modules/features/ten-year-skin-catalog.js"
+  ]
 }
