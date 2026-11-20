@@ -1,0 +1,193 @@
+{
+  "sourceSha256": "8e3e950d0b22336396bf842c6318727b5d397e882d7c97a96a22e2272910649a",
+  "source": "ten-year cached sgsGame.sgs decrypted main.skins-source.js; GeneralAvatarSprite",
+  "loadSkeleton": "loadSkeleton(){if(!this.skinBaseVO)return;let e=this.skinBaseVO?this.skinBaseVO.GetAwakeInfo(this.awakeType):null;if(!e)return;this.removeSkeleton(),1!=this.showType||e.ShowFrame||(this.maskImage||(this.maskImage=new SgsImage),this.maskImage.x=20,this.maskImage.size(190,269),this.maskImage.source=RES.GetRes(this.isGame?\"avatarMask\":\"tableavatarMask\"),this.maskImage.sizeGrid=\"35,13,16,13,0\",this.mask=this.maskImage);let t=\"res/assets/runtime/general/big/dynamic/\"+e.Resource+\"/\";e.ShowFrame?this.removeSkeletonBg():this.loadSkeletonBg(t+\"static_bg.png\");let i=\"\";if(e.ShowFrame){let e=GeneralSkinInfoConfiger.GetInstance().GetSkinSpineById(this.skinBaseVO.SkinID,this.awakeType);this.standByAnimateInfos=e?e.SmallStandByAnimateInfos:null,this.standByAnimateInfos&&this.standByAnimateInfos.length>0?this.createDaiJiCarousel(0):(this.standByAnimateInfos=null,i=t+\"daiji2.sk\",this.skeleton=EffectUtils.GetEffect(i,!1,!0),this.skeleton.pos(this.width>>1,this.height>>1),this.skeleton.on(SgsSkeletonEffect.LOAD_COMPLETE,this,this.onSpineResComplete,[this.skeleton,!1]),this.skeleton.playEffect(i,0,!0),this.contentSp.addChild(this.skeleton))}else{let s=269/761,a=0,n=0;this.skinBaseVO.IsBanner&&(s=269/632),0!=e.DynamicScale&&(s=e.DynamicScale),a=e.DynamicTailorX,n=e.DynamicTailorY,2!=this.showType&&3!=this.showType||(a+=e.GuoZhanTailorX),i=e.DynamicStandbySkel?t+\"daiji.skel\":t+\"daiji.sk\",this.skeleton=EffectUtils.GetEffect(i,!1,!0),this.skeleton.pos((this.width>>1)+a,(this.height>>1)+n),this.skeleton.scale(s,s),this.skeleton.on(SgsSkeletonEffect.LOAD_COMPLETE,this,this.onSpineResComplete,[this.skeleton,!1]),this.skeleton.playEffect(i,0,!0),this.contentSp.addChild(this.skeleton)}}",
+  "createDaiJiCarousel": "createDaiJiCarousel(e){if(!this.standByAnimateInfos||!this.skinBaseVO)return;let t=this.skinBaseVO?this.skinBaseVO.GetAwakeInfo(this.awakeType):null;if(!t)return;e=e>=this.standByAnimateInfos.length?0:e;let i=this.standByAnimateInfos[e];if(!i)return;let s=this.daiJiCarousels[e];if(s)return s.visible=!0,s.on(SgsSkeletonEffect.LOAD_COMPLETE,this,this.onSpineResComplete,[s,!0]),void s.playEffect(s.AnimateUrl,-1,!1);let a=\"res/assets/runtime/general/big/dynamic/\"+t.Resource+\"/\"+i.FileName;s=EffectUtils.GetEffect(a,!1,!0),this.daiJiCarousels.push(s),s.pos(this.width>>1,this.height>>1),s.on(SgsSkeletonEffect.LOAD_COMPLETE,this,this.onSpineResComplete,[s,!0]),s.playEffect(a,-1,!1),this.contentSp.addChild(s)}",
+  "updateDaiJiCarousel": "updateDaiJiCarousel(e=-1){let t;for(let i=0;i<this.daiJiCarousels.length;i++)t=this.daiJiCarousels[i],t&&(i==e?(t.on(Laya.Event.LABEL,this,this.onDaiJiEvent),t.on(SgsSkeletonEffect.PLAY_COMPLETE,this,this.onDaiJiStop),t.playEffect(t.AnimateUrl,0,!1),t.visible=!0):(t.off(SgsSkeletonEffect.LOAD_COMPLETE,this,this.onSpineResComplete),t.off(Laya.Event.LABEL,this,this.onDaiJiEvent),t.off(SgsSkeletonEffect.PLAY_COMPLETE,this,this.onDaiJiStop),t.visible=!1,t.stop()))}",
+  "smallStandByVO": "class SkinSmallStandByAnimateInfoVO{constructor(e){this.FileName=\"\",this.Index=0,this.countStr=\"\",this.minCount=0,this.maxCount=0,this.Index=e.Index||0,this.countStr=e.Count||\"\",this.FileName=\"\",e.FileName&&(Laya.Utils.getFileExtension(e.FileName)?this.FileName=e.FileName:this.FileName=e.FileName+\".sk\")}get RandomCount(){if(0==this.minCount&&(this.minCount=this.maxCount=1,this.countStr)){let e=this.countStr.split(\"|\");!e||e.length<=0?this.minCount=this.maxCount=1:1==e.length?this.minCount=this.maxCount=Number(e[0]):(this.minCount=Number(e[0]),this.maxCount=Number(e[1]))}return this.minCount==this.maxCount?this.minCount:Math.floor(Math.random()*(this.maxCount+1-this.minCount)+this.minCount)}}",
+  "skins": [
+    {
+      "SkinID": 5133801,
+      "ItemName": "月下翩跹*乐貂蝉",
+      "RelationGeneralID": [
+        1338
+      ],
+      "SkinGradeType": 5,
+      "Resource": 5133801,
+      "BigResource": 5133801,
+      "Desc": "5133801",
+      "Painter": "米糊PU",
+      "GetJumps": [
+        34
+      ],
+      "GetTitle": "游戏活动",
+      "GetDesc": "游戏活动",
+      "Searchkey": "月下翩跹*乐貂蝉*米糊PU",
+      "IsBanner": 1,
+      "MDynamicDebut": {
+        "TopY": 80,
+        "BottomY": -80,
+        "LeftX": 120,
+        "RightX": -120,
+        "TopScale": 70,
+        "BottomScale": 90
+      }
+    },
+    {
+      "SkinID": 7133801,
+      "ItemName": "月下翩跹*乐貂蝉",
+      "RelationGeneralID": [
+        1338
+      ],
+      "SkinGradeType": 7,
+      "Resource": 7133801,
+      "BigResource": 5133801,
+      "Painter": "米糊PU",
+      "Searchkey": "月下翩跹*乐貂蝉*米糊PU",
+      "IsBanner": 1,
+      "ShowFrame": 1,
+      "DynamicStandbySkel": 1,
+      "DynamicDebut": {
+        "TopY": 100,
+        "BottomY": -100,
+        "LeftX": 120,
+        "RightX": -120,
+        "TopScale": 70,
+        "BottomScale": 90
+      }
+    },
+    {
+      "SkinID": 6133801,
+      "ItemName": "锦年踏歌*乐貂蝉",
+      "RelationGeneralID": [
+        1338
+      ],
+      "SkinGradeType": 6,
+      "Resource": 6133801,
+      "BigResource": 6133801,
+      "Desc": "6133801",
+      "Painter": "-鬼宿一",
+      "GetJumps": [
+        34
+      ],
+      "GetTitle": "游戏活动",
+      "GetDesc": "游戏活动",
+      "Searchkey": "锦年踏歌*乐貂蝉*-鬼宿一",
+      "IsBanner": 1,
+      "MDynamicDebut": {
+        "TopY": 80,
+        "BottomY": -80,
+        "LeftX": 120,
+        "RightX": -120,
+        "TopScale": 70,
+        "BottomScale": 90
+      }
+    },
+    {
+      "SkinID": 8133801,
+      "ItemName": "锦年踏歌*乐貂蝉",
+      "RelationGeneralID": [
+        1338
+      ],
+      "SkinGradeType": 8,
+      "Resource": 8133801,
+      "BigResource": 6133801,
+      "Painter": "-鬼宿一",
+      "Searchkey": "锦年踏歌*乐貂蝉*-鬼宿一",
+      "IsBanner": 1,
+      "ShowFrame": 1,
+      "DynamicStandbySkel": 1,
+      "DynamicDebut": {
+        "TopY": 100,
+        "BottomY": -100,
+        "LeftX": 120,
+        "RightX": -120,
+        "TopScale": 70,
+        "BottomScale": 90
+      }
+    }
+  ],
+  "spineConfs": [
+    {
+      "SkinID": 8133801,
+      "AttackAnimateInfos": [
+        {
+          "SkillID": "1",
+          "TopY": 100,
+          "BottomY": -100,
+          "LeftX": 120,
+          "RightX": -120,
+          "AnimateNames": "gongji",
+          "TopScale": 70,
+          "BottomScale": 90,
+          "FileNames": "chuchang2.skel",
+          "MaxCount": 0
+        },
+        {
+          "SkillID": "2771|2772",
+          "TopY": 100,
+          "BottomY": -100,
+          "LeftX": 120,
+          "RightX": -120,
+          "AnimateNames": "jineng",
+          "TopScale": 70,
+          "BottomScale": 90,
+          "FileNames": "chuchang2.skel",
+          "MaxCount": 0
+        }
+      ],
+      "AttackAnimateInSeatInfos": [
+        {
+          "SkillID": "2",
+          "FileNames": "daiji5",
+          "AnimateNames": "play"
+        }
+      ],
+      "DefenceBallisticAnimateInfos": [
+        {
+          "SkillID": "1",
+          "OffSetX": 0,
+          "OffSetY": 0,
+          "AnimateName": "play",
+          "Scale": 100,
+          "FileName": "shouji2"
+        }
+      ],
+      "DefenceAnimateInfos": [
+        {
+          "SkillID": "1",
+          "OffSetX": 0,
+          "OffSetY": 0,
+          "AnimateName": "play",
+          "Scale": 100,
+          "FileName": "shouji"
+        }
+      ],
+      "SmallStandByAnimateInfos": [
+        {
+          "FileName": "daiji2",
+          "Count": "2|4",
+          "Index": 1
+        },
+        {
+          "FileName": "daiji3",
+          "Count": "1",
+          "Index": 2
+        }
+      ],
+      "StandByAnimateInfos": [
+        {
+          "AnimateName": "play",
+          "Count": "2|4",
+          "Index": 1
+        },
+        {
+          "AnimateName": "play2",
+          "Count": "1",
+          "Index": 2
+        }
+      ],
+      "BgAnimateName": "daiji4"
+    }
+  ]
+}

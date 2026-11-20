@@ -23,6 +23,10 @@
 
 本文只针对 **OL**。
 
+十周年原生座位SK补核（2026-11-21，最新）：用户确认马云騄两款动态已游戏内显示，乐貂蝉两款未动。原生GeneralAvatarSprite.loadSkeleton对ShowFrame使用SmallStandByAnimateInfos首文件或daiji2.sk，区别大图daiji.sk/skel；SmallStandBy VO自动补.sk，轮播首段按索引0播放。乐貂蝉7133801/8133801在线大图daiji.sk为404、daiji/beijing.skel头4.0.56，而座位daiji2.sk为LAYAANIMATION1.6.0，匹配PNG及真实Electron/Laya连续帧变化均通过。已据此将同名官方配对动态候选从103扩到553（103big保留、450seat按需验证），未把旧version快照当在线全集。真实摘录tests/fixtures/ten-year-seat-idle-native-20261118.json，获取哈希tmp/ten-year-userscript-audit-20261120/dynamic-probe/yue-seat-sources.json，步骤、范围和同步见迁移报告17.7；未加载Spine4大图或完整轮播/攻击链。
+
+十周年动态适配补核（2026-11-21）：旧缓存Config.sgs中的GameItemConfig.sgs已复用相同十周年resc/CtrUtil解密，32062条ItemConf；原生包装器及重复解密字节一致。物品RelationSkinItemID明确连接静态/动态，不能用BigResource或ID算术替代。马云騄744001的beijing/daiji/chuchang三个SK及匹配PNG定向GET有效；本机Electron10.4.5+11-16保存的OL core/ani已实际解析/绘制，隔离页连续帧变化与清理回静态通过。首阶段103个SK候选接同名选肤和本人背景/角色待机，非全690动态/动作/语音兼容；源码职责、验收和同步见[迁移报告第17节](十周年皮肤迁移到OL本地链路可行性报告.md#17-十周年sk动态待机接入2026-11-21版本不变)。新解密证据tmp/ten-year-userscript-audit-20261120/decode-dynamic-result.json，资源哈希dynamic-probe/sources.json；未更新OL普通AES方法或宣称当前游戏内实测。
+
 十周年独立分支进度（2026-11-21，仅调查）：沿用户提供的`lkfun.github.io/script/daxiaochao.user.js`的`Es -> GeneralSkinInfoConfig.sgs -> SkinConf`入口，新定向取得官方`/10/pc/libs/min/laya.sgs`（526386字节，SHA256`7430decb6adc1313d120a24086150027177f743f197ea72c5f6b04e903e237a8`），确认`CtrUtil`实际位于包内`laya.core.min.js`末尾。复用11-18缓存resc和配置/主程序，4份配置解密、gzip、JSON和原生封装一致性通过；已取得5435条SkinConf、80套皮肤、动作/语音配置及武将表，主程序解后为ZIP。产物在`tmp/ten-year-userscript-audit-20261120/`，详情/哈希/可复核步骤见[十周年皮肤读取调查](十周年皮肤读取调查.md)最新节。不是使用本文普通AES Key/IV，也不表示下文OL `_w`分支、完整资源归档或游戏内效果已通过；没有运行代码改动或部署。
 
 ## 武将评分 / 强度评分定向核查（2026-11-19，仅调查）

@@ -398,6 +398,16 @@
     },
     {
       "sourceRoot": "repo",
+      "source": "electron-next/src/features/ten-year-dynamic-catalog.js",
+      "target": "modules/features/ten-year-dynamic-catalog.js"
+    },
+    {
+      "sourceRoot": "repo",
+      "source": "electron-next/src/features/ten-year-dynamic.js",
+      "target": "modules/features/ten-year-dynamic.js"
+    },
+    {
+      "sourceRoot": "repo",
       "source": "electron-next/src/features/ten-year-native.js",
       "target": "modules/features/ten-year-native.js"
     }

@@ -594,3 +594,119 @@ tests/fixtures/same-name-skin-coverage-20261121.json保存公有ID、姓名关�
 | modules/features/native-skin-tabs.js | CD7CBB8BBF5D3563ECAB2D735609FAA95083C4856C43A5D4A47B40C0A49A4B2F |
 
 部署副本89项与旧分页/本地组合8场景通过，主脚本语法和四文件字节校验通过，无待恢复事务。版本记录哈希仍为3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB，脚本版本标记沿原值；居中fit/裁切恢复函数体与备份中的上一版完全相同。保留账号和用户配置，没有热注入、重启、正式打包/发布或生成asar。用户重载游戏后验证乐蔡等同名页及按需图片检查，不把全表数据合同和模拟通过当作所有资源已游戏内可用。
+
+## 17. 十周年SK动态待机接入（2026-11-21，版本不变）
+
+用户本轮确认十周年静态皮肤已经成功接入实际游戏，并进一步要求检查动态能否接进来。静态成功属于用户提供的游戏内证据；下述动态是本轮新增的第一阶段适配，已做真实引擎绘制和自动回归，仍需用户重载后验收实际对局。旧章节中“动态未实现”为当时状态，以本节范围为准。
+
+### 17.1 真实素材及原生格式验证
+
+沿已有十周年解密方法，从11-18缓存Config.sgs只取GameItemConfig.sgs，复用resc/CtrUtil，读取32062条ItemConf；gzip/JSON、独立原生包装器和重复解密字节对照均通过。没有把OL普通AES方法用于十周年，也没有下载新的全量游戏包。证据tmp/ten-year-userscript-audit-20261120/decode-dynamic-result.json：加密输入SHA256为50277200528f9abd8ed539117b91b0e2fd5a99d85ba9aa3fb1d375b2bc19aef1，明文JSON为854272d09b1557b7fcfb9e171fc45356c60089c99c3efbf68415d05066a5d40f。
+
+ItemConf提供明确的静态/动态物品关系，例如静态ItemID54400100（SkinID544001）.RelationSkinItemID=74400100，目标物品SkinID744001，再读取SkinConf.Resource744001。来源SkinID、物品ItemID和Resource继续区分；BigResource544001只说明maxBig资源，不据此猜static路径，不做ID加减法。
+
+本轮定向取得马云騄「舐伤伴君」744001的beijing/daiji/chuchang各SK与PNG共6文件，均HTTP200；SK沿用LAYAANIMATION:1.6.0，三个模板实际读到play动作。获取UTC、字节、URL、SHA在dynamic-probe/sources.json，待机SK与11-18样本SHA相同。用本机安装的Electron10.4.5和保存的OL官方core/ani引擎，隔离测试页真实解析、纹理加载、动画与像素绘制通过，三个样本均有连续帧变化。这证明该格式路线实际可绘制，不只是识别文件头；不等于当前已打开页面的所有引擎/素材/动作均验收。
+
+### 17.2 第一阶段目录和用户可见范围
+
+- build-ten-year-dynamic-catalog.py通过官方物品关系连接到已有完整同名静态目录，保留其全部页关系和静态回退；只将旧版本资源表有daiji.sk+png的资源作为SK候选，可选组合存在的beijing.sk/qianjing.sk。生成ten-year-dynamic-catalog.js只读工厂，开发期完整审计在dynamic-catalog-audit.json。
+- 全部690条动态均可追溯：103个同名配对有兼容SK清单项，450个同名配对暂无该清单格式，137个无同名静态回退。未把后两类伪装成可播按钮；“旧清单无SK”不代表线上不存在、也不代表其skel/Spine永久不可适配。当前只支持103候选按选择验证，未逐个下载全部103套。
+- 同一完整武将页保留原静态项，增加明确带“（动态）”的项。例如马云騄页中「舐伤伴君」和「舐伤伴君（动态）」分别可选。静态3396候选及1648身份目录完全保留，不合并其它人物，不替换原有OL动态能力。
+- 当前播放皮肤具有的背景、角色待机，以及清单存在的前景层；统一原点和缩放后居中铺满原生牌框。未接十周年攻击、技能、出场事件、点击互动、觉醒形态、全屏特效、语音或图鉴大图动画。chuchang虽离线能播，本阶段未绑定OL出场事件，不能称为完整复刻。
+
+### 17.3 模块职责、状态和生命周期
+
+`ten-year-native`继续负责本地选择、原生窗口与本人头像适配；新增`ten-year-dynamic`独立拥有模板、超时任务、骨骼与Sprite。`native-skin-tabs`继续负责页状态，`localSkinSelections`继续负责真实默认回传及本地响应还原，未新增全局假皮肤ID/持有记录或技能变更。
+
+真实入口：本地皮肤开关→nativeSkinTabs.extension→entries/bindView→原生itemClick前先validate双PNG及dynamic.prepare→模板和纹理加载/动作play检查→保存账号到当前OL将的来源偏好→原生Close/destroy/closeSelectSure→本地合法默认0/静态显示→本人loadSkinComplete→showDynamic→Templet.loadAni/buildArmature(1)→背景与角色各play循环。
+
+内部条目key是dynamic:744001等字符串，只放__xcTenYearEntry/__xcSkinKey及xcTenYearMergedSkins.v1；原生skinID仍为合法0、dynamicState仍为0，实际服务器仍由原链回传真实OL默认。动态和静态共用PNG时分别标记使用中，同动态资源别名在当前页去重；物理相同的SK/纹理在播放器内共享模板，防止一个别名清理破坏另一引用。
+
+每头像播放器由Map持有，异步回调检查头像是否销毁、当前场景、账号、seat对象、CardId和精确选择；旧回调不能挂到新局。loadSkin/removeSkeleton/clearSkin/Reset/destroy/SetGray停对应动画，ShowSkeleton传递可见性（包括骨骼未加载时先隐藏），ShowType/ClearFilter协调布局与恢复。只处理当前selfSeat的头像，不扩到其它玩家；主副将按各自CardId选择，现有真实getAvatars仍按宿主selfSeatAvatar可达范围安装。
+
+attach启用待机，detach停止骨骼、取消加载/超时、销毁模板，偏好保留；当前不再订阅xc-skin-effects-change或按攻击/技能屏蔽开关停止待机（首版误联动已由17.6验收修正）。场景或账号变更reset；已缓存静态图不能替代重建后的SK校验。错误、超时、无play动作和缺纹理在选择前阻止提交；已保存偏好播放失败回退静态。空闲模板缓存最多3项，当前播放器使用的模板受保护，无新增巡检轮询；加载已完成但Promise尚未提交也可取消释放。日志统一[十周年动态]+debug进入现有调试窗口。
+
+### 17.4 首版验证与人工步骤（最新修复见17.6）
+
+- ten-year-native.cjs现98项：真实原生选肤/关闭/回传摘录，加动态项与静态项同时存在、合法默认回传、只有动态标使用中、切回静态、加载失败保持原选择、头像完成后调用播放器。原89项保持通过。
+- ten-year-dynamic.cjs共20项：分层与统一坐标、半牌裁切、不挡鼠标、连续调用合并、屏蔽/恢复、晚到/取消/超时/缺动作、完成未提交窗口清理、加载前隐藏、同资源别名共享与缓存上限。
+- ten-year-dynamic-electron.cjs在同源https隔离页使用真实引擎与已下载官方素材，验证实际生产播放器：744001背景+角色共两层显示、连续帧PNG哈希不同，屏蔽和detach后的像素哈希精确等于静态回退，恢复后重新变化，无脚本错误。最终探针F:/Game/xc-ten-year-dynamic-MCsISc/resources/app/result.json及frame1/frame2/blocked/disposed.png保留证据；该页不连接账号、不操作实际对局。
+- 原分页42、组合8、诊断8、首次打开23、后到响应19、互通24、皮肤屏蔽52、旧十周年静态，以及日志分类26、版本7、装配8检查通过。build/check:userscript与主脚本node --check通过；手动彩虹笔记另做语法和关键词核验。版本保持1.0.15，两个version.json不写入部署清单。
+
+用户验收：本局结束后自行重载，开启本地皮肤，从马云騄的本地选肤页选「动态·舐伤伴君」（首版名称「舐伤伴君（动态）」），先验证本人座位背景和人物待机；切静态、重开选肤查看唯一使用中，再试皮肤屏蔽开/关均保留待机、换将/换局。其它103候选按实际下载/解析结果选择，不以某一套成功推定全部成功。当前回合未热注入，没有自动重启或替用户操作游戏。
+
+两新运行文件已同时加入build-userscript-modules与release-files的modules/features映射；开发脚本、测试、下载样本和审计不属于客户端运行依赖。回退成组恢复本次主脚本与ten-year-native旧模块；偏好中dynamic:项在旧模块中找不到来源时会按原生显示。若长期删除新发布模块，按rules补remove，不能只删装配定义造成悬空。实际安装锁/备份/哈希见下一同步记录。
+
+### 17.5 同步游戏加载环境完成
+
+已复核F:/Game/SGSOL/resources/app/main.js的read-local-script→APPDATA/SGSOL/三国杀打小抄.js及electron_frame.js的dom-ready入口。持.xiaochao-install.lock独占锁，确认无待恢复事务，沿release-files映射先备份/同目录暂存/原子替换三个相关模块，最后提交主脚本；未修改原静态目录、原分页模块、账号、配置或两个version.json。
+
+备份C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/43054f15c2d147309d7eec7b823f2d44/：backup/1为旧ten-year-native、backup/3为旧主脚本，两个新动态模块原先不存在（records标existed=false），deployment.json完整保存来源/目标/哈希。仅这四个业务文件同步，没有正式发布、热注入、自动重启或生成asar。
+
+| 最终文件（源/部署一致） | SHA256 |
+|---|---|
+| 三国杀打小抄.js | 85E005CF749FE19678494337449BF0954206BE4D1E861E7FB04C55C0F884F38C |
+| modules/features/ten-year-native.js | 2E7FF964179209DCCC5C15186A85B190BF1D42DAC3161D17384A25F4D0B9CFCE |
+| modules/features/ten-year-dynamic.js | 5D68E36CF5E9431480D271EE8A2458EDF9F0D63D564A27E4A4D86DED54820C47 |
+| modules/features/ten-year-dynamic-catalog.js | D13A9AAC393674859D2300E2E7D0CED6F5518255663AE2E9CB92676428E29035 |
+
+部署副本再次执行98项选肤链和20项播放器检查及主脚本语法，通过；安装事务已清理。两个版本记录SHA256仍为3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB，@version/XIAOCHAO_VERSION保持1.0.15。当前游戏页面未重载，实际对局动态效果待用户按17.4验收。
+
+### 17.6 实战验收反馈：静态条目误认与皮肤屏蔽误停待机
+
+用户在当前马云騄对局反馈无动态，随后提供03:31:45～03:31:47调试窗口日志：真实ChangeSkinWindow打开generalID346，skinCount24；点击后明确打印“检查静态图片：舐伤伴君”“选择静态皮肤：gid=346 舐伤伴君（十周年544001）”，原生回传合法默认34601并保留本地sid0。由此只能确认当前选择的是静态源544001，尚未进入dynamic:744001播放；不据此断言动态已经游戏内成功或武将选错。
+
+另只读本机Chromium已落盘LevelDB/SST中的限定皮肤配置键，xcSkinEffectsBlocked保存为true；未打开数据库写句柄、修改用户配置或读取账号凭据。保存值与内存状态有边界，不把落盘历史当作完整页面快照。原生皮肤屏蔽的既定范围为攻击/技能/互动，明确保留待机和形态；首版播放器show却用此开关直接早退，并在xc-skin-effects-change清掉待机，属于本次发现的误联动，即便选到正确动态也可能只剩静态。
+
+修复内容：
+
+- ten-year-dynamic移除__xcIsSkinEffectsBlocked的播放门槛及xc-skin-effects-change订阅/重建。attach只负责启用，detach/reset继续取消任务、销毁模板/播放器；原生ShowSkeleton临时显隐、死亡、换肤、账号/场景和销毁链保持，原攻击/技能屏蔽模块不改。状态/模板仍归播放器持有，没有新开关或偏好。
+- 动态目录生成器将末尾“（动态）”改为前置“动态·皮肤名”，例如「动态·舐伤伴君」，让有限宽度卡片优先显示动静区别；静态项仍叫「舐伤伴君」，同名页/源ID/协议隔离不变。只改动态标题，不将普通同名静态选择强制转为动画。
+- 用户选择静态且该源ID有明确官方动态配对时，ten-year-native沿现有显式debug日志补“同页动态项：动态·舐伤伴君（需单独选择）”，不代替用户换肤，不弹窗、不改现有偏好或皮肤屏蔽设置。
+
+修复前先加入两条回归断言，分别复现“攻击特效屏蔽误清待机”和“原生卡片标题未前置动态标识”；修后ten-year-native100项、播放器22项通过，新增覆盖保存屏蔽=true仍起播、加载中开启屏蔽仍挂载、切换屏蔽不销毁/重建待机及静态日志提示。原皮肤屏蔽52、分页42、组合8、首次23、后到19和版本7通过；装配/语法/手动笔记检索通过。真实Electron10.4.5+官方引擎从blocking=true开始加载744001，双层连续帧像素不同，切换屏蔽保留同一根节点且继续有画面，原生隐藏/销毁精确还原静态，证据F:/Game/xc-ten-year-dynamic-rlme0X/resources/app/result.json及图片。
+
+本局若继续验证首版，可在原选肤页选择带后缀「舐伤伴君（动态）」并临时关闭皮肤屏蔽；用户对局结束后重载修复版，再用前置「动态·舐伤伴君」且保持皮肤屏蔽开启验证。代码同步不代表当前页面已替换，本次不热注入、不重启当前对局、不改变版本号。发布路径未增删，沿原4文件映射同步；实际备份/哈希附后。
+
+检索词：静态544001、dynamic:744001、gid346、03:31、动态前置标识、皮肤屏蔽保留待机、xcSkinEffectsBlocked、同页动态项、100项、22项、首版误联动。
+
+本轮同步完成：复核原实际宿主入口，持独占安装锁检查无恢复事务，沿原映射备份并原子同步动态目录、ten-year-native、播放器及最后的主脚本。备份C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/a5e052f403e949fbb27312b20b518dc0/，backup/0～3依次为旧动态目录、旧ten-year-native、旧播放器、旧主脚本，deployment.json保存源/目标/哈希。未修改账号/开关偏好、两个版本记录、宿主文件或当前页面。
+
+| 文件（源/部署一致） | SHA256 |
+|---|---|
+| 三国杀打小抄.js | 1BB1071D6DAC90F91ACC555CD6E52745A49C1741EF09865288D9432EA518BF49 |
+| modules/features/ten-year-native.js | 400980D05321676507FCCA5FEEF0EBB729057D1D7D240368A9A14436856A721D |
+| modules/features/ten-year-dynamic.js | 360536D3C412B1C58C03C375158E84302D8BF1A6DB706552166AA3224750CCBB |
+| modules/features/ten-year-dynamic-catalog.js | 027692EF4EC63923EEB4F1500FFE6DC0EC7A685BE3A70208614D1ADC1AA002BD |
+
+部署副本100项选肤链与22项播放器、主脚本语法再次通过，未留安装事务。工程/部署version.json哈希仍为3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB，版本保持1.0.15。真实引擎验证通过不等于当前对局已加载修复，等待用户按上述新旧页面步骤验收。
+
+### 17.7 乐貂蝉缺动态 / 原生座位SK链全表补齐
+
+用户确认“马云禄有2个皮名字带动态的肤出现了动态效果”，这是马云騄动态的实际游戏验收证据（未补报具体两款名称）；随后切到乐貂蝉，反馈应有动态的皮肤没有动态。本轮先查全表配置和原生链，确认乐貂蝉不是同名家族丢失，也不要求用户重选武将或反复核对脚本版本。
+
+**根因与真实资源**：十周年乐貂蝉1338有两组官方静动态物品关系：513380100（SkinID5133801月下翩跹）.RelationSkinItemID713380100（SkinID7133801），613380100（SkinID6133801锦年踏歌）.RelationSkinItemID813380100（SkinID8133801）。首版生成器仅收旧version表有大图daiji.sk及PNG的动态，因此两条动态整行被过滤，运行页只有静态。在线两目录的daiji.sk确实404，daiji/beijing.skel则声明Spine4.0.56；但它们另有可用的座位版daiji2.sk+PNG，旧缓存清单缺项不能证明线上无文件。
+
+本轮定向GET并保存两套座位SK/PNG，均200：7133801/daiji2.sk15595字节、PNG8188831字节；8133801/daiji2.sk19627字节、PNG1810139字节。SK均为LAYAANIMATION1.6.0，解析到play动作。URL/UTC/字节/SHA证据dynamic-probe/yue-seat-sources.json；大图和座位不同格式的头部/404对照在yue-diaochan-dynamic/headers.json。本轮未将Spine4二进制强行交给旧SK解析器，也没有新增运行时引擎。
+
+**核实原生方法后统一补链**：保存的十周年GeneralAvatarSprite.loadSkeleton先读GetAwakeInfo；ShowFrame为真时不用大图daiji.skel，而优先SkinSpineConf.SmallStandByAnimateInfos首文件，无配置则默认daiji2.sk。SkinSmallStandByAnimateInfoVO在缺后缀时补.sk；轮播入口先load/play(-1)预备，再updateDaiJiCarousel按动作0播放。ShowFrame分支同时removeSkeletonBg，不额外叠加大图beijing骨骼。真实loadSkeleton/createDaiJiCarousel/updateDaiJiCarousel/VO及乐貂蝉4行配置已按源SHA保存到tests/fixtures/ten-year-seat-idle-native-20261118.json并实际执行摘录验证，未只靠文件名推断。
+
+生成器现按全表官方配对决定分支：旧103条有完整大图SK清单的条目仍保留mode=big及原背景/角色/前景；其它ShowFrame条目用mode=seat，文件来自上述原生首段规则，不再用旧资源清单当准入白名单、不逐个角色补ID。当前全部690条动态的审计为：553条有同名静态回退的官方配对候选（103big、450seat），其余137条无同名静态回退；450seat中140条旧清单有座位SK/PNG、310条点击时验证真实资源。553是候选覆盖，不是逐套下载/全部游戏内兼容；553条物品关系夹具及原103条保留ID清单可独立核对。
+
+**运行状态与边界**：仅为descriptor新增mode和层animationIndex=0，prepare验证索引存在，show用实际索引播放；big仍校验play，缺动作/纹理/资源时保留原选择或回退静态。仍由ten-year-native维护本地来源选择/本人挂载、播放器维护模板/异步/清理，不增加公共状态或特效开关联动。账号偏好键、dynamic:源ID、合法OL默认0回传、3396静态目录、同名页和原生互通不变；沿现有初始化/关闭/换将/场景/账号/死亡与晚到回调链，新增项与旧项同样清理。当前只循环座位首段待机，未实现锦年踏歌的daiji2/daiji3随机轮播、Spine4大图、攻击、技能、觉醒或语音。没有新发布路径，原映射继续覆盖两动态模块与装配主脚本。
+
+**验证**：修前新增乐貂蝉候选断言失败，修后ten-year-native102项、播放器26项通过。新增三原生选肤窗×普通貂蝉24/界445/魔715身份可选乐页动态、合法默认回传、当前唯一使用中和切回静态；真实十周年普通座位/配置轮播首段方法执行、座位动作索引0与空动作拒绝；保留旧103路径和已有超时/缓存/别名/晚到/关闭等全部检查。分页42、组合8、首次23、后到19、皮肤屏蔽52、日志26、版本7、装配8，以及build/check:userscript、主脚本和手动彩虹笔记语法通过。
+
+真实生产播放器再次在Electron10.4.5+OL官方Laya引擎同源隔离页绘制：旧744001两层仍成功，7133801与8133801各用单层daiji2.sk成功，分别两帧PNG哈希不同；皮肤屏蔽开/关不重建或停待机，原生隐藏/销毁恢复原静态像素，无脚本错误。证据目录依次为F:/Game/xc-ten-year-dynamic-AZ6klu/、ia8SdV/、0OJPRr/下resources/app/result.json及截图。这里只是乐两款真实引擎验证，尚无新增游戏内成功反馈；用户可在本局结束后重载，进乐貂蝉页分别选「动态·月下翩跹」「动态·锦年踏歌」验收。
+
+检索词：乐貂蝉、1338、月下翩跹、锦年踏歌、7133801、8133801、daiji2.sk、ShowFrame、SmallStandByAnimateInfos、GeneralAvatarSprite、座位SK、553候选、103big、450seat、310按需验证、102项、26项、马云騄实战成功。
+
+本轮已同步游戏加载环境：再次核对F:/Game/SGSOL宿主read-local-script及dom-ready入口，持独占安装锁检查无待恢复事务，备份并原子替换动态目录/播放器，最后主脚本；ten-year-native源码内容本轮未变，哈希相同而跳过复制。备份C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/0bfb64501b1e418e85849806ae16f52b/，backup/0旧动态目录、backup/1旧播放器、backup/2旧主脚本，deployment.json保存完整传输记录。开发生成器和新测试夹具不属于安装依赖，未增加发布路径。
+
+| 文件（源/部署一致） | SHA256 |
+|---|---|
+| 三国杀打小抄.js | 8295045CAE0D79EE1C054064DD9AD1ED3C33427B6FAB881603D9D0079F82E14B |
+| modules/features/ten-year-dynamic.js | F88BCEFA3F6FA36AFCDC0D90BCF99ABDEC7658D718C82B618FC0C5EDD0976E3A |
+| modules/features/ten-year-dynamic-catalog.js | B6DB05691D8CCB7C9F9364B814AAA0413202B824BB24FA88C19DE183379D35B3 |
+
+部署副本102项选肤链和26项播放器及主脚本语法再次通过，无待恢复事务。工程和部署version.json的SHA256仍为3E594D7B05E0A8566AFD07803FE0A3DF027E2106960C48CE9A36EB9766DA29AB，脚本标记保持1.0.15；账号/偏好、原生身份和客户端宿主均未改。未热注入、自动重启、发布正式包或生成asar，当前对局结束后重载才加载本次乐貂蝉适配。

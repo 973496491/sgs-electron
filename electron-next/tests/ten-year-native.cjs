@@ -71,6 +71,7 @@ function setup(options = {}) {
   let avatars = options.noAvatar ? [] : [avatar];
   const extensionWindow = {};
   const extension = create({ window: extensionWindow, storage, catalog: options.catalog || catalog,
+    dynamicCatalog: options.dynamicCatalog || [], dynamic: options.dynamic || null,
     getContext: () => ctx, getAvatars: () => avatars,
     loadImage: options.loadImage || (async () => ({ width: 876, height: 632 })), log: text => logs.push(text) });
   const ol = (skinID, generalID) => ({ skinID, generalID, skinname: 'OL ' + skinID, canUpdateDynamic: () => false,
@@ -372,6 +373,62 @@ function setup(options = {}) {
   check(imageTimers.size===2, 'default image loader owns both timeout handles');
   owned.detach();await assert.rejects(validation);
   check(imageTimers.size===0, 'detach cancels owned image jobs and timeout handles');
+
+  const dynamics = require(featurePath('ten-year-dynamic-catalog'))();
+  const horse = catalog.generals.find(r=>r[2]==='马云騄')[0];
+  const calls=[];
+  const player={attach(){},detach(){calls.push('detach');},reset(){},stop(){},status(){return {};},
+    prepare:async spec=>{calls.push(['prepare',spec.id]);},show:(avatar,spec,current)=>{calls.push(['show',spec.id,current()]);}};
+  const dyn=setup({dynamicCatalog:dynamics,dynamic:player});
+  let dynView=dyn.open(horse).view;
+  const sourceID='dynamic:744001';
+  let dynamicItem=dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry===sourceID);
+  check(dynamicItem && dynView.itemList.some(i=>i.skinData?.__xcTenYearEntry==='544001'), 'same page retains separate static and explicit dynamic choices');
+  check(dynamicItem.skinName.text.startsWith('动态·')&&dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry==='544001').skinName.text==='舐伤伴君',
+    'actual native card title starts with visible dynamic marker while static name remains intact (gid346 feedback)');
+  await dynamicItem.click();
+  check(calls.some(c=>c[0]==='prepare'&&c[1]===744001),'dynamic templates validate before committing the preference');
+  check(dynView.sent.length===1 && dynView.sent[0]===88 && dynView.closeSelectDynamicState===0 && dyn.seat.skin===0 && dyn.seat.dynamic===false, 'dynamic source IDs/state never enter native OL protocol or seat state');
+  check(dyn.extension.choice(horse)[0]===sourceID,'dynamic source stored only in account-local preference');
+  dyn.requests.at(-1).resolve();
+  check(calls.some(c=>c[0]==='show'&&c[1]===744001&&c[2]),'actual native texture completion mounts the selected dynamic');
+  dynView=dyn.open(horse).view;
+  dynamicItem=dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry===sourceID);
+  const staticItem=dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry==='544001');
+  check(dynamicItem.IsUsing && !staticItem.IsUsing,'shared fallback image does not merge static and dynamic using markers');
+  await staticItem.click();
+  check(dyn.extension.choice(horse)[0]===544001,'switching back to static retains an explicit static choice');
+  check(dyn.logs.some(s=>s.includes('同页动态项：动态·舐伤伴君')),'static selection log names the alternate dynamic entry without changing the user choice');
+  player.prepare=async()=>{throw Error('invalid SK texture');};
+  dynView=dyn.open(horse).view;
+  await dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry===sourceID).click();
+  check(dyn.extension.choice(horse)[0]===544001 && dyn.logs.some(s=>s.includes('invalid SK texture')), 'cached static images never bypass dynamic revalidation; failure retains previous skin and logs');
+  dyn.extension.detach();check(calls.includes('detach'),'local skin detach releases dynamic owner');
+
+  const yueRows=dynamics.filter(row=>row[8].some(p=>p[1]==='乐貂蝉'));
+  check([7133801,8133801].every(id=>yueRows.some(row=>row[9].id===id&&row[9].mode==='seat')),
+    'Yue Diao Chan native seat-idle candidates are retained even when big daiji.sk is absent from snapshot');
+  let yueMatrix=true;
+  for(const gid of [24,445,715])for(const name of ['ChangeSkinWindow','SelectSkinWindow','ModifyShowSkinWindow']) {
+    const shown=[];
+    const p={attach(){},detach(){},reset(){},stop(){},status(){return {};},prepare:async()=>{},
+      show:(avatar,spec,current)=>shown.push({spec,current:current()})};
+    const e=setup({dynamicCatalog:dynamics,dynamic:p});let opened=e.open(gid,name);
+    const tab=e.h.tabs.status().tabs.find(t=>t.label==='乐貂蝉');if(!tab){yueMatrix=false;continue;}
+    e.h.tabs.selectTab(tab.key);
+    const item=opened.view.itemList.find(i=>i.skinData?.__xcTenYearEntry==='dynamic:7133801');
+    if(!item){yueMatrix=false;continue;}
+    await item.click();e.requests.at(-1).resolve();
+    if(e.extension.choice(gid)?.[0]!=='dynamic:7133801'||opened.view.sent[0]!==88||e.seat.skin!==0||e.seat.dynamic!==false||
+      !shown.some(s=>s.current&&s.spec.layers[0].file==='daiji2.sk'&&s.spec.layers[0].animationIndex===0))yueMatrix=false;
+    opened=e.open(gid,name);e.h.tabs.selectTab(e.h.tabs.status().tabs.find(t=>t.label==='乐貂蝉').key);
+    const use=opened.view.itemList.filter(i=>i.IsUsing);
+    if(use.length!==1||use[0].skinData?.__xcTenYearEntry!=='dynamic:7133801')yueMatrix=false;
+    await opened.view.itemList.find(i=>i.skinData?.__xcTenYearEntry==='5133801').click();
+    if(e.extension.choice(gid)?.[0]!==5133801)yueMatrix=false;
+    e.extension.detach();
+  }
+  check(yueMatrix,'all three native windows and ordinary/Jie/Mo identities can choose Yue seat idle, keep exact using marker, and return to static');
 
   process.stdout.write('ten-year-native: '+assertions+' native item/picker/response/render/lifecycle checks passed\n');
 })().catch(error=>{process.stderr.write(error.stack+'\n');process.exitCode=1;});

@@ -12,6 +12,8 @@ const definitions = [
   { id: "native-skin-link", file: "src/features/native-skin-link.js", name: "createNativeSkinLink" },
   { id: "native-skin-labels", file: "src/features/native-skin-labels.js", name: "getNativeSkinLabels" },
   { id: "ten-year-static-catalog", file: "src/features/ten-year-static-catalog.js", name: "getTenYearStaticCatalog" },
+  { id: "ten-year-dynamic-catalog", file: "src/features/ten-year-dynamic-catalog.js", name: "getTenYearDynamicCatalog" },
+  { id: "ten-year-dynamic", file: "src/features/ten-year-dynamic.js", name: "createTenYearDynamic" },
   { id: "ten-year-native", file: "src/features/ten-year-native.js", name: "createTenYearNative" },
   { id: "native-skin-tabs", file: "src/features/native-skin-tabs.js", name: "createNativeSkinTabs" },
   { id: "xushao-client", file: "src/adapters/xushao-client.js", name: "createXuShaoClient" },

@@ -1,13 +1,14 @@
-// Static ten-year entries in native OL picker pages. Source IDs never become protocol skin IDs.
+// Ten-year entries in native OL picker pages. Source IDs never become protocol skin IDs.
 module.exports = function createTenYearNative({ window, storage, catalog, getContext, getAvatars,
-  loadImage, restoreLegacy = () => {}, notify = () => {}, log = () => {} }) {
+  loadImage, dynamicCatalog = [], dynamic = null, restoreLegacy = () => {}, notify = () => {}, log = () => {} }) {
   const STORAGE = 'xcTenYearMergedSkins.v1', BASE = 'https://web.sanguosha.com/10/pc/res/assets/runtime/general/';
   const generals = new Map(catalog.generals.map(row => [row[0], { family: row[1], label: row[2] }]));
-  const rows = new Map(catalog.skins.map(row => [String(row[0]), row]));
+  const rows = new Map([...catalog.skins, ...dynamicCatalog].map(row => [String(row[0]), row]));
+  const artKey = row => row[9] ? 'dynamic:' + row[9].resource : 'static:' + row[1];
   const views = new WeakMap(), boundViews = new Set(), avatarHooks = new Map(), checked = new Map(), renderedAvatars = new Set();
   const pendingImages = new Set();
   const fitMasks = new Map();
-  let active = false, saved = {}, avatarScene;
+  let active = false, saved = {}, avatarScene, avatarAccount;
   try { saved = JSON.parse(storage.getItem(STORAGE)) || {}; } catch (_) {}
   function context() { try { return getContext() || {}; } catch (_) { return {}; } }
   function account(c = context()) { return String(c.account || c.selfClientID || ''); }
@@ -43,14 +44,20 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
   }));
   async function validate(row) {
     const key = String(row[0]);
-    if (checked.has(key)) return checked.get(key);
-    const pair = urls(row);
-    const pending = Promise.all([imageLoader(pair.big), imageLoader(pair.seat)]).then(([info]) => {
-      if (!(info?.width > 0 && info?.height > 0)) throw Error('无法读取静态图尺寸');
-      return info;
-    });
-    checked.set(key, pending);
-    try { return await pending; } catch (error) { checked.delete(key); throw error; }
+    let pending = checked.get(key);
+    if (!pending) {
+      const pair = urls(row);
+      pending = Promise.all([imageLoader(pair.big), imageLoader(pair.seat)]).then(([info]) => {
+        if (!(info?.width > 0 && info?.height > 0)) throw Error('无法读取静态图尺寸');
+        return info;
+      });
+      checked.set(key, pending);
+    }
+    // Image results may survive a scene change; SK templates are released by their
+    // owner and must be prepared again before committing a new dynamic selection.
+    try { return (await Promise.all([pending, row[9] ?
+      dynamic?.prepare(row[9]) || Promise.reject(Error('动态播放器不可用')) : null]))[0]; }
+    catch (error) { if (checked.get(key) === pending) checked.delete(key); throw error; }
   }
   function pages(gid) {
     const general = generals.get(Number(gid));
@@ -67,8 +74,8 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
     if (!active || !general) return [];
     const seen = new Set();
     return [...rows.values()].filter(row => row[8].some(p => p[0] === general.family && p[1] === label))
-      .sort((a, b) => Number(a[0] !== Number(a[1])) - Number(b[0] !== Number(b[1])) || a[0] - b[0])
-      .filter(row => { if (seen.has(row[1])) return false; seen.add(row[1]); return true; }).map(row => {
+      .sort((a, b) => Number(!!a[9]) - Number(!!b[9]) || Number(a[0] !== Number(a[1])) - Number(b[0] !== Number(b[1])) || Number(a[0]) - Number(b[0]))
+      .filter(row => { const key = artKey(row); if (seen.has(key)) return false; seen.add(key); return true; }).map(row => {
       const pair = urls(row);
       // Native item.InitData consumes these static display fields. 0 is a real OL default,
       // while the separate entry key distinguishes every source row and its using marker.
@@ -103,7 +110,7 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
       if (!entry && !id) continue;
       // Alternate IDs can reference identical artwork. Retain old preferences while
       // showing just one card for that resource in a merged page.
-      const using = entry ? !!selected && rows.get(entry)?.[1] === selected[1] : false;
+      const using = entry ? !!selected && rows.has(entry) && artKey(rows.get(entry)) === artKey(selected) : false;
       item.isUsing = using;
       // Some host test/adaptation builds expose writable public state instead of native getters.
       const publicUsing = Object.getOwnPropertyDescriptor(item, 'IsUsing');
@@ -157,7 +164,7 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
       }
       const row = rows.get(source);
       if (!row) return;
-      log('检查静态图片：' + row[2]);
+      log('检查' + (row[9] ? '动态与静态回退' : '静态图片') + '：' + row[2]);
       return validate(row).then(() => {
         const now = context();
         if (!active || state.disposed || state.token !== token || now.scene !== c.scene || account(now) !== account(c)) return;
@@ -167,12 +174,14 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
         item.isUsing = false; item.dynamicState = 0;
         if (Object.getOwnPropertyDescriptor(item, 'IsUsing')?.writable) item.IsUsing = false;
         if (Object.getOwnPropertyDescriptor(item, 'DynamicState')?.writable) item.DynamicState = 0;
-        log('选择静态皮肤：gid=' + gid + ' ' + row[2] + '（十周年' + row[0] + '）');
+        log('选择' + (row[9] ? '动态' : '静态') + '皮肤：gid=' + gid + ' ' + row[2] + '（十周年' + row[0] + '）');
+        const alternate = !row[9] && dynamicCatalog.find(candidate => candidate[9].staticId === row[0]);
+        if (alternate) log('同页动态项：' + alternate[2] + '（需单独选择）');
         const result = original.apply(this, args); refresh(gid); return result;
       }).catch(error => {
         log('选择失败：' + row[2] + ' ' + error.message);
-        if (active && !state.disposed && state.scene === context().scene) {
-          try { notify('十周年静态皮肤加载失败：' + row[2] + '，请重新选择'); } catch (_) {}
+        if (active && !state.disposed && state.token === token && state.scene === context().scene && state.account === account()) {
+          try { notify('十周年皮肤加载失败：' + row[2] + '，保留原选择，请重新选择'); } catch (_) {}
         }
       });
     });
@@ -188,6 +197,12 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
     const c = context();
     if (!active || !c.scene || !c.selfSeat || avatar.seat !== c.selfSeat) return null;
     return choice(Number(avatar.generalCard?.CardId), c);
+  }
+  function showDynamic(avatar, row) {
+    if (!row?.[9]) { dynamic?.stop(avatar); return; }
+    const c = context(), scene = c.scene, owner = account(c);
+    dynamic?.show(avatar, row[9], () => avatarChoice(avatar) === row &&
+      context().scene === scene && account() === owner);
   }
   function fit(avatar) {
     const texture = avatar.skinTex, image = texture?.texture || texture?.source;
@@ -228,9 +243,10 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
   function sync() {
     if (!active) return;
     const current = context();
-    if (avatarScene !== current.scene) {
+    if (avatarScene !== current.scene || avatarAccount !== account(current)) {
+      dynamic?.reset();
       for (const records of avatarHooks.values()) for (const release of [...records.values()].reverse()) release();
-      avatarHooks.clear(); avatarScene = current.scene;
+      avatarHooks.clear(); avatarScene = current.scene; avatarAccount = account(current);
       for (const avatar of renderedAvatars) if (avatar.destroyed || avatar.seat !== current.selfSeat) {
         releaseFitMask(avatar); renderedAvatars.delete(avatar);
       }
@@ -248,6 +264,7 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
       };
       add('loadSkin', function (original, args) {
         const row = avatarChoice(this);
+        dynamic?.stop(this);
         if (row) renderedAvatars.add(this);
         if (row) {
           this.__xcTenYearIssuedURLs ||= new Set(); this.__xcTenYearIssuedURLs.add(urls(row).big);
@@ -284,14 +301,23 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
           log('原生纹理加载失败，恢复OL默认图：' + row[2]);
         }
         const result = original.apply(this, args);
-        if (row) { this.removeSkeleton?.(); fit(this); this.__xcTenYearFitted = true; }
+        if (row) { this.removeSkeleton?.(); fit(this); this.__xcTenYearFitted = true; showDynamic(this, row); }
         return result;
       }, true);
+      for (const name of ['removeSkeleton', 'clearSkin', 'Reset', 'destroy', 'SetGray']) add(name, function (original, args) {
+        dynamic?.stop(this); return original.apply(this, args);
+      });
+      add('ShowSkeleton', function (original, args) {
+        const result = original.apply(this, args); dynamic?.visible(this, args[0]); return result;
+      });
+      for (const name of ['ShowType', 'ClearFilter']) add(name, function (original, args) {
+        const result = original.apply(this, args); showDynamic(this, avatarChoice(this)); return result;
+      });
     }
   }
   function attach() {
-    active = true; onSeatReady();
-    log('已启用全表同名合页：' + rows.size + '条静态候选，选择时检查图片');
+    active = true; dynamic?.attach(); onSeatReady();
+    log('已启用全表同名合页：' + catalog.skins.length + '条静态/' + dynamicCatalog.length + '条SK动态候选，选择时验证');
   }
   function onSeatReady() {
     sync();
@@ -299,11 +325,13 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
       const row = avatarChoice(avatar);
       if (row && avatar.__xcTenYearLastRequest !== urls(row).big) {
         avatar.removeSkeleton?.(); avatar.loadSkin(urls(row).big);
-      }
+      } else if (row) showDynamic(avatar, row);
+      else dynamic?.stop(avatar);
     }
   }
   function detach() {
     active = false;
+    dynamic?.detach();
     for (const cancel of [...pendingImages]) cancel();
     checked.clear();
     for (const view of boundViews) {
@@ -314,7 +342,7 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
     boundViews.clear();
     for (const records of avatarHooks.values()) for (const release of [...records.values()].reverse()) release();
     avatarHooks.clear();
-    avatarScene = null;
+    avatarScene = null; avatarAccount = null;
     for (const avatar of renderedAvatars) {
       releaseFitMask(avatar);
       if (avatar.destroyed || avatar.seat !== context().selfSeat) continue;
@@ -328,5 +356,6 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
   }
   return { attach, detach, sync, onSeatReady, bindView, fixItems, entries, pages, urls, validate,
     label: gid => generals.get(Number(gid))?.label,
-    choice: gid => choice(gid), status: () => ({ active, staticRecords: rows.size, avatarOwners: avatarHooks.size }) };
+    choice: gid => choice(gid), status: () => ({ active, staticRecords: catalog.skins.length,
+      dynamicRecords: dynamicCatalog.length, dynamic: dynamic?.status(), avatarOwners: avatarHooks.size }) };
 };
