@@ -32725,12 +32725,13 @@ function daxiaochaoRainbowLookup(decoder, index) {
 // remains the source of truth for decoder/index mappings.
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
   tenYearDynamicIdleSkins: {
-    title: "十周年SK动态待机 / 官方物品配对 / 本地源ID隔离",
+    title: "十周年SK动态待机 / 同皮肤动态优先展示 / 本地源ID隔离",
     verifiedAt: "2026-11-21",
     sourceFile: "electron-next/src/features/ten-year-dynamic.js",
     decodedIndexes: {},
     searchKeywords: ["十周年动态", "SK动态待机", "ten-year-dynamic", "RelationSkinItemID", "dynamic:744001", "Templet", "buildArmature", "play", "103候选", "舐伤伴君", "静态回退", "xc-skin-effects-change", "模板取消", "静态544001", "gid346", "动态前置标识", "皮肤屏蔽保留待机", "同页动态项", "乐貂蝉", "1338", "7133801", "8133801", "月下翩跹", "锦年踏歌", "daiji2.sk", "553候选", "ShowFrame", "SmallStandByAnimateInfos", "GeneralAvatarSprite", "座位SK"],
     chain: [
+      "最新列表规则：十周年动态隐藏对应静态，OL全部保留。nativeSkinTabs.appendExternal->ten-year-native.entries在当前家族/完整版本页取candidates，dynamic.prepare可用时以动态行row[1]官方静态回退素材建立dynamicStatics，先隐藏对应静态及同素材别名再artKey去重；不按名称匹配，不跨页隐藏。未接入动态或无播放器保留静态，同名不同素材保留；资源仍点击时验证，候选不等于已下载成功。rows/choice/账号偏好与静态回退不删不迁移，无新增状态或生命周期。修前未隐藏复现，修后111项含651来源页与OL静动态共存通过；源码/部署/回退见架构表同名节与迁移报告19节。",
       "最新用户确认马云騄两款带动态字样的皮肤已游戏内成功，继而反馈乐貂蝉无动态。十周年1338月下翩跹5133801->7133801、锦年踏歌6133801->8133801物品关系明确；旧清单无大图daiji.sk导致首版整行未收，不是丢失同名家族。在线两款daiji.sk404、大图.skel4.0.56，但daiji2.sk为LAYAANIMATION1.6.0且真实引擎绘制两帧变化。",
       "原生GeneralAvatarSprite.loadSkeleton的ShowFrame分支用SmallStandByAnimateInfos首文件或daiji2.sk；SkinSmallStandByAnimateInfoVO补.sk，轮播加载-1后updateDaiJiCarousel按动作0起播。已抽取真实方法/VO并执行验证。生成器全表复用该分支，553官方同名配对候选=103旧big+450seat，其中140座位清单可见、310选择时验；其余137无同名静态回退仍审计。禁止用旧清单/角色白名单逐个补将，保留旧103条与3396静态。",
       "新增descriptor.mode=seat/layers.animationIndex0，播放器验证动作索引存在并play(0,true)，big仍校验play；首段座位待机循环，不引入Spine4大图/随机轮播/技能。来源偏好、协议默认0和静态回退/模板清理不改。修前乐页缺项失败，修后102原生链+26播放器（含十周年真实摘录）及相邻回归过；真实Electron分别绘制7133801/8133801和旧744001，待乐页实战验收。备份/同步见报告17.7。",
@@ -32738,7 +32739,7 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       "动态目录名称现前置动态·舐伤伴君，静态原名不改；ten-year-native静态提交日志追加明确官方配对的同页动态项，不自动替用户切换或改保存值。源码职责/来源ID/默认回传/同名页不变，发布路径不增删。两条新断言在修前分别复现待机误停和前置标识缺失，修后100项原生链+22项播放器及原屏蔽52通过；真实Electron带blocking=true起播/开关不重建/像素变化通过，当前对局未热注入。部署见报告17.6。",
       "新增明文工厂，无新decoder索引。首版103条大图SK候选和450缺旧清单的历史范围已被最新553条big/seat替代；仍不是690全部兼容。未接攻击/技能/觉醒/语音，原生形态与持有不变。",
       "真实十周年ItemConf:54400100(SkinID544001).RelationSkinItemID=74400100，目标SkinID744001/Resource744001。build-ten-year-dynamic-catalog.py据官方物品关系配静态行和同名页；BigResource用于maxBig，不推static，禁止按ID加减或仅标题配对。GameItemConfig解密延用十周年resc/CtrUtil并通过native wrapper及重复解密对照，未使用OL普通AES。",
-      "nativeSkinTabs.extension->ten-year-native.entries保留静态并追加动态·前置标识，itemClick先双PNG+Templet加载/play校验，xcTenYearMergedSkins.v1仅存dynamic:源ID。原生close/destroy/send仍OL默认0/静态状态，既有localSkinSelections继续真实默认回传和响应还原；使用中按动态资源与静态资源分开，别名同物理素材去重。",
+      "nativeSkinTabs.extension->ten-year-native.entries按最新动态优先规则展示，底层静态来源完整保留，动态·前置标识不变；itemClick先双PNG+Templet加载/play校验，xcTenYearMergedSkins.v1仅存dynamic:源ID。原生close/destroy/send仍OL默认0/静态状态，既有localSkinSelections继续真实默认回传和响应还原；使用中按动态资源与静态资源分开，别名同物理素材去重。",
       "本人avatar.loadSkinComplete->showDynamic->ten-year-dynamic.prepare/show->Templet.loadAni(.sk)->buildArmature(1)->play循环；复用scrollRect居中铺满，层共享原点，不挡点击。removeSkeleton/Reset/clearSkin/destroy/死亡停播；ShowSkeleton含加载前隐藏、ShowType与ClearFilter协调。场景/账号reset和isCurrent拒晚到，detach清超时/模板；物理别名模板共享、空闲缓存最多3，已完成但未提交的Promise也能取消。",
       "失败不提交或回退静态，[十周年动态]+debug不另走控制台。两新模块真实装配并登记release-files；版本与asar不动。首版曾订阅xc-skin-effects-change停待机，现已按最新验收修正，不再将其作为待机停止门槛。",
       "首版98项+20项和真实像素证据保留在迁移报告17.4；最新100+22及带屏蔽待机像素检查见17.6。均不是当前页面实战验收；已知实际日志只证明用户曾选中静态项，不能声称动态已游戏内成功。"

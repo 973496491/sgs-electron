@@ -73,7 +73,13 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
     const general = generals.get(Number(gid));
     if (!active || !general) return [];
     const seen = new Set();
-    return [...rows.values()].filter(row => row[8].some(p => p[0] === general.family && p[1] === label))
+    const candidates = [...rows.values()].filter(row => row[8].some(p => p[0] === general.family && p[1] === label) &&
+      (!row[9] || typeof dynamic?.prepare === 'function'));
+    // Dynamic catalog rows carry the officially paired static resource in row[1].
+    // Filter this page before deduplication so static aliases cannot reappear;
+    // keep all source rows for saved choices and the player's static fallback.
+    const dynamicStatics = new Set(candidates.filter(row => row[9]).map(row => String(row[1])));
+    return candidates.filter(row => row[9] || !dynamicStatics.has(String(row[1])))
       .sort((a, b) => Number(!!a[9]) - Number(!!b[9]) || Number(a[0] !== Number(a[1])) - Number(b[0] !== Number(b[1])) || Number(a[0]) - Number(b[0]))
       .filter(row => { const key = artKey(row); if (seen.has(key)) return false; seen.add(key); return true; }).map(row => {
       const pair = urls(row);

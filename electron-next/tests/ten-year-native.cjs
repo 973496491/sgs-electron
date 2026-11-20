@@ -396,13 +396,65 @@ function setup(options = {}) {
   const calls=[];
   const player={attach(){},detach(){calls.push('detach');},reset(){},stop(){},status(){return {};},
     prepare:async spec=>{calls.push(['prepare',spec.id]);},show:(avatar,spec,current)=>{calls.push(['show',spec.id,current()]);}};
-  const dyn=setup({dynamicCatalog:dynamics,dynamic:player});
+  const listEnv=setup({dynamicCatalog:dynamics,dynamic:player});
+  const fullRows=new Map([...catalog.skins,...dynamics].map(row=>[String(row[0]),row]));
+  let filteredPagesOK=true, hiddenStaticResources=0;
+  for(const [key,resources] of expectedPages) {
+    const [family,label]=JSON.parse(key);
+    const paired=dynamics.filter(row=>row[8].some(p=>p[0]===family&&p[1]===label));
+    const hidden=new Set(paired.map(row=>String(row[1])));
+    const expected=[...resources].filter(resource=>!hidden.has(String(resource))).map(resource=>'static:'+resource)
+      .concat(paired.map(row=>'dynamic:'+row[9].resource));
+    const shown=listEnv.extension.entries(familyID.get(family),label).map(item=>fullRows.get(item.__xcTenYearEntry))
+      .map(row=>(row[9]?'dynamic:'+row[9].resource:'static:'+row[1]));
+    if(JSON.stringify(shown.slice().sort())!==JSON.stringify([...new Set(expected)].sort()))filteredPagesOK=false;
+    hiddenStaticResources+=hidden.size;
+  }
+  check(filteredPagesOK && hiddenStaticResources>0,
+    'all '+expectedPages.size+' source pages hide paired static resources and aliases while retaining every other static and dynamic resource');
+  listEnv.extension.detach();
+
+  const sample=dynamics.find(row=>row[0]==='dynamic:744001');
+  const sampleStatic=catalog.skins.find(row=>row[0]===544001);
+  const unpaired=catalog.skins.find(row=>row[0]===244001);
+  const pairedAlias=[...sampleStatic];pairedAlias[0]=9900001;
+  const sameName=[...unpaired];sameName[2]=sampleStatic[2];
+  const smallCatalog={...catalog,skins:[sampleStatic,pairedAlias,sameName]};
+  const partial=setup({catalog:smallCatalog,dynamicCatalog:[sample],dynamic:player});
+  const partialEntries=partial.extension.entries(horse,'马云騄');
+  check(partialEntries.length===2 && partialEntries.some(item=>item.__xcTenYearEntry==='dynamic:744001') &&
+    partialEntries.some(item=>item.__xcTenYearEntry==='244001'),
+    'partial dynamic catalog hides both paired source IDs sharing art, but keeps a same-title skin with different art');
+  partial.extension.detach();
+  const absent=setup({catalog:smallCatalog,dynamicCatalog:[sample]});
+  const absentEntries=absent.extension.entries(horse,'马云騄');
+  check(absentEntries.length===2 && absentEntries.every(item=>!item.__xcTenYearEntry.startsWith('dynamic:')) &&
+    absentEntries.some(item=>item.__xcTenYearEntry==='544001'),
+    'without a loaded dynamic player the static card remains and no unusable dynamic card is shown');
+  absent.extension.detach();
+  const otherPage=[...sample];otherPage[8]=[['马云騄','界马云騄']];
+  const scoped=setup({catalog:smallCatalog,dynamicCatalog:[otherPage],dynamic:player});
+  check(scoped.extension.entries(horse,'马云騄').some(item=>item.__xcTenYearEntry==='544001') &&
+    scoped.extension.entries(horse,'界马云騄').some(item=>item.__xcTenYearEntry==='dynamic:744001'),
+    'a dynamic entry on another version page does not hide this page\'s static card');
+  scoped.extension.detach();
+
+  const oldStaticData=new Map([['xcTenYearMergedSkins.v1',JSON.stringify({123:{[horse]:'544001'}})]]);
+  const dyn=setup({dynamicCatalog:dynamics,dynamic:player,data:oldStaticData,buckets:{[horse]:[34601,34602]}});
+  const olPair=dyn.h.manager.GetGeneralSkinIncludeHide(horse);
+  olPair[0].skinname='舐伤伴君';olPair[1].skinname='动态·舐伤伴君';olPair[1].canUpdateDynamic=()=>true;
   let dynView=dyn.open(horse).view;
   const sourceID='dynamic:744001';
   let dynamicItem=dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry===sourceID);
-  check(dynamicItem && dynView.itemList.some(i=>i.skinData?.__xcTenYearEntry==='544001'), 'same page retains separate static and explicit dynamic choices');
-  check(dynamicItem.skinName.text.startsWith('动态·')&&dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry==='544001').skinName.text==='舐伤伴君',
-    'actual native card title starts with visible dynamic marker while static name remains intact (gid346 feedback)');
+  check(dynamicItem && !dynView.itemList.some(i=>i.skinData?.__xcTenYearEntry==='544001'),
+    'loaded ten-year dynamic candidate hides its paired static card before selection');
+  check(dynamicItem.skinName.text.startsWith('动态·') && dynView.itemList.some(i=>i.skinData?.__xcTenYearEntry==='244001'&&i.skinName.text==='随兄入蜀'),
+    'dynamic marker and unpaired ten-year static title remain visible');
+  check(dyn.extension.choice(horse)[0]===544001 && !dynamicItem.IsUsing && oldStaticData.get('xcTenYearMergedSkins.v1')===JSON.stringify({123:{[horse]:'544001'}}),
+    'hiding a previously selected static entry preserves its preference without selecting the dynamic counterpart');
+  check(olPair.every(row=>dynView.itemList.some(i=>i.skinData===row&&i.skinName.text===row.skinname)) &&
+    dynView.itemList.find(i=>i.SkinID===34602).exTypeTet.visible,
+    'same-title native OL static and dynamic cards both remain alongside the filtered ten-year entries');
   await dynamicItem.click();
   check(calls.some(c=>c[0]==='prepare'&&c[1]===744001),'dynamic templates validate before committing the preference');
   check(dynView.sent.length===1 && dynView.sent[0]===88 && dynView.closeSelectDynamicState===0 && dyn.seat.skin===0 && dyn.seat.dynamic===false, 'dynamic source IDs/state never enter native OL protocol or seat state');
@@ -411,15 +463,14 @@ function setup(options = {}) {
   check(calls.some(c=>c[0]==='show'&&c[1]===744001&&c[2]),'actual native texture completion mounts the selected dynamic');
   dynView=dyn.open(horse).view;
   dynamicItem=dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry===sourceID);
-  const staticItem=dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry==='544001');
+  const staticItem=dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry==='244001');
   check(dynamicItem.IsUsing && !staticItem.IsUsing,'shared fallback image does not merge static and dynamic using markers');
   await staticItem.click();
-  check(dyn.extension.choice(horse)[0]===544001,'switching back to static retains an explicit static choice');
-  check(dyn.logs.some(s=>s.includes('同页动态项：动态·舐伤伴君')),'static selection log names the alternate dynamic entry without changing the user choice');
+  check(dyn.extension.choice(horse)[0]===244001,'switching to an unpaired static card retains an explicit static choice');
   player.prepare=async()=>{throw Error('invalid SK texture');};
   dynView=dyn.open(horse).view;
   await dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry===sourceID).click();
-  check(dyn.extension.choice(horse)[0]===544001 && dyn.logs.some(s=>s.includes('invalid SK texture')), 'cached static images never bypass dynamic revalidation; failure retains previous skin and logs');
+  check(dyn.extension.choice(horse)[0]===244001 && dyn.logs.some(s=>s.includes('invalid SK texture')), 'cached static images never bypass dynamic revalidation; failure retains previous skin and logs');
   dyn.extension.detach();check(calls.includes('detach'),'local skin detach releases dynamic owner');
 
   const yueRows=dynamics.filter(row=>row[8].some(p=>p[1]==='乐貂蝉'));
@@ -441,11 +492,12 @@ function setup(options = {}) {
     opened=e.open(gid,name);e.h.tabs.selectTab(e.h.tabs.status().tabs.find(t=>t.label==='乐貂蝉').key);
     const use=opened.view.itemList.filter(i=>i.IsUsing);
     if(use.length!==1||use[0].skinData?.__xcTenYearEntry!=='dynamic:7133801')yueMatrix=false;
-    await opened.view.itemList.find(i=>i.skinData?.__xcTenYearEntry==='5133801').click();
-    if(e.extension.choice(gid)?.[0]!==5133801)yueMatrix=false;
+    if(opened.view.itemList.some(i=>['5133801','6133801'].includes(i.skinData?.__xcTenYearEntry)))yueMatrix=false;
+    await opened.view.itemList.find(i=>i.skinData?.__xcTenYearEntry==='4133801').click();
+    if(e.extension.choice(gid)?.[0]!==4133801)yueMatrix=false;
     e.extension.detach();
   }
-  check(yueMatrix,'all three native windows and ordinary/Jie/Mo identities can choose Yue seat idle, keep exact using marker, and return to static');
+  check(yueMatrix,'all three native windows and ordinary/Jie/Mo identities hide paired statics, choose Yue seat idle, keep exact using marker, and return to unpaired static');
 
   process.stdout.write('ten-year-native: '+assertions+' native item/picker/response/render/lifecycle checks passed\n');
 })().catch(error=>{process.stderr.write(error.stack+'\n');process.exitCode=1;});
