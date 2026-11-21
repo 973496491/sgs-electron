@@ -29,6 +29,7 @@ function fixture() {
   const context = { Seats: seats, IsCountryWar: false };
   const scene = { seatContainer: { seatUIs: seats.map(seat => ({ seat })) } };
   const env = {
+    window: {}, // The extraction span also installs renderer bridge exports.
     room: { size: 3, isGuoZhan: false },
     laya: { gamescene: scene, class: name => { assert.equal(name, 'GameContext'); return context; } },
     document: { getElementById: id => nodes.get(id), createElement: node },

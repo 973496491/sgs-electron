@@ -33,6 +33,9 @@
 
 ## 节钺令奖励串接定向核验（2026-11-21）
 
+- **2026-11-22现场反馈修正**：用户日志00:56:37 `start/source=button`，00:56:47 `step-error/节钺令奖励/任务奖励回包超时，节钺令留待下次领取`，断点在小抄任务确认前置，尚未发170298，并非本日志证明节钺令协议/资格失效。成功任务原生会派发REWARD_REP，不等于每次提交都一定出现成功事件；尚不确定具体未确认ID及服务端原因。已改为任务先发、有界等确认，未齐记录task-rewards-unconfirmed/taskIds并继续刷新节钺令，仅按刷新后的原生可领状态领奖；未确认仍不记每日完成，不重发任务。节钺令自身状态超时仍不领。没有新下载/解包/协议映射变化，沿用下方原生摘录；31项自动任务、15项月周卡、26项日志检查通过，真实登录/按钮缺任务回包场景修前失败、修后继续查询；未游戏内到账实测。实现/同步见架构表自动任务同日记录。
+- **同日追加：局后失败重复触发**：用户01:00:00/10/14日志为game.end重复start/error/finish。问题属于小抄game.end(true)/end(false)清理与完成后再触发策略，不是新的原生协议映射；已在真实game.start状态转换接beginMatch，同局只消费一次局后入口，并给其它失败自动触发加1/2/4/最多5分钟退避，手动立即重试。真实脚本方法摘取模拟复现修前3轮、修后1轮；当前35项自动任务+15项月周卡+26项日志通过。无新下载或解包；状态、接口、清理/回退及实际同步维护于架构表自动任务节与manualLookupNotes.autoTaskChain。
+
 - 用户称“节约令”，同日普通ES6快照中文字确认原名“节钺令”，对应 `NEW_JD_JIEYUE / NewJunDianViewCtrl`。复用上节已核实存在的同哈希明文，不重下载配置或资源、不涉及AES/WASM。原生UI `oneClickDrawAwds` 明确复用 `HasNewJDRewardRed -> ReqDrawAllNewJDRwd`，与旧军典 `HasJDRewardRed -> ReqDrawAllJDRwd` 独立。
 - 原生ActivityManager=chi：约13462471处 `SendGetNewJDRewardReq -> 170296({id,is_bp,is_all})`，一键传0/false/true；约13462641处 `SendGetNewJDInfoReq -> 170298({})`。170299普通列表、170306付费列表各分片累计，`type||0=0`尾包提交并派发NEW_JD_INFO_SUC；hadBuyNewJD为真须等待付费列表，不能看到一次共用NEW_JD_INFO_SUC就假定两类均已更新。170297结果0为成功，但本次自动链只记录提交，不统计到账。
 - 约13463697处HasNewJDRewardRed按原生活动IsOpen、CurrentNewSeasonMainVo、奖励组、11987201积分阈值、普通已领列表以及已购买档位的付费已领列表决定。约13868911处新任务onOpCompleteTask与旧TaskAward_Response均在更新状态后派发TaskManager.REWARD_REP(id)，可用于“先任务奖励、再节钺令”的顺序；没有请求流水号，不据单个ID事件证明其它轮次全部请求成功。ServerProxy.AddEventListener经GetProtocolNameById映射170299/170306到decodeClientNewJDInfoNtf/decodeClientNewJDBpAwardNtf，既有管理器监听先安装；新增监听不覆盖原链。

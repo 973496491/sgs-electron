@@ -15371,6 +15371,15 @@
   // 自动任务拥有订阅、单次执行和取消状态；原生管理器仍由 laya.class 适配。
   const autoTasks = (() => {
     let active = false, dispatcher = null, current = null;
+    let matchGeneration = 0, lastEndedMatch = -1;
+    let automaticSession = null, automaticFailures = 0, automaticRetryAt = 0, retryDeferredLogged = false;
+    function resetAutomaticPolicy() {
+      matchGeneration = 0;
+      lastEndedMatch = -1;
+      automaticFailures = automaticRetryAt = 0;
+      retryDeferredLogged = false;
+    }
+    function beginMatch() { matchGeneration++; }
     function log(event, data = {}) {
       appendLocalSkinDebugLine("[自动任务] " + event + " " + JSON.stringify(data), false, "debug");
     }
@@ -15421,6 +15430,8 @@
     function dispose() {
       active = false;
       cancel("exit");
+      resetAutomaticPolicy();
+      automaticSession = null;
       if (dispatcher) dispatcher.off("TASK_VIP", api, onTask);
       dispatcher = null;
       window.removeEventListener("xc:config-change", onConfig);
@@ -15467,14 +15478,18 @@
           throw Error("节钺令领取上下文已变化，本轮跳过");
       };
       try {
-        // 先等本轮已提交任务的真实领奖回包，不按固定延时假定积分已到账。
+        // 任务先提交并有界等待确认；未确认单项不能挡住独立的节钺令状态查询。
         for (let attempt = 0; job.pendingTaskRewards.size && attempt < 16; attempt++) {
           checkContext();
           if (!(await pause(job, 500))) return;
         }
         if (!live(job)) return;
         checkContext();
-        if (job.pendingTaskRewards.size) throw Error("任务奖励回包超时，节钺令留待下次领取");
+        if (job.pendingTaskRewards.size) {
+          job.errors++;
+          log("task-rewards-unconfirmed", { source: job.source, taskIds: Array.from(job.pendingTaskRewards),
+            note: "任务回包未齐，不重发任务请求；继续刷新节钺令，按原生可领状态判断" });
+        }
         const proxy = activity.proxy;
         let baseReady = false, paidReady = false;
         const onBase = event => {
@@ -15618,18 +15633,54 @@
       if (!active || !enabled) return Promise.resolve(false);
       if ((source === "daily" || source === "game.end") && !globalConfig.autoTaskSwitch)
         return Promise.resolve(false);
+      let session;
+      try { session = laya.class("Self", true); } catch (_) {}
+      if (session !== automaticSession) {
+        cancel("account-changed");
+        resetAutomaticPolicy();
+        automaticSession = session;
+      }
       if (day != null && timer.lastTaskDate === day) return Promise.resolve(true);
+      // 原生结束/清理可反复交替通知，同一局只消费一次局后领取入口。
+      if (source === "game.end" && lastEndedMatch === matchGeneration)
+        return current ? current.promise : Promise.resolve(false);
       if (current) {
+        if (source === "game.end") lastEndedMatch = matchGeneration;
         if (day != null) current.day = day;
-        log("merged", { source });
+        if (!current.mergedSources.has(source)) {
+          current.mergedSources.add(source);
+          log("merged", { source });
+        }
         return current.promise;
       }
+      const manual = source === "button" || source === "switch";
+      if (!manual && Date.now() < automaticRetryAt) {
+        if (!retryDeferredLogged) {
+          retryDeferredLogged = true;
+          log("retry-deferred", { source, retryInMs: automaticRetryAt - Date.now() });
+        }
+        return Promise.resolve(false);
+      }
+      if (source === "game.end") lastEndedMatch = matchGeneration;
       const job = { source, day, errors: 0, requests: 0, cancelled: false, timer: null, wake: null,
-        jieYueCleanups: [] };
+        jieYueCleanups: [], mergedSources: new Set([source]) };
       current = job;
       job.promise = Promise.resolve().then(() => run(job)).catch(error => {
         log("error", { source, message: String(error.message || error) });
         return false;
+      }).then(result => {
+        // 只让仍属于当前会话的轮次更新退避；手动入口始终允许立即重试。
+        if (live(job)) {
+          retryDeferredLogged = false;
+          if (result) automaticFailures = automaticRetryAt = 0;
+          else {
+            automaticFailures = Math.min(automaticFailures + 1, 4);
+            const retryInMs = Math.min(60000 * Math.pow(2, automaticFailures - 1), 300000);
+            automaticRetryAt = Date.now() + retryInMs;
+            log("retry-backoff", { source, retryInMs });
+          }
+        }
+        return result;
       }).finally(() => {
         releaseJieYue(job);
         if (current === job) {
@@ -15639,7 +15690,7 @@
       });
       return job.promise;
     }
-    const api = Object.freeze({ start, dispose, request });
+    const api = Object.freeze({ start, dispose, request, beginMatch });
     return api;
   })();
   window.__xcRunEightPveFigureOut = function (source, attempt) {
@@ -24643,6 +24694,7 @@
           !this[n(370)] &&
             room[n(339)] &&
             ((this[n(370)] = !0),
+            autoTasks.beginMatch(),
             (this[n(624)] = !1),
             console[n(247)](n(605) + room[n(514)] + n(337) + room[n(587)]),
             laya[n(329)](),

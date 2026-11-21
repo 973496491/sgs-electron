@@ -54,6 +54,7 @@ function fixture() {
   };
   const context = {
     Promise, Set, Map,
+    Date: class extends Date { static now() { return now; } },
     window: {
       addEventListener(name, fn) { if (!events.has(name)) events.set(name, new Set()); events.get(name).add(fn); },
       removeEventListener(name, fn) { if (events.has(name)) events.get(name).delete(fn); },
@@ -213,9 +214,106 @@ function jieYueFixture(options = {}) {
   };
   return Object.assign(f, { proxy, activity, state, deliver, deliverTask, baseReply, paidReply });
 }
+function gameLifecycle(f) {
+  const noop = () => {};
+  Object.assign(f.context, {
+    handCards: { setMatchActive: noop }, xinYouCardTags: { reset: noop },
+    aliveCountrySummary: { stop: noop, start: noop }, UI: {}, room: { size: 8, reset: noop },
+    closeAutoShouQiDialog: noop, clearAdvancedFeatureTrial: noop, getSeatUIs: noop,
+    _0x30ee40: noop, _0x3cdad4: {}, getseven: noop, retry: noop, console: { warn: noop },
+    scheduleEightPveFigureOut: noop, scheduleAutoShouQiFallback: noop,
+    resetOrderContainer: noop, hideOrderContainer: noop, Zone: { draw: noop },
+  });
+  f.laya.init = f.laya.reset = f.timer.delay = noop;
+  f.document.querySelectorAll = () => [];
+  return vm.runInContext('({isGameStart:false,isPassed:false,' +
+    slice('        end(n) {', '        ready(n) {') +
+    slice('        start() {', '        enter(n, t, e) {') + '})', f.context);
+}
 let passed = 0;
 async function test(name, fn) { await fn(); process.stdout.write('ok ' + (++passed) + ' - ' + name + '\n'); }
 (async () => {
+  await test('真实同局结束/清理反复交替，失败后只执行一次且不刷start/merged日志', async () => {
+    const f = jieYueFixture({ taskTimeout: true, state: { score: 10 } }); f.initButtons();
+    const game = gameLifecycle(f); game.start(); game.end(true);
+    for (let i = 0; i < 100; i++) { game.end(false); game.end(true); }
+    await f.advance(20000);
+    for (let i = 0; i < 100; i++) { game.end(false); game.end(true); }
+    await f.advance(600000); game.end(false); game.end(true); await f.advance(20000);
+    assert.equal(f.calls.filter(c => c[0] === 'refresh').length, 1);
+    assert.equal(f.logs.filter(l => /^\[自动任务\] start /.test(l)).length, 1);
+    assert.equal(f.logs.filter(l => /^\[自动任务\] merged /.test(l)).length, 0);
+    game.start(); game.end(true); await f.advance(20000);
+    assert.equal(f.calls.filter(c => c[0] === 'refresh').length, 2, '真实下一局允许局后领取');
+  });
+  await test('失败后的自动触发按1/2/4/5分钟退避，重复通知只记一次等待', async () => {
+    const f = fixture(); f.initButtons();
+    f.managers.TaskManager.getTaskListFromServer = () => { throw Error('refresh failure'); };
+    for (const delay of [60000, 120000, 240000, 300000]) {
+      const p = f.api.request(true, 'daily', 100); await f.advance(0); assert.equal(await p, false);
+      const backoff = f.logs.filter(l => l.includes('retry-backoff')).at(-1);
+      assert.equal(JSON.parse(backoff.slice(backoff.indexOf('{'))).retryInMs, delay);
+      const before = f.logs.length;
+      for (let i = 0; i < 100; i++) await f.api.request(true, 'daily', 100);
+      assert.equal(f.logs.length - before, 1);
+      assert(f.logs.at(-1).includes('retry-deferred'));
+      await f.advance(delay);
+    }
+    assert.equal(f.jobs.size, 0, '退避不创建重试定时器');
+    assert.equal(f.logs.filter(l => /^\[自动任务\] start /.test(l)).length, 4);
+  });
+  await test('自动退避期间手动按钮/开关可立即重试，成功后清除退避', async () => {
+    for (const source of ['button', 'switch']) {
+      const f = fixture(), refresh = f.managers.TaskManager.getTaskListFromServer;
+      f.initButtons(); f.managers.TaskManager.getTaskListFromServer = () => { throw Error('refresh failure'); };
+      const failed = f.api.request(true, 'daily', 100); await f.advance(0); assert.equal(await failed, false);
+      f.managers.TaskManager.getTaskListFromServer = refresh;
+      assert.equal(await f.api.request(true, 'TASK_VIP'), false);
+      const p = source === 'button' ? f.controls.get('task').onmousedown() : f.api.request(true, 'switch');
+      await f.advance(6000); assert.equal(await p, true);
+      const daily = f.api.request(true, 'daily', 100); await f.advance(6000); assert.equal(await daily, true);
+      assert.equal(f.timer.lastTaskDate, 100);
+    }
+  });
+  await test('账号变化或退出重建不继承旧退避，取消轮次不增加失败次数', async () => {
+    for (const restart of [false, true]) {
+      const f = fixture(), refresh = f.managers.TaskManager.getTaskListFromServer;
+      f.managers.Self = {}; f.initButtons();
+      f.managers.TaskManager.getTaskListFromServer = () => { throw Error('refresh failure'); };
+      const failed = f.api.request(true, 'daily', 100); await f.advance(0); assert.equal(await failed, false);
+      if (restart) { f.api.dispose(); f.api.start(); } else f.managers.Self = {};
+      f.managers.TaskManager.getTaskListFromServer = refresh;
+      const p = f.api.request(true, 'daily', 100); await f.advance(6000); assert.equal(await p, true);
+    }
+    const f = fixture(); f.initButtons(); const cancelled = f.api.request(true, 'daily', 100);
+    await f.advance(500); f.setEnabled(false); await f.advance(0); assert.equal(await cancelled, false);
+    assert(!f.logs.some(l => l.includes('retry-backoff')));
+    f.setEnabled(true); const p = f.api.request(true, 'daily', 100); await f.advance(6000); assert.equal(await p, true);
+  });
+  await test('任务未确认不阻断登录/按钮的节钺令刷新，只按原生可领状态领奖', async () => {
+    for (const source of ['daily', 'button']) for (const state of [
+      { score: 10 }, { score: 10, level: 1 }, { score: 0 }, { score: 10, open: false },
+    ]) {
+      const f = jieYueFixture({ taskTimeout: true, state }); f.initButtons();
+      let p;
+      if (source === 'daily') f.daily(100); else p = f.controls.get('task').onmousedown();
+      await f.advance(2000);
+      assert.equal(f.calls.filter(c => c[0] === 170298).length, 0);
+      await f.advance(20000);
+      assert.equal(f.calls.filter(c => c[0] === 170298).length, 1, f.logs.join('\n'));
+      assert.equal(f.calls.filter(c => c[0] === 170296).length, state.score && state.open !== false ? 1 : 0);
+      assert.equal(f.calls.filter(c => c[0] === 'award').length, 1);
+      assert.equal(f.timer.lastTaskDate, undefined);
+      if (p) assert.equal(await p, false, '普通任务仍未确认，不能把整轮当成全部成功');
+      const pending = f.logs.find(l => l.includes('task-rewards-unconfirmed'));
+      assert(pending); assert.deepEqual(JSON.parse(pending.slice(pending.indexOf('{'))).taskIds, [1]);
+      assert(f.logCalls.every(args => args[1] === false && args[2] === 'debug'));
+      assert.equal(f.managers.TaskManager.handlers.length, 0);
+      assert(f.proxy.handlers.every(h => h.caller === f.activity));
+      assert.equal(f.jobs.size, 0); assert.equal(f.globalState.autoTaskRunning, false);
+      await f.advance(20000); assert.equal(f.calls.filter(c => c[0] === 'award').length, 1);
+    }
+  });
   await test('节钺令等待真实任务领奖回包，再查询状态并提交一键领奖', async () => {
     const f = jieYueFixture({ taskDelay: 3500 }); f.initButtons();
     const p = f.controls.get('task').onmousedown(); await f.advance(2000);
@@ -266,11 +364,11 @@ async function test(name, fn) { await fn(); process.stdout.write('ok ' + (++pass
     assert.equal(f.calls.filter(c => c[0] === 170298).length, 2);
     assert.equal(f.calls.filter(c => c[0] === 170296).length, 1);
   });
-  await test('任务或节钺令状态回包超时不越序领奖，不记每日完成、不自动重放', async () => {
-    for (const options of [{ taskTimeout: true }, { queryTimeout: true }, { state: { level: 1 }, noPaid: true }]) {
+  await test('节钺令自己的状态回包超时不领奖，不记每日完成、不自动重放', async () => {
+    for (const options of [{ queryTimeout: true }, { state: { level: 1 }, noPaid: true }]) {
       const f = jieYueFixture(options); f.initButtons(); f.daily(100); await f.advance(20000);
       assert.equal(f.calls.filter(c => c[0] === 170296).length, 0);
-      assert.equal(f.calls.filter(c => c[0] === 170298).length, options.taskTimeout ? 0 : 1);
+      assert.equal(f.calls.filter(c => c[0] === 170298).length, 1);
       assert.equal(f.timer.lastTaskDate, undefined); assert.equal(f.jobs.size, 0);
       assert.equal(f.globalState.autoTaskRunning, false);
       assert.equal(f.managers.TaskManager.handlers.length, 0);
@@ -459,7 +557,7 @@ async function test(name, fn) { await fn(); process.stdout.write('ok ' + (++pass
     f.managers.TaskManager.getTaskListFromServer = () => { throw Error('refresh failure'); };
     f.initButtons(); const failed = f.api.request(true); await f.advance(0); assert.equal(await failed, false);
     assert.equal(f.globalState.autoTaskRunning, false); assert(f.logs.some(l => l.includes('refresh failure')));
-    f.managers.TaskManager.getTaskListFromServer = refresh; const retried = f.api.request(true); await f.advance(6000);
+    f.managers.TaskManager.getTaskListFromServer = refresh; const retried = f.controls.get('task').onmousedown(); await f.advance(6000);
     assert.equal(await retried, true);
   });
   await test('真实对局结束和 Exit 接线均可达', async () => {
