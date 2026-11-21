@@ -1,0 +1,22 @@
+{
+  "source": {
+    "url": "https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs",
+    "utc": "2026-11-21T15:21:34.564326+00:00",
+    "zipBytes": 5647901,
+    "zipSha256": "473b4c67921161a021d1393e4ac80aac735196b7c869c0ddfcc0deb61e8680eb",
+    "plainBytes": 24139039,
+    "plainSha256": "5e26cc635c4e0cdc2a7ee12d480a0372061cd768ec07ab1d9812ae851b063553"
+  },
+  "methods": {
+    "lookup": "Z(t){let i=this.allTasks.get(t);return i||(i=this.ct(t)),i||(i=zhi.I().Z(t)),i}",
+    "serverLookup": "GetServerTaskDataByTaskID(t){return this.allTasks.get(t)}",
+    "award": "st(t,i=0,s=0){this.crtAwdTaskId=t;let e=this.Z(t);if(e&&e.baseVo){if(e.baseVo instanceof ori){let t=e.baseVo;if(t){let i=t.GetPacVersionListValue(Zni.platformId),s=Zni.GameChangeVersion;if(Zni.IsLayaMobile&&(s=Number(Zni.versionCode)),s<i)return void dt.I().ShowTextPrompt(POt.GET_NEED_UPDATE_APP)}}if(e.baseVo.CheckVersionFiltrate()){let t;if(qni.IsOfficial)t=L8t.getValById(\"officialURL\");else{let i=sbt.I().GetPlatformByID(89),s=sbt.I().PlatName,e=i&&i[s];t=e&&e.split(\";\")[2]}let i=this.Ged.CreateConfirmData().SetTitle(POt.WARM_TIPS);t?i.SetContent(POt.GET_NEED_UPDATE_APP_WITH_GOTO).AddButton((i=>i.SetLabel(POt.GOTO_UPDATE).SetAsConfirm(this,(()=>{dt.I().A(\"VuplexWebViewWindow\",t)})))):i.SetContent(POt.GET_NEED_UPDATE_APP).AddButton((t=>t.SetAsConfirm())),i.SetClickBtnClose().SetCloseWhitoutCancel().ShowConfirmWindow(),COt.addBoolean(WGt.HasShownUpdateAppWindow,!0)}else if(e.baseVo.HaveSelectReward&&0==i)this.Ged.A(\"TaskRewardSelectWindow\",t);else if(e.IsNewQusetType)e.IsConditionBySpecialReqType&&zhi.I().UpTaskState([t]),zhi.I().st(t,i,s);else{let e=new gB;e.taskID=t,e.selectRewardId=i,e.count=s,this.proxy.G(e)}}}",
+    "refresh": "getTaskListFromServer(){let t=new _B;this.proxy.G(t)}"
+  },
+  "oldLookup": "D(t){let i=this.allTasks.get(t);return i||(i=this.GetNoGetTaskDataByTaskID(t)),i||(i=e0t.I().D(t)),i}",
+  "oldSource": {
+    "snapshot": "2026-11-10",
+    "sha256": "52e27bc74779059a3d2e075755c6e11ed9a9d31d83e482f588a323aadb835f63"
+  },
+  "oldCacheFallback": "GetNoGetTaskDataByTaskID(t){let i=ELt.I().GetTaskById(t);if(!i)return null;let s=new xF;return s.encode(i),s.IsFromServer=!1,s}"
+}

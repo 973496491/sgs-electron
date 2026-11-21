@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         三国杀打小抄
 // @namespace    https://xxxxxxxxxxxxxx/scripts/448004
-// @version      1.0.15
+// @version      1.0.17
 // @author       小麦 孤独尊
 // @description  打小抄支持网页版和微端，微端文件请加群 830137048
 // @icon         https://xxxxxxxxxxxx/bfs/new_dyn/17ec41a0ca79633b77399065ab80da3f2138912.png
@@ -27,7 +27,7 @@
   "use strict";
 
   // Synchronized from electron-next/version.json by npm run build:userscript.
-  const XIAOCHAO_VERSION = "1.0.15";
+  const XIAOCHAO_VERSION = "1.0.17";
 
   // Hand off once to the installed main-process module; navigation leaves no renderer callbacks behind.
   function bootstrapLocalReleaseUpdates() {
@@ -13030,7 +13030,8 @@
           ActivityManager: [[n(1578), n(1453)]],
           TaskManager: [
             [n(821), n(1108)],
-            [n(1748), n(685)],
+            // 查询及内部回退名均会混淆；按缓存+回退结构兼容新旧客户端。
+            [n(1748), /\bthis\.allTasks\.get\([^)]*\)[\s\S]*\breturn\b[^}]*\|\|/],
           ],
           NewSecKillManager: [[n(1452), n(1136)]],
         };
@@ -13079,6 +13080,16 @@
               (null == (r = t[l(1587)]) ? void 0 : r[l(1562)]) ||
               {},
             u = "";
+          function matches(code, marker) {
+            if (typeof marker === "string") return code.includes(marker);
+            if (!marker.test(code)) return false;
+            // 结构特征必须唯一，不能误绑仅查旧服务端缓存的方法或模糊候选。
+            return Object.getOwnPropertyNames(c).filter(key => {
+              if (key === "constructor") return false;
+              const method = Object.getOwnPropertyDescriptor(c, key).value;
+              return typeof method === "function" && marker.test(method.toString());
+            }).length === 1;
+          }
           return (
             Object[l(1293)](c)[l(1699)]((n) => {
               var r;
@@ -13089,12 +13100,12 @@
                 let r = x[f(171)]();
                 if (a)
                   return e[i][f(1699)](([t, e]) => {
-                    if (t === a && r[f(1107)](e)) return (u = n);
+                    if (t === a && matches(r, e)) return (u = n);
                   });
                 e[i][f(1699)](([e, i]) => {
                   const a = f;
                   if (
-                    r[a(1107)](i) &&
+                    matches(r, i) &&
                     (o[a(1386)](e) &&
                       n != e &&
                       (t[e] = function () {
@@ -15361,10 +15372,11 @@
   const autoTasks = (() => {
     let active = false, dispatcher = null, current = null;
     function log(event, data = {}) {
-      appendLocalSkinDebugLine("[自动任务] " + event + " " + JSON.stringify(data));
+      appendLocalSkinDebugLine("[自动任务] " + event + " " + JSON.stringify(data), false, "debug");
     }
     function live(job) { return active && current === job && !job.cancelled; }
     function pause(job, ms) {
+      if (!live(job)) return Promise.resolve(false);
       return new Promise(resolve => {
         job.wake = resolve;
         job.timer = setTimeout(() => {
@@ -15380,6 +15392,7 @@
       globalState.autoTaskRunning = false;
       if (!job) return;
       job.cancelled = true;
+      releaseJieYue(job);
       if (job.timer != null) clearTimeout(job.timer);
       if (job.wake) job.wake(false);
       job.timer = job.wake = null;
@@ -15421,6 +15434,84 @@
       }
     }
     function manager(name) { return laya.class(name); }
+    // 节钺令使用独立的新军典接口；订阅只归当前任务轮次所有。
+    function releaseJieYue(job) {
+      for (const release of job.jieYueCleanups.splice(0)) {
+        try { release(); }
+        catch (error) { log("jieyue-cleanup-error", { message: String(error.message || error) }); }
+      }
+    }
+    function prepareJieYue(job, tasks, activity) {
+      const missing = ["SendGetNewJDInfoReq", "ReqDrawAllNewJDRwd"]
+        .filter(name => typeof activity[name] !== "function");
+      for (const name of ["HasNewJDRewardRed", "hadBuyNewJD"])
+        if (!(name in activity)) missing.push(name);
+      if (missing.length) {
+        log("jieyue-skipped", { reason: "client-unavailable", missingMethods: missing });
+        return;
+      }
+      if (![tasks, activity.proxy].every(target => target &&
+          typeof target.on === "function" && typeof target.off === "function"))
+        throw Error("节钺令回包监听接口未就绪");
+      job.jieYueSession = laya.class("Self", true);
+      job.pendingTaskRewards = new Set();
+      const onReward = id => { if (live(job)) job.pendingTaskRewards.delete(Number(id)); };
+      job.jieYueCleanups.push(() => tasks.off("REWARD_REP", job, onReward));
+      tasks.on("REWARD_REP", job, onReward);
+    }
+    async function collectJieYue(job, tasks, activity) {
+      if (!job.pendingTaskRewards) return;
+      const checkContext = () => {
+        if (laya.class("Self", true) !== job.jieYueSession ||
+            manager("TaskManager") !== tasks || manager("ActivityManager") !== activity)
+          throw Error("节钺令领取上下文已变化，本轮跳过");
+      };
+      try {
+        // 先等本轮已提交任务的真实领奖回包，不按固定延时假定积分已到账。
+        for (let attempt = 0; job.pendingTaskRewards.size && attempt < 16; attempt++) {
+          checkContext();
+          if (!(await pause(job, 500))) return;
+        }
+        if (!live(job)) return;
+        checkContext();
+        if (job.pendingTaskRewards.size) throw Error("任务奖励回包超时，节钺令留待下次领取");
+        const proxy = activity.proxy;
+        let baseReady = false, paidReady = false;
+        const onBase = event => {
+          const data = event && event.Protocol && event.Protocol.Data && event.Protocol.Data.ProtoObj;
+          if (live(job) && data && !(data.type || 0)) baseReady = true;
+        };
+        const onPaid = event => {
+          const data = event && event.Protocol && event.Protocol.Data && event.Protocol.Data.ProtoObj;
+          if (live(job) && data && !(data.type || 0)) paidReady = true;
+        };
+        job.jieYueCleanups.push(() => proxy.off("decodeClientNewJDInfoNtf", job, onBase),
+          () => proxy.off("decodeClientNewJDBpAwardNtf", job, onPaid));
+        proxy.on("decodeClientNewJDInfoNtf", job, onBase);
+        proxy.on("decodeClientNewJDBpAwardNtf", job, onPaid);
+        log("jieyue-query", { source: job.source });
+        activity.SendGetNewJDInfoReq();
+        for (let attempt = 0; (!baseReady || (activity.hadBuyNewJD && !paidReady)) && attempt < 16; attempt++) {
+          if (!(await pause(job, 500))) return;
+          checkContext();
+        }
+        if (!live(job)) return;
+        checkContext();
+        if (!baseReady || (activity.hadBuyNewJD && !paidReady)) throw Error("节钺令状态刷新超时，本轮不提交领奖");
+        if (!activity.HasNewJDRewardRed) {
+          log("jieyue-skipped", { reason: "no-claimable-reward" });
+          return;
+        }
+        activity.ReqDrawAllNewJDRwd();
+        job.requests++;
+        log("jieyue-submitted", { source: job.source, note: "已提交节钺令领奖，到账以服务端为准" });
+      } catch (error) {
+        if (live(job)) {
+          job.errors++;
+          log("step-error", { source: job.source, step: "节钺令奖励", message: String(error.message || error) });
+        }
+      } finally { releaseJieYue(job); }
+    }
     async function run(job) {
       let tasks, activity;
       // Only probe/retry before sending requests. Repeated triggers share this bounded wait.
@@ -15432,7 +15523,10 @@
             typeof tasks.RequestTaskAward === "function" && typeof activity.GetTaskItemType === "function") break;
         if (attempt === 10) {
           log("not-ready", { source: job.source, attempts: attempt,
-            taskManager: !!tasks, activityManager: !!activity });
+            taskManager: !!tasks, activityManager: !!activity,
+            missingMethods: ["getTaskListFromServer", "GetAllTaskDataByTaskID", "RequestTaskAward"]
+              .filter(name => !tasks || typeof tasks[name] !== "function")
+              .concat(!activity || typeof activity.GetTaskItemType !== "function" ? ["ActivityManager.GetTaskItemType"] : []) });
           return false;
         }
         if (!(await pause(job, 500))) return false;
@@ -15442,6 +15536,7 @@
       log("start", { source: job.source });
       tasks.getTaskListFromServer();
       if (!(await pause(job, 1000))) return false;
+      step(job, "节钺令准备", () => prepareJieYue(job, tasks, activity));
       step(job, "斗地主军典查询", () => activity.SendDDZTLLInfoReq());
       step(job, "任务奖励", () => {
         const excluded = [84800, 58530, 58531];
@@ -15457,7 +15552,12 @@
             const config = _0x1e5192.goodsID && _0x1e5192.goodsID(ItemID);
             return (goods && goods.CheckHasPropItem) || String(config && config.name || "").includes("抵价券");
           })) return;
-          tasks.RequestTaskAward(task.id, 0, task.CanRewardCount);
+          if (job.pendingTaskRewards) job.pendingTaskRewards.add(Number(task.id));
+          try { tasks.RequestTaskAward(task.id, 0, task.CanRewardCount); }
+          catch (error) {
+            if (job.pendingTaskRewards) job.pendingTaskRewards.delete(Number(task.id));
+            throw error;
+          }
           job.requests++;
         });
       });
@@ -15505,6 +15605,8 @@
         const pass = welfare.GetPassData(1);
         if (pass && pass.HasCanGetReward()) { welfare.SendSetOutRewardAllReq(1); job.requests++; }
       });
+      await collectJieYue(job, tasks, activity);
+      if (!live(job)) return false;
       // Preserve the old six-second popup suppression window, with cancellable ownership.
       if (!(await pause(job, 4000))) return false;
       log("finish", { source: job.source, requests: job.requests, errors: job.errors,
@@ -15522,12 +15624,14 @@
         log("merged", { source });
         return current.promise;
       }
-      const job = { source, day, errors: 0, requests: 0, cancelled: false, timer: null, wake: null };
+      const job = { source, day, errors: 0, requests: 0, cancelled: false, timer: null, wake: null,
+        jieYueCleanups: [] };
       current = job;
       job.promise = Promise.resolve().then(() => run(job)).catch(error => {
         log("error", { source, message: String(error.message || error) });
         return false;
       }).finally(() => {
+        releaseJieYue(job);
         if (current === job) {
           current = null;
           globalState.autoTaskRunning = false;
@@ -30911,7 +31015,7 @@
     _0x46e1d4 = C3rHCNrFDgLTzq();
   let _0x2cfc9b = null;
   const _0x378fb5 =
-      "1: 添加武将皮肤互通;2: 修复出牌读秒;3: 优化设置面板显示;4: 十周年静态皮肤按武将同名合页;5: 补齐武诸葛亮和卧龙皮肤分组"
+      "1: 修复自动任务失效问题;2: 自动领取节约令"
         [_0x41a3d0(555)](/；/g, _0x41a3d0(526))
         [_0x41a3d0(555)](/;/g, _0x41a3d0(526));
   // Owns only the fallback dimensions, resize listener and polling lifecycle.

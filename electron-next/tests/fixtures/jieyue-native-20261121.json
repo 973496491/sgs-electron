@@ -1,0 +1,42 @@
+{
+  "source": {
+    "url": "https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs",
+    "utc": "2026-11-21T15:21:34.564326+00:00",
+    "zipBytes": 5647901,
+    "zipSha256": "473b4c67921161a021d1393e4ac80aac735196b7c869c0ddfcc0deb61e8680eb",
+    "plainBytes": 24139039,
+    "plainSha256": "5e26cc635c4e0cdc2a7ee12d480a0372061cd768ec07ab1d9812ae851b063553"
+  },
+  "name": "节钺令（用户称节约令），NEW_JD_JIEYUE",
+  "protocols": {
+    "CLIENT_NEW_JD_GET_AWARD_REQ": 170296,
+    "CLIENT_NEW_JD_GET_AWARD_REP": 170297,
+    "CLIENT_NEW_JD_GET_INFO_REQ": 170298,
+    "CLIENT_NEW_JD_INFO_NTF": 170299,
+    "CLIENT_NEW_JD_BP_AWARD_NTF": 170306
+  },
+  "methods": {
+    "query": "SendGetNewJDInfoReq(){this.proxy.M(LOt.CLIENT_NEW_JD_GET_INFO_REQ,{})}",
+    "claimAll": "ReqDrawAllNewJDRwd(){this.SendGetNewJDRewardReq(0,!1,!0)}",
+    "claim": "SendGetNewJDRewardReq(t,i=!1,s=!1){let e={id:t,is_bp:i,is_all:s};this.proxy.M(LOt.CLIENT_NEW_JD_GET_AWARD_REQ,e)}",
+    "canAward": "get HasNewJDRewardRed(){let t=jF.I().GetBarDataById(Nbt.NEW_JD_JIEYUE);if(!t||!t.IsOpen)return!1;let i=hK.I().CurrentNewSeasonMainVo;if(!i)return!1;let s=hK.I().GetNewRewardGroupById(i.Rewards);if(!s||!s.length)return!1;let e=F9t.I().GetGoodsNumByBaseID(L8t.NewJunDianScoreId);for(let t=0;t<s.length;t++){let i=s[t],h=!i.ItemId||-1!=this.NewJDHaveRewardList.indexOf(i.Id);if(this.hadBuyNewJD&&(h=h&&(!i.FfItemId||-1!=this.NewJDHaveRewardList_bp.indexOf(i.Id))),!h&&e>=i.Point)return!0}return!1}",
+    "baseInfo": "clientNewJDInfoNtf(t){let i=t.Protocol;if(!i.Data||!i.Data.ProtoObj)return;let s=i.Data.ProtoObj;this.newJDLevel=s.jd_level||0,this.newJDTaskRefreshTime=s.jd_task_refresh_time||0,this.newJDTaskAlreadyRefreshTimes=s.jd_task_already_refresh_times||0,this.newJDTempHaveRewardList||(this.newJDTempHaveRewardList=[]),this.newJDTempHaveRewardList=this.newJDTempHaveRewardList.concat(s.awards||[]),(s.type||0)==chi.NEW_JD_INFO_TAIL&&(this.newJDHaveRewardList=this.newJDTempHaveRewardList,this.newJDTempHaveRewardList=[],this.event(chi.NEW_JD_INFO_SUC)),s.season_reset}",
+    "paidInfo": "clientNewJDBpAwardNtf(t){let i=t.Protocol;if(!i.Data||!i.Data.ProtoObj)return;let s=i.Data.ProtoObj;this.newJDTempHaveRewardList_bp||(this.newJDTempHaveRewardList_bp=[]),this.newJDTempHaveRewardList_bp=this.newJDTempHaveRewardList_bp.concat(s.bp_awards||[]),(s.type||0)==chi.NEW_JD_INFO_TAIL&&(this.newJDHaveRewardList_bp=this.newJDTempHaveRewardList_bp,this.newJDTempHaveRewardList_bp=[],this.event(chi.NEW_JD_INFO_SUC))}",
+    "awardResult": "clientNewJDGetAwardRep(t){let i=t.Protocol;if(!i.Data||!i.Data.ProtoObj)return;let s=i.Data.ProtoObj.result||0;0==s?this.event(chi.NEW_JD_REWARD_REP):this.Ged.ShowProtocolError(i.Id,s)}",
+    "viewClaim": "oneClickDrawAwds(){chi.I().HasNewJDRewardRed?chi.I().ReqDrawAllNewJDRwd():dt.I().ShowTextPrompt(POt.JunDian_Tip_54)}",
+    "newTaskAwardResult": "onOpCompleteTask(t){var i=this.getOrUpdateOrAddTask(t);if(i){if(i.completeTimes++,i.completeTimes>=i.baseVo.maxComplete)i.Status=s0.HASAWARD;else{i.Status=s0.HASTAKE;let s=[];s.push(t),this.UpTaskState(s)}$ei.I().event($ei.REWARD_REP,i.id),this.onUpActivityTitleEvent(i.id)}}",
+    "oldTaskAwardResult": "TaskAward_Response(t){var i=t.Protocol,s=this.getOrUpdateOrAddTask(i.TaskID);s&&(i.CompleteTimes<=1?s.completeTimes++:s.completeTimes+=i.CompleteTimes,this.nowTakedCount--,this.TakedCount=this.nowTakedCount,s.baseVo.Flag&1<<H2.TASK_FLAGS_REPEAT||s.baseVo.maxComplete>s.completeTimes?(s.baseVo.Flag&1<<H2.TASK_FLAGS_AUTO_ACCEPT?(s.Status=s0.DEFAULT,s.Status=s0.HASTAKE):(s.Status=s0.DEFAULT,s.Status=s.baseVo.maxComplete>s.completeTimes&&s.completeTimes>0?s0.HASTAKE:s0.CANTAKE),L8t.LongValueAnd(s.baseVo.Flag,1<<H2.REWARD_REPEAT)&&s.UpdateConditionBySpecialReqType()):(s.Status=s0.HASAWARD,U2.CheckIsMentorTask(s.baseVo.Flag)&&Mri.I().hasMaster&&Pri.I().AddChatMsg(s,qOt.Self.NickNameForLocal),this.sortTaskVector(),s.baseVo.clientTaskType,H2.TASK_BLACK),this.event($ei.REWARD_REP,s.id),null!=C1.I().GetTaskByTaskId(s.id)&&this.OnMainChapterInfoReq())}",
+    "baseList": "get NewJDHaveRewardList(){return this.newJDHaveRewardList}",
+    "paidList": "get NewJDHaveRewardList_bp(){return this.newJDHaveRewardList_bp}",
+    "level": "get NewJDLevel(){return this.newJDLevel}",
+    "paid": "get hadBuyNewJD(){return chi.I().NewJDLevel>=aq.Normal}",
+    "proxyAddEventListener": "AddEventListener(t,i,s,e){i.IsGameManager&&this.gameProtocolIDList.indexOf(t)<0&&this.gameProtocolIDList.push(t),this.on(LOt.GetProtocolNameById(t),i,s)}"
+  },
+  "protocolNames": {
+    "170296": "encodeClientNewJDGetAwardReq",
+    "170297": "decodeClientNewJDGetAwardRep",
+    "170298": "encodeClientNewJDGetInfoReq",
+    "170299": "decodeClientNewJDInfoNtf",
+    "170306": "decodeClientNewJDBpAwardNtf"
+  }
+}

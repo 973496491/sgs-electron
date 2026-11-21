@@ -33071,11 +33071,11 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
     ]
   },
   autoTaskChain: {
-    title: "自动任务：TASK_VIP 无监听、虚假每日完成标记与本地执行链修复",
-    verifiedAt: "2026-10-21",
+    title: "自动任务：TASK_VIP 接线与原生任务查询别名断链修复",
+    verifiedAt: "2026-11-21",
     sourceFile: "electron-next/resources/daxiaochao.user.js",
     docFile: "doc/代码架构表.md",
-    searchKeywords: ["自动任务", "TASK_VIP", "autoTasks", "autoTaskSwitch", "AUTO_TASK_SWITCH", "autoTaskRunning", "autoTaskGuard", "lastTaskDate", "initAllButtons", "decodeClientSecretInfoRep", "RequestTaskAward", "NewFuLiManager", "空派发", "auto-task-chain.cjs"],
+    searchKeywords: ["自动任务", "TASK_VIP", "autoTasks", "autoTaskSwitch", "AUTO_TASK_SWITCH", "autoTaskRunning", "autoTaskGuard", "lastTaskDate", "initAllButtons", "decodeClientSecretInfoRep", "RequestTaskAward", "GetAllTaskDataByTaskID", "任务查询别名", "missingMethods", "NewFuLiManager", "空派发", "auto-task-chain.cjs", "节约令", "节钺令", "NEW_JD_JIEYUE", "prepareJieYue", "collectJieYue", "REWARD_REP", "170296", "170298", "170299", "170306"],
     decodedIndexes: {
       _0x3812: { "199": "autoTaskGuard", "420": "autoTaskRunning", "685": "GetNoGetTaskDataByTaskID", "821": "RequestTaskAward", "1108": "TaskRewardSelectWindow", "1110": "taskIds", "1238": "getTaskListFromServer", "1328": "TaskManager", "1576": "SmsgTaskFailed", "1748": "GetAllTaskDataByTaskID" },
       _0x3911: { "261": "autoTaskSwitch", "366": "TASK_VIP", "527": "xc:config-change", "591": "AUTO_TASK_SWITCH" },
@@ -33083,6 +33083,10 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
       _0x497b: { "420": "lastTaskDate", "566": "小抄正在执行自动签到每日三敲领武将包等每日任务", "613": "TASK_VIP", "791": "autoTaskSwitch" }
     },
     chain: [
+      "2026-11-21追加节钺令（用户称节约令）：官方NEW_JD_JIEYUE/NewJunDianViewCtrl区别旧军典。autoTasks.run先prepareJieYue监听TaskManager.REWARD_REP(id)，逐项提交已筛选任务并等本轮ID确认，再collectJieYue刷新SendGetNewJDInfoReq/170298；proxy.on的decodeClientNewJDInfoNtf/170299与decodeClientNewJDBpAwardNtf/170306来自原生协议名映射。普通尾包必需，hadBuyNewJD为真还等付费尾包，原生type||0为0完成。随后重读HasNewJDRewardRed，有奖励才ReqDrawAllNewJDRwd -> SendGetNewJDRewardReq(0,false,true)/170296；170297回包未统计确认，不将submitted当到账。原生getter保留开放/赛季/积分11987201/已领及已购付费档门槛，不购买/兑换。",
+      "本轮job维护pendingTaskRewards、jieYueSession、jieYueCleanups和尾包标志；先监听后发请求，任务和刷新各有8秒预算，不重发已提交批次。取消/Exit/异常/完成清理自身订阅，迟到回调live校验，已知Self/管理器变化跳过；pause对已取消轮次立即返回。客户端缺接口仅记录jieyue-skipped，超时记错误不写每日完成。新旧任务原生成功回调均派发REWARD_REP，归档jieyue-native-20261121.json含代理AddEventListener真实协议映射。30项自动任务（本轮新增11项）、15项月周卡、26项日志通过，修前顺序用例失败。入口/过滤/原军典/周卡让渡保留，无新开关或场景门槛，无升版/asar/账号实测，部署见架构表。",
+      "2026-11-21用户反馈点击未领取：今日普通ES6快照TaskManager($ei)的全任务查询Z走this.allTasks.get -> ct本地配置回退 -> zhi.I().Z新任务；GetNoGetTaskDataByTaskID旧字面消失，旧caller无法恢复GetAllTaskDataByTaskID(_0x3812[1748])，控制器10次等待后not-ready，尚未发请求。旧685映射仍是历史decoder值，不代表当前原生方法名。领奖st仍以TaskRewardSelectWindow恢复RequestTaskAward(821/1108)。修复以缓存+return+||结构唯一匹配查询，不硬编码混淆方法/类名；排除class constructor的整类toString，拒绝歧义及无回退的GetServerTaskDataByTaskID。完整今日/11月10日原型核对为Z/st与D/J。",
+      "本轮autoTasks诊断显式false/debug，[自动任务]前缀，not-ready附missingMethods；关闭接口打印仍看见必要断点信息，不强开窗口。新增原生摘录auto-task-native-20261121.json及实际caller/class/按钮回归；19项自动任务、15项月周卡、26项日志检查通过，修前副本在查询别名缺失处复现失败。保留合并/取消/日期/奖励过滤/周卡让渡、原初始化与Exit清理；无升版、无账号请求或游戏内实测，部署见架构表。来源哈希见sanguosha.md同名核验。",
       "2026-11-09用户收窄至冲消返利/充消返利Node：REBATE_NEW/2/3=39/49/50，sys_h5_task.TaskNode.quest_id经k加入taskIds；当前11月7～14日Node1001/1005共40条有配置任务。1363801为通用抵价券（满7000抵2000），原生TaskRewardItem合并Rewards与ExtraRewards，故附加券也命中抵价券名称过滤并跳过整项任务。本期11项169678、169680～169684、169690～169694在真实控制器+原生getter/类型方法+公开配置模拟中全部不提交，其它29项在统一可领奖假设下提交。此Node直接券已有隔离，不能套用其它活动分支结论；未账号实测、无运行代码修改，来源见sanguosha.md充消返利Node定向核查。",
       "2026-11-09仅核查一键领取/活动奖励优惠券隔离：task按钮直达autoTasks.request(button)，同轮领取71/72节日签到、军典和启程福利等。普通任务仅按TaskRewardItem的CheckHasPropItem或goodsID.name含抵价券跳过整项；优惠券/折扣券名称、描述/类型标志及礼包内奖励无统一筛选，签到/军典/启程福利分支也未复用筛选。GetTaskItemType<=1不代表排除活动，11月4日本地ES6快照10305788按任务条件分类。真实控制器模拟证实抵价券任务跳过、优惠券/折扣券任务和附抵价券信息签到仍提交；未发账号请求、未改运行代码，详见架构表同名核查。",
       "修前开关/按钮、game.end 和 decodeClientSecretInfoRep 只有 TASK_VIP 派发，没有本地注册；laya.task 未被接通。登录处无条件写 lastTaskDate 并提示执行，与是否真正运行脱节；动态eval存在不等于已验证安装监听。",

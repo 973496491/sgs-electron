@@ -23,6 +23,23 @@
 
 本文只针对 **OL**。
 
+## 自动任务查询别名定向核验（2026-11-21）
+
+- 用户反馈点击自动领任务未领取。复用已保存的11月10日普通ES6明文，并定向获取当前公开普通 `https://web.sanguosha.com/220/h5_2/sgsGame_a.sgs`；UTC获取时间 `2026-11-21T15:21:34.564326+00:00`。ZIP为5,647,901字节、SHA256 `473b4c67921161a021d1393e4ac80aac735196b7c869c0ddfcc0deb61e8680eb`；ZIP直接解出的JS为24,139,039字节、SHA256 `5e26cc635c4e0cdc2a7ee12d480a0372061cd768ec07ab1d9812ae851b063553`。未下载配置、未涉及AES或WASM `_w`，未发送账号请求。
+- 当前 `class $ei` 约字符13093220处，查询 `Z` 约13104205处：先 `this.allTasks.get`，再 `this.ct` 本地配置回退，再 `zhi.I().Z` 新任务回退；旧字面 `GetNoGetTaskDataByTaskID` 已无。领奖 `st` 约13100662处仍包含 `TaskRewardSelectWindow`，新任务委托zhi、旧任务构造gB；`getTaskListFromServer` 约13107181处仍在。符号和偏移仅属于本快照。旧快照查询D内的GetNoGetTaskDataByTaskID被混淆为ct，故依赖旧字面的小抄全任务查询别名失效；单纯GetServerTaskDataByTaskID只查旧缓存，不能替代整个查询。
+- 原包来源记录、明文、TaskManager摘录及修前小抄副本临时保存在 `C:/Users/97349/AppData/Local/Temp/xc-task-audit-20261121-f__vel7y/`，本轮已核实存在；仓库持久摘录为 `electron-next/tests/fixtures/auto-task-native-20261121.json`，含来源及旧快照哈希。两个完整原生原型通过真实caller离线核对新Z/st、旧D/J；19项真实入口/原生方法模拟及边界、15项月周卡、26项日志验证通过，修前复现查询别名缺失。实现、状态/生命周期和同步见架构表“自动任务”节、`manualLookupNotes.autoTaskChain`。不将离线适配通过表述为账号奖励已到账。
+
+检索：自动任务查询别名、GetAllTaskDataByTaskID、GetNoGetTaskDataByTaskID、missingMethods、allTasks、constructor、auto-task-native-20261121。
+
+## 节钺令奖励串接定向核验（2026-11-21）
+
+- 用户称“节约令”，同日普通ES6快照中文字确认原名“节钺令”，对应 `NEW_JD_JIEYUE / NewJunDianViewCtrl`。复用上节已核实存在的同哈希明文，不重下载配置或资源、不涉及AES/WASM。原生UI `oneClickDrawAwds` 明确复用 `HasNewJDRewardRed -> ReqDrawAllNewJDRwd`，与旧军典 `HasJDRewardRed -> ReqDrawAllJDRwd` 独立。
+- 原生ActivityManager=chi：约13462471处 `SendGetNewJDRewardReq -> 170296({id,is_bp,is_all})`，一键传0/false/true；约13462641处 `SendGetNewJDInfoReq -> 170298({})`。170299普通列表、170306付费列表各分片累计，`type||0=0`尾包提交并派发NEW_JD_INFO_SUC；hadBuyNewJD为真须等待付费列表，不能看到一次共用NEW_JD_INFO_SUC就假定两类均已更新。170297结果0为成功，但本次自动链只记录提交，不统计到账。
+- 约13463697处HasNewJDRewardRed按原生活动IsOpen、CurrentNewSeasonMainVo、奖励组、11987201积分阈值、普通已领列表以及已购买档位的付费已领列表决定。约13868911处新任务onOpCompleteTask与旧TaskAward_Response均在更新状态后派发TaskManager.REWARD_REP(id)，可用于“先任务奖励、再节钺令”的顺序；没有请求流水号，不据单个ID事件证明其它轮次全部请求成功。ServerProxy.AddEventListener经GetProtocolNameById映射170299/170306到decodeClientNewJDInfoNtf/decodeClientNewJDBpAwardNtf，既有管理器监听先安装；新增监听不覆盖原链。
+- 稳定摘录、协议号及名字映射保存为 `electron-next/tests/fixtures/jieyue-native-20261121.json`（复用上节source哈希/时间）；原方法与真实控制器的30项模拟通过，含免费/付费、慢包/分片尾包、原生新旧任务回包、清理/上下文/异常隔离。相邻月周卡15项、日志26项通过，未发送真实账号请求。实现与实际同步记录见架构表自动任务节，手工索引manualLookupNotes.autoTaskChain；不将模拟或部署当游戏内到账验证。
+
+检索：节约令、节钺令、先任务再节钺令、NEW_JD_JIEYUE、HasNewJDRewardRed、ReqDrawAllNewJDRwd、REWARD_REP、170296、170298、170299、170306、jieyue-native-20261121。
+
 十周年原生座位SK补核（2026-11-21，最新）：用户确认马云騄两款动态已游戏内显示，乐貂蝉两款未动。原生GeneralAvatarSprite.loadSkeleton对ShowFrame使用SmallStandByAnimateInfos首文件或daiji2.sk，区别大图daiji.sk/skel；SmallStandBy VO自动补.sk，轮播首段按索引0播放。乐貂蝉7133801/8133801在线大图daiji.sk为404、daiji/beijing.skel头4.0.56，而座位daiji2.sk为LAYAANIMATION1.6.0，匹配PNG及真实Electron/Laya连续帧变化均通过。已据此将同名官方配对动态候选从103扩到553（103big保留、450seat按需验证），未把旧version快照当在线全集。真实摘录tests/fixtures/ten-year-seat-idle-native-20261118.json，获取哈希tmp/ten-year-userscript-audit-20261120/dynamic-probe/yue-seat-sources.json，步骤、范围和同步见迁移报告17.7；未加载Spine4大图或完整轮播/攻击链。
 
 十周年动态适配补核（2026-11-21）：旧缓存Config.sgs中的GameItemConfig.sgs已复用相同十周年resc/CtrUtil解密，32062条ItemConf；原生包装器及重复解密字节一致。物品RelationSkinItemID明确连接静态/动态，不能用BigResource或ID算术替代。马云騄744001的beijing/daiji/chuchang三个SK及匹配PNG定向GET有效；本机Electron10.4.5+11-16保存的OL core/ani已实际解析/绘制，隔离页连续帧变化与清理回静态通过。首阶段103个SK候选接同名选肤和本人背景/角色待机，非全690动态/动作/语音兼容；源码职责、验收和同步见[迁移报告第17节](十周年皮肤迁移到OL本地链路可行性报告.md#17-十周年sk动态待机接入2026-11-21版本不变)。新解密证据tmp/ten-year-userscript-audit-20261120/decode-dynamic-result.json，资源哈希dynamic-probe/sources.json；未更新OL普通AES方法或宣称当前游戏内实测。
