@@ -84,19 +84,26 @@ module.exports = function createTenYearNative({ window, storage, catalog, getCon
     for (const g of generals.values()) if (g.family === general.family) labels.add(g.label);
     return [...labels].map(label => ({ label, ids: [...generals].filter(([, g]) => g.family === general.family && g.label === label).map(([id]) => id) }));
   }
-  function entries(gid, label) {
+  function entries(gid, label, nativeEntries = []) {
     const general = generals.get(Number(gid));
     if (!active || !general) return [];
-    const seen = new Set();
+    // Only the display marker is removed; compare complete titles within this page.
+    const nameKey = name => String(name || '').trim().replace(/^动态·/, '').trim();
+    const seen = new Set(), seenNames = new Set(nativeEntries.map(item => nameKey(item.skinname)).filter(Boolean));
     const candidates = [...rows.values()].filter(row => row[8].some(p => p[0] === general.family && p[1] === label) &&
       (!row[9] || typeof dynamic?.prepare === 'function'));
-    // Dynamic catalog rows carry the officially paired static resource in row[1].
-    // Filter this page before deduplication so static aliases cannot reappear;
-    // keep all source rows for saved choices and the player's static fallback.
+    // OL wins by title, then ten-year dynamic wins over static even with different art.
+    // Keep official row[1] pairing as well, including differently named static aliases.
+    // Source rows remain intact for saved choices and the player's static fallback.
     const dynamicStatics = new Set(candidates.filter(row => row[9]).map(row => String(row[1])));
-    return candidates.filter(row => row[9] || !dynamicStatics.has(String(row[1])))
+    const dynamicNames = new Set(candidates.filter(row => row[9]).map(row => nameKey(row[2])).filter(Boolean));
+    return candidates.filter(row => row[9] || !dynamicStatics.has(String(row[1])) && !dynamicNames.has(nameKey(row[2])))
       .sort((a, b) => Number(!!a[9]) - Number(!!b[9]) || Number(a[0] !== Number(a[1])) - Number(b[0] !== Number(b[1])) || Number(a[0]) - Number(b[0]))
-      .filter(row => { const key = artKey(row); if (seen.has(key)) return false; seen.add(key); return true; }).map(row => {
+      .filter(row => {
+        const key = artKey(row), name = nameKey(row[2]);
+        if (seen.has(key) || name && seenNames.has(name)) return false;
+        seen.add(key); if (name) seenNames.add(name); return true;
+      }).map(row => {
       const pair = urls(row);
       // Native item.InitData consumes these static display fields. 0 is a real OL default,
       // while the separate entry key distinguishes every source row and its using marker.

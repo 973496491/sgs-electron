@@ -32726,14 +32726,14 @@ function daxiaochaoRainbowLookup(decoder, index) {
 DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
   tenYearDynamicIdleSkins: {
     title: "十周年SK动态待机 / 同皮肤动态优先展示 / 本地源ID隔离",
-    verifiedAt: "2026-11-21",
+    verifiedAt: "2026-11-24",
     sourceFile: "electron-next/src/features/ten-year-dynamic.js",
     decodedIndexes: {},
     searchKeywords: ["十周年动态", "SK动态待机", "ten-year-dynamic", "RelationSkinItemID", "dynamic:744001", "Templet", "buildArmature", "play", "103候选", "舐伤伴君", "静态回退", "xc-skin-effects-change", "模板取消", "静态544001", "gid346", "动态前置标识", "皮肤屏蔽保留待机", "同页动态项", "乐貂蝉", "1338", "7133801", "8133801", "月下翩跹", "锦年踏歌", "daiji2.sk", "553候选", "ShowFrame", "SmallStandByAnimateInfos", "GeneralAvatarSprite", "座位SK"],
     chain: [
       "2026-11-21本地皮肤齿轮/平移最新实现：播放器setTransform({scale,x,y})维护当前根Sprite变换，resize在参考bounds居中后加x/y逻辑像素，不随图像倍率放大偏移；背景/人物/前景整体移动，scrollRect不改，越界裁切。原setScale仅代理scale补丁，不清偏移；native从xcTenYearDisplayScale.v1的dynamic/dynamicX/dynamicY显式传入，默认100/0/0，平移-200~200。加载中/换局/重复调整、旧场景清理与静态底图恢复沿原链。37播放器和Electron10.4.5双层/座位SK实际80%+右18上13像素通过，游戏内待验收，见报告21节。",
       "2026-11-21整体缩放设置已接入：ten-year-native保存xcTenYearDisplayScale.v1静态/动态百分比(50~200,步进5,默认100)，setScales经dynamic.setScale对根Sprite按固定bounds乘倍率居中重排，不重建或重下载。动态成功挂载且可见才临时隐藏skinTex.visible防缩小露底形成双层人物，visible(false)/stop/reset/detach/失败恢复原可见值，原本隐藏不误开启。118原生链/34播放器/27设置DOM及Electron10.4.5三套SK缩放/回退像素通过；游戏内待验收，架构表及迁移报告20节记录真实入口/状态所有权/部署。无新decoder索引。",
-      "最新列表规则：十周年动态隐藏对应静态，OL全部保留。nativeSkinTabs.appendExternal->ten-year-native.entries在当前家族/完整版本页取candidates，dynamic.prepare可用时以动态行row[1]官方静态回退素材建立dynamicStatics，先隐藏对应静态及同素材别名再artKey去重；不按名称匹配，不跨页隐藏。未接入动态或无播放器保留静态，同名不同素材保留；资源仍点击时验证，候选不等于已下载成功。rows/choice/账号偏好与静态回退不删不迁移，无新增状态或生命周期。修前未隐藏复现，修后111项含651来源页与OL静动态共存通过；源码/部署/回退见架构表同名节与迁移报告19节。",
+      "2026-11-24最新同名皮肤OL优先、十周年动态优先：nativeSkinTabs.appendExternal把本页OL list作为第三参nativeEntries传给ten-year-native.entries，skinname/row[2]去首尾空白和动态·展示前缀后完整匹配。seenNames预置OL名，dynamicNames隐藏十周年同名静态，dynamicStatics仍按官方row[1]隐藏对应素材/别名，artKey及名称共同去重；同名不同图不再分别展示。不跨页、不按包含猜名，空名按素材；无dynamic.prepare保留静态。集合仅属于本次取数，rows/choice/saved与默认0协议/静态回退不变，旧隐藏选择不自动替换；attach/detach/场景清理不变，无新decoder索引。修前复现跨端重复，148项含651页/三窗×OL静动/变体页/旧偏好/失败保留通过，部署及回退见报告23节；原111项只按配对素材、不按标题去重的19节规则已被取代，未游戏内实测。",
       "最新用户确认马云騄两款带动态字样的皮肤已游戏内成功，继而反馈乐貂蝉无动态。十周年1338月下翩跹5133801->7133801、锦年踏歌6133801->8133801物品关系明确；旧清单无大图daiji.sk导致首版整行未收，不是丢失同名家族。在线两款daiji.sk404、大图.skel4.0.56，但daiji2.sk为LAYAANIMATION1.6.0且真实引擎绘制两帧变化。",
       "原生GeneralAvatarSprite.loadSkeleton的ShowFrame分支用SmallStandByAnimateInfos首文件或daiji2.sk；SkinSmallStandByAnimateInfoVO补.sk，轮播加载-1后updateDaiJiCarousel按动作0起播。已抽取真实方法/VO并执行验证。生成器全表复用该分支，553官方同名配对候选=103旧big+450seat，其中140座位清单可见、310选择时验；其余137无同名静态回退仍审计。禁止用旧清单/角色白名单逐个补将，保留旧103条与3396静态。",
       "新增descriptor.mode=seat/layers.animationIndex0，播放器验证动作索引存在并play(0,true)，big仍校验play；首段座位待机循环，不引入Spine4大图/随机轮播/技能。来源偏好、协议默认0和静态回退/模板清理不改。修前乐页缺项失败，修后102原生链+26播放器（含十周年真实摘录）及相邻回归过；真实Electron分别绘制7133801/8133801和旧744001，待乐页实战验收。备份/同步见报告17.7。",
@@ -32749,11 +32749,12 @@ DAXIAOCHAO_RAINBOW_TABLE.manualLookupNotes = {
   },
   tenYearMergedStaticSkins: {
     title: "十周年静态同名合页验证版 / 来源记录与OL默认0隔离",
-    verifiedAt: "2026-11-21",
+    verifiedAt: "2026-11-24",
     sourceFile: "electron-next/src/features/ten-year-native.js",
     searchKeywords: ["十周年静态合页验证版", "同名合页", "ten-year-native", "ten-year-static-catalog", "xcTenYearMergedSkins.v1", "神孙权", "碧海潮生", "668", "360", "OL默认0载体", "__xcTenYearEntry", "__xcSkinKey", "onSeatReady", "selfSeat", "CardId", "SendReqShareItem", "原子同步"],
     decodedIndexes: {},
     chain: [
+      "2026-11-24同名皮肤展示规则已更新：同页OL优先于十周年静态/动态，十周年内部动态优先静态，同名同类不同图也只留一项；entries(gid,label,nativeEntries)由分页显式传本页OL桶，名称只剥动态·前缀及首尾空白，仍保留官方素材配对与artKey去重。下文不同图同标题均留为历史；不删原目录/来源ID/旧账号偏好或改持有/默认0协议，失败与生命周期沿原链。148项含651页与三原生窗口检查通过，报告23节记录部署；无新增decoder索引。",
       "2026-11-21最新本地皮肤齿轮与平移：取消独立xcTenYearScaleToggle，settingsLayout为localSkinThemeLabel添加SVG齿轮；mountSettings绑定稳定caption的click/Enter/Space打开浮层，拦默认和冒泡，不触发或解锁原开关。ensureFloatingLabel延迟重写textContent会重建SVG，故不绑SVG节点。unmountSettings只清本模块浮层/事件/说明属性，不删除原开关。xcTenYearDisplayScale.v1扩staticX/staticY/dynamicX/dynamicY默认0，保留旧倍率；setDisplaySettings保存六字段，getScales/setScales保留旧双倍率接口。静态fit居中后加位移，动态显式setTransform，单位逻辑像素、范围正负200，静动态分开自动保存/统一恢复默认。123原生链/37播放器/28设置DOM、真实引擎通过；版本/发布路径不变，部署见迁移报告21节。",
       "2026-11-21用户授权静态/动态分开的整体缩放：本模块维护xcTenYearDisplayScale.v1={static:100,dynamic:100}，setScales保存成功才更新当前图与播放器；fit从原图×自动适配比例×静态倍率重算，ShowType/ClearFilter补静态重排。既有window.__xcTenYearNative桥提供mountSettings/unmountSettings/getScales/setScales；waitForCardBackSwitch真实启动及addFrame重建挂常用区xcTenYearScaleToggle，Exit清UI，旧DOM回调拒绝写入。50~200/5步进/双输入/恢复默认，牌框和协议不改；新局沿原链读倍率，来源偏好不迁移。仅两现有模块和装配主脚本需部署，无新映射或升版，详架构表/迁移报告20节。",
       "2026-11-21旧十周年调试按钮清理：正式ten-year-native同名合页不依赖旧ten-year-skins手工验证器；旧模块和目录/按钮/VO及座位挂钩已删除，构造参数和切回OL分支删除restoreLegacy。xcTenYearMergedSkins.v1、来源ID/OL默认0隔离、静态动态候选、本人渲染和生命周期不改。旧xcTenYearStaticSkins.v1/xcTenYearSkinSize.v1保留但不再消费；新增吕玲绮恢复/切回OL及真实开窗无旧全局访问检查，106项通过。详情与同步见迁移报告18节；下列旧手工图兼容描述是历史记录。",

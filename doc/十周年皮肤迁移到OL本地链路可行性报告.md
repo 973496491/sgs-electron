@@ -882,3 +882,37 @@ attach启用待机，detach停止骨骼、取消加载/超时、销毁模板，�
 本轮只更新本报告和架构表评估说明，未修改userscript、业务模块、测试、持久配置、版本或实际游戏环境；未同步、重启、热注入或打包，未新增逐皮肤运行能力。
 
 检索词：每个皮肤独立参数、单皮肤覆盖、全局默认继承、artKey、动态播放器参数隔离、局外预调另计、4～8小时、仅报告未实施。
+
+## 23. 同名皮肤OL优先 / 十周年动态优先（2026-11-24）
+
+### 23.1 验收与链路
+
+用户更新展示要求：同一完整武将版本页，OL和十周年同名皮肤只保留OL；十周年内部同名皮肤有动态则只保留动态，同名同类不同图也只留一项。取代第16/19节“不同素材同标题均保留、仅按官方配对隐藏静态”的列表策略，武将全表归组及原始候选完整性继续保留。
+
+真实入口仍为本地皮肤开关→`nativeSkinTabs.attach/extension.attach`→三原生窗口`enterWindow`→当前页/变体页原生桶→`appendExternal`→`ten-year-native.entries(gid,label,nativeEntries)`→原生绘制/选择/响应。分页只负责显式提供本页OL条目，十周年模块负责名称优先筛选：完整`skinname/row[2]`仅去首尾空白和展示前缀`动态·`，`seenNames`预置OL名；`dynamicNames`令十周年动态压过同名静态，`dynamicStatics`仍据官方`row[1]`清配对静态及同素材别名，`artKey`继续去同素材。动态目录/播放器不改，无播放器时静态保留；空名不互相覆盖，前后缀不同不算同名，不跨完整版本页过滤。
+
+名称集合属于本次同步取数，不新增持久状态、挂钩或清理任务。`ten-year-native`仍独占`rows/saved`与账号来源偏好；3396静态/553动态候选、官方物品关系、本人渲染/静态回退及缩放平移配置保持。旧选择被隐藏也不自动换肤/迁移，主动选择OL才沿原链清来源覆盖；动态素材仍按点击验证，失败保留此前选择。开关detach、窗口销毁、场景/账号切换沿原生命周期，`showAll=true`共享探测及窗口外查询维持原生。
+
+### 23.2 验证与回退
+
+新增断言先复现OL静态与十周年同名静态/动态同时出现，修改后`ten-year-native.cjs`148项通过。覆盖651来源页的名称/素材唯一和候选覆盖、十周年同名不同图/重复动态、三窗×OL静态/动态优先、旧动静偏好、原生选择/响应默认隔离、变体页往返、完整名/空名、无播放器、跨页、图片/SK失败与旧异步回调。乐蔡菲菲公主等旧重复标题断言改为源目录完整、展示同名一项，不再要求每份素材都显示。
+
+相邻`native-skin-tabs`42、`native-skin-link`24、组合8、诊断8、动态播放器37、首次选肤23、响应时序19、皮肤屏蔽52、版本7项通过；主脚本/两模块语法及装配一致性通过，彩虹表语法通过。检查为原生方法摘录/模拟及既有屏蔽DOM回归，未登录账号或验证当前游戏视觉。未新增/删除/移动发布文件，现有`release-files.json`覆盖两模块与主脚本，无须修改映射。
+
+仅装配现有生成区块，不执行版本盖章；工程及实际版本保持1.0.17。回退成组恢复`native-skin-tabs.js`、`ten-year-native.js`与主脚本，旧来源/显示配置无需迁移。实际入口再次核对为`F:/Game/SGSOL/resources/app/main.js`的`read-local-script -> %APPDATA%/SGSOL/三国杀打小抄.js`，由`script/electron_frame.js`的`dom-ready`加载；按锁、事务备份、原子替换和部署副本验证同步，具体结果接下节。
+
+检索词：同名皮肤OL优先、十周年动态优先、nativeEntries、seenNames、dynamicNames、dynamicStatics、651来源页、148项、版本1.0.17。
+
+### 23.3 已同步实际游戏环境
+
+2026-11-24 23:00（Asia/Shanghai）完成。同步前源/目标三文件与原基线相同，核对唯一发布映射；持`.xiaochao-install.lock`系统独占锁、检查恢复事务，写入前备份并登记现有安装协议1事务，按两模块→主脚本顺序同目录临时文件原子替换。写入后SHA256一致，部署副本主脚本语法、148项选肤链及42项分页检查通过，事务已清理。装配前后比较证明只有两个对应生成区块变化，其它脚本字节及两个版本标记保留；工程/部署`version.json`哈希未变，版本1.0.17。
+
+备份与前后哈希凭据：`C:/Users/97349/AppData/Roaming/SGSOL/.xiaochao-install-work/b01add4325f64337aa495ae9f7fec88f/`，`backup/0`为ten-year-native、`backup/1`为native-skin-tabs、`backup/2`为主脚本，`deployment.json`保存本轮记录。实际目标根目录`C:/Users/97349/AppData/Roaming/SGSOL/`。
+
+| 文件（源/部署一致） | SHA256 |
+|---|---|
+| modules/features/ten-year-native.js | 60BE43FEFB786D773BA98708E733D82FBDF65939F37ECDE4643F2665BC9F3B82 |
+| modules/features/native-skin-tabs.js | A7ADE90A483C2CDD5280827C43D99E590A526DD5CF25873D942FBDA2617962D8 |
+| 三国杀打小抄.js | 92EAD3623339DC4CAEF9AC3BB71833B51EEF80693DA92A6FC6C2DEFECB6D94A4 |
+
+未写用户配置或账号数据，未重启客户端、热注入当前页面、发布云端或生成asar。文件已部署；用户自行重载游戏页面或重开客户端后加载，当前游戏内视觉效果待验收。

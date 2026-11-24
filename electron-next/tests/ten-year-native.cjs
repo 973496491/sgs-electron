@@ -151,10 +151,13 @@ function setup(options = {}) {
   let pageCoverageOK=true;
   for(const [key,resources] of expectedPages) {
     const [family,label]=JSON.parse(key), items=indexEnv.extension.entries(familyID.get(family),label);
-    const shown=items.map(item=>rowByID.get(item.__xcTenYearEntry)[1]);
-    if(shown.length!==resources.size || shown.some(resource=>!resources.has(resource)) || new Set(shown).size!==shown.length)pageCoverageOK=false;
+    const shown=items.map(item=>rowByID.get(item.__xcTenYearEntry));
+    const pageRows=catalog.skins.filter(row=>row[8].some(p=>p[0]===family&&p[1]===label));
+    if(shown.some(row=>!resources.has(row[1])) || new Set(shown.map(row=>row[1])).size!==shown.length ||
+      new Set(shown.map(row=>row[2])).size!==shown.length ||
+      pageRows.some(row=>!shown.some(item=>item[1]===row[1]||item[2]===row[2])))pageCoverageOK=false;
   }
-  check(pageCoverageOK, 'all '+expectedPages.size+' static candidate pages expose every distinct source resource without duplicates');
+  check(pageCoverageOK, 'all '+expectedPages.size+' static pages cover every candidate by resource or exact title with no duplicate names or artwork');
   check([2053,2018,8002].every(id=>catalog.generals.some(r=>r[0]===id)), 'same-name OL mode/alternate IDs are not excluded from display candidates');
   const cai=setup({buckets:caiwenji.olSkinIDs});let caiWindow=cai.open(57);
   const caiLabels=cai.h.tabs.status().tabs.map(t=>t.label);
@@ -163,10 +166,11 @@ function setup(options = {}) {
   check(new Set(caiLabels).size===caiLabels.length && !caiLabels.some(label=>/周妃|诸葛果|蔡邕/.test(label)), 'Yue prefix preserves exact family/version labels');
   cai.h.tabs.selectTab(cai.h.tabs.status().tabs.find(t=>t.label==='乐蔡文姬').key);
   const caiSources=caiWindow.view.list.filter(r=>r.__xcTenYearEntry);
-  check(caiSources.length>=caiwenji.staticSkins.length && caiwenji.staticSkins.every(r=>caiSources.some(x=>x.__xcTenYearEntry===String(r.SkinID))),
-    'all original eight verified Yue Cai records remain among full-name candidates');
-  check(caiSources.some(r=>r.__xcTenYearEntry==='1133002') && caiSources.some(r=>r.__xcTenYearEntry==='5133004'),
-    'same-titled cards with different image resources are both retained');
+  check(caiwenji.staticSkins.every(r=>catalog.skins.some(row=>row[0]===r.SkinID) &&
+    caiSources.some(x=>x.skinname===rowByID.get(String(r.SkinID))[2])),
+    'all original eight verified Yue Cai records remain in source catalog and are covered by a same-name display card');
+  check(caiSources.filter(r=>r.skinname==='菲菲公主').length===1,
+    'same-title static cards with different image resources are shown once');
   check(caiSources.every(r=>!r.canUpdateDynamic() && !caiwenji.dynamicSkinIDs.includes(Number(r.__xcTenYearEntry))), 'dynamic counterparts are not duplicated as static entries');
   check(catalog.skins.some(r=>r[8].some(p=>p[0]==='曹仁' && p[1]==='星曹仁')) &&
     catalog.skins.some(r=>r[8].some(p=>p[0]==='太史慈' && p[1]==='界SP太史慈')),
@@ -440,15 +444,18 @@ function setup(options = {}) {
     const [family,label]=JSON.parse(key);
     const paired=dynamics.filter(row=>row[8].some(p=>p[0]===family&&p[1]===label));
     const hidden=new Set(paired.map(row=>String(row[1])));
-    const expected=[...resources].filter(resource=>!hidden.has(String(resource))).map(resource=>'static:'+resource)
-      .concat(paired.map(row=>'dynamic:'+row[9].resource));
-    const shown=listEnv.extension.entries(familyID.get(family),label).map(item=>fullRows.get(item.__xcTenYearEntry))
-      .map(row=>(row[9]?'dynamic:'+row[9].resource:'static:'+row[1]));
-    if(JSON.stringify(shown.slice().sort())!==JSON.stringify([...new Set(expected)].sort()))filteredPagesOK=false;
+    const title=row=>row[2].replace(/^动态·/,'');
+    const shown=listEnv.extension.entries(familyID.get(family),label).map(item=>fullRows.get(item.__xcTenYearEntry));
+    const pageRows=catalog.skins.filter(row=>row[8].some(p=>p[0]===family&&p[1]===label));
+    const art=row=>row[9]?'dynamic:'+row[9].resource:'static:'+row[1];
+    if(new Set(shown.map(title)).size!==shown.length || new Set(shown.map(art)).size!==shown.length ||
+      shown.some(row=>!row[9]&&(hidden.has(String(row[1]))||paired.some(d=>title(d)===title(row)))) ||
+      paired.some(row=>!shown.some(item=>item[9]&&(art(item)===art(row)||title(item)===title(row)))) ||
+      pageRows.some(row=>!hidden.has(String(row[1]))&&!shown.some(item=>title(item)===title(row)||!item[9]&&item[1]===row[1])))filteredPagesOK=false;
     hiddenStaticResources+=hidden.size;
   }
   check(filteredPagesOK && hiddenStaticResources>0,
-    'all '+expectedPages.size+' source pages hide paired static resources and aliases while retaining every other static and dynamic resource');
+    'all '+expectedPages.size+' pages have unique names/art, dynamic priority, official static pairing, and coverage of remaining candidates');
   listEnv.extension.detach();
 
   const sample=dynamics.find(row=>row[0]==='dynamic:744001');
@@ -457,21 +464,72 @@ function setup(options = {}) {
   const pairedAlias=[...sampleStatic];pairedAlias[0]=9900001;
   const sameName=[...unpaired];sameName[2]=sampleStatic[2];
   const smallCatalog={...catalog,skins:[sampleStatic,pairedAlias,sameName]};
+  const duplicates=setup({catalog:smallCatalog,dynamicCatalog:[sample],dynamic:player,buckets:{[horse]:[34601]}});
+  const nativeWinner=duplicates.h.manager.GetGeneralSkinIncludeHide(horse)[0];
+  nativeWinner.skinname=sampleStatic[2];
+  const duplicateView=duplicates.open(horse).view;
+  check(duplicateView.list.includes(nativeWinner) && !duplicateView.list.some(row=>row.__xcTenYearEntry),
+    'native OL static takes precedence over same-name ten-year static, different-art static, and dynamic');
+  duplicates.extension.detach();
+  for(const name of ['ChangeSkinWindow','SelectSkinWindow','ModifyShowSkinWindow'])for(const nativeDynamic of [false,true]) {
+    const saved=new Map([['xcTenYearMergedSkins.v1',JSON.stringify({123:{[horse]:String(sample[0])}})]]);
+    const e=setup({catalog:smallCatalog,dynamicCatalog:[sample],dynamic:player,data:saved,buckets:{[horse]:[34601]}});
+    const winner=e.h.manager.GetGeneralSkinIncludeHide(horse)[0];
+    winner.skinname=nativeDynamic?' 动态·'+sampleStatic[2]+' ':sampleStatic[2];
+    winner.canUpdateDynamic=()=>nativeDynamic;
+    const opened=e.open(horse,name), shown=opened.view.list;
+    check(shown.includes(winner)&&!shown.some(row=>row.__xcTenYearEntry),
+      name+' gives OL '+(nativeDynamic?'dynamic':'static')+' priority over both ten-year types, ignoring only the dynamic display marker');
+    check(e.extension.choice(horse)===sample&&saved.get('xcTenYearMergedSkins.v1')===JSON.stringify({123:{[horse]:String(sample[0])}}),
+      name+' hiding duplicate ten-year entries leaves old selection and stored preferences intact');
+    opened.view.itemList.find(item=>item.skinData===winner).click();
+    check(!e.extension.choice(horse)&&opened.view.sent[0]===88&&e.receive(horse).SkinID===34601,
+      name+' native winner follows the real selection/response chain and clears the ten-year override');
+    e.extension.detach();
+  }
+  const repeatedDynamic=[...sample];repeatedDynamic[0]='dynamic:9999991';
+  repeatedDynamic[9]={...sample[9],id:9999991,resource:'9999991'};
+  const repeated=setup({catalog:smallCatalog,dynamicCatalog:[sample,repeatedDynamic],dynamic:player});
+  check(repeated.extension.entries(horse,'马云騄').length===1&&
+    repeated.extension.entries(horse,'马云騄')[0].__xcTenYearEntry===sample[0],
+    'same-name dynamic entries with different animation resources collapse to one stable dynamic card');
+  repeated.extension.detach();
+  const distinct=[...sameName];distinct[2]=sampleStatic[2]+'·珍藏';
+  const exact=setup({catalog:{...smallCatalog,skins:[sampleStatic,distinct]},dynamicCatalog:[sample],dynamic:player,buckets:{[horse]:[34601]}});
+  check(exact.extension.entries(horse,'马云騄',[{skinname:'舐伤'}]).length===2,
+    'prefixes and suffixes do not count as the same complete skin name');
+  check(exact.h.manager.GetOnlineSKinList(horse,true,false).every(row=>!row.__xcTenYearEntry),
+    'native share-skin probe outside picker scope never receives ten-year display entries');
+  exact.extension.detach();
+  const emptyName=[...sampleStatic],anotherEmpty=[...unpaired];emptyName[2]=anotherEmpty[2]='';
+  const unnamed=setup({catalog:{...smallCatalog,skins:[emptyName,anotherEmpty]}});
+  check(unnamed.extension.entries(horse,'马云騄',[{skinname:''}]).length===2,
+    'missing skin names never collapse unrelated artwork or match an unnamed OL row');
+  unnamed.extension.detach();
+  const peerID=990001;
+  const peerCatalog={...smallCatalog,generals:[...smallCatalog.generals,[peerID,'马云騄','测试马云騄']]};
+  const peer=setup({catalog:peerCatalog,dynamicCatalog:[sample],dynamic:player,buckets:{[horse]:[34601],[peerID]:[99000101]}});
+  const peerWinner=peer.h.manager.GetGeneralSkinIncludeHide(horse)[0];peerWinner.skinname=sampleStatic[2];
+  const peerView=peer.open(peerID).view;
+  peer.h.tabs.selectTab(peer.h.tabs.status().tabs.find(tab=>tab.label==='马云騄').key);
+  check(peerView.list.includes(peerWinner)&&!peerView.list.some(row=>row.__xcTenYearEntry),
+    'peer version tabs pass their own OL bucket into the same name-priority filter');
+  peer.h.tabs.selectTab('self');
+  check(peerView.list.some(row=>row.skinID===99000101), 'switching back restores the current version native list');
+  peer.extension.detach();
   const partial=setup({catalog:smallCatalog,dynamicCatalog:[sample],dynamic:player});
   const partialEntries=partial.extension.entries(horse,'马云騄');
-  check(partialEntries.length===2 && partialEntries.some(item=>item.__xcTenYearEntry==='dynamic:744001') &&
-    partialEntries.some(item=>item.__xcTenYearEntry==='244001'),
-    'partial dynamic catalog hides both paired source IDs sharing art, but keeps a same-title skin with different art');
+  check(partialEntries.length===1 && partialEntries[0].__xcTenYearEntry==='dynamic:744001',
+    'partial dynamic catalog hides paired aliases and same-title static cards with different art');
   partial.extension.detach();
   const absent=setup({catalog:smallCatalog,dynamicCatalog:[sample]});
   const absentEntries=absent.extension.entries(horse,'马云騄');
-  check(absentEntries.length===2 && absentEntries.every(item=>!item.__xcTenYearEntry.startsWith('dynamic:')) &&
-    absentEntries.some(item=>item.__xcTenYearEntry==='544001'),
-    'without a loaded dynamic player the static card remains and no unusable dynamic card is shown');
+  check(absentEntries.length===1 && absentEntries.every(item=>!item.__xcTenYearEntry.startsWith('dynamic:')),
+    'without a loaded dynamic player one same-name static card remains and no unusable dynamic card is shown');
   absent.extension.detach();
   const otherPage=[...sample];otherPage[8]=[['马云騄','界马云騄']];
   const scoped=setup({catalog:smallCatalog,dynamicCatalog:[otherPage],dynamic:player});
-  check(scoped.extension.entries(horse,'马云騄').some(item=>item.__xcTenYearEntry==='544001') &&
+  check(scoped.extension.entries(horse,'马云騄').some(item=>!item.__xcTenYearEntry.startsWith('dynamic:')&&item.skinname===sampleStatic[2]) &&
     scoped.extension.entries(horse,'界马云騄').some(item=>item.__xcTenYearEntry==='dynamic:744001'),
     'a dynamic entry on another version page does not hide this page\'s static card');
   scoped.extension.detach();
@@ -479,7 +537,7 @@ function setup(options = {}) {
   const oldStaticData=new Map([['xcTenYearMergedSkins.v1',JSON.stringify({123:{[horse]:'544001'}})]]);
   const dyn=setup({dynamicCatalog:dynamics,dynamic:player,data:oldStaticData,buckets:{[horse]:[34601,34602]}});
   const olPair=dyn.h.manager.GetGeneralSkinIncludeHide(horse);
-  olPair[0].skinname='舐伤伴君';olPair[1].skinname='动态·舐伤伴君';olPair[1].canUpdateDynamic=()=>true;
+  olPair[0].skinname='OL静态';olPair[1].skinname='OL动态';olPair[1].canUpdateDynamic=()=>true;
   let dynView=dyn.open(horse).view;
   const sourceID='dynamic:744001';
   let dynamicItem=dynView.itemList.find(i=>i.skinData?.__xcTenYearEntry===sourceID);
@@ -491,7 +549,7 @@ function setup(options = {}) {
     'hiding a previously selected static entry preserves its preference without selecting the dynamic counterpart');
   check(olPair.every(row=>dynView.itemList.some(i=>i.skinData===row&&i.skinName.text===row.skinname)) &&
     dynView.itemList.find(i=>i.SkinID===34602).exTypeTet.visible,
-    'same-title native OL static and dynamic cards both remain alongside the filtered ten-year entries');
+    'distinct native OL static and dynamic cards preserve native display fields and dynamic badge');
   await dynamicItem.click();
   check(calls.some(c=>c[0]==='prepare'&&c[1]===744001),'dynamic templates validate before committing the preference');
   check(dynView.sent.length===1 && dynView.sent[0]===88 && dynView.closeSelectDynamicState===0 && dyn.seat.skin===0 && dyn.seat.dynamic===false, 'dynamic source IDs/state never enter native OL protocol or seat state');

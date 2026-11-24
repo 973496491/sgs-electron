@@ -118,7 +118,7 @@ module.exports = function createNativeSkinTabs({ window, laya, groups = [], labe
     // Native share-skin probing requests showAll=true. Local display entries must never
     // enter SendReqShareItem; the normal picker query still receives them.
     if (!extension || showAll) return list || [];
-    const extra = extension.entries(generalID, tab.label);
+    const extra = extension.entries(generalID, tab.label, list || []);
     return (list || []).concat(extra);
   }
   function listFor(manager, tab, showAll, share, generalID) {
